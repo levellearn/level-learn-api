@@ -12,4 +12,12 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LevelLearn.Domain\LevelLearn.Domain.csproj" />
+    <ProjectReference Include="..\LevelLearn.Persistence\LevelLearn.Persistence.csproj" />
+    <ProjectReference Include="..\LevelLearn.Repository\LevelLearn.Repository.csproj" />
+    <ProjectReference Include="..\LevelLearn.Service\LevelLearn.Service.csproj" />
+    <ProjectReference Include="..\LevelLearn.ViewModel\LevelLearn.ViewModel.csproj" />
+  </ItemGroup>
+
 </Project>
