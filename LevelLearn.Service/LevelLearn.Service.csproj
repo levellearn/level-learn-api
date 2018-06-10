@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Institucional\" />
-    <Folder Include="Jogo\" />
-    <Folder Include="Pessoas\" />
+    <ProjectReference Include="..\LevelLearn.Repository\LevelLearn.Repository.csproj" />
   </ItemGroup>
 
 </Project>
