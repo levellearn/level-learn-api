@@ -1,35 +1,35 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
+﻿@font-face {
+            font-family: "pixel";
+            src: url("assets/fonts/VCR_OSD_MONO_1.001.ttf") format("truetype");
+        }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+        .fa-9x {
+            font-size: 9em;
+        }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
+        .color-green {
+            color: green;
+        }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
+        .color-yellow {
+            color: yellow;
+        }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
+        .logo-cabecalho {
+            height: 50px;
+            padding: 15px 15px;
+            font-size: 18px;
+            line-height: 20px;
+        }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
+        .font-game {
+            font-family: 'VCR_OSD_MONO';            
+        }
+
+        .font-20-px{
+            font-size: 20px!important;
+        }
+
+        .font-16-px{
+            font-size: 16px!important;
+        }

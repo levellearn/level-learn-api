@@ -4,6 +4,7 @@
     "jquery-validation-unobtrusive": "3.2.6",
     "bootstrap": "v4.1.1",
     "bootstrap-datepicker": "v1.8.0",
-    "pnotify": "pines-notify#3.2.1"
+    "pnotify": "pines-notify#3.2.1",
+    "Font-Awesome": "5.0.13"
   }
 }
