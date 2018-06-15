@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Persistence.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20180609234430_Inicial")]
+    [Migration("20180613193457_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -388,6 +388,8 @@ namespace LevelLearn.Persistence.Migrations
                     b.Property<string>("RA");
 
                     b.Property<int>("Sexo");
+
+                    b.Property<int>("TipoPessoa");
 
                     b.Property<string>("UserName")
                         .IsRequired();

@@ -387,6 +387,8 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("Sexo");
 
+                    b.Property<int>("TipoPessoa");
+
                     b.Property<string>("UserName")
                         .IsRequired();
 

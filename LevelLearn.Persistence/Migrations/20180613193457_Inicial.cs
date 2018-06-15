@@ -49,6 +49,7 @@ namespace LevelLearn.Persistence.Migrations
                     UserName = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Sexo = table.Column<int>(nullable: false),
+                    TipoPessoa = table.Column<int>(nullable: false),
                     DataCadastro = table.Column<DateTime>(nullable: false),
                     Imagem = table.Column<string>(nullable: false),
                     DataNascimento = table.Column<DateTime>(nullable: true),

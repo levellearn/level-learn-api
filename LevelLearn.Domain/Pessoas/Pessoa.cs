@@ -10,7 +10,8 @@ namespace LevelLearn.Domain.Pessoas
         public string UserName { get; set; }
         public string Email { get; set; }
         public SexoEnum Sexo { get; set; }
-        public DateTime DataCadastro { get; set; }
+        public TipoPessoaEnum TipoPessoa { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
         public string Imagem { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string RA { get; set; }
