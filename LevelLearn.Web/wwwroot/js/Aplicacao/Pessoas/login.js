@@ -12,8 +12,7 @@
             habilitarBotao(botao, 'ENTRAR');
 
             if (data.MensagemSucesso != undefined) {
-                localStorage.removeItem("Imagem");
-                localStorage.setItem("Imagem", JSON.stringify(data.Retorno.Imagem))
+                storageLogin(data.Retorno.Imagem, data.Retorno.UserName);
                 mensagemLogin(data.MensagemSucesso, true)
                 window.location.href = "/Home";
             } else {

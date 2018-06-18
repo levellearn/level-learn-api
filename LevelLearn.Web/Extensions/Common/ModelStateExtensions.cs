@@ -12,7 +12,7 @@ namespace LevelLearn.Web.Extensions.Common
             {
                 foreach (var item in values.Errors)
                 {
-                    erros = erros + item.ErrorMessage + "<br />";
+                    erros = erros + item.ErrorMessage + "\n";
                 }
             }
 

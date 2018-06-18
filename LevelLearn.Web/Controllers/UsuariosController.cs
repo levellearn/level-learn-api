@@ -45,5 +45,12 @@ namespace LevelLearn.Web.Controllers
 
             return Json(new { MensagemSucesso = "Login realizado com sucesso, estamos te direcionando para o jogo", Retorno = retorno });
         }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Start");
+        }
     }
 }

@@ -14,6 +14,12 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         public string Descricao { get; set; }
 
         [DisplayName("Administradores")]
-        public List<int> Admins { get; set; }
+        public List<int> Admins { get; set; } = new List<int>();
+
+        [DisplayName("Professores")]
+        public List<int> Professores { get; set; } = new List<int>();
+
+        [DisplayName("Alunos")]
+        public List<int> Alunos { get; set; } = new List<int>();
     }
 }

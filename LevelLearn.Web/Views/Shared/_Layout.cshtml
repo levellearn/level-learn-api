@@ -8,16 +8,34 @@
 
     <environment include="Development">
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+
         <link href="~/css/icons.css" rel="stylesheet" />
         <link href="~/lib/Font-Awesome/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet" />
+
+        <link href="~/myLib/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" />
+
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
+
         <link href="~/css/style.css" rel="stylesheet" />
         <link href="~/css/site.css" rel="stylesheet" />
     </environment>
 
     <environment exclude="Development">
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" asp-append-version="true" />
+
         <link href="~/css/icons.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/lib/Font-Awesome/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet" asp-append-version="true" />
+
+        <link href="~/myLib/pnotify/dist/PNotifyBrightTheme.css" rel="stylesheet" asp-append-version="true" />
+
+        <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" asp-append-version="true" />
+
         <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
     </environment>
@@ -36,17 +54,17 @@
                     <div id="navigation">
                         <ul class="navigation-menu">
                             <li class="has-submenu">
-                                <a href="/Instituicoes" class="font-game font-20-px">
+                                <a asp-controller="Instituicoes" asp-action="Index">
                                     <span><i class="fa fa-university "></i></span><span> Instituição </span>
                                 </a>
                             </li>
                             <li class="has-submenu">
-                                <a href="/Cursos" class="font-game font-20-px">
+                                <a href="/Cursos">
                                     <span><i class="fa fa-graduation-cap"></i></span><span> Cursos </span>
                                 </a>
                             </li>
                             <li class="has-submenu">
-                                <a href="/Turmas" class="font-game font-20-px">
+                                <a href="/Turmas">
                                     <span><i class="fa fa-user-graduate"></i></span><span> Turmas </span>
                                 </a>
                             </li>
@@ -101,10 +119,10 @@
                                 </a>
                             </div>
                         </li>
-                        <li class="dropdown notification-list font-game">
+                        <li class="dropdown notification-list">
                             <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                                aria-haspopup="false" aria-expanded="false">
-                                <img src="~/images/monstro-pacman.png" alt="user" class="rounded-circle"> <span class="ml-1 pro-user-name">Anderson <i class="mdi mdi-chevron-down"></i> </span>
+                                <img src="~/images/monstro-pacman.png" alt="user" class="rounded-circle"> <span class="ml-1 pro-user-name"> <span id="spanUserName"></span> <i class="mdi mdi-chevron-down"></i> </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -113,7 +131,7 @@
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <i class="fa fa-comments"></i> <span>Feedback</span>
                                 </a>
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a asp-controller="Usuarios" asp-action="Logout" class="dropdown-item notify-item">
                                     <i class="ti-power-off"></i> <span>Logout</span>
                                 </a>
                             </div>
@@ -150,8 +168,27 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/jquery.slimscroll.js"></script>
 
+        <script src="~/myLib/pnotify/dist/iife/PNotify.js"></script>
+        <script src="~/myLib/pnotify/dist/iife/PNotifyButtons.js"></script>
+
+        <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+
+        <script src="~/lib/select2/dist/js/select2.js"></script>
+        <script src="~/lib/select2/dist/js/i18n/pt-BR.js"></script>
+
         <script src="~/js/jquery.app.js"></script>
         <script src="~/js/jquery.core.js"></script>
+
+        <script src="~/js/Common/botao.js"></script>
+        <script src="~/js/Common/Common.js"></script>
+        <script src="~/js/Common/crudBase.js"></script>
+        <script src="~/js/Common/dataTable.js"></script>
+        <script src="~/js/Common/datepickerConfig.js"></script>
+        <script src="~/js/Common/localStorage.js"></script>
+        <script src="~/js/Common/notificacao.js"></script>
+        <script src="~/js/Common/preloader.js"></script>
+        <script src="~/js/Common/selectConfig.js"></script>
+        <script></script>
     </environment>
 
     <environment exclude="Development">
@@ -161,9 +198,26 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
         <script src="~/js/jquery.slimscroll.js" asp-append-version="true"></script>
 
+        <script src="~/myLib/pnotify/dist/iife/PNotify.js" asp-append-version="true"></script>
+        <script src="~/myLib/pnotify/dist/iife/PNotifyButtons.js" asp-append-version="true"></script>
+
+        <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js" asp-append-version="true"></script>
+
+        <script src="~/lib/select2/dist/js/select2.js" asp-append-version="true"></script>
+        <script src="~/lib/select2/dist/js/i18n/pt-BR.js" asp-append-version="true"></script>
+
         <script src="~/js/jquery.app.js" asp-append-version="true"></script>
         <script src="~/js/jquery.core.js" asp-append-version="true"></script>
 
+        <script src="~/js/Common/botao.js" asp-append-version="true"></script>
+        <script src="~/js/Common/Common.js" asp-append-version="true"></script>
+        <script src="~/js/Common/crudBase.js" asp-append-version="true"></script>
+        <script src="~/js/Common/dataTable.js" asp-append-version="true"></script>
+        <script src="~/js/Common/datepickerConfig.js" asp-append-version="true"></script>
+        <script src="~/js/Common/localStorage.js" asp-append-version="true"></script>
+        <script src="~/js/Common/notificacao.js" asp-append-version="true"></script>
+        <script src="~/js/Common/preloader.js" asp-append-version="true"></script>
+        <script src="~/js/Common/selectConfig.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

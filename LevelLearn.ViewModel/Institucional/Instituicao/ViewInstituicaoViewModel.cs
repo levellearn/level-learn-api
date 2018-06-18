@@ -7,7 +7,7 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         [DisplayName("Instituição")]
         public int InstituicaoId { get; set; }
 
-        [DisplayName("Nome")]
+        [DisplayName("Instituição")]
         public string Nome { get; set; }
 
         [DisplayName("Descrição")]
