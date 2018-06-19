@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <label asp-for="Descricao"></label><span class="required-field"></span>
+                <label asp-for="Descricao"></label>
                 <textarea asp-for="Descricao" class="form-control"></textarea>
             </div>
         </div>
@@ -23,5 +23,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-    <input type="button" id="btnUpdate" value="Adicionar" onclick="UpdateInstituicao()" class="btn btn-success" />
+    <input type="button" id="btnUpdate" value="Alterar" onclick="updateInstituicao()" class="btn btn-success" />
 </div>

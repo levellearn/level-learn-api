@@ -1,3 +1,7 @@
-﻿function escrevePreLoader(elementoId) {
-    $(elementoId).html("<div id='preloader_1'><span></span><span></span><span></span><span></span><span></span></div>")
+﻿function preLoaderAmarelo(elementoId) {
+    $(elementoId).html("<img src='/images/loader_yellow.gif' class='imagem-centro' />");
+}
+
+function preLoaderAzul(elementoId) {
+    $(elementoId).html("<img src='/images/loader_blue.gif' class='imagem-centro' />");
 }

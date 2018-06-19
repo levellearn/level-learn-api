@@ -8,6 +8,12 @@
 }
 /*FIM BOTAO*/
 
+.imagem-centro {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*INICIO MODAL*/
 .modal-header {
     text-align: center;

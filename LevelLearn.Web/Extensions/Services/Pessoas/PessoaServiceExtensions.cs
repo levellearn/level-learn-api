@@ -21,5 +21,23 @@ namespace LevelLearn.Web.Extensions.Services.Pessoas
 
             return new SelectList(pessoas, "PessoaId", "Nome");
         }
+
+        public static SelectList SelectListProfessoresWithoutUser(this IPessoaService service, int userId)
+        {
+            List<Pessoa> pessoas = service.Select(p => p.TipoPessoa == TipoPessoaEnum.Professor);
+
+            pessoas.RemoveAll(p => p.PessoaId == userId);
+
+            return new SelectList(pessoas, "PessoaId", "Nome");
+        }
+
+        public static SelectList SelectListAlunosWithoutUser(this IPessoaService service, int userId)
+        {
+            List<Pessoa> pessoas = service.Select(p => p.TipoPessoa == TipoPessoaEnum.Aluno);
+
+            pessoas.RemoveAll(p => p.PessoaId == userId);
+
+            return new SelectList(pessoas, "PessoaId", "Nome");
+        }
     }
 }

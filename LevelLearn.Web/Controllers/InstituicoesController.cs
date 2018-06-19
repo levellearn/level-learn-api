@@ -36,8 +36,10 @@ namespace LevelLearn.Web.Controllers
         [Authorize(Roles = "PROF")]
         public IActionResult CarregaCreate()
         {
-            ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessores();
-            ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunos();
+            ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
+
+            ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessoresWithoutUser(user.PessoaId);
+            ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
             return PartialView("_Create");
         }
 
@@ -50,7 +52,7 @@ namespace LevelLearn.Web.Controllers
             Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
 
             List<StatusResponseEnum> status = _instituicaoService.ValidaInstituicao(instituicao);
-            
+
             if (status.Count > 0)
                 return Json(new { MensagemErro = status.DisplayDescriptionsToViewModel() });
 

@@ -15,7 +15,7 @@ function updateInstituicao() {
 }
 
 function carregaCreate() {
-    escrevePreLoader("#corpoModal");
+    preLoaderAzul("#corpoModal");
     $("#corpoModal").load("/Instituicoes/CarregaCreate/", function () {
         setFocus("#Nome");
         carregaSelectPicker();
@@ -23,13 +23,13 @@ function carregaCreate() {
 }
 
 function carregaUpdate(id) {
-    escrevePreLoader("#corpoModal");
+    preLoaderAzul("#corpoModal");
     $("#corpoModal").load("/Instituicoes/CarregaUpdate/" + id, function () {
         setFocus("#Nome")
     });
 }
 
 function listaInstituicoes() {
-    escrevePreLoader("#listaInstituicoes");
+    preLoaderAmarelo("#listaInstituicoes");
     $("#listaInstituicoes").load("/Instituicoes/lista/");
 }
