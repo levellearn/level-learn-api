@@ -7,7 +7,7 @@ namespace LevelLearn.Service.Base
 {
     public abstract class CrudService<TEntity> : ICrudService<TEntity> where TEntity : class
     {
-        protected readonly ICrudRepository<TEntity> _repository;
+        private readonly ICrudRepository<TEntity> _repository;
         public CrudService(ICrudRepository<TEntity> repository)
         {
             _repository = repository;

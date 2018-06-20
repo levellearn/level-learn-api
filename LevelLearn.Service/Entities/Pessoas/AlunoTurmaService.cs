@@ -1,5 +1,5 @@
 ﻿using LevelLearn.Domain.Pessoas;
-using LevelLearn.Repository.Entities.Pessoas;
+using LevelLearn.Repository.Interfaces.Pessoas;
 using LevelLearn.Service.Base;
 using LevelLearn.Service.Interfaces.Pessoas;
 
@@ -7,8 +7,11 @@ namespace LevelLearn.Service.Entities.Pessoas
 {
     public class AlunoTurmaService : CrudService<AlunoTurma>, IAlunoTurmaService
     {
-        public AlunoTurmaService(AlunoTurmaRepository alunoTurmaRepository)
+        private readonly IAlunoTurmaRepository _alunoTurmaRepository;
+        public AlunoTurmaService(IAlunoTurmaRepository alunoTurmaRepository)
             : base(alunoTurmaRepository)
-        { }
+        {
+            _alunoTurmaRepository = alunoTurmaRepository;
+        }
     }
 }

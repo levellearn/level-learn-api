@@ -56,7 +56,7 @@ namespace LevelLearn.Service.Entities.Institucional
                 });
             }
 
-            return _repository.Insert(instituicao);
+            return _instituicaoRepository.Insert(instituicao);
         }
 
         public bool IsAdmin(int instituicaoId, int pessoaId)
@@ -70,7 +70,7 @@ namespace LevelLearn.Service.Entities.Institucional
 
             Instituicao validaInstituicao = new Instituicao();
 
-            validaInstituicao = _repository.Select(p => p.Nome.ToUpper().Trim() == instituicao.Nome.ToUpper().Trim()).FirstOrDefault();
+            validaInstituicao = _instituicaoRepository.Select(p => p.Nome.ToUpper().Trim() == instituicao.Nome.ToUpper().Trim()).FirstOrDefault();
 
             if ((validaInstituicao != null) && (validaInstituicao.InstituicaoId != instituicao.InstituicaoId))
                 valida.Add(StatusResponseEnum.NomeExistente);

@@ -7,8 +7,11 @@ namespace LevelLearn.Service.Entities.Jogo
 {
     public class DesafioService : CrudService<Desafio>, IDesafioService
     {
+        private readonly IDesafioRepository _desafiosRepository;
         public DesafioService(IDesafioRepository desafiosRepository)
             : base(desafiosRepository)
-        { }
+        {
+            _desafiosRepository = desafiosRepository;
+        }
     }
 }

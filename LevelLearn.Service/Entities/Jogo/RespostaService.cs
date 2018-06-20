@@ -1,5 +1,5 @@
 ﻿using LevelLearn.Domain.Jogo;
-using LevelLearn.Repository.Entities.Jogo;
+using LevelLearn.Repository.Interfaces.Jogo;
 using LevelLearn.Service.Base;
 using LevelLearn.Service.Interfaces.Jogo;
 
@@ -7,8 +7,11 @@ namespace LevelLearn.Service.Entities.Jogo
 {
     public class RespostaService : CrudService<Resposta>, IRespostaService
     {
-        public RespostaService(RespostaRepository respostaRepository)
+        private readonly IRespostaRepository _respostaRepository;
+        public RespostaService(IRespostaRepository respostaRepository)
             : base(respostaRepository)
-        { }
+        {
+            _respostaRepository = respostaRepository;
+        }
     }
 }

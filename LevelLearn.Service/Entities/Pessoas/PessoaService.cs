@@ -7,8 +7,11 @@ namespace LevelLearn.Service.Entities.Pessoas
 {
     public class PessoaService : CrudService<Pessoa>, IPessoaService
     {
+        private readonly IPessoaRepository _pessoaRepository;
         public PessoaService(IPessoaRepository pessoaRepository)
             : base(pessoaRepository)
-        { }
+        {
+            _pessoaRepository = pessoaRepository;
+        }
     }
 }
