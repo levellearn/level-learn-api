@@ -3,6 +3,7 @@ using LevelLearn.Domain.Enum;
 using LevelLearn.Domain.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Interfaces.Pessoas;
+using LevelLearn.ViewModel.Enum;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using LevelLearn.Web.Extensions.Common;
 using LevelLearn.Web.Extensions.Services.Pessoas;
@@ -68,6 +69,11 @@ namespace LevelLearn.Web.Controllers
         [HttpGet]
         public IActionResult CarregaUpdate(int id)
         {
+            ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
+
+            if (!_instituicaoService.IsAdmin(id, user.PessoaId))
+                return PartialView("_Create");
+
             Instituicao instituicao = _instituicaoService.SelectById(id);
 
             if (instituicao == null)
@@ -86,6 +92,11 @@ namespace LevelLearn.Web.Controllers
 
             Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
 
+            ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
+
+            if (!_instituicaoService.IsAdmin(instituicao.InstituicaoId, user.PessoaId))
+                return Json(new { MensagemErro = "Você não é o administrador dessa instituição" });
+
             List<StatusResponseEnum> status = _instituicaoService.ValidaInstituicao(instituicao);
 
             if (status.Count > 0)
@@ -100,7 +111,11 @@ namespace LevelLearn.Web.Controllers
         [HttpGet]
         public IActionResult Lista()
         {
-            IEnumerable<ViewInstituicaoViewModel> viewModels = Mapper.Map<IEnumerable<ViewInstituicaoViewModel>>(_instituicaoService.Select().OrderBy(p => p.Nome));
+            List<Instituicao> instituicaos = _instituicaoService.SelectIncludes(null, i => i.Pessoas).OrderBy(p => p.Nome).ToList();
+            List<ViewInstituicaoViewModel> viewModels = Mapper.Map<List<ViewInstituicaoViewModel>>(instituicaos);
+            ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
+
+            viewModels.ForEach(p => p.IsAdmin = p.Pessoas.Where(x => x.Perfil == PerfilInstituicaoEnumViewModel.Admin && x.PessoaId == user.PessoaId).Count() > 0);
             return PartialView("_List", viewModels);
         }
     }

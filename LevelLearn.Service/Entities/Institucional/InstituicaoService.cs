@@ -11,9 +11,12 @@ namespace LevelLearn.Service.Entities.Institucional
 {
     public class InstituicaoService : CrudService<Instituicao>, IInstituicaoService
     {
+        private readonly IInstituicaoRepository _instituicaoRepository;
         public InstituicaoService(IInstituicaoRepository instituicaoRepository)
             : base(instituicaoRepository)
-        { }
+        {
+            _instituicaoRepository = instituicaoRepository;
+        }
 
         public bool Insert(Instituicao instituicao, List<int> admins, List<int> professores, List<int> alunos)
         {
@@ -54,6 +57,11 @@ namespace LevelLearn.Service.Entities.Institucional
             }
 
             return _repository.Insert(instituicao);
+        }
+
+        public bool IsAdmin(int instituicaoId, int pessoaId)
+        {
+            return _instituicaoRepository.IsAdmin(instituicaoId, pessoaId);
         }
 
         public List<StatusResponseEnum> ValidaInstituicao(Instituicao instituicao)

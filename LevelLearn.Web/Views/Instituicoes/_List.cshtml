@@ -19,10 +19,13 @@ else
                 </div>
                 <div class="bg-custom pull-in-card p-20 widget-box-two mb-0 m-t-30 list-inline text-center row">
                     <div class="col-12">
-                        <a href="" onclick="carregaUpdate(@item.InstituicaoId)" data-toggle="modal" data-target="#myModal" class="text-center" title="Alterar">
-                            <h5 class="text-white m-0 font-600"><i class="fa fa-edit fa-2x"></i></h5>
-                            <p class="text-white mb-0 font-game font-16-px">Alterar</p>
-                        </a>
+                        @if (item.IsAdmin)
+                        {
+                            <a href="" onclick="carregaUpdate(@item.InstituicaoId)" data-toggle="modal" data-target="#myModal" class="text-center" title="Alterar">
+                                <h5 class="text-white m-0 font-600"><i class="fa fa-edit fa-2x"></i></h5>
+                                <p class="text-white mb-0 font-game font-16-px">Alterar</p>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
