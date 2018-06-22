@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LevelLearn.ViewModel.Institucional.Turma.ViewTurmaViewModel>
+
+@if (Model.Count() <= 0)
+{
+    <i class="fa fa-2x fa-info-circle"></i> <span class="font-weight-bold">Não há turmas cadastradas</span>
+}
+else
+{
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card-box pb-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>@Html.DisplayNameFor(model => model.Nome): </strong><label>@Html.DisplayFor(modelItem => item.Nome)</label>
+                        <br />
+                        <strong>@Html.DisplayNameFor(model => model.Descricao): </strong><label> @Html.DisplayFor(modelItem => item.Descricao)</label>
+                        <br />
+                        <strong>@Html.DisplayNameFor(model => model.CursoId): </strong><label> @Html.DisplayFor(modelItem => item.Curso.Nome)</label>
+                    </div>
+                </div>
+                <div class="bg-custom pull-in-card p-20 widget-box-two mb-0 m-t-30 list-inline text-center row">
+                    <div class="col-12">
+                        <a href="" onclick="carregaUpdate(@item.CursoId)" data-toggle="modal" data-target="#myModal" class="text-center" title="Alterar">
+                            <h5 class="text-white m-0 font-600"><i class="fa fa-edit fa-2x"></i></h5>
+                            <p class="text-white mb-0 font-game font-16-px">Alterar</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

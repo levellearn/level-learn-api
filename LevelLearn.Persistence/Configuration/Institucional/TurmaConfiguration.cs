@@ -20,6 +20,8 @@ namespace LevelLearn.Persistence.Configuration.Institucional
 
             builder.Property(p => p.Meta)
                 .IsRequired();
+
+            builder.HasMany(p => p.Alunos);
         }
     }
 }

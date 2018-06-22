@@ -16,6 +16,7 @@ namespace LevelLearn.Persistence.Configuration.Institucional
                 .IsRequired();
 
             builder.HasMany(p => p.Pessoas);
+            builder.HasMany(p => p.Cursos);
         }
     }
 }

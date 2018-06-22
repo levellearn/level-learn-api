@@ -203,7 +203,8 @@ namespace LevelLearn.Persistence.Migrations
                 name: "Turmas",
                 columns: table => new
                 {
-                    TurmaId = table.Column<string>(nullable: false),
+                    TurmaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(nullable: false),
                     Descricao = table.Column<string>(nullable: true),
                     Meta = table.Column<decimal>(nullable: false),
@@ -237,8 +238,7 @@ namespace LevelLearn.Persistence.Migrations
                     MoedasGanha = table.Column<decimal>(nullable: false),
                     AlunoId = table.Column<int>(nullable: false),
                     DesafioId = table.Column<int>(nullable: false),
-                    TurmaId = table.Column<int>(nullable: false),
-                    TurmaId1 = table.Column<string>(nullable: true)
+                    TurmaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,8 +256,8 @@ namespace LevelLearn.Persistence.Migrations
                         principalColumn: "DesafioId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AlunoDesafios_Turmas_TurmaId1",
-                        column: x => x.TurmaId1,
+                        name: "FK_AlunoDesafios_Turmas_TurmaId",
+                        column: x => x.TurmaId,
                         principalTable: "Turmas",
                         principalColumn: "TurmaId",
                         onDelete: ReferentialAction.Restrict);
@@ -270,8 +270,7 @@ namespace LevelLearn.Persistence.Migrations
                     AlunoTurmaId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AlunoId = table.Column<int>(nullable: false),
-                    TurmaId = table.Column<int>(nullable: false),
-                    TurmaId1 = table.Column<string>(nullable: true)
+                    TurmaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -283,8 +282,8 @@ namespace LevelLearn.Persistence.Migrations
                         principalColumn: "PessoaId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AlunoTurmas_Turmas_TurmaId1",
-                        column: x => x.TurmaId1,
+                        name: "FK_AlunoTurmas_Turmas_TurmaId",
+                        column: x => x.TurmaId,
                         principalTable: "Turmas",
                         principalColumn: "TurmaId",
                         onDelete: ReferentialAction.Restrict);
@@ -298,15 +297,14 @@ namespace LevelLearn.Persistence.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DataAula = table.Column<DateTime>(nullable: false),
                     Periodo = table.Column<int>(nullable: false),
-                    TurmaId = table.Column<int>(nullable: false),
-                    TurmaId1 = table.Column<string>(nullable: true)
+                    TurmaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chamadas", x => x.ChamadaId);
                     table.ForeignKey(
-                        name: "FK_Chamadas_Turmas_TurmaId1",
-                        column: x => x.TurmaId1,
+                        name: "FK_Chamadas_Turmas_TurmaId",
+                        column: x => x.TurmaId,
                         principalTable: "Turmas",
                         principalColumn: "TurmaId",
                         onDelete: ReferentialAction.Restrict);
@@ -326,15 +324,14 @@ namespace LevelLearn.Persistence.Migrations
                     Moedas = table.Column<int>(nullable: false),
                     IsOnline = table.Column<bool>(nullable: false),
                     QuantidadeMaxAlunos = table.Column<int>(nullable: false),
-                    TurmaId = table.Column<int>(nullable: false),
-                    TurmaId1 = table.Column<string>(nullable: true)
+                    TurmaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Missoes", x => x.MissaoId);
                     table.ForeignKey(
-                        name: "FK_Missoes_Turmas_TurmaId1",
-                        column: x => x.TurmaId1,
+                        name: "FK_Missoes_Turmas_TurmaId",
+                        column: x => x.TurmaId,
                         principalTable: "Turmas",
                         principalColumn: "TurmaId",
                         onDelete: ReferentialAction.Restrict);
@@ -409,7 +406,6 @@ namespace LevelLearn.Persistence.Migrations
                     MoedasGanha = table.Column<decimal>(nullable: false),
                     AlunoId = table.Column<int>(nullable: false),
                     TurmaId = table.Column<int>(nullable: false),
-                    TurmaId1 = table.Column<string>(nullable: true),
                     RespostaId = table.Column<int>(nullable: true),
                     PresencaId = table.Column<int>(nullable: true),
                     AlunoDesafioId = table.Column<int>(nullable: true)
@@ -442,8 +438,8 @@ namespace LevelLearn.Persistence.Migrations
                         principalColumn: "RespostaId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Moedas_Turmas_TurmaId1",
-                        column: x => x.TurmaId1,
+                        name: "FK_Moedas_Turmas_TurmaId",
+                        column: x => x.TurmaId,
                         principalTable: "Turmas",
                         principalColumn: "TurmaId",
                         onDelete: ReferentialAction.Restrict);
@@ -460,9 +456,9 @@ namespace LevelLearn.Persistence.Migrations
                 column: "DesafioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlunoDesafios_TurmaId1",
+                name: "IX_AlunoDesafios_TurmaId",
                 table: "AlunoDesafios",
-                column: "TurmaId1");
+                column: "TurmaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AlunoTimes_AlunoId",
@@ -480,14 +476,14 @@ namespace LevelLearn.Persistence.Migrations
                 column: "AlunoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlunoTurmas_TurmaId1",
+                name: "IX_AlunoTurmas_TurmaId",
                 table: "AlunoTurmas",
-                column: "TurmaId1");
+                column: "TurmaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chamadas_TurmaId1",
+                name: "IX_Chamadas_TurmaId",
                 table: "Chamadas",
-                column: "TurmaId1");
+                column: "TurmaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cursos_InstituicaoId",
@@ -495,9 +491,9 @@ namespace LevelLearn.Persistence.Migrations
                 column: "InstituicaoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Missoes_TurmaId1",
+                name: "IX_Missoes_TurmaId",
                 table: "Missoes",
-                column: "TurmaId1");
+                column: "TurmaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Moedas_AlunoDesafioId",
@@ -520,9 +516,9 @@ namespace LevelLearn.Persistence.Migrations
                 column: "RespostaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Moedas_TurmaId1",
+                name: "IX_Moedas_TurmaId",
                 table: "Moedas",
-                column: "TurmaId1");
+                column: "TurmaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notificacoes_PessoaId",

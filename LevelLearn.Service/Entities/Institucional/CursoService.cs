@@ -18,6 +18,16 @@ namespace LevelLearn.Service.Entities.Institucional
             _cursoRepository = cursoRepository;
         }
 
+        public List<Curso> CursosInstituicaoProfessor(int professorId)
+        {
+            return _cursoRepository.CursosInstituicaoProfessor(professorId);
+        }
+
+        public List<Curso> CursosProfessor(int professorId)
+        {
+            return _cursoRepository.CursosProfessor(professorId);
+        }
+
         public bool Insert(Curso curso, List<int> professores, List<int> alunos)
         {
             foreach (var item in professores)
@@ -43,9 +53,9 @@ namespace LevelLearn.Service.Entities.Institucional
             return _cursoRepository.Insert(curso);
         }
 
-        public bool IsProfessor(int cursoId, int pessoaId)
+        public bool IsProfessorDoCurso(int cursoId, int pessoaId)
         {
-            return _cursoRepository.IsProfessor(cursoId, pessoaId);
+            return _cursoRepository.IsProfessorDoCurso(cursoId, pessoaId);
         }
 
         public List<StatusResponseEnum> ValidaCurso(Curso curso)

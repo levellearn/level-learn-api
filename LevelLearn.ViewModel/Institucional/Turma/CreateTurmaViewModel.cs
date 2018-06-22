@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace LevelLearn.ViewModel.Institucional.Turma
@@ -11,5 +12,12 @@ namespace LevelLearn.ViewModel.Institucional.Turma
 
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
+
+        [DisplayName("Curso")]
+        [Required(ErrorMessage = "O campo Curso é obrigatório")]
+        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "O campo Curso é obrigatório")]
+        public int CursoId { get; set; }
+
+        public List<int> Alunos { get; set; } = new List<int>();
     }
 }

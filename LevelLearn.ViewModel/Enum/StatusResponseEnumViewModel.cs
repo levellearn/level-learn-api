@@ -13,7 +13,10 @@ namespace LevelLearn.ViewModel.Enum
         [Description("Você já tem um item com esse nome cadastrado")]
         NomeExistente = 3,
 
-        [Description("O curso já está cadastrado na instituição")]
-        CursoExistenteInstituicao = 4
+        [Description("Já existe um curso com esse nome da instituição")]
+        CursoExistenteInstituicao = 4,
+
+        [Description("Já existe uma turma com esse nome no curso")]
+        TurmaExistenteNoCurso = 5,
     }
 }

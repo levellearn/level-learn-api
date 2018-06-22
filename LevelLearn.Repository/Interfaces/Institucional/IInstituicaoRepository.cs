@@ -8,5 +8,7 @@ namespace LevelLearn.Repository.Interfaces.Institucional
     {
         bool IsAdmin(int instituicaoId, int pessoaId);
         List<Instituicao> InstituicoesAdmin(int pessoaId);
+        List<Instituicao> InstituicoesProfessor(int pessoaId);
+        List<Instituicao> InstituicoesAluno(int pessoaId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using LevelLearn.ViewModel.Institucional.Curso;
+using System.ComponentModel;
 
 namespace LevelLearn.ViewModel.Institucional.Turma
 {
@@ -12,5 +13,9 @@ namespace LevelLearn.ViewModel.Institucional.Turma
 
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
+
+        [DisplayName("Curso")]
+        public int CursoId { get; set; }
+        public ViewCursoViewModel Curso { get; set; }
     }
 }

@@ -44,11 +44,12 @@ namespace LevelLearn.Web.Controllers
 
             ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessoresWithoutUser(user.PessoaId);
             ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
-            ViewBag.DropDownListInstituicoes = _instituicaoService.SelectListInstiuicoesAdmin(user.PessoaId);
+            ViewBag.DropDownListInstituicoes = _instituicaoService.SelectListInstiuicoesProfessor(user.PessoaId);
             return PartialView("_Create");
         }
 
         [HttpPost]
+        [Authorize(Roles = "PROF")]
         public IActionResult Create(CreateCursoViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -71,13 +72,14 @@ namespace LevelLearn.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "PROF")]
         public IActionResult CarregaUpdate(int id)
         {
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
             ViewBag.DropDownListInstituicoes = _instituicaoService.SelectListInstiuicoesAdmin(user.PessoaId);
 
-            if (!_cursoService.IsProfessor(id, user.PessoaId))
+            if (!_cursoService.IsProfessorDoCurso(id, user.PessoaId))
             {
                 ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessoresWithoutUser(user.PessoaId);
                 ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
@@ -99,6 +101,7 @@ namespace LevelLearn.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "PROF")]
         public IActionResult Update(UpdateCursoViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -108,7 +111,7 @@ namespace LevelLearn.Web.Controllers
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            if (!_cursoService.IsProfessor(curso.CursoId, user.PessoaId))
+            if (!_cursoService.IsProfessorDoCurso(curso.CursoId, user.PessoaId))
                 return Json(new { MensagemErro = "Você não é professor desse cursto" });
 
             List<StatusResponseEnum> status = _cursoService.ValidaCurso(curso);
@@ -123,11 +126,13 @@ namespace LevelLearn.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "PROF")]
         public IActionResult Lista()
         {
-            List<Curso> cursos = _cursoService.SelectIncludes(null, i => i.Pessoas, i => i.Instituicao).OrderBy(p => p.Nome).ToList();
-            List<ViewCursoViewModel> viewModels = Mapper.Map<List<ViewCursoViewModel>>(cursos);
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
+
+            List<Curso> cursos = _cursoService.CursosInstituicaoProfessor(user.PessoaId);
+            List<ViewCursoViewModel> viewModels = Mapper.Map<List<ViewCursoViewModel>>(cursos);
 
             viewModels.ForEach(p => p.IsProfessor = p.Pessoas.Where(x => x.Perfil == TipoPessoaEnumViewModel.Professor && x.PessoaId == user.PessoaId).Count() > 0);
             return PartialView("_List", viewModels);

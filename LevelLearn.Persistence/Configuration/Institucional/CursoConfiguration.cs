@@ -16,7 +16,7 @@ namespace LevelLearn.Persistence.Configuration.Institucional
                 .IsRequired();
 
             builder.HasOne(p => p.Instituicao)
-                .WithMany();
+                .WithMany(p=> p.Cursos);
 
             builder.HasMany(p => p.Pessoas);
         }

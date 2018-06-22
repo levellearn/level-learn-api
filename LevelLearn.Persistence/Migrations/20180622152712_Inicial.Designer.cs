@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Persistence.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20180613193457_Inicial")]
+    [Migration("20180622152712_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,8 +59,9 @@ namespace LevelLearn.Persistence.Migrations
 
             modelBuilder.Entity("LevelLearn.Domain.Institucional.Turma", b =>
                 {
-                    b.Property<string>("TurmaId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("TurmaId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CursoId");
 
@@ -94,11 +95,9 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("TurmaId");
 
-                    b.Property<string>("TurmaId1");
-
                     b.HasKey("ChamadaId");
 
-                    b.HasIndex("TurmaId1");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("Chamadas");
                 });
@@ -153,11 +152,9 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("TurmaId");
 
-                    b.Property<string>("TurmaId1");
-
                     b.HasKey("MissaoId");
 
-                    b.HasIndex("TurmaId1");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("Missoes");
                 });
@@ -185,8 +182,6 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("TurmaId");
 
-                    b.Property<string>("TurmaId1");
-
                     b.HasKey("MoedaId");
 
                     b.HasIndex("AlunoDesafioId");
@@ -197,7 +192,7 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.HasIndex("RespostaId");
 
-                    b.HasIndex("TurmaId1");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("Moedas");
                 });
@@ -284,15 +279,13 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("TurmaId");
 
-                    b.Property<string>("TurmaId1");
-
                     b.HasKey("AlunoDesafioId");
 
                     b.HasIndex("AlunoId");
 
                     b.HasIndex("DesafioId");
 
-                    b.HasIndex("TurmaId1");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("AlunoDesafios");
                 });
@@ -328,13 +321,11 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.Property<int>("TurmaId");
 
-                    b.Property<string>("TurmaId1");
-
                     b.HasKey("AlunoTurmaId");
 
                     b.HasIndex("AlunoId");
 
-                    b.HasIndex("TurmaId1");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("AlunoTurmas");
                 });
@@ -466,7 +457,7 @@ namespace LevelLearn.Persistence.Migrations
                 {
                     b.HasOne("LevelLearn.Domain.Institucional.Turma", "Turma")
                         .WithMany()
-                        .HasForeignKey("TurmaId1")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -474,7 +465,7 @@ namespace LevelLearn.Persistence.Migrations
                 {
                     b.HasOne("LevelLearn.Domain.Institucional.Turma", "Turma")
                         .WithMany()
-                        .HasForeignKey("TurmaId1")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -502,7 +493,7 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.HasOne("LevelLearn.Domain.Institucional.Turma", "Turma")
                         .WithMany()
-                        .HasForeignKey("TurmaId1")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -546,7 +537,7 @@ namespace LevelLearn.Persistence.Migrations
 
                     b.HasOne("LevelLearn.Domain.Institucional.Turma", "Turma")
                         .WithMany()
-                        .HasForeignKey("TurmaId1")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -571,8 +562,8 @@ namespace LevelLearn.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LevelLearn.Domain.Institucional.Turma", "Turma")
-                        .WithMany()
-                        .HasForeignKey("TurmaId1")
+                        .WithMany("Alunos")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -587,7 +578,7 @@ namespace LevelLearn.Persistence.Migrations
             modelBuilder.Entity("LevelLearn.Domain.Pessoas.PessoaCurso", b =>
                 {
                     b.HasOne("LevelLearn.Domain.Institucional.Curso", "Curso")
-                        .WithMany()
+                        .WithMany("Pessoas")
                         .HasForeignKey("CursoId")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -600,7 +591,7 @@ namespace LevelLearn.Persistence.Migrations
             modelBuilder.Entity("LevelLearn.Domain.Pessoas.PessoaInstituicao", b =>
                 {
                     b.HasOne("LevelLearn.Domain.Institucional.Instituicao", "Instituicao")
-                        .WithMany()
+                        .WithMany("Pessoas")
                         .HasForeignKey("InstituicaoId")
                         .OnDelete(DeleteBehavior.Restrict);
 

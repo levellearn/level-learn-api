@@ -16,7 +16,7 @@ namespace LevelLearn.Persistence.Configuration.Pessoas
                 .WithMany();
 
             builder.HasOne(p => p.Turma)
-                .WithMany();
+                .WithMany(p=> p.Alunos);
         }
     }
 }

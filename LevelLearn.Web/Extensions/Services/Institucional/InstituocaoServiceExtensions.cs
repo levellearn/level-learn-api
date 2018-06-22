@@ -12,5 +12,11 @@ namespace LevelLearn.Web.Extensions.Services.Institucional
             List<Instituicao> instituicoes = instituicaoService.InstituicoesAdmin(pessoaId);
             return new SelectList(instituicoes, "InstituicaoId", "Nome");
         }
+
+        public static SelectList SelectListInstiuicoesProfessor(this IInstituicaoService instituicaoService, int pessoaId)
+        {
+            List<Instituicao> instituicoes = instituicaoService.InstituicoesProfessor(pessoaId);
+            return new SelectList(instituicoes, "InstituicaoId", "Nome");
+        }
     }
 }

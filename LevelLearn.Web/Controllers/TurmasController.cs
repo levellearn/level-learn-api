@@ -3,9 +3,9 @@ using LevelLearn.Domain.Enum;
 using LevelLearn.Domain.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Interfaces.Pessoas;
-using LevelLearn.ViewModel.Enum;
-using LevelLearn.ViewModel.Institucional.Instituicao;
+using LevelLearn.ViewModel.Institucional.Turma;
 using LevelLearn.Web.Extensions.Common;
+using LevelLearn.Web.Extensions.Services.Institucional;
 using LevelLearn.Web.Extensions.Services.Pessoas;
 using LevelLearn.Web.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -17,14 +17,16 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Web.Controllers
 {
-    public class InstituicoesController : Controller
+    public class TurmasController : Controller
     {
-        private readonly IInstituicaoService _instituicaoService;
+        private readonly ITurmaService _turmaService;
+        private readonly ICursoService _cursoService;
         private readonly IPessoaService _pessoaService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public InstituicoesController(IInstituicaoService instituicaoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
+        public TurmasController(ITurmaService turmaService, ICursoService cursoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
         {
-            _instituicaoService = instituicaoService;
+            _turmaService = turmaService;
+            _cursoService = cursoService;
             _pessoaService = pessoaService;
             _userManager = userManager;
         }
@@ -39,32 +41,32 @@ namespace LevelLearn.Web.Controllers
         {
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessoresWithoutUser(user.PessoaId);
+            ViewBag.DropDownListCursos = _cursoService.SelectListCursosProfessor(user.PessoaId);
             ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
             return PartialView("_Create");
         }
 
         [HttpPost]
         [Authorize(Roles = "PROF")]
-        public IActionResult Create(CreateInstituicaoViewModel viewModel)
+        public IActionResult Create(CreateTurmaViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
+            Turma turma = Mapper.Map<Turma>(viewModel);
 
-            List<StatusResponseEnum> status = _instituicaoService.ValidaInstituicao(instituicao);
+            List<StatusResponseEnum> status = _turmaService.ValidaTurma(turma);
 
             if (status.Count > 0)
                 return Json(new { MensagemErro = status.DisplayDescriptionsToViewModel() });
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
-            viewModel.Admins.Add(user.PessoaId);
+            turma.ProfessorId = user.PessoaId;
 
-            if (_instituicaoService.Insert(instituicao, viewModel.Admins, viewModel.Professores, viewModel.Alunos))
-                return Json(new { MensagemSucesso = "Instituição inclusa com sucesso" });
+            if (_turmaService.Insert(turma, viewModel.Alunos))
+                return Json(new { MensagemSucesso = "Turma inclusa com sucesso" });
             else
-                return Json(new { MensagemErro = "Erro ao adicionar instituição" });
+                return Json(new { MensagemErro = "Erro ao adicionar turma" });
         }
 
         [HttpGet]
@@ -73,53 +75,53 @@ namespace LevelLearn.Web.Controllers
         {
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            if (!_instituicaoService.IsAdmin(id, user.PessoaId))
+            ViewBag.DropDownListCursos = _cursoService.SelectListCursosProfessor(user.PessoaId);
+            ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
+
+            if (!_turmaService.IsTurmaDoProfessor(id, user.PessoaId))
                 return PartialView("_Create");
 
-            Instituicao instituicao = _instituicaoService.SelectById(id);
+            Turma turma = _turmaService.SelectById(id);
 
-            if (instituicao == null)
-                return PartialView("_Create");
-
-            UpdateInstituicaoViewModel viewModel = Mapper.Map<UpdateInstituicaoViewModel>(instituicao);
+            UpdateTurmaViewModel viewModel = Mapper.Map<UpdateTurmaViewModel>(turma);
 
             return PartialView("_Update", viewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = "PROF")]
-        public IActionResult Update(UpdateInstituicaoViewModel viewModel)
+        public IActionResult Update(UpdateTurmaViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
+            Turma turma = Mapper.Map<Turma>(viewModel);
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            if (!_instituicaoService.IsAdmin(instituicao.InstituicaoId, user.PessoaId))
-                return Json(new { MensagemErro = "Você não é o administrador dessa instituição" });
+            if (!_turmaService.IsTurmaDoProfessor(turma.TurmaId, user.PessoaId))
+                return Json(new { MensagemErro = "Você não é professor dessa turma" });
 
-            List<StatusResponseEnum> status = _instituicaoService.ValidaInstituicao(instituicao);
+            List<StatusResponseEnum> status = _turmaService.ValidaTurma(turma);
 
             if (status.Count > 0)
                 return Json(new { MensagemErro = status.DisplayDescriptionsToViewModel() });
 
-            if (_instituicaoService.Update(instituicao))
-                return Json(new { MensagemSucesso = "Instituição atualizada com sucesso" });
+            if (_turmaService.Update(turma))
+                return Json(new { MensagemSucesso = "Turma alterada com sucesso" });
             else
-                return Json(new { MensagemErro = "Erro ao atualizar instituição" });
+                return Json(new { MensagemErro = "Erro ao alterar turma" });
         }
 
         [HttpGet]
         [Authorize(Roles = "PROF")]
         public IActionResult Lista()
         {
-            List<Instituicao> instituicaos = _instituicaoService.SelectIncludes(null, i => i.Pessoas).OrderBy(p => p.Nome).ToList();
-            List<ViewInstituicaoViewModel> viewModels = Mapper.Map<List<ViewInstituicaoViewModel>>(instituicaos);
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            viewModels.ForEach(p => p.IsAdmin = p.Pessoas.Where(x => x.Perfil == PerfilInstituicaoEnumViewModel.Admin && x.PessoaId == user.PessoaId).Count() > 0);
+            List<Turma> turmas = _turmaService.SelectIncludes(p => p.ProfessorId == user.PessoaId, i => i.Curso).OrderBy(p => p.Nome).ToList();
+            List<ViewTurmaViewModel> viewModels = Mapper.Map<List<ViewTurmaViewModel>>(turmas);
+
             return PartialView("_List", viewModels);
         }
     }

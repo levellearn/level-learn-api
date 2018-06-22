@@ -15,5 +15,10 @@ namespace LevelLearn.ViewModel.Institucional.Turma
 
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
+
+        [DisplayName("Curso")]
+        [Required(ErrorMessage = "O campo Curso é obrigatório")]
+        [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "O campo Curso é obrigatório")]
+        public int CursoId { get; set; }
     }
 }

@@ -66,9 +66,9 @@ namespace LevelLearn.Web.Controllers
                             Nome = "Leonardo Barbetta de Oliveira",
                             UserName = "leobarbetta",
                             Email = "leo_barbetta@outlook.com",
-                            Imagem = "",
+                            Imagem = "/teste",
                             Sexo = SexoEnum.Masculino,
-                            TipoPessoa =  TipoPessoaEnum.Aluno
+                            TipoPessoa =  TipoPessoaEnum.Professor
                         },
                 },
                 new ApplicationUser
@@ -80,7 +80,7 @@ namespace LevelLearn.Web.Controllers
                             Nome = "Gabriel Galvão Guimarães Faria",
                             UserName = "gggfaria",
                             Email = "gggfaria@outlook.com",
-                            Imagem = "",
+                            Imagem = "/teste",
                             Sexo = SexoEnum.Masculino,
                             TipoPessoa =  TipoPessoaEnum.Aluno
                         },
@@ -94,7 +94,7 @@ namespace LevelLearn.Web.Controllers
                             Nome = "Felipe Ayres",
                             UserName = "felipeayres",
                             Email = "felipe.ayres1993@hotmail.com",
-                            Imagem = "",
+                            Imagem = "/teste",
                             Sexo = SexoEnum.Masculino,
                             TipoPessoa =  TipoPessoaEnum.Aluno
                         },
@@ -108,7 +108,7 @@ namespace LevelLearn.Web.Controllers
                             Nome = "Leandro Guarino",
                             UserName = "le.guarino",
                             Email = "le.guarino@gmail.com",
-                            Imagem = "",
+                            Imagem = "/teste",
                             Sexo = SexoEnum.Masculino,
                             TipoPessoa =  TipoPessoaEnum.Professor
                         },

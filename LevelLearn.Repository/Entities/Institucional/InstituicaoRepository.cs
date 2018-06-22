@@ -18,11 +18,31 @@ namespace LevelLearn.Repository.Entities.Institucional
         public List<Instituicao> InstituicoesAdmin(int pessoaId)
         {
             return _context.Set<PessoaInstituicao>()
-                            .Where(p => p.Perfil == PerfilInstituicaoEnum.Admin)
-                            .Where(p => p.PessoaId == pessoaId)
-                            .Select(p => p.Instituicao)
-                            .OrderBy(p => p.Nome)
-                            .ToList();
+                .Where(p => p.Perfil == PerfilInstituicaoEnum.Admin)
+                .Where(p => p.PessoaId == pessoaId)
+                .Select(p => p.Instituicao)
+                .OrderBy(p => p.Nome)
+                .ToList();
+        }
+
+        public List<Instituicao> InstituicoesAluno(int pessoaId)
+        {
+            return _context.Set<PessoaInstituicao>()
+                .Where(p => p.Perfil == PerfilInstituicaoEnum.Aluno)
+                .Where(p => p.PessoaId == pessoaId)
+                .Select(p => p.Instituicao)
+                .OrderBy(p => p.Nome)
+                .ToList();
+        }
+
+        public List<Instituicao> InstituicoesProfessor(int pessoaId)
+        {
+            return _context.Set<PessoaInstituicao>()
+                .Where(p => p.Perfil == PerfilInstituicaoEnum.Professor || p.Perfil == PerfilInstituicaoEnum.Admin)
+                .Where(p => p.PessoaId == pessoaId)
+                .Select(p => p.Instituicao)
+                .OrderBy(p => p.Nome)
+                .ToList();
         }
 
         public bool IsAdmin(int instituicaoId, int pessoaId)

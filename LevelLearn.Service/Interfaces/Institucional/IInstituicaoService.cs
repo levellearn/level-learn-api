@@ -9,6 +9,8 @@ namespace LevelLearn.Service.Interfaces.Institucional
     {
         List<StatusResponseEnum> ValidaInstituicao(Instituicao instituicao);
         List<Instituicao> InstituicoesAdmin(int pessoaId);
+        List<Instituicao> InstituicoesProfessor(int pessoaId);
+        List<Instituicao> InstituicoesAluno(int pessoaId);
         bool IsAdmin(int instituicaoId, int pessoaId);
         bool Insert(Instituicao instituicao, List<int> admins, List<int> professores, List<int> alunos);
     }

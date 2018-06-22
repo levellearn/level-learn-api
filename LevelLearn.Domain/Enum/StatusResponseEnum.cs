@@ -5,6 +5,7 @@
         Sucesso = 1,
         ErroInterno = 2,
         NomeExistente = 3,
-        CursoExistenteInstituicao = 4
+        CursoExistenteInstituicao = 4,
+        TurmaExistenteNoCurso = 5,
     }
 }

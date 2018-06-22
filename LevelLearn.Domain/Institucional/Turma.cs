@@ -1,10 +1,11 @@
 ﻿using LevelLearn.Domain.Pessoas;
+using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Institucional
 {
     public class Turma
     {
-        public string TurmaId { get; set; }
+        public int TurmaId { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
 
@@ -15,5 +16,7 @@ namespace LevelLearn.Domain.Institucional
 
         public int ProfessorId { get; set; }
         public Pessoa Professor { get; set; }
+
+        public List<AlunoTurma> Alunos { get; set; } = new List<AlunoTurma>();
     }
 }
