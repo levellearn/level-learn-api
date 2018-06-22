@@ -11,6 +11,9 @@ namespace LevelLearn.ViewModel.Enum
         ErroInterno = 2,
 
         [Description("Você já tem um item com esse nome cadastrado")]
-        NomeExistente = 3
+        NomeExistente = 3,
+
+        [Description("O curso já está cadastrado na instituição")]
+        CursoExistenteInstituicao = 4
     }
 }

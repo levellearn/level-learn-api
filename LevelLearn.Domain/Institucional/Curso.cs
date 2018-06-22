@@ -1,4 +1,7 @@
-﻿namespace LevelLearn.Domain.Institucional
+﻿using LevelLearn.Domain.Pessoas;
+using System.Collections.Generic;
+
+namespace LevelLearn.Domain.Institucional
 {
     public class Curso
     {
@@ -8,5 +11,7 @@
 
         public int InstituicaoId { get; set; }
         public Instituicao Instituicao { get; set; }
+
+        public List<PessoaCurso> Pessoas { get; set; } = new List<PessoaCurso>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace LevelLearn.ViewModel.Institucional.Curso
@@ -16,5 +17,11 @@ namespace LevelLearn.ViewModel.Institucional.Curso
         [Required(ErrorMessage = "O campo Instituição é obrigatório")]
         [Range(minimum: 1, maximum: int.MaxValue, ErrorMessage = "O campo Instituição é obrigatório")]
         public int InstituicaoId { get; set; }
+
+        [DisplayName("Professores")]
+        public List<int> Professores { get; set; } = new List<int>();
+
+        [DisplayName("Alunos")]
+        public List<int> Alunos { get; set; } = new List<int>();
     }
 }

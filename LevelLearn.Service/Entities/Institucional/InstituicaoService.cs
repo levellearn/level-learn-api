@@ -59,6 +59,11 @@ namespace LevelLearn.Service.Entities.Institucional
             return _instituicaoRepository.Insert(instituicao);
         }
 
+        public List<Instituicao> InstituicoesAdmin(int pessoaId)
+        {
+            return _instituicaoRepository.InstituicoesAdmin(pessoaId);
+        }
+
         public bool IsAdmin(int instituicaoId, int pessoaId)
         {
             return _instituicaoRepository.IsAdmin(instituicaoId, pessoaId);

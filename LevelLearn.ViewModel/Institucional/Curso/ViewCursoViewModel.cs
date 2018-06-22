@@ -1,4 +1,6 @@
 ﻿using LevelLearn.ViewModel.Institucional.Instituicao;
+using LevelLearn.ViewModel.Pessoas.PessoaCurso;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace LevelLearn.ViewModel.Institucional.Curso
@@ -14,8 +16,12 @@ namespace LevelLearn.ViewModel.Institucional.Curso
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
+        public bool IsProfessor { get; set; }
+
         [DisplayName("Instituição")]
         public int InstituicaoId { get; set; }
         public ViewInstituicaoViewModel Instituicao { get; set; }
+
+        public List<ViewPessoaCursoViewModel> Pessoas { get; set; } = new List<ViewPessoaCursoViewModel>();
     }
 }

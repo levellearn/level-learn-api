@@ -8,6 +8,7 @@ namespace LevelLearn.Service.Interfaces.Institucional
     public interface IInstituicaoService : ICrudService<Instituicao>
     {
         List<StatusResponseEnum> ValidaInstituicao(Instituicao instituicao);
+        List<Instituicao> InstituicoesAdmin(int pessoaId);
         bool IsAdmin(int instituicaoId, int pessoaId);
         bool Insert(Instituicao instituicao, List<int> admins, List<int> professores, List<int> alunos);
     }

@@ -17,6 +17,8 @@ namespace LevelLearn.Persistence.Configuration.Institucional
 
             builder.HasOne(p => p.Instituicao)
                 .WithMany();
+
+            builder.HasMany(p => p.Pessoas);
         }
     }
 }
