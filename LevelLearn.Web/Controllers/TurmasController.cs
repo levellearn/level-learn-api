@@ -63,7 +63,7 @@ namespace LevelLearn.Web.Controllers
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
             turma.ProfessorId = user.PessoaId;
 
-            if (_turmaService.Insert(turma, viewModel.Alunos))
+            if (_turmaService.Insert(turma, viewModel.AlunoIds))
                 return Json(new { MensagemSucesso = "Turma inclusa com sucesso" });
             else
                 return Json(new { MensagemErro = "Erro ao adicionar turma" });
