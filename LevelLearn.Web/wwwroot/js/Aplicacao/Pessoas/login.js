@@ -11,31 +11,30 @@
 
             habilitarBotao(botao, 'ENTRAR');
 
-            if (data.MensagemSucesso != undefined) {
-                storageLogin(data.Retorno.Imagem, data.Retorno.UserName);
-                mensagemLogin(data.MensagemSucesso, true)
-                window.location.href = "/Home";
+            if (data.MensagemSucesso !== undefined) {
+                storageLogin(data.Retorno.Imagem);
+                mensagemLogin(data.MensagemSucesso, true);
+                window.location.href = "/Game";
             } else {
-                mensagemLogin(data.MensagemErro)
+                mensagemLogin(data.MensagemErro);
             }
         }
     });
 }
 
 jQuery(document.body).on('keypress', "#Email", function (event) {
-    if (event.which == 13) {
+    if (event.which === 13) {
         $("#Senha").focus();
         event.preventDefault();
     }
 });
 
 jQuery(document.body).on('keypress', "#Senha", function (event) {
-    if (event.which == 13) {
+    if (event.which === 13) {
         Entrar();
         event.preventDefault();
     }
 });
-
 
 function mensagemLogin(texto, isSucesso) {
     if (isSucesso) {

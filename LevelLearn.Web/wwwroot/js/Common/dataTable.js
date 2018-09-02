@@ -12,7 +12,6 @@
                 "search": "Busque:",
                 "info": "",
                 "lengthMenu": "Exibindo _MENU_ registros",
-                "info": "",
                 "infoEmpty": "",
                 "infoFiltered": "",
             },

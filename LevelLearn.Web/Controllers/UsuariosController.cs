@@ -39,8 +39,7 @@ namespace LevelLearn.Web.Controllers
 
             var retorno = new
             {
-                user.Pessoa.Imagem,
-                user.Pessoa.UserName
+                user.Pessoa.Imagem
             };
 
             return Json(new { MensagemSucesso = "Login realizado com sucesso, estamos te direcionando para o jogo", Retorno = retorno });

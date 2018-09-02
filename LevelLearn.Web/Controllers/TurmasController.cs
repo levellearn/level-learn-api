@@ -19,12 +19,14 @@ namespace LevelLearn.Web.Controllers
 {
     public class TurmasController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ITurmaService _turmaService;
         private readonly ICursoService _cursoService;
         private readonly IPessoaService _pessoaService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TurmasController(ITurmaService turmaService, ICursoService cursoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
+        public TurmasController(IMapper mapper, ITurmaService turmaService, ICursoService cursoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
         {
+            _mapper = mapper;
             _turmaService = turmaService;
             _cursoService = cursoService;
             _pessoaService = pessoaService;
@@ -53,7 +55,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Turma turma = Mapper.Map<Turma>(viewModel);
+            Turma turma = _mapper.Map<Turma>(viewModel);
 
             List<StatusResponseEnum> status = _turmaService.ValidaTurma(turma);
 
@@ -83,7 +85,7 @@ namespace LevelLearn.Web.Controllers
 
             Turma turma = _turmaService.SelectById(id);
 
-            UpdateTurmaViewModel viewModel = Mapper.Map<UpdateTurmaViewModel>(turma);
+            UpdateTurmaViewModel viewModel = _mapper.Map<UpdateTurmaViewModel>(turma);
 
             return PartialView("_Update", viewModel);
         }
@@ -95,7 +97,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Turma turma = Mapper.Map<Turma>(viewModel);
+            Turma turma = _mapper.Map<Turma>(viewModel);
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
@@ -120,7 +122,7 @@ namespace LevelLearn.Web.Controllers
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
             List<Turma> turmas = _turmaService.SelectIncludes(p => p.ProfessorId == user.PessoaId, i => i.Curso).OrderBy(p => p.Nome).ToList();
-            List<ViewTurmaViewModel> viewModels = Mapper.Map<List<ViewTurmaViewModel>>(turmas);
+            List<ViewTurmaViewModel> viewModels = _mapper.Map<List<ViewTurmaViewModel>>(turmas);
 
             return PartialView("_List", viewModels);
         }

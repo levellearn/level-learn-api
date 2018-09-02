@@ -18,7 +18,7 @@ namespace LevelLearn.Web.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Roles()
+        public void Roles()
         {
             List<IdentityRole> roles = new List<IdentityRole>
             {
@@ -39,22 +39,17 @@ namespace LevelLearn.Web.Controllers
                 }
             };
 
-            int sucess = 0;
-            int errs = 0;
             foreach (var item in roles)
             {
                 IdentityResult result = Task.Run(() => _roleManager.CreateAsync(item)).Result;
-                if (result.Succeeded)
-                    sucess++;
-                else
-                    errs++;
             }
 
-            return Json(new { Sucesso = $"Sucesso {sucess} - Error {errs}" });
+
         }
 
         public async Task<IActionResult> Usuarios()
         {
+            Roles();
             List<ApplicationUser> users = new List<ApplicationUser>
             {
                 new ApplicationUser
@@ -80,20 +75,6 @@ namespace LevelLearn.Web.Controllers
                             Nome = "Gabriel Galvão Guimarães Faria",
                             UserName = "gggfaria",
                             Email = "gggfaria@outlook.com",
-                            Imagem = "/teste",
-                            Sexo = SexoEnum.Masculino,
-                            TipoPessoa =  TipoPessoaEnum.Aluno
-                        },
-                },
-                new ApplicationUser
-                {
-                        UserName = "felipe.ayres1993@hotmail.com",
-                        Email = "felipe.ayres1993@hotmail.com",
-                        Pessoa = new Pessoa()
-                        {
-                            Nome = "Felipe Ayres",
-                            UserName = "felipeayres",
-                            Email = "felipe.ayres1993@hotmail.com",
                             Imagem = "/teste",
                             Sexo = SexoEnum.Masculino,
                             TipoPessoa =  TipoPessoaEnum.Aluno
@@ -128,8 +109,16 @@ namespace LevelLearn.Web.Controllers
                 }
                 else
                 {
-                    result = await _userManager.CreateAsync(item, "root123");
-                    await _userManager.AddToRoleAsync(item, "PROF");
+                    if (item.UserName == "leo_barbetta@outlook.com")
+                    {
+                        result = await _userManager.CreateAsync(item, "root123");
+                        await _userManager.AddToRoleAsync(item, "ADMIN");
+                    }
+                    else
+                    {
+                        result = await _userManager.CreateAsync(item, "root123");
+                        await _userManager.AddToRoleAsync(item, "PROF");
+                    }
                 }
 
                 if (result.Succeeded)

@@ -20,12 +20,14 @@ namespace LevelLearn.Web.Controllers
 {
     public class CursosController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ICursoService _cursoService;
         private readonly IInstituicaoService _instituicaoService;
         private readonly IPessoaService _pessoaService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public CursosController(ICursoService cursoService, IInstituicaoService instituicaoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
+        public CursosController(IMapper mapper, ICursoService cursoService, IInstituicaoService instituicaoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
         {
+            _mapper = mapper;
             _cursoService = cursoService;
             _instituicaoService = instituicaoService;
             _pessoaService = pessoaService;
@@ -55,7 +57,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Curso curso = Mapper.Map<Curso>(viewModel);
+            Curso curso = _mapper.Map<Curso>(viewModel);
 
             List<StatusResponseEnum> status = _cursoService.ValidaCurso(curso);
 
@@ -95,7 +97,7 @@ namespace LevelLearn.Web.Controllers
                 return PartialView("_Create");
             }
 
-            UpdateCursoViewModel viewModel = Mapper.Map<UpdateCursoViewModel>(curso);
+            UpdateCursoViewModel viewModel = _mapper.Map<UpdateCursoViewModel>(curso);
 
             return PartialView("_Update", viewModel);
         }
@@ -107,7 +109,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Curso curso = Mapper.Map<Curso>(viewModel);
+            Curso curso = _mapper.Map<Curso>(viewModel);
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
@@ -132,7 +134,7 @@ namespace LevelLearn.Web.Controllers
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
             List<Curso> cursos = _cursoService.CursosInstituicaoProfessor(user.PessoaId);
-            List<ViewCursoViewModel> viewModels = Mapper.Map<List<ViewCursoViewModel>>(cursos);
+            List<ViewCursoViewModel> viewModels = _mapper.Map<List<ViewCursoViewModel>>(cursos);
 
             viewModels.ForEach(p => p.IsProfessor = p.Pessoas.Where(x => x.Perfil == TipoPessoaEnumViewModel.Professor && x.PessoaId == user.PessoaId).Count() > 0);
             return PartialView("_List", viewModels);

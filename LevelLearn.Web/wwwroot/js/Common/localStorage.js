@@ -1,12 +1,6 @@
-﻿function storageLogin(imagem, userName) {
+﻿function storageLogin(imagem) {
     localStorage.removeItem("Imagem");
-    localStorage.removeItem("UserName");
     localStorage.setItem("Imagem", imagem);
-    localStorage.setItem("UserName", userName);
-}
-
-function getUserNameStorage() {
-    return localStorage.getItem("UserName");
 }
 
 function getImagemStorage() {

@@ -19,11 +19,13 @@ namespace LevelLearn.Web.Controllers
 {
     public class InstituicoesController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IInstituicaoService _instituicaoService;
         private readonly IPessoaService _pessoaService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public InstituicoesController(IInstituicaoService instituicaoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
+        public InstituicoesController(IMapper mapper, IInstituicaoService instituicaoService, IPessoaService pessoaService, UserManager<ApplicationUser> userManager)
         {
+            _mapper = mapper;
             _instituicaoService = instituicaoService;
             _pessoaService = pessoaService;
             _userManager = userManager;
@@ -51,7 +53,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
+            Instituicao instituicao = _mapper.Map<Instituicao>(viewModel);
 
             List<StatusResponseEnum> status = _instituicaoService.ValidaInstituicao(instituicao);
 
@@ -81,7 +83,7 @@ namespace LevelLearn.Web.Controllers
             if (instituicao == null)
                 return PartialView("_Create");
 
-            UpdateInstituicaoViewModel viewModel = Mapper.Map<UpdateInstituicaoViewModel>(instituicao);
+            UpdateInstituicaoViewModel viewModel = _mapper.Map<UpdateInstituicaoViewModel>(instituicao);
 
             return PartialView("_Update", viewModel);
         }
@@ -93,7 +95,7 @@ namespace LevelLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return Json(new { MensagemErro = ModelState.DisplayErros() });
 
-            Instituicao instituicao = Mapper.Map<Instituicao>(viewModel);
+            Instituicao instituicao = _mapper.Map<Instituicao>(viewModel);
 
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
@@ -116,7 +118,7 @@ namespace LevelLearn.Web.Controllers
         public IActionResult Lista()
         {
             List<Instituicao> instituicaos = _instituicaoService.SelectIncludes(null, i => i.Pessoas).OrderBy(p => p.Nome).ToList();
-            List<ViewInstituicaoViewModel> viewModels = Mapper.Map<List<ViewInstituicaoViewModel>>(instituicaos);
+            List<ViewInstituicaoViewModel> viewModels = _mapper.Map<List<ViewInstituicaoViewModel>>(instituicaos);
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
             viewModels.ForEach(p => p.IsAdmin = p.Pessoas.Where(x => x.Perfil == PerfilInstituicaoEnumViewModel.Admin && x.PessoaId == user.PessoaId).Count() > 0);
