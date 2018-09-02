@@ -16,7 +16,7 @@ namespace LevelLearn.Persistence.Configuration.Pessoas
                 .IsRequired();
 
             builder.HasOne(p => p.Pessoa)
-                .WithMany();
+                .WithMany(p => p.Instituicoes);
 
             builder.HasOne(p => p.Instituicao)
                 .WithMany(p => p.Pessoas);

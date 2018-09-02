@@ -1,4 +1,5 @@
-﻿using LevelLearn.ViewModel.Institucional.Instituicao;
+﻿using LevelLearn.ViewModel.Enum;
+using LevelLearn.ViewModel.Institucional.Instituicao;
 using LevelLearn.ViewModel.Pessoas.PessoaCurso;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,8 @@ namespace LevelLearn.ViewModel.Institucional.Curso
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
-        public bool IsProfessor { get; set; }
+        [DisplayName("Tipo")]
+        public TipoPessoaEnumViewModel TipoPessoa { get; set; }
 
         [DisplayName("Instituição")]
         public int InstituicaoId { get; set; }

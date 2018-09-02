@@ -12,7 +12,7 @@
             habilitarBotao(botao, 'ENTRAR');
 
             if (data.MensagemSucesso !== undefined) {
-                storageLogin(data.Retorno.Imagem);
+                storageLogin(data.Retorno.Imagem, data.Retorno.UserName);
                 mensagemLogin(data.MensagemSucesso, true);
                 window.location.href = "/Game";
             } else {

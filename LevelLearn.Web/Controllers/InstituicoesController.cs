@@ -121,7 +121,9 @@ namespace LevelLearn.Web.Controllers
             List<ViewInstituicaoViewModel> viewModels = _mapper.Map<List<ViewInstituicaoViewModel>>(instituicaos);
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            viewModels.ForEach(p => p.IsAdmin = p.Pessoas.Where(x => x.Perfil == PerfilInstituicaoEnumViewModel.Admin && x.PessoaId == user.PessoaId).Count() > 0);
+            viewModels.ForEach(
+                p => p.Perfil = p.Pessoas.Where(x => x.PessoaId == user.PessoaId).Select(x => x.Perfil).FirstOrDefault()
+            );
             return PartialView("_List", viewModels);
         }
     }

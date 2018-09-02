@@ -29,6 +29,8 @@ namespace LevelLearn.Persistence.Configuration.Pessoas
 
             builder.Property(p => p.Imagem)
                 .IsRequired();
+
+            builder.HasMany(p => p.Instituicoes);
         }
     }
 }

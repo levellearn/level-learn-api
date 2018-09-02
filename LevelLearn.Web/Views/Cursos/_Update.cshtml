@@ -13,7 +13,7 @@
                 <input asp-for="Nome" class="form-control" />
             </div>
             <div class="col-md-4">
-                <label asp-for="InstituicaoId"></label>
+                <label asp-for="InstituicaoId"></label><span class="required-field"></span>
                 <select asp-for="InstituicaoId" asp-items="ViewBag.DropDownListInstituicoes" class="form-control my-select">
                     <option value="0">Selecione</option>
                 </select>

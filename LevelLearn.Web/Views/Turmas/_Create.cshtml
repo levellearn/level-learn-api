@@ -12,8 +12,8 @@
                 <input asp-for="Nome" class="form-control" />
             </div>
             <div class="col-md-6">
-                <label asp-for="CursoId"></label>
-                <select asp-for="CursoId" asp-items="ViewBag.DropDownListCursos" class="form-control my-select">
+                <label asp-for="CursoId"></label><span class="required-field"></span>
+                <select asp-for="CursoId" asp-items="ViewBag.DropDownListCursos" onchange="carregaAlunos(this.value)" class="form-control my-select">
                     <option value="0">Selecione</option>
                 </select>
             </div>
@@ -27,7 +27,7 @@
         <div class="row m-t-10">
             <div class="col-md-12">
                 <label asp-for="AlunoIds"></label>
-                <select asp-for="AlunoIds" asp-items="ViewBag.DropDownListAlunos" class="form-control my-select" multiple></select>
+                <select asp-for="AlunoIds" class="form-control my-select" multiple></select>
             </div>
         </div>
     </form>

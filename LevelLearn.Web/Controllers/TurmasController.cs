@@ -44,7 +44,6 @@ namespace LevelLearn.Web.Controllers
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
             ViewBag.DropDownListCursos = _cursoService.SelectListCursosProfessor(user.PessoaId);
-            ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
             return PartialView("_Create");
         }
 

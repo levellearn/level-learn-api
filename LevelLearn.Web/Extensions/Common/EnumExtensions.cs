@@ -10,7 +10,7 @@ namespace LevelLearn.Web.Extensions.Common
     {
         public static string DisplayDescription(this Enum value)
         {
-            if (value == null)
+            if (value == null || Convert.ToInt32(value) == 0)
                 return null;
 
             FieldInfo field = value.GetType().GetField(value.ToString());

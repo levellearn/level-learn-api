@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Enum;
 using System;
+using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Pessoas
 {
@@ -15,5 +16,7 @@ namespace LevelLearn.Domain.Pessoas
         public string Imagem { get; set; }
         public DateTime? DataNascimento { get; set; }
         public string RA { get; set; }
+
+        public List<PessoaInstituicao> Instituicoes { get; set; } = new List<PessoaInstituicao>();
     }
 }

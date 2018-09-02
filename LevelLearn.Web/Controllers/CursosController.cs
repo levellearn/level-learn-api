@@ -44,9 +44,7 @@ namespace LevelLearn.Web.Controllers
         {
             ApplicationUser user = Task.Run(() => _userManager.GetUserAsync(User)).Result;
 
-            ViewBag.DropDownListProfessores = _pessoaService.SelectListProfessoresWithoutUser(user.PessoaId);
-            ViewBag.DropDownListAlunos = _pessoaService.SelectListAlunosWithoutUser(user.PessoaId);
-            ViewBag.DropDownListInstituicoes = _instituicaoService.SelectListInstiuicoesProfessor(user.PessoaId);
+            ViewBag.DropDownListInstituicoes = _instituicaoService.SelectListInstiuicoesAdmin(user.PessoaId);
             return PartialView("_Create");
         }
 
@@ -136,7 +134,9 @@ namespace LevelLearn.Web.Controllers
             List<Curso> cursos = _cursoService.CursosInstituicaoProfessor(user.PessoaId);
             List<ViewCursoViewModel> viewModels = _mapper.Map<List<ViewCursoViewModel>>(cursos);
 
-            viewModels.ForEach(p => p.IsProfessor = p.Pessoas.Where(x => x.Perfil == TipoPessoaEnumViewModel.Professor && x.PessoaId == user.PessoaId).Count() > 0);
+            viewModels.ForEach(
+                p => p.TipoPessoa = p.Pessoas.Where(x => x.PessoaId == user.PessoaId).Select(x => x.Perfil).FirstOrDefault()
+            );
             return PartialView("_List", viewModels);
         }
     }

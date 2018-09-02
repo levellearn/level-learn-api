@@ -1,6 +1,8 @@
-﻿using LevelLearn.ViewModel.Pessoas.PessoaInstituicao;
+﻿using LevelLearn.ViewModel.Enum;
+using LevelLearn.ViewModel.Pessoas.PessoaInstituicao;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
@@ -15,7 +17,7 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public PerfilInstituicaoEnumViewModel Perfil { get; set; }
 
         public List<ViewPessoaInstituicaoViewModel> Pessoas { get; set; } = new List<ViewPessoaInstituicaoViewModel>();
     }
