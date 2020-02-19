@@ -12,6 +12,6 @@ namespace LevelLearn.Domain.ValueObjects
 
         public ValidationResult ValidationResult { get; protected set; }
 
-        public abstract bool Valido();
+        public abstract bool EstaValido();
     }
 }

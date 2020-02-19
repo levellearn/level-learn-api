@@ -22,7 +22,7 @@ namespace LevelLearn.Domain.ValueObjects
             return true;
         }        
 
-        public override bool Valido()
+        public override bool EstaValido()
         {
             RuleFor(p => p.Numero)
                 .Must(p => Validate()).WithMessage("RA não é válido");

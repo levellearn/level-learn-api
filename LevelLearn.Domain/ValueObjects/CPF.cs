@@ -68,7 +68,7 @@ namespace LevelLearn.Domain.ValueObjects
             return false;
         }
 
-        public override bool Valido()
+        public override bool EstaValido()
         {
             RuleFor(c => c.Number)
                 .Must(a => Validate()).WithMessage("CPF não é válido");

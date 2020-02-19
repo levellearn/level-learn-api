@@ -14,10 +14,17 @@ namespace LevelLearn.Domain.Entities
 
         // Props
         public Guid Id { get; private set; }
+        public bool Ativo { get; protected set; }
+        public string NomePesquisa { get; protected set; }
         public ValidationResult ValidationResult { get; protected set; }
 
         // Methods
-        public abstract bool Valido();
+
+        /// <summary>
+        /// Método que deve ser implementado para saber se entidade está válida
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool EstaValido();
 
         /// <summary>
         /// Retorna os dados inválidos da entidade
@@ -26,6 +33,22 @@ namespace LevelLearn.Domain.Entities
         public ICollection<ValidationFailure> DadosInvalidos()
         {
             return ValidationResult.Errors;
+        }
+
+        /// <summary>
+        /// Muda o estado para ativado da entidade
+        /// </summary>
+        public virtual void Ativar()
+        {
+            Ativo = true;
+        }
+
+        /// <summary>
+        /// Muda o estado para desativado da entidade
+        /// </summary>
+        public virtual void Desativar()
+        {
+            Ativo = false;
         }
 
         public override bool Equals(object obj)

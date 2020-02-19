@@ -23,9 +23,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         // Methods
 
-        public override bool Valido()
+        public override bool EstaValido()
         {
-            base.Valido();
+            base.EstaValido();
 
             var alunoValidator = new AlunoValidator();
             var alunoValidationResult = alunoValidator.Validate(this);

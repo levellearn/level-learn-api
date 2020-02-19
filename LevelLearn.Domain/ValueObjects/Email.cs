@@ -14,7 +14,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public string Address { get; private set; }
 
-        public override bool Valido()
+        public override bool EstaValido()
         {
             RuleFor(e => e.Address)
                 .NotNull().WithMessage("E-mail precisa ser preenchido")

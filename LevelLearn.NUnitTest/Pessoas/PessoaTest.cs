@@ -36,7 +36,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Cadastrar_AlunoValido_ReturnTrue()
         {
             var aluno = CriarAluno();
-            bool valido = aluno.Valido();
+            bool valido = aluno.EstaValido();
             Assert.IsTrue(valido, "Aluno deveria ser válido");
         }
 
@@ -49,7 +49,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _dataNascimento = string.IsNullOrEmpty(dataNascimento) ? DateTime.Now.Date : DateTime.Parse(dataNascimento);
 
             var aluno = CriarAluno();
-            bool valido = aluno.Valido();
+            bool valido = aluno.EstaValido();
             Assert.IsFalse(valido, "Aluno deveria ser inválido");
         }
 
@@ -63,7 +63,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nome = nome;
             var aluno = CriarAluno();
-            aluno.Valido();
+            aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.ErrorMessage == "O Nome precisa de um sobrenome");
 
@@ -79,7 +79,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nome = nome;
             var aluno = CriarAluno();
-            aluno.Valido();
+            aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.ErrorMessage == "O Nome precisa de um sobrenome");
 
@@ -95,7 +95,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _userName = userName;
             var aluno = CriarAluno();
-            aluno.Valido();
+            aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             bool valido = !erros.Exists(e => e.PropertyName == "UserName");
 
@@ -110,7 +110,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _userName = userName;
             var aluno = CriarAluno();
-            aluno.Valido();
+            aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             bool valido = !erros.Exists(e => e.PropertyName == "UserName");
 

@@ -14,8 +14,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
             string imagemUrl, DateTime? dataNascimento)
         {
-            Nome = nome?.RemoveExtraSpaces()?.ToUpper();
-            UserName = userName?.RemoveExtraSpaces(); // TODO: username único?
+            Nome = nome.RemoveExtraSpaces().ToUpper();
+            UserName = userName.RemoveExtraSpaces(); // TODO: username único?
             Email = email;
             Cpf = cpf;
             Celular = celular;
@@ -37,24 +37,13 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public TiposPessoa TipoPessoa { get; protected set; }
         public string ImagemUrl { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
-        public DateTime DataCadastro { get; protected set; }
-        public bool Ativo { get; protected set; }
-        public string NomePesquisa { get; protected set; }
+        public DateTime DataCadastro { get; protected set; }        
 
-        //public List<PessoaInstituicao> Instituicoes { get; set; } = new List<PessoaInstituicao>();
+        //public ICollection<PessoaInstituicao> Instituicoes { get; set; } = new List<PessoaInstituicao>();
 
         // Methods
-        public void Ativar()
-        {
-            Ativo = true;
-        }
-
-        public void Desativar()
-        {
-            Ativo = false;
-        }
-
-        public override bool Valido()
+        
+        public override bool EstaValido()
         {
             var validator = new PessoaValidator();
 
@@ -70,19 +59,19 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         protected void ValidarCPF()
         {
-            if (Cpf.Valido()) return;
+            if (Cpf.EstaValido()) return;
             this.ValidationResult.AddErrors(Cpf.ValidationResult);
         }
 
         protected void ValidarEmail()
         {
-            if (Email.Valido()) return;
+            if (Email.EstaValido()) return;
             this.ValidationResult.AddErrors(Email.ValidationResult);
         }
 
         protected void ValidarCelular()
         {
-            if (Celular.Valido()) return;
+            if (Celular.EstaValido()) return;
             this.ValidationResult.AddErrors(Celular.ValidationResult);
         }
 
