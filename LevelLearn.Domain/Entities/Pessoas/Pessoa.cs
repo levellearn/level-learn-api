@@ -3,6 +3,7 @@ using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using System;
+using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities.Pessoas
 {
@@ -23,7 +24,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
             ImagemUrl = imagemUrl; // TODO: Obrigatório?
             DataNascimento = dataNascimento;
             DataCadastro = DateTime.Now;
-            Ativo = true;
+            Instituicoes = new List<PessoaInstituicao>();
+
             NomePesquisa = Nome.GenerateSlug();
         }
 
@@ -39,7 +41,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public DateTime? DataNascimento { get; protected set; }
         public DateTime DataCadastro { get; protected set; }        
 
-        //public ICollection<PessoaInstituicao> Instituicoes { get; set; } = new List<PessoaInstituicao>();
+        public ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
 
         // Methods
         
@@ -73,6 +75,22 @@ namespace LevelLearn.Domain.Entities.Pessoas
         {
             if (Celular.EstaValido()) return;
             this.ValidationResult.AddErrors(Celular.ValidationResult);
+        }
+
+        public void AtribuirPessoa(PessoaInstituicao instituicao)
+        {
+            //if (!instituicao.EstaValido()) return;
+
+            Instituicoes.Add(instituicao);
+        }
+
+        public void AtribuirPessoas(ICollection<PessoaInstituicao> instituicoes)
+        {
+            foreach (PessoaInstituicao instituicao in instituicoes)
+            {
+                //if (instituicao.EstaValido())
+                Instituicoes.Add(instituicao);
+            }
         }
 
         public override string ToString()

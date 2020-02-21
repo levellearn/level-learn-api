@@ -7,7 +7,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 {
     public class Instituicao : EntityBase
     {
-        // Ctors
+        #region Ctors
+
         protected Instituicao() { }
 
         public Instituicao(string nome, string descricao)
@@ -16,17 +17,22 @@ namespace LevelLearn.Domain.Entities.Institucional
             Descricao = descricao?.Trim();
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
-            Ativo = true;
+
             NomePesquisa = Nome.GenerateSlug();
         }
 
-        // Props
-        public string Nome { get; }
-        public string Descricao { get; }
-        public ICollection<Curso> Cursos { get; }
-        public ICollection<PessoaInstituicao> Pessoas { get; }
+        #endregion
 
-        // Methods
+        #region Props
+
+        public string Nome { get; private set; }
+        public string Descricao { get; private set; }
+        public ICollection<Curso> Cursos { get; private set; }
+        public ICollection<PessoaInstituicao> Pessoas { get; private set; }
+
+        #endregion
+
+        #region Methods
 
         public void AtribuirCurso(Curso curso)
         {
@@ -64,7 +70,9 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             throw new NotImplementedException();
             return this.ValidationResult.IsValid;
-        }
+        } 
+
+        #endregion
 
     }
 

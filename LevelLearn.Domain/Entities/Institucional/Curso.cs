@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Extensions;
+﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,42 +10,26 @@ namespace LevelLearn.Domain.Entities.Institucional
     {
         // Ctors
         protected Curso() { }
-
-        public Curso(string nome, string descricao)
+        
+        public Curso(string nome, string descricao, Guid instituicaoId)
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
-            //Pessoas = new List<PessoaCurso>();
-            Ativo = true;
-            NomePesquisa = Nome.GenerateSlug();
-        }
+            InstituicaoId = instituicaoId;
+            Pessoas = new List<PessoaCurso>();
 
-        public Curso(string nome, string descricao, Instituicao instituicao)
-        {
-            Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim();
-            //Pessoas = new List<PessoaCurso>();
-            InstituicaoId = instituicao.Id;
-            Instituicao = instituicao;
-            Ativo = true;
             NomePesquisa = Nome.GenerateSlug();
         }
 
         // Props
-        public string Nome { get; }
-        public string Descricao { get; }
-        public Guid InstituicaoId { get; }
+        public string Nome { get; private set; }
+        public string Descricao { get; private set; }
+        public Guid InstituicaoId { get; private set; }
+
         public virtual Instituicao Instituicao { get; private set; }
+        public ICollection<PessoaCurso> Pessoas { get; private set; }
 
-        //public ICollection<PessoaCurso> Pessoas { get; set; } = new List<PessoaCurso>()
-
-        // Methods
-        public void AtribuirInstituicao(Instituicao instituicao)
-        {
-            if (!instituicao.EstaValido()) return;
-
-            this.Instituicao = instituicao;
-        }      
+        // Methods        
         
         public override bool EstaValido()
         {

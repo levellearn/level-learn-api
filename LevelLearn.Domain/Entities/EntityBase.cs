@@ -10,6 +10,7 @@ namespace LevelLearn.Domain.Entities
         protected EntityBase()
         {
             Id = Guid.NewGuid();
+            Ativo = true;
         }
 
         // Props
@@ -36,7 +37,7 @@ namespace LevelLearn.Domain.Entities
         }
 
         /// <summary>
-        /// Muda o estado para ativado da entidade
+        /// Muda o estado da entidade para ativado
         /// </summary>
         public virtual void Ativar()
         {
@@ -44,7 +45,7 @@ namespace LevelLearn.Domain.Entities
         }
 
         /// <summary>
-        /// Muda o estado para desativado da entidade
+        /// Muda o estado da entidade para desativado
         /// </summary>
         public virtual void Desativar()
         {
@@ -56,17 +57,17 @@ namespace LevelLearn.Domain.Entities
             var compareTo = obj as EntityBase;
 
             if (ReferenceEquals(this, compareTo)) return true;
-            if (ReferenceEquals(null, compareTo)) return false;
+            if (compareTo is null) return false;
 
             return this.Id.Equals(compareTo.Id);
         }
 
         public static bool operator ==(EntityBase a, EntityBase b)
         {
-            if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
+            if (a is null && b is null)
                 return true;
 
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (a is null || b is null)
                 return false;
 
             return a.Equals(b);
