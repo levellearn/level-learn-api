@@ -39,7 +39,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public string ImagemUrl { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
 
-        public ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
+        public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
 
         // Methods
         

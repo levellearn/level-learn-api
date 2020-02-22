@@ -124,5 +124,21 @@ namespace LevelLearn.NUnitTest.Pessoas
                 _genero, _imagemUrl, _dataNascimento);
         }
 
+        public static Aluno CriarAlunoPadrao()
+        {
+            var nome = "Felipe Ayres";
+            var userName = "felipe_ayres";
+            var email = "felipe.ayres@mail.com";
+            var cpf = "881.192.990-35";
+            var genero = Generos.Masculino;
+            var celular = "(12)98845-7832";
+            var ra = "f1310513";
+            var imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
+            var dataNascimento = DateTime.Parse("26/10/1993");
+
+            return new Aluno(nome, userName, new Email(email), new CPF(cpf), new Celular(celular), ra,
+                genero, imagemUrl, dataNascimento);
+        }
+
     }
 }

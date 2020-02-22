@@ -28,8 +28,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public ICollection<Curso> Cursos { get; private set; }
-        public ICollection<PessoaInstituicao> Pessoas { get; private set; }
+        public virtual ICollection<Curso> Cursos { get; private set; }
+        public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }
 
         #endregion
 

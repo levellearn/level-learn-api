@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.ValueObjects;
+using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 using System;
 
@@ -18,7 +19,9 @@ namespace LevelLearn.NUnitTest.Institucional
         public void Setup()
         {
             _nome = "FATEC Guaratinguetá";
-            _descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            _descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de " +
+                "Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas " +
+                "Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
         }
 
         [Test]
@@ -32,6 +35,7 @@ namespace LevelLearn.NUnitTest.Institucional
 
         [Test]
         [TestCase("UniFatea", "")]
+        [TestCase("Un", "")]
         [TestCase("", "Descrição de teste")]
         public void Cadastrar_InstituicaoValida_ReturnFalse(string nome, string descricao)
         {
@@ -47,24 +51,25 @@ namespace LevelLearn.NUnitTest.Institucional
         {
             var instituicao = new Instituicao(_nome, _descricao);
 
-            var nome = "Felipe Ayres";
-            var userName = "felipe_ayres";
-            var email = "felipe.ayres@mail.com";
-            var cpf = "881.192.990-35";
-            var genero = Generos.Masculino;
-            var celular = "(12)98845-7832";
-            var ra = "f1310513";
-            var imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
-            var dataNascimento = DateTime.Parse("26/10/1993");
+            var aluno = AlunoTest.CriarAlunoPadrao();
 
-            var aluno = new Aluno(nome, userName, new Email(email), new CPF(cpf), new Celular(celular), ra, genero, imagemUrl, dataNascimento);
-
-            var pessoaInstituicao = 
-                new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id);
+            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id);
 
             instituicao.AtribuirPessoa(pessoaInstituicao);
 
             return instituicao;
         }
+
+        public static Instituicao CriarInstituicaoPadrao()
+        {
+            var nome = "FATEC Guaratinguetá";
+            var descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de " +
+                "Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas " +
+                "Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+
+            return new Instituicao(nome, descricao);
+        }
+
+
     }
 }
