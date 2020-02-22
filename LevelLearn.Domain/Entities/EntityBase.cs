@@ -6,20 +6,24 @@ namespace LevelLearn.Domain.Entities
 {
     public abstract class EntityBase
     {
-        // Ctor
         protected EntityBase()
         {
             Id = Guid.NewGuid();
             Ativo = true;
+            DataCadastro = DateTime.Now;
         }
 
-        // Props
+        #region Props
+
         public Guid Id { get; private set; }
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
+        public DateTime DataCadastro { get; private set; }
         public ValidationResult ValidationResult { get; protected set; }
 
-        // Methods
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Método que deve ser implementado para saber se entidade está válida
@@ -86,7 +90,9 @@ namespace LevelLearn.Domain.Entities
         public override string ToString()
         {
             return $"{GetType().Name} [Id = {Id}]";
-        }
+        } 
+
+        #endregion
 
     }
 

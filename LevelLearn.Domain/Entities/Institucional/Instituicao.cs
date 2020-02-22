@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
 
@@ -52,8 +53,6 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public void AtribuirPessoa(PessoaInstituicao pessoa)
         {
-            //if (!pessoa.EstaValido()) return;
-
             Pessoas.Add(pessoa);
         }
 
@@ -61,14 +60,15 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             foreach (PessoaInstituicao pessoa in pessoas)
             {
-                //if (pessoa.EstaValido())
                 Pessoas.Add(pessoa);
             }
         }
 
         public override bool EstaValido()
         {
-            throw new NotImplementedException();
+            var validator = new InstituicaoValidator();
+            this.ValidationResult = validator.Validate(this);
+
             return this.ValidationResult.IsValid;
         } 
 

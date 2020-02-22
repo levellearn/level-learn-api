@@ -18,8 +18,8 @@ namespace LevelLearn.Domain.ValueObjects
         {
             RuleFor(e => e.Address)
                 .NotNull().WithMessage("E-mail precisa ser preenchido")
-                .MaximumLength(PropertiesConfig.EMAIL_TAMANHO_MAXIMO)
-                .WithMessage($"E-mail precisa ser ter no máximo {PropertiesConfig.EMAIL_TAMANHO_MAXIMO} caracteres")
+                .MaximumLength(PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX)
+                .WithMessage($"E-mail precisa ser ter no máximo {PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX} caracteres")
                 .EmailAddress().WithMessage("E-mail não é válido");
 
             ValidationResult = Validate(this);

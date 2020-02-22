@@ -23,7 +23,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Genero = genero;
             ImagemUrl = imagemUrl; // TODO: Obrigatório?
             DataNascimento = dataNascimento;
-            DataCadastro = DateTime.Now;
             Instituicoes = new List<PessoaInstituicao>();
 
             NomePesquisa = Nome.GenerateSlug();
@@ -39,7 +38,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public TiposPessoa TipoPessoa { get; protected set; }
         public string ImagemUrl { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
-        public DateTime DataCadastro { get; protected set; }        
 
         public ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
 

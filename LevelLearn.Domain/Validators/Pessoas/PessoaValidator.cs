@@ -22,8 +22,8 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Nome)
                 .NotEmpty().WithMessage("O Nome precisa estar preenchido")
-                .Length(PropertiesConfig.NOME_TAMANHO_MINIMO, PropertiesConfig.NOME_TAMANHO_MAXIMO)
-                .WithMessage($"O Nome precisa ter entre {PropertiesConfig.NOME_TAMANHO_MINIMO} e {PropertiesConfig.NOME_TAMANHO_MAXIMO} caracteres")
+                .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
+                .WithMessage($"O Nome precisa ter entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
                 .Must(n => IsFullName(n)).WithMessage("O Nome precisa de um sobrenome");
         }
         private bool IsFullName(string name)
@@ -38,14 +38,14 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
         private void ValidarUserName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.USERNAME_TAMANHO_MAXIMO + "}$";
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
 
             RuleFor(p => p.UserName)
                 .NotEmpty().WithMessage("O Username precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
                 .WithMessage("O Username só deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.USERNAME_TAMANHO_MAXIMO)
-                .WithMessage($"O Username precisa ter no máximo {PropertiesConfig.USERNAME_TAMANHO_MAXIMO} caracteres");
+                .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
+                .WithMessage($"O Username precisa ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()

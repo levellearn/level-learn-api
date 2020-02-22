@@ -9,9 +9,9 @@ using System.Linq;
 namespace LevelLearn.NUnitTest.Pessoas
 {
     [TestFixture]
-    class PessoaTest
+    class AlunoTest
     {
-        #region Props
+        #region Fields
         private string _nome, _userName, _email, _cpf, _rg, _celular, _ra, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
