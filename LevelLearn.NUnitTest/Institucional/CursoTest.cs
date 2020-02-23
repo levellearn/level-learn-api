@@ -61,9 +61,9 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var aluno = AlunoTest.CriarAlunoPadrao();
 
-            var pessoaInstituicao = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
+            var pessoaCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
 
-            curso.AtribuirPessoa(pessoaInstituicao);
+            curso.AtribuirPessoa(pessoaCurso);
 
             return curso;
         }

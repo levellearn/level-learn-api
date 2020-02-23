@@ -5,20 +5,53 @@ using System.Text;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
-    public class Turma
+    public class Turma : EntityBase
     {
-        //public int TurmaId { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public decimal Meta { get; set; } = 0;
+        #region Ctors
+        protected Turma() { }
 
-        public int CursoId { get; set; }
-        public Curso Curso { get; set; }
+        public Turma(string nome, string descricao, Guid cursoId, Guid professorId)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Meta = decimal.Zero;
+            CursoId = cursoId;
+            ProfessorId = professorId;
+            Alunos = new List<AlunoTurma>();
+        }
 
-        public int ProfessorId { get; set; }
-        public Professor Professor { get; set; }
+        #endregion Ctors
 
-        //public ICollection<AlunoTurma> Alunos { get; set; } = new List<AlunoTurma>();
+        #region Props
+
+        public string Nome { get; private set; }
+        public string Descricao { get; private set; }
+        public decimal Meta { get; private set; }
+
+        public Guid CursoId { get; private set; }
+        public virtual Curso Curso { get; private set; }
+
+        public Guid ProfessorId { get; private set; }
+        public virtual Professor Professor { get; private set; }
+
+        public virtual ICollection<AlunoTurma> Alunos { get; private set; }
+
+        #endregion Props
+
+        #region Methods
+
+        public override bool EstaValido()
+        {
+            throw new NotImplementedException();
+
+            // var validator = new TurmaValidator();
+            // this.ValidationResult = validator.Validate(this);
+
+            return this.ValidationResult.IsValid;
+        }
+
+        #endregion
+
 
     }
 }

@@ -9,7 +9,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
 {
     public abstract class Pessoa : EntityBase
     {
-        // Ctors
+        #region Ctors
         protected Pessoa() { }
 
         public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
@@ -28,7 +28,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
             NomePesquisa = Nome.GenerateSlug();
         }
 
-        // Props
+        #endregion Ctors
+
+        #region Props
         public string Nome { get; protected set; }
         public string UserName { get; protected set; }
         public Email Email { get; protected set; }
@@ -41,8 +43,11 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
 
-        // Methods
-        
+        #endregion Props
+
+
+        #region Methods
+
         public override bool EstaValido()
         {
             var validator = new PessoaValidator();
@@ -108,6 +113,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
                 $" Data Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}" +
                 $" Ativo: { (Ativo ? "Sim" : "Não") }";
         }
+
+        #endregion Methods
 
 
     }
