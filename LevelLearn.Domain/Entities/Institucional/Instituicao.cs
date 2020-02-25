@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
-using System;
 using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities.Institucional
@@ -22,7 +21,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             NomePesquisa = Nome.GenerateSlug();
         }
 
-        #endregion
+        #endregion Ctors
 
         #region Props
 
@@ -31,7 +30,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         public virtual ICollection<Curso> Cursos { get; private set; }
         public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }
 
-        #endregion
+        #endregion Props
 
         #region Methods
 
@@ -70,9 +69,9 @@ namespace LevelLearn.Domain.Entities.Institucional
             this.ValidationResult = validator.Validate(this);
 
             return this.ValidationResult.IsValid;
-        } 
+        }
 
-        #endregion
+        #endregion Methods
 
     }
 

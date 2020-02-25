@@ -27,6 +27,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public decimal Meta { get; private set; }
+        //public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }
         public virtual Curso Curso { get; private set; }
@@ -40,6 +41,19 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         #region Methods
 
+        public void AtribuirAluno(AlunoTurma aluno)
+        {
+            Alunos.Add(aluno);
+        }
+
+        public void AtribuirAlunos(ICollection<AlunoTurma> alunos)
+        {
+            foreach (AlunoTurma aluno in alunos)
+            {
+                Alunos.Add(aluno);
+            }
+        }
+
         public override bool EstaValido()
         {
             throw new NotImplementedException();
@@ -50,7 +64,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             return this.ValidationResult.IsValid;
         }
 
-        #endregion
+        #endregion Methods
 
 
     }

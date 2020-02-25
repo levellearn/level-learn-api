@@ -12,7 +12,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class AlunoTest
     {
         #region Fields
-        private string _nome, _userName, _email, _cpf, _rg, _celular, _ra, _imagemUrl;
+        private string _nome, _userName, _email, _cpf, _ra, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
         #endregion
@@ -24,7 +24,6 @@ namespace LevelLearn.NUnitTest.Pessoas
             _userName = "felipe_ayres";
             _email = "felipe.ayres@mail.com";
             _cpf = "881.192.990-35";
-            _rg = "48.328.061-6";
             _genero = Generos.Masculino;
             _celular = "(12)98845-7832";
             _ra = "f1310513";

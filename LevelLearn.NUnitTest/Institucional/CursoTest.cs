@@ -59,7 +59,10 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var curso = new Curso(_nome, _sigla, _descricao, instituicao.Id);
 
+            instituicao.AtribuirCurso(curso);
+
             var aluno = AlunoTest.CriarAlunoPadrao();
+            var professor = ProfessorTest.CriarProfessorPadrao();
 
             var pessoaCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
 
