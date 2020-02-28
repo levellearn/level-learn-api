@@ -1,7 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
@@ -56,10 +56,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public override bool EstaValido()
         {
-            throw new NotImplementedException();
-
-            // var validator = new TurmaValidator();
-            // this.ValidationResult = validator.Validate(this);
+            var validator = new TurmaValidator();
+            this.ValidationResult = validator.Validate(this);
 
             return this.ValidationResult.IsValid;
         }
