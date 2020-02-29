@@ -58,6 +58,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         [TestCase("Shaquille O'Neal")]
         [TestCase("Steven P. Jobs")]
         [TestCase("Joseph Louis Gay-Lussac")]
+        [TestCase("Francisco O' Lourenço")]
         public void Aluno_NomeCompleto_ReturnTrue(string nome)
         {
             _nome = nome;

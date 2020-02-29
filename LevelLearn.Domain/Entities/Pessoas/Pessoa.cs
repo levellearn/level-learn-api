@@ -15,7 +15,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
             string imagemUrl, DateTime? dataNascimento)
         {
-            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Nome = nome.RemoveExtraSpaces();
             UserName = userName.RemoveExtraSpaces(); // TODO: username único?
             Email = email;
             Cpf = cpf;

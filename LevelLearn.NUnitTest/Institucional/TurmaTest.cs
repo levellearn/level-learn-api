@@ -11,7 +11,7 @@ namespace LevelLearn.NUnitTest.Institucional
     public class TurmaTest
     {
         #region Fields
-        private string _nome, _descricao;
+        private string _nome, _descricao, _nomeDisciplina;
         #endregion
 
         [SetUp]
@@ -21,6 +21,7 @@ namespace LevelLearn.NUnitTest.Institucional
             _descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso" +
                 " de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de " +
                 "algoritmos e programas de computador.";
+            _nomeDisciplina = "Algoritmos";
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace LevelLearn.NUnitTest.Institucional
 
             curso.AtribuirPessoa(new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id));
 
-            var turma = new Turma(_nome, _descricao, curso.Id, professor.Id);
+            var turma = new Turma(_nome, _descricao, _nomeDisciplina, curso.Id, professor.Id);
             turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
 
             return turma;
@@ -71,8 +72,9 @@ namespace LevelLearn.NUnitTest.Institucional
             var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso" +
                 " de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de " +
                 "algoritmos e programas de computador.";
+            var nomeDisciplina = "Algoritmos";
 
-            return new Turma(nome, descricao, cursoId, professorId);
+            return new Turma(nome, descricao, nomeDisciplina, cursoId, professorId);
         }
 
     }

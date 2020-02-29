@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,17 @@ namespace LevelLearn.Domain.Entities.Institucional
         #region Ctors
         protected Turma() { }
 
-        public Turma(string nome, string descricao, Guid cursoId, Guid professorId)
+        public Turma(string nome, string descricao, string nomeDisciplina, Guid cursoId, Guid professorId)
         {
-            Nome = nome;
-            Descricao = descricao;
+            Nome = nome.RemoveExtraSpaces();
+            Descricao = descricao?.Trim();
             Meta = decimal.Zero;
+            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
             CursoId = cursoId;
             ProfessorId = professorId;
             Alunos = new List<AlunoTurma>();
+
+            NomePesquisa = Nome.GenerateSlug();
         }
 
         #endregion Ctors
@@ -27,7 +31,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public decimal Meta { get; private set; }
-        //public string NomeDisciplina { get; private set; }
+        public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }
         public virtual Curso Curso { get; private set; }
@@ -52,6 +56,11 @@ namespace LevelLearn.Domain.Entities.Institucional
             {
                 Alunos.Add(aluno);
             }
+        }
+
+        public decimal CalcularMeta()
+        {
+            throw new NotImplementedException();
         }
 
         public override bool EstaValido()

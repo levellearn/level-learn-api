@@ -16,4 +16,9 @@
     <ProjectReference Include="..\LevelLearn.Domain\LevelLearn.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DomainTest\" />
+    <Folder Include="ServiceTest\" />
+  </ItemGroup>
+
 </Project>
