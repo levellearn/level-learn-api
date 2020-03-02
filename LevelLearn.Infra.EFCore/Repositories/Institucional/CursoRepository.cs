@@ -7,7 +7,7 @@
 //using System.Collections.Generic;
 //using System.Linq;
 
-//namespace LevelLearn.Repositories.Institucional
+//namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 //{
 //    public class CursoRepository : CrudRepository<Curso>, ICursoRepository
 //    {

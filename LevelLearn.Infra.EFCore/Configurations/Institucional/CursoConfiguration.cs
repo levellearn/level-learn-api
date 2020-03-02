@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace LevelLearn.Configurations.Institucional
+namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
     public class CursoConfiguration : IEntityTypeConfiguration<Curso>
     {

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LevelLearn.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     {
         TEntity Get(Guid id);
         Task<TEntity> GetAsync(Guid id);
@@ -17,9 +18,9 @@ namespace LevelLearn.Domain.Repositories
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
         void Add(TEntity entity);
-        void AddRange(IEnumerable<TEntity> entities);
-
         Task AddAsync(TEntity entity);
+
+        void AddRange(IEnumerable<TEntity> entities);
         Task AddRangeAsync(IEnumerable<TEntity> entities);
 
         void Update(TEntity entity);

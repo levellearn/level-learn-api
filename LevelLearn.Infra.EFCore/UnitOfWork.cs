@@ -1,8 +1,10 @@
-﻿using LevelLearn.Domain.UnityOfWorks;
+﻿using LevelLearn.Domain.Repositories.Institucional;
+using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
+using LevelLearn.Infra.EFCore.Repositories.Institucional;
 using System.Threading.Tasks;
 
-namespace J1DesignDigital.Infra.EFCore.UnityOfWorks
+namespace LevelLearn.Infra.EFCore.UnityOfWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -11,11 +13,12 @@ namespace J1DesignDigital.Infra.EFCore.UnityOfWorks
         public UnitOfWork(LevelLearnContext context)
         {
             _context = context;
-            //Customers = new CustomerRepository(_context);
+            //Instituicoes = new InstituicaoRepository(_context);
         }
 
+        //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
 
-        //public ICustomerRepository Customers { get; private set; }
+        public IInstituicaoRepository Instituicoes { get; private set; }
 
 
         public bool Complete()

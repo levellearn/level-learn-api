@@ -1,11 +1,12 @@
-﻿using System;
+﻿using LevelLearn.Domain.Repositories.Institucional;
+using System;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.UnityOfWorks
 {
     public interface IUnitOfWork : IDisposable
     {
-        //ICustomerRepository Customers { get; }
+        IInstituicaoRepository Instituicoes { get; }
 
         bool Complete();
         Task<bool> CompleteAsync();

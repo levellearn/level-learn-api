@@ -4,7 +4,7 @@
 //using Microsoft.EntityFrameworkCore;
 //using System;
 
-//namespace LevelLearn.Repositories.Institucional
+//namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 //{
 //    public class TurmaRepository : CrudRepository<Turma>, ITurmaRepository
 //    {

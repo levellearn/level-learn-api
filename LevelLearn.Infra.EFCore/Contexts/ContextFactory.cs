@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-
 namespace LevelLearn.Infra.EFCore.Contexts
 {
     class ContextFactory : IDesignTimeDbContextFactory<LevelLearnContext>

@@ -1,5 +1,7 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities;
+using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -22,12 +24,13 @@ namespace LevelLearn.Infra.EFCore.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.UseIdentityColumns();
+            modelBuilder.Entity<EntityBase>().HasIndex(p => p.NomePesquisa).IsUnique(true);
 
             modelBuilder.Ignore<FluentValidation.Results.ValidationFailure>();
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
 
+            modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
             //modelBuilder.ApplyConfiguration(new CursoConfiguration());
-            //modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
             //modelBuilder.ApplyConfiguration(new TurmaConfiguration());
 
             //modelBuilder.ApplyConfiguration(new ChamadaConfiguration());

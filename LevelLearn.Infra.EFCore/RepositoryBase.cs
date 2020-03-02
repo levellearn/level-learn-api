@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Repositories;
+﻿using LevelLearn.Domain.Entities;
+using LevelLearn.Domain.Repositories;
 using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,13 +8,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace J1DesignDigital.Infra.EFCore.Repository
+namespace LevelLearn.Infra.EFCore.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
     {
         protected readonly LevelLearnContext _context;
 
-        public Repository(LevelLearnContext context)
+        public RepositoryBase(LevelLearnContext context)
         {
             _context = context;
         }
@@ -21,11 +22,6 @@ namespace J1DesignDigital.Infra.EFCore.Repository
         #region Sync
 
         public TEntity Get(Guid id)
-        {
-            return _context.Set<TEntity>().Find(id);
-        }
-
-        public TEntity Get(long id)
         {
             return _context.Set<TEntity>().Find(id);
         }
@@ -80,11 +76,6 @@ namespace J1DesignDigital.Infra.EFCore.Repository
         #region Async
 
         public async Task<TEntity> GetAsync(Guid id)
-        {
-            return await _context.Set<TEntity>().FindAsync(id);
-        }
-
-        public async Task<TEntity> GetAsync(long id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }

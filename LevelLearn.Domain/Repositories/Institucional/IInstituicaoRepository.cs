@@ -1,13 +1,15 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories.Institucional
 {
-    //public interface IInstituicaoRepository : ICrudRepository<Instituicao>
-    //{
-    //    bool IsAdmin(int instituicaoId, int pessoaId);
-    //    List<Instituicao> InstituicoesAdmin(int pessoaId);
-    //    List<Instituicao> InstituicoesProfessor(int pessoaId);
-    //    List<Instituicao> InstituicoesAluno(int pessoaId);
-    //}
+    public interface IInstituicaoRepository : IRepositoryBase<Instituicao>
+    {
+        bool IsAdmin(Guid instituicaoId, Guid pessoaId);
+        Task<List<Instituicao>> InstituicoesAdmin(Guid pessoaId);
+        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId);
+        Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId);
+    }
 }
