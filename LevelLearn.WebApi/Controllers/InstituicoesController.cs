@@ -1,24 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.WebApi.ViewModels.Institucional.Instituicao;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LevelLearn.WebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class InstituicoesController : ControllerBase
     {
-        // GET: api/Instituicoes
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IUnitOfWork _uow;
+
+        public InstituicoesController(IUnitOfWork uow)
         {
-            return new string[] { "value1", "value2" };
+            _uow = uow;
         }
 
-        // GET: api/Instituicoes/5
+        //[Route("api/v1/[controller]")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<InstituicaoListVM>> Get()
+        {
+            try
+            {
+                var instituicoes = await _uow.Instituicoes.GetAllAsync();
+                var count = await _uow.Instituicoes.CountAsync();
+
+                var response = new InstituicaoListVM();
+                var listVM = new List<InstituicaoVM>();
+                foreach (var item in instituicoes)
+                {
+                    var vm = new InstituicaoVM { Id = item.Id, Nome = item.Nome, Descricao = item.Descricao };
+                    listVM.Add(vm);
+                }
+
+                //new InstituicaoListVM { Customers = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes), Count = count }
+                response.Data = listVM;
+                response.Count = count;
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Erro interno do servidor");
+            }
+        }
+
+        //[Route("api/v1/[controller]")]
         [HttpGet("{id}", Name = "Get")]
         public string Get(Guid id)
         {

@@ -16,9 +16,9 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             //Instituicoes = new InstituicaoRepository(_context);
         }
 
-        //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
+        public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
 
-        public IInstituicaoRepository Instituicoes { get; private set; }
+        //public IInstituicaoRepository Instituicoes { get; private set; }
 
 
         public bool Complete()

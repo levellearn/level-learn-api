@@ -19,18 +19,22 @@ namespace LevelLearn.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
+            // DBCOntext
             services.AddDbContext<LevelLearnContext>(opt =>
-               opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
+               opt.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"))
+               );
 
+            // 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // CORS
+            //services.AddCors();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -39,6 +43,8 @@ namespace LevelLearn.WebApi
             }
 
             app.UseHttpsRedirection();
+
+            //app.UseCors(option => option.AllowAnyOrigin());
 
             app.UseRouting();
 

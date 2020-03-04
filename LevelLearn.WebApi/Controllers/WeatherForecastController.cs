@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace LevelLearn.Controllers
 {
     [ApiController]
-    [Route("v1/weatherForecast")]
+    [Route("api/v1/weatherForecast")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

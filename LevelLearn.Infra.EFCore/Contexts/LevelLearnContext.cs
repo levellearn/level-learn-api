@@ -13,18 +13,18 @@ namespace LevelLearn.Infra.EFCore.Contexts
            : base(options)
         { }
 
-        public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<Aluno> Alunos { get; set; }
-        public DbSet<Professor> Professores { get; set; }
+        //public DbSet<Pessoa> Pessoas { get; set; }
+        //public DbSet<Aluno> Alunos { get; set; }
+        //public DbSet<Professor> Professores { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
-        public DbSet<Curso> Cursos { get; set; }
-        public DbSet<Turma> Turmas { get; set; }
+        //public DbSet<Curso> Cursos { get; set; }
+        //public DbSet<Turma> Turmas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.UseIdentityColumns();
-            modelBuilder.Entity<EntityBase>().HasIndex(p => p.NomePesquisa).IsUnique(true);
+            //modelBuilder.Entity<EntityBase>().HasIndex(p => p.NomePesquisa).IsUnique(true);
 
             modelBuilder.Ignore<FluentValidation.Results.ValidationFailure>();
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
