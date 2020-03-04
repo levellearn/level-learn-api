@@ -1,21 +1,23 @@
-﻿using LevelLearn.Domain.Entities;
-using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
 {
     public class LevelLearnContext : DbContext
     {
+        //public LevelLearnContext() => Database.EnsureCreated();
+
         public LevelLearnContext(DbContextOptions<LevelLearnContext> options)
            : base(options)
         { }
 
-        //public DbSet<Pessoa> Pessoas { get; set; }
-        //public DbSet<Aluno> Alunos { get; set; }
-        //public DbSet<Professor> Professores { get; set; }
+        public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Aluno> Alunos { get; set; }
+        public DbSet<Professor> Professores { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
         //public DbSet<Curso> Cursos { get; set; }
         //public DbSet<Turma> Turmas { get; set; }
@@ -24,7 +26,6 @@ namespace LevelLearn.Infra.EFCore.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.UseIdentityColumns();
-            //modelBuilder.Entity<EntityBase>().HasIndex(p => p.NomePesquisa).IsUnique(true);
 
             modelBuilder.Ignore<FluentValidation.Results.ValidationFailure>();
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
@@ -41,11 +42,11 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new RespostaConfiguration());
             //modelBuilder.ApplyConfiguration(new TimeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new PessoaConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoDesafioConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoTimeConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoTurmaConfiguration());
             //modelBuilder.ApplyConfiguration(new NotificacaoConfiguration());
-            //modelBuilder.ApplyConfiguration(new PessoaConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
 
@@ -56,16 +57,16 @@ namespace LevelLearn.Infra.EFCore.Contexts
             base.OnModelCreating(modelBuilder);
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    var config = new ConfigurationBuilder()
-        //        .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json")
-        //        .Build();
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-        //    optionsBuilder
-        //        .UseSqlServer(config.GetConnectionString("SQLServerConnection"));
-        //}
+            optionsBuilder
+                .UseSqlServer(config.GetConnectionString("SQLServerConnection"));
+        }
 
 
     }

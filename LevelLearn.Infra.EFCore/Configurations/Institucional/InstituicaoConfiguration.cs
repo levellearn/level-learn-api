@@ -13,6 +13,9 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.HasKey(p => p.Id);
 
+            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
+            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
+
             builder.Property(p => p.Nome)
                 .IsRequired()
                 .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
