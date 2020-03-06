@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.WebApi.ViewModels.Institucional.Instituicao;
@@ -12,37 +13,37 @@ using Microsoft.AspNetCore.Mvc;
 namespace LevelLearn.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/")]
+    [Produces("application/json")]
     public class InstituicoesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public InstituicoesController(IUnitOfWork uow)
+        public InstituicoesController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
-        //[Route("api/v1/[controller]")]
+        [Route("v1/[controller]")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<InstituicaoListVM>> Get()
+        public async Task<ActionResult<InstituicaoListVM>>GetInstituicoes([FromQuery]string query, [FromQuery]int pageIndex, [FromQuery]int pageSize)
         {
             try
             {
-                var instituicoes = await _uow.Instituicoes.GetAllAsync();
-                var count = await _uow.Instituicoes.CountAsync();
+                var instituicoes = await _uow.Instituicoes.GetWithPagination(query, pageIndex, pageSize);
+                var count = await _uow.Instituicoes.CountWithPagination(query);               
 
-                var response = new InstituicaoListVM();
-                var listVM = new List<InstituicaoVM>();
-                foreach (var item in instituicoes)
+                var response = new InstituicaoListVM
                 {
-                    var vm = new InstituicaoVM { Id = item.Id, Nome = item.Nome, Descricao = item.Descricao };
-                    listVM.Add(vm);
-                }
-
-                //new InstituicaoListVM { Customers = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes), Count = count }
-                response.Data = listVM;
-                response.Count = count;
+                    Instituicoes = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
+                    Count = count,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    Query = query
+                };               
 
                 return Ok(response);
             }
@@ -53,8 +54,8 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         //[Route("api/v1/[controller]")]
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(Guid id)
+        [HttpGet("{id}", Name = "GetInstituicao")]
+        public string GetInstituicao(Guid id)
         {
             return "value";
         }
@@ -76,5 +77,7 @@ namespace LevelLearn.WebApi.Controllers
         public void Delete(Guid id)
         {
         }
+
+
     }
 }

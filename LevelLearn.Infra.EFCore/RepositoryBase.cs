@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories;
 using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -110,6 +111,40 @@ namespace LevelLearn.Infra.EFCore.Repository
         public async Task<int> CountAsync()
         {
             return await _context.Set<TEntity>().AsNoTracking().CountAsync();
+        }
+
+        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
+        {
+            pageIndex = (pageIndex <= 0) ? 1 : pageIndex;
+            pageSize = (pageSize <= 0) ? 200 : pageSize;
+            query = query.GenerateSlug();
+
+            return await _context.Set<TEntity>()
+                .AsNoTracking()
+                .Where(p => p.NomePesquisa.Contains(query))
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .OrderBy(c => c.NomePesquisa)
+                .ToListAsync();
+        }
+        
+        public async Task<int> CountWithPagination(string query)
+        {
+            query = query.GenerateSlug();
+
+            return await _context.Set<TEntity>()
+                .AsNoTracking()
+                .Where(p => p.NomePesquisa.Contains(query))
+                .CountAsync();
+        }
+
+        public async Task<bool> EntityExists(Expression<Func<TEntity, bool>> predicate)
+        {
+            bool entityExists = await _context.Set<TEntity>()
+                        .AsNoTracking()
+                        .AnyAsync(predicate);
+
+            return entityExists;
         }
 
         #endregion
