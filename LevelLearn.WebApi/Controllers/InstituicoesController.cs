@@ -29,12 +29,12 @@ namespace LevelLearn.WebApi.Controllers
         [Route("v1/[controller]")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<InstituicaoListVM>>GetInstituicoes([FromQuery]string query, [FromQuery]int pageIndex, [FromQuery]int pageSize)
+        public async Task<ActionResult<InstituicaoListVM>> GetInstituicoes([FromQuery]string query, [FromQuery]int pageIndex, [FromQuery]int pageSize)
         {
             try
             {
                 var instituicoes = await _uow.Instituicoes.GetWithPagination(query, pageIndex, pageSize);
-                var count = await _uow.Instituicoes.CountWithPagination(query);               
+                var count = await _uow.Instituicoes.CountWithPagination(query);
 
                 var response = new InstituicaoListVM
                 {
@@ -43,7 +43,7 @@ namespace LevelLearn.WebApi.Controllers
                     PageIndex = pageIndex,
                     PageSize = pageSize,
                     Query = query
-                };               
+                };
 
                 return Ok(response);
             }

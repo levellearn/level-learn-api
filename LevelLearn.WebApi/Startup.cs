@@ -1,9 +1,7 @@
 using AutoMapper;
-using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
-using LevelLearn.WebApi.ViewModels.Institucional.Instituicao;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +32,7 @@ namespace LevelLearn.WebApi
             services.AddControllers();
 
             // AutoMapper
-            AutoMapperConfig(services);
+            services.AddAutoMapper(typeof(Startup));
 
             // DBContext
             var connectionString = Configuration.GetConnectionString("SQLServerConnection");
@@ -69,18 +67,6 @@ namespace LevelLearn.WebApi
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private void AutoMapperConfig(IServiceCollection services)
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Instituicao, InstituicaoVM>();
-                //cfg.CreateMap<InstituicaoVM, Instituicao>();
-            });
-
-            IMapper mapper = config.CreateMapper();
-            services.AddSingleton(mapper);
         }
 
 
