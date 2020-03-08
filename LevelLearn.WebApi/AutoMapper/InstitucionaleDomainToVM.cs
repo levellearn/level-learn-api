@@ -9,6 +9,7 @@ namespace LevelLearn.WebApi.AutoMapper
         public InstitucionalDomainToVM()
         {
             CreateMap<Instituicao, InstituicaoVM>();
+            CreateMap<Curso, CursoVM>();
 
         }
     }

@@ -9,7 +9,9 @@ namespace LevelLearn.Domain.Entities.Institucional
     public class Turma : EntityBase
     {
         #region Ctors
-        protected Turma() { }
+        protected Turma() {
+            Alunos = new List<AlunoTurma>();
+        }
 
         public Turma(string nome, string descricao, string nomeDisciplina, Guid cursoId, Guid professorId)
         {

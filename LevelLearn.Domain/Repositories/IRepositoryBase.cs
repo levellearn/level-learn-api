@@ -11,11 +11,11 @@ namespace LevelLearn.Domain.Repositories
         TEntity Get(Guid id);
         Task<TEntity> GetAsync(Guid id);
 
-        IEnumerable<TEntity> GetAll(int skip, int limit);
+        IEnumerable<TEntity> GetAll(int skip = 0, int limit = int.MaxValue);
         Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue);
 
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter);
 
         void Add(TEntity entity);
         Task AddAsync(TEntity entity);
@@ -33,6 +33,9 @@ namespace LevelLearn.Domain.Repositories
 
         Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize);
         Task<int> CountWithPagination(string query);
-        Task<bool> EntityExists(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> EntityExists(Expression<Func<TEntity, bool>> filter);
+
+        //List<TEntity> SelectIncludes(Func<TEntity, bool> where = null, params Expression<Func<TEntity, object>>[] includes);
+
     }
 }

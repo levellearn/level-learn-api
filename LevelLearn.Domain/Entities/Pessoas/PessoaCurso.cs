@@ -16,14 +16,14 @@ namespace LevelLearn.Domain.Entities.Pessoas
             CursoId = cursoId;
         }
 
-        public Guid Id { get; private set; }
-        public TiposPessoa Perfil { get; private set; }
+        public Guid Id { get; set; }
+        public TiposPessoa Perfil { get; set; }
 
-        public Guid PessoaId { get; private set; }
-        public virtual Pessoa Pessoa { get; private set; }
+        public Guid PessoaId { get; set; }
+        public virtual Pessoa Pessoa { get; set; }
 
-        public Guid CursoId { get; private set; }
-        public virtual Curso Curso { get; private set; }
+        public Guid CursoId { get; set; }
+        public virtual Curso Curso { get; set; }
 
     }
 }

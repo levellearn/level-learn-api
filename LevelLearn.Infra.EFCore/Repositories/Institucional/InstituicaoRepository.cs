@@ -62,7 +62,18 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             //    .SingleOrDefault(p => p.Id == instituicaoId)
             //    .Pessoas
             //    .Any(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Admin);
+        }        
+
+        public override async Task<Instituicao> GetAsync(Guid id)
+        {
+            return await _context.Instituicoes
+                .Include(i => i.Cursos)
+                .Include(i => i.Pessoas)
+                    .ThenInclude(p => p.Pessoa)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
+
 
 
     }

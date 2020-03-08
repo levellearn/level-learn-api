@@ -22,7 +22,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Sync
 
-        public TEntity Get(Guid id)
+        public virtual TEntity Get(Guid id)
         {
             return _context.Set<TEntity>().Find(id);
         }
@@ -35,10 +35,10 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .ToList();
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter)
         {
             return _context.Set<TEntity>()
-                .Where(predicate)
+                .Where(filter)
                 .ToList();
         }
 
@@ -76,7 +76,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Async
 
-        public async Task<TEntity> GetAsync(Guid id)
+        public virtual async Task<TEntity> GetAsync(Guid id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -90,11 +90,11 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter)
         {
             return await _context.Set<TEntity>()
                 .AsNoTracking()
-                .Where(predicate)
+                .Where(filter)
                 .ToListAsync();
         }
 
@@ -138,11 +138,11 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .CountAsync();
         }
 
-        public async Task<bool> EntityExists(Expression<Func<TEntity, bool>> predicate)
+        public async Task<bool> EntityExists(Expression<Func<TEntity, bool>> filter)
         {
             bool entityExists = await _context.Set<TEntity>()
                         .AsNoTracking()
-                        .AnyAsync(predicate);
+                        .AnyAsync(filter);
 
             return entityExists;
         }

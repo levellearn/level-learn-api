@@ -9,7 +9,10 @@ namespace LevelLearn.Domain.Entities.Institucional
     {
         #region Ctors
 
-        protected Instituicao() { }
+        protected Instituicao() {
+            Cursos = new List<Curso>();
+            Pessoas = new List<PessoaInstituicao>();
+        }
 
         public Instituicao(string nome, string descricao)
         {
