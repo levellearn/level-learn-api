@@ -8,11 +8,21 @@ namespace LevelLearn.WebApi.AutoMapper
     {
         public InstitucionalVMToDomain()
         {
+            InstituicaoMap();
+
+        }
+
+        private void InstituicaoMap()
+        {
             CreateMap<InstituicaoVM, Instituicao>()
+                            .ConstructUsing(c =>
+                                new Instituicao(c.Nome, c.Descricao)
+                            );
+
+            CreateMap<CadastrarInstituicaoVM, Instituicao>()
                 .ConstructUsing(c =>
                     new Instituicao(c.Nome, c.Descricao)
                 );
-
         }
     }
 }

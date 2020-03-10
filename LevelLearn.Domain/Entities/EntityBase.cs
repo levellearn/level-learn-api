@@ -11,6 +11,7 @@ namespace LevelLearn.Domain.Entities
             Id = Guid.NewGuid();
             Ativo = true;
             DataCadastro = DateTime.Now;
+            ValidationResult = new ValidationResult();
         }
 
         #region Props

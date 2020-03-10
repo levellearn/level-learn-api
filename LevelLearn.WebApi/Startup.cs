@@ -29,7 +29,7 @@ namespace LevelLearn.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers();           
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));

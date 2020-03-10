@@ -74,8 +74,33 @@ namespace LevelLearn.WebApi.Controllers
 
         [Route("v1/[controller]")]
         [HttpPost]
-        public void CreateInstituicao([FromBody] string value)
-        {
+        [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
+        {   
+            try
+            {
+                var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
+
+                if (!instituicao.EstaValido())
+                    return BadRequest(instituicao.DadosInvalidos());
+
+                if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicao.NomePesquisa))
+                    return BadRequest("Instituição existente");
+
+                await _uow.Instituicoes.AddAsync(instituicao);
+                await _uow.CompleteAsync();
+
+                return CreatedAtAction(
+                    nameof(GetInstituicao),
+                    new { id = instituicao.Id },
+                    _mapper.Map<InstituicaoVM>(instituicao)
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Erro interno do servidor");
+            }
         }
 
         [Route("v1/[controller]/{id:guid}")]
