@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LevelLearn.Domain\LevelLearn.Domain.csproj" />
     <ProjectReference Include="..\LevelLearn.Infra.EFCore\LevelLearn.Infra.EFCore.csproj" />
+    <ProjectReference Include="..\LevelLearn.Service\LevelLearn.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Services;
+using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.WebApi.ViewModels.Institucional.Instituicao;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +19,13 @@ namespace LevelLearn.WebApi.Controllers
     public class InstituicoesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IInstituicaoService _instituicaoService;
         private readonly IMapper _mapper;
 
-        public InstituicoesController(IUnitOfWork uow, IMapper mapper)
+        public InstituicoesController(IUnitOfWork uow, IInstituicaoService instituicaoService, IMapper mapper)
         {
             _uow = uow;
+            _instituicaoService = instituicaoService;
             _mapper = mapper;
         }
 
@@ -77,19 +81,19 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
-        {   
+        {
+            //if(!ModelState.IsValid) return BadRequest(ModelState);
+
             try
             {
                 var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
 
-                if (!instituicao.EstaValido())
-                    return BadRequest(instituicao.DadosInvalidos());
+                ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicao);
 
-                if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicao.NomePesquisa))
-                    return BadRequest("Instituição existente");
+                if (!response.Success)
+                    return StatusCode(response.StatusCode, response);
 
-                await _uow.Instituicoes.AddAsync(instituicao);
-                await _uow.CompleteAsync();
+                //response.Data = _mapper.Map<InstituicaoVM>(instituicao);
 
                 return CreatedAtAction(
                     nameof(GetInstituicao),

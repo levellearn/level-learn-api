@@ -91,7 +91,7 @@ namespace LevelLearn.Domain.Entities
         public override string ToString()
         {
             return $"{GetType().Name} [Id = {Id}]";
-        } 
+        }
 
         #endregion
 

@@ -1,7 +1,9 @@
 using AutoMapper;
+using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
+using LevelLearn.Service.Services.Institucional;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +31,7 @@ namespace LevelLearn.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();           
+            services.AddControllers();
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
@@ -43,6 +45,10 @@ namespace LevelLearn.WebApi
 
             // UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Business Services
+            services.AddTransient<IInstituicaoService, InstituicaoService>();
+
 
             // CORS
             //services.AddCors();

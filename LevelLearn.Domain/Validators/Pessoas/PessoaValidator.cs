@@ -23,7 +23,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.Nome)
                 .NotEmpty().WithMessage("O Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage($"O Nome precisa ter entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
+                .WithMessage($"O Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
                 .Must(n => IsFullName(n)).WithMessage("O Nome precisa de um sobrenome");
         }
         private bool IsFullName(string name)
@@ -43,9 +43,9 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.UserName)
                 .NotEmpty().WithMessage("O Username precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("O Username só deve conter letras, números, (_), (-) ou (.)")
+                .WithMessage("O Username somente deve conter letras, números, (_), (-) ou (.)")
                 .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"O Username precisa ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
+                .WithMessage($"O Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()

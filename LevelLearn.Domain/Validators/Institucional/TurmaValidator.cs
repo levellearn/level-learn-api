@@ -16,7 +16,7 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.Nome)
                 .NotEmpty().WithMessage("O Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Turma.NOME_TAMANHO_MIN, PropertiesConfig.Turma.NOME_TAMANHO_MAX)
-                .WithMessage($"O Nome precisa ter entre {PropertiesConfig.Turma.NOME_TAMANHO_MIN} e {PropertiesConfig.Turma.NOME_TAMANHO_MAX} caracteres");
+                .WithMessage($"O Nome precisa estar entre {PropertiesConfig.Turma.NOME_TAMANHO_MIN} e {PropertiesConfig.Turma.NOME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarDescricao()
@@ -24,7 +24,7 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.Descricao)
                 .NotEmpty().WithMessage("A Descrição precisa estar preenchida")
                 .MaximumLength(PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX)
-                .WithMessage($"A Descrição precisa ter no máximo {PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX} caracteres");
+                .WithMessage($"A Descrição pode ter no máximo {PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX} caracteres");
         }
 
 
