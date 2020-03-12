@@ -21,7 +21,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação objeto
             if (!instituicao.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", instituicao.DadosInvalidos());
-
+            
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicao.NomePesquisa))
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");

@@ -1,0 +1,3 @@
+Implementar log dos erros
+Implementar controller base
+Implementar VM list base

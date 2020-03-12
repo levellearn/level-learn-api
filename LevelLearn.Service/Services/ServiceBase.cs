@@ -10,7 +10,7 @@ namespace LevelLearn.Service.Services
 {
     public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : EntityBase
     {
-        private readonly IRepositoryBase<TEntity> _repository;
+        protected readonly IRepositoryBase<TEntity> _repository;
 
         public ServiceBase(IRepositoryBase<TEntity> repository)
         {

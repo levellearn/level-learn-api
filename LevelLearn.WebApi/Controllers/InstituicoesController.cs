@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -32,17 +33,20 @@ namespace LevelLearn.WebApi.Controllers
         [Route("v1/[controller]")]
         [HttpGet]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetInstituicoes([FromQuery]string query, [FromQuery]int pageIndex, [FromQuery]int pageSize)
+        public async Task<ActionResult> GetInstituicoes(
+            [FromQuery]string query, 
+            [FromQuery][Range(1, int.MaxValue)]int pageIndex, 
+            [FromQuery][Range(1, 200)]int pageSize)
         {
             try
             {
-                var instituicoes = await _uow.Instituicoes.GetWithPagination(query, pageIndex, pageSize);
-                var count = await _uow.Instituicoes.CountWithPagination(query);
+                var instituicoes = await _instituicaoService.GetWithPagination(query, pageIndex, pageSize);
+                var count = await _instituicaoService.CountWithPagination(query);
 
                 var response = new InstituicaoListVM
                 {
-                    Instituicoes = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
-                    Count = count,
+                    Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
+                    Total = count,
                     PageIndex = pageIndex,
                     PageSize = pageSize,
                     Query = query
