@@ -1,8 +1,7 @@
 ﻿using FluentValidation.Results;
-using System;
+using LevelLearn.Domain.Validators;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace LevelLearn.Domain.Services
 {
@@ -10,17 +9,17 @@ namespace LevelLearn.Domain.Services
     {
         protected ResponseAPI()
         {
-            Errors = new List<ValidationFailure>();
+            Errors = new List<DadoInvalido>();
         }
 
         public int StatusCode { get; private set; }
         public bool Success { get; private set; }
         public string Message { get; private set; }
         public object Data { get; private set; }
-        public ICollection<ValidationFailure> Errors { get; private set; }
-        public int Skip { get; private set; }
-        public int Limit { get; private set; }
-        public int Total { get; private set; }
+        public ICollection<DadoInvalido> Errors { get; private set; }
+        public int? Skip { get; private set; }
+        public int? Limit { get; private set; }
+        public int? Total { get; private set; }
 
         #region Factory
         public static class ResponseAPIFactory
@@ -60,7 +59,7 @@ namespace LevelLearn.Domain.Services
                 };
             }
 
-            public static ResponseAPI BadRequest(string message = "Dados inválidos", ICollection<ValidationFailure> errors = null)
+            public static ResponseAPI BadRequest(string message = "Dados inválidos", ICollection<DadoInvalido> errors = null)
             {
                 return new ResponseAPI()
                 {
@@ -88,7 +87,7 @@ namespace LevelLearn.Domain.Services
                 };
             }
 
-        } 
+        }
         #endregion
 
 

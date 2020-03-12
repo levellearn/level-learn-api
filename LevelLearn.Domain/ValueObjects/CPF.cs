@@ -71,7 +71,8 @@ namespace LevelLearn.Domain.ValueObjects
         public override bool EstaValido()
         {
             RuleFor(c => c.Number)
-                .Must(a => Validate()).WithMessage("CPF não é válido");
+                .Must(a => Validate()).WithMessage("CPF não é válido")
+                .OverridePropertyName("CPF");
 
             ValidationResult = Validate(this);
             return ValidationResult.IsValid;

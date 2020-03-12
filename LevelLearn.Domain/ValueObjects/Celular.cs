@@ -32,7 +32,8 @@ namespace LevelLearn.Domain.ValueObjects
         public override bool EstaValido()
         {
             RuleFor(c => c.CellPhoneNumber)
-                .Must(a => Validate()).WithMessage("Celular não é válido");
+                .Must(a => Validate()).WithMessage("Celular não é válido")
+                .OverridePropertyName("Celular");
 
             ValidationResult = Validate(this);
             return ValidationResult.IsValid;

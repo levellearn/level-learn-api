@@ -31,7 +31,8 @@ namespace LevelLearn.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true);
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));

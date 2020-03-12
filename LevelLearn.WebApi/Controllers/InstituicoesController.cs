@@ -82,18 +82,13 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
-            //if(!ModelState.IsValid) return BadRequest(ModelState);
-
             try
             {
                 var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
 
                 ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicao);
 
-                if (!response.Success)
-                    return StatusCode(response.StatusCode, response);
-
-                //response.Data = _mapper.Map<InstituicaoVM>(instituicao);
+                if (!response.Success) return StatusCode(response.StatusCode, response);
 
                 return CreatedAtAction(
                     nameof(GetInstituicao),

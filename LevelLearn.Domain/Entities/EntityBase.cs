@@ -1,4 +1,6 @@
 ﻿using FluentValidation.Results;
+using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators;
 using System;
 using System.Collections.Generic;
 
@@ -27,7 +29,7 @@ namespace LevelLearn.Domain.Entities
         #region Methods
 
         /// <summary>
-        /// Método que deve ser implementado para saber se entidade está válida
+        /// Método que deve ser implementado para saber se a entidade está válida
         /// </summary>
         /// <returns></returns>
         public abstract bool EstaValido();
@@ -36,9 +38,9 @@ namespace LevelLearn.Domain.Entities
         /// Retorna os dados inválidos da entidade
         /// </summary>
         /// <returns>Retorna uma lista de dados inválidos da entidade</returns>
-        public ICollection<ValidationFailure> DadosInvalidos()
+        public ICollection<DadoInvalido> DadosInvalidos()
         {
-            return ValidationResult.Errors;
+            return ValidationResult.GetErrorsResult();
         }
 
         /// <summary>

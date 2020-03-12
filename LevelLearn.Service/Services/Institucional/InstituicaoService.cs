@@ -2,16 +2,16 @@
 using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
-using System;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
 {
-    public class InstituicaoService : IInstituicaoService
+    public class InstituicaoService : ServiceBase<Instituicao>, IInstituicaoService
     {
         private readonly IUnitOfWork _uow;
 
         public InstituicaoService(IUnitOfWork uow)
+            : base(uow.Instituicoes)
         {
             _uow = uow;
         }

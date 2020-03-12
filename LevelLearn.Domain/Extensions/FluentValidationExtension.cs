@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using LevelLearn.Domain.Entities;
+using LevelLearn.Domain.Validators;
 using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Extensions
@@ -14,17 +15,17 @@ namespace LevelLearn.Domain.Extensions
             }
         }
 
-        //public static ICollection<DadoInvalidoEntidade> GetErrorsResult(this ValidationResult validationResult)
-        //{
-        //    var errorsResult = new List<DadoInvalidoEntidade>();
+        public static ICollection<DadoInvalido> GetErrorsResult(this ValidationResult validationResult)
+        {
+            var errorsResult = new List<DadoInvalido>();
 
-        //    foreach (var error in validationResult.Errors)
-        //    {
-        //        errorsResult.Add(new DadoInvalidoEntidade(error.PropertyName, error.ErrorMessage));
-        //    }
+            foreach (var error in validationResult.Errors)
+            {
+                errorsResult.Add(new DadoInvalido(error.PropertyName, error.ErrorMessage));
+            }
 
-        //    return errorsResult;
-        //}
+            return errorsResult;
+        }
 
     }
 }
