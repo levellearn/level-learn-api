@@ -36,6 +36,7 @@ namespace LevelLearn.Domain.Repositories
         Task<bool> EntityExists(Expression<Func<TEntity, bool>> filter);
 
         //List<TEntity> SelectIncludes(Func<TEntity, bool> where = null, params Expression<Func<TEntity, object>>[] includes);
-
+        bool Complete();
+        Task<bool> CompleteAsync();
     }
 }

@@ -1,5 +1,6 @@
-﻿using FluentValidation.Results;
-using LevelLearn.Domain.Validators;
+﻿using LevelLearn.Domain.Validators;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Net;
 
@@ -24,7 +25,7 @@ namespace LevelLearn.Domain.Services
         #region Factory
         public static class ResponseAPIFactory
         {
-            public static ResponseAPI Ok(string message, object data, int skip = 0, int limit = 0, int total = 0)
+            public static ResponseAPI Ok(object data, string message, int skip = 0, int limit = 0, int total = 0)
             {
                 return new ResponseAPI()
                 {
@@ -38,7 +39,7 @@ namespace LevelLearn.Domain.Services
                 };
             }
 
-            public static ResponseAPI Created(string message, object data)
+            public static ResponseAPI Created(object data, string message = "Cadastrado com sucesso")
             {
                 return new ResponseAPI()
                 {

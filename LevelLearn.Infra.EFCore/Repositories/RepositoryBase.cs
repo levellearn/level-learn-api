@@ -149,5 +149,17 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #endregion
 
+        public bool Complete()
+        {
+            var numberEntriesSaved = _context.SaveChanges();
+            return numberEntriesSaved > 0 ? true : false;
+        }
+
+        public async Task<bool> CompleteAsync()
+        {
+            var numberEntriesSaved = await _context.SaveChangesAsync();
+            return numberEntriesSaved > 0 ? true : false;
+        }
+
     }
 }

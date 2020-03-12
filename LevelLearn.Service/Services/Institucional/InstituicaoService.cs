@@ -27,9 +27,10 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");
 
             await _uow.Instituicoes.AddAsync(instituicao);
-            await _uow.CompleteAsync();
+            // Salva no BD
+            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI.ResponseAPIFactory.Created("Instituição cadastrada com sucesso", instituicao);
+            return ResponseAPI.ResponseAPIFactory.Created(instituicao);
         }
 
         public void Dispose()
