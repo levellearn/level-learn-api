@@ -37,6 +37,14 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         #region Methods
 
+        public void Atualizar(string nome, string descricao)
+        {
+            Nome = nome.RemoveExtraSpaces();
+            Descricao = descricao?.Trim();
+
+            NomePesquisa = Nome.GenerateSlug();
+        }
+
         public void AtribuirCurso(Curso curso)
         {
             if (!curso.EstaValido()) return;

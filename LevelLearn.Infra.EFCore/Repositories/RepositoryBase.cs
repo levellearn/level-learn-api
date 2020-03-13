@@ -115,8 +115,8 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
         {
-            pageIndex = (pageIndex <= 0) ? 1 : pageIndex;
-            pageSize = (pageSize <= 0) ? 200 : pageSize;
+            //pageIndex = (pageIndex <= 0) ? 1 : pageIndex;
+            //pageSize = (pageSize <= 0) ? 200 : pageSize;
             query = query.GenerateSlug();
 
             return await _context.Set<TEntity>()

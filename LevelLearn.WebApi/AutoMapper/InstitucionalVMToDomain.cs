@@ -23,6 +23,11 @@ namespace LevelLearn.WebApi.AutoMapper
                 .ConstructUsing(c =>
                     new Instituicao(c.Nome, c.Descricao)
                 );
+
+            CreateMap<EditarInstituicaoVM, Instituicao>()
+               .ConstructUsing(c =>
+                   new Instituicao(c.Nome, c.Descricao)
+               );
         }
     }
 }

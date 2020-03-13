@@ -18,14 +18,14 @@ namespace LevelLearn.Domain.Services
         public string Message { get; private set; }
         public object Data { get; private set; }
         public ICollection<DadoInvalido> Errors { get; private set; }
-        public int? Skip { get; private set; }
-        public int? Limit { get; private set; }
+        public int? PageIndex { get; private set; }
+        public int? PageSize { get; private set; }
         public int? Total { get; private set; }
 
         #region Factory
         public static class ResponseAPIFactory
         {
-            public static ResponseAPI Ok(object data, string message, int skip = 0, int limit = 0, int total = 0)
+            public static ResponseAPI Ok(object data, string message, int pageIndex = 0, int pageSize = 0, int total = 0)
             {
                 return new ResponseAPI()
                 {
@@ -33,8 +33,8 @@ namespace LevelLearn.Domain.Services
                     StatusCode = (int)HttpStatusCode.OK,
                     Success = true,
                     Data = data,
-                    Skip = skip,
-                    Limit = limit,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
                     Total = total
                 };
             }
@@ -50,7 +50,7 @@ namespace LevelLearn.Domain.Services
                 };
             }
 
-            public static ResponseAPI NoContent(string message)
+            public static ResponseAPI NoContent(string message = "Editado com sucesso")
             {
                 return new ResponseAPI()
                 {
