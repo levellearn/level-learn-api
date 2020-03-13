@@ -64,10 +64,28 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseAPI.ResponseAPIFactory.NoContent();
         }
 
+        public async Task<ResponseAPI> RemoverInstituicao(Guid id)
+        {
+            // Validação BD
+            var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
+
+            if (instituicaoExistente == null)
+                return ResponseAPI.ResponseAPIFactory.NotFound("Instituição não existente");
+
+            // TODO: Alguma regra de negócio?
+            // TODO: Remover ou desativar?
+
+            _uow.Instituicoes.Remove(instituicaoExistente);
+
+            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+
+            return ResponseAPI.ResponseAPIFactory.NoContent();
+        }
+
         public void Dispose()
         {
             _uow.Dispose();
         }
-        
+
     }
 }

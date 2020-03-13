@@ -10,5 +10,6 @@ namespace LevelLearn.Domain.Services.Institucional
     {
         Task<ResponseAPI> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM);
         Task<ResponseAPI> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM);
+        Task<ResponseAPI> RemoverInstituicao(Guid id);
     }
 }

@@ -119,8 +119,23 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         [Route("v1/[controller]/{id:guid}")]
-        public void DeleteInstituicao(Guid id)
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteInstituicao(Guid id)
         {
+            try
+            {
+                ResponseAPI response = await _instituicaoService.RemoverInstituicao(id);
+
+                if (!response.Success) return StatusCode(response.StatusCode, response);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
+            }
         }
 
 
