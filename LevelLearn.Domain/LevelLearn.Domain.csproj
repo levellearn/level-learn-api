@@ -12,4 +12,8 @@
     <Folder Include="Repositories\Jogo\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LevelLearn.ViewModel\LevelLearn.ViewModel.csproj" />
+  </ItemGroup>
+
 </Project>

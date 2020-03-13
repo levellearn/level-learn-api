@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LevelLearn.WebApi.ViewModels.Institucional.Instituicao
+namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
     public class CadastrarInstituicaoVM
     {

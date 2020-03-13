@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LevelLearn.WebApi.ViewModels.Institucional.Instituicao
+namespace LevelLearn.ViewModel
 {
     public class ListBaseVM
     {

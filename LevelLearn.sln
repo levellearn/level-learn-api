@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.WebApi", "LevelL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.Infra.EFCore", "LevelLearn.Infra.EFCore\LevelLearn.Infra.EFCore.csproj", "{4CEE8513-D32D-4AC4-AC25-A8362747F2D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelLearn.Service", "LevelLearn.Service\LevelLearn.Service.csproj", "{D2675EAC-1222-45C3-895F-A7AC0F528D0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.Service", "LevelLearn.Service\LevelLearn.Service.csproj", "{D2675EAC-1222-45C3-895F-A7AC0F528D0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelLearn.ViewModel", "LevelLearn.ViewModel\LevelLearn.ViewModel.csproj", "{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D2675EAC-1222-45C3-895F-A7AC0F528D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2675EAC-1222-45C3-895F-A7AC0F528D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2675EAC-1222-45C3-895F-A7AC0F528D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

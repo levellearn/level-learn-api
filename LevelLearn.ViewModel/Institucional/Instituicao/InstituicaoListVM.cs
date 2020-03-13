@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LevelLearn.WebApi.ViewModels.Institucional.Instituicao
+namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
     public class InstituicaoListVM : ListBaseVM
     {

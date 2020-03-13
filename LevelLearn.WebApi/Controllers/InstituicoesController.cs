@@ -2,8 +2,7 @@
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Institucional;
-using LevelLearn.Domain.UnityOfWorks;
-using LevelLearn.WebApi.ViewModels.Institucional.Instituicao;
+using LevelLearn.ViewModel.Institucional.Instituicao;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -85,13 +84,12 @@ namespace LevelLearn.WebApi.Controllers
         {
             try
             {
-                var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
-
-                ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicao);
+                ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicaoVM);
 
                 if (!response.Success) return StatusCode(response.StatusCode, response);
 
-                return CreatedAtAction(nameof(GetInstituicao), new { id = instituicao.Id }, _mapper.Map<InstituicaoVM>(instituicao));
+                var responseVM = _mapper.Map<InstituicaoVM>((Instituicao)response.Data);
+                return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
             }
             catch (Exception ex)
             {
@@ -108,11 +106,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             try
             {
-                //if (id != instituicaoVM.Id) return BadRequest();
-
-                var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
-
-                ResponseAPI response = await _instituicaoService.EditarInstituicao(id, instituicao);
+                ResponseAPI response = await _instituicaoService.EditarInstituicao(id, instituicaoVM);
 
                 if (!response.Success) return StatusCode(response.StatusCode, response);
 
