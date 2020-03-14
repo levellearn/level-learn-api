@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.ViewModel.Institucional.Instituicao;
+using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -121,7 +122,7 @@ namespace LevelLearn.WebApi.Controllers
         [Route("v1/[controller]/{id:guid}")]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]      
         public async Task<ActionResult> DeleteInstituicao(Guid id)
         {
             try

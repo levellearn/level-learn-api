@@ -40,7 +40,8 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResponseAPI> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM)
         {
-            // Validação BD, verifica se está tentando atualizar uma instituição que já existe
+            // Validação BD
+            //verifica se está tentando atualizar uma instituição que já existe
             if (await _uow.Instituicoes.EntityExists(i => 
                     i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != id)
                 )
@@ -50,6 +51,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             if (instituicaoExistente == null) 
                 return ResponseAPI.ResponseAPIFactory.NotFound("Instituição não existente");
+
 
             instituicaoExistente.Atualizar(instituicaoVM.Nome, instituicaoVM.Descricao);
 

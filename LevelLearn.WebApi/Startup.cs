@@ -4,6 +4,7 @@ using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Service.Services.Institucional;
+using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,12 @@ namespace LevelLearn.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true);
+            services.AddControllers(c =>
+            {
+                c.Filters.Add(typeof(CustomExceptionFilter));
+            }).AddJsonOptions(o => { 
+                o.JsonSerializerOptions.IgnoreNullValues = true; 
+            });
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
