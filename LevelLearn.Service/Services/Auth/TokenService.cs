@@ -41,7 +41,9 @@ namespace LevelLearn.Service.Services.Auth
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
-                )
+                ),
+                Issuer = _appSettings.Emissor,
+                Audience = _appSettings.ValidoEm,
             };
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);

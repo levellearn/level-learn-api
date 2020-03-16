@@ -71,19 +71,12 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
-            try
-            {
-                ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicaoVM);
+            ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicaoVM);
 
-                if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Success) return StatusCode(response.StatusCode, response);
 
-                var responseVM = _mapper.Map<InstituicaoVM>((Instituicao)response.Data);
-                return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
-            }
+            var responseVM = _mapper.Map<InstituicaoVM>((Instituicao)response.Data);
+            return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
         [Route("v1/[controller]/{id:guid}")]
@@ -93,18 +86,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
-            try
-            {
-                ResponseAPI response = await _instituicaoService.EditarInstituicao(id, instituicaoVM);
+            ResponseAPI response = await _instituicaoService.EditarInstituicao(id, instituicaoVM);
 
-                if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Success) return StatusCode(response.StatusCode, response);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
-            }
+            return NoContent();
         }
 
         [Route("v1/[controller]/{id:guid}")]
@@ -113,18 +99,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]      
         public async Task<ActionResult> DeleteInstituicao(Guid id)
         {
-            try
-            {
-                ResponseAPI response = await _instituicaoService.RemoverInstituicao(id);
+            ResponseAPI response = await _instituicaoService.RemoverInstituicao(id);
 
-                if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Success) return StatusCode(response.StatusCode, response);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
-            }
+            return NoContent();
         }
 
 

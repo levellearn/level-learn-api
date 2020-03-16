@@ -24,7 +24,7 @@ namespace LevelLearn.WebApi.Controllers
         [Route("v1/[controller]")]
         [HttpGet]
         [ProducesResponseType(typeof(Token), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetInstituicao(Guid id)
+        public async Task<ActionResult> GenerateToken()
         {
             var token = _tokenService.GenerateToken();
 
