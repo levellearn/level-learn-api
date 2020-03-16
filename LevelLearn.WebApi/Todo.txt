@@ -1,4 +1,5 @@
 Implementar log dos erros
 Implementar controller base
 Implementar JWT
+Implementar Refresh Token
 Implementar Arquivo resources

@@ -4,6 +4,7 @@ using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using LevelLearn.WebApi.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +18,7 @@ namespace LevelLearn.WebApi.Controllers
     [ApiController]
     [Route("api/")]
     [Produces("application/json")]
+    [Authorize]
     public class InstituicoesController : ControllerBase
     {
         private readonly IInstituicaoService _instituicaoService;
@@ -36,25 +38,18 @@ namespace LevelLearn.WebApi.Controllers
             [FromQuery][Range(1, int.MaxValue)]int pageIndex,
             [FromQuery][Range(1, 200)]int pageSize)
         {
-            try
-            {
-                var instituicoes = await _instituicaoService.GetWithPagination(query, pageIndex, pageSize);
-                var count = await _instituicaoService.CountWithPagination(query);
+            var instituicoes = await _instituicaoService.GetWithPagination(query, pageIndex, pageSize);
+            var count = await _instituicaoService.CountWithPagination(query);
 
-                var listVM = new InstituicaoListVM
-                {
-                    Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
-                    Total = count,
-                    PageIndex = pageIndex,
-                    PageSize = pageSize
-                };
-
-                return Ok(listVM);
-            }
-            catch (Exception ex)
+            var listVM = new InstituicaoListVM
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
-            }
+                Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
+                Total = count,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+
+            return Ok(listVM);
         }
 
         [Route("v1/[controller]/{id:guid}")]
@@ -63,18 +58,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetInstituicao(Guid id)
         {
-            try
-            {
-                var instituicao = await _instituicaoService.GetAsync(id);
+            var instituicao = await _instituicaoService.GetAsync(id);
 
-                if (instituicao == null) return NotFound(new { message = "Instituição não encontrada" });
+            if (instituicao == null) return NotFound(new { message = "Instituição não encontrada" });
 
-                return Ok(_mapper.Map<InstituicaoVM>(instituicao));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "Erro interno do servidor" });
-            }
+            return Ok(_mapper.Map<InstituicaoVM>(instituicao));
         }
 
         [Route("v1/[controller]")]
