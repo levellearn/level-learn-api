@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
@@ -60,7 +61,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 

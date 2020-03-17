@@ -3,3 +3,6 @@ Implementar controller base
 Implementar JWT
 Implementar Refresh Token
 Implementar Arquivo resources
+
+Add-Migration add-identity -Verbose -StartupProject LevelLearn.Infra.EFCore -Context AuthDbContext
+Update-Database -Context AuthDbContext -Verbose

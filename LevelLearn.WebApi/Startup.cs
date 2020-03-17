@@ -10,6 +10,7 @@ using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,50 +49,79 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            //ConfigureJWTAuthentication(services);
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
+            // Identity
+            ConfigureIdentity(services);
 
-            var key = Encoding.ASCII.GetBytes(appSettings.ChavePrivada);
+            // JWT
+            ConfigureJWTAuthentication(services);
 
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false; //TODO: 
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
-                };
-            });
+            // DBContext
+            ConfigureDbContexts(services);
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
-
-            // DBContext
-            var connectionString = Configuration.GetConnectionString("SQLServerConnection");
-            services.AddDbContext<LevelLearnContext>(opt =>
-            {
-                opt.UseSqlServer(connectionString);
-            });
 
             // UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Business Services
+            ConfigureBusinessServices(services);
+
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseCors(option => option.AllowAnyOrigin());
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+
+        private void ConfigureIdentity(IServiceCollection services)
+        {
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                        .AddRoles<IdentityRole>()
+                        .AddEntityFrameworkStores<AuthDbContext>()
+                        .AddDefaultTokenProviders();
+        }
+
+        private void ConfigureDbContexts(IServiceCollection services)
+        {
+            var connectionString = Configuration.GetConnectionString("SQLServerConnection");
+
+            services.AddDbContext<LevelLearnContext>(opt =>
+            {
+                opt.UseSqlServer(connectionString);
+            });
+
+            services.AddDbContext<AuthDbContext>(opt =>
+            {
+                opt.UseSqlServer(connectionString);
+            });           
+        }
+
+        private void ConfigureBusinessServices(IServiceCollection services)
+        {
             services.AddTransient<IInstituicaoService, InstituicaoService>();
             services.AddTransient<ITokenService, TokenService>();
-
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)
@@ -109,7 +139,7 @@ namespace LevelLearn.WebApi
             })
             .AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false; //TODO: 
+                x.RequireHttpsMetadata = false; //TODO: Ajustar HTTPS 
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -121,33 +151,7 @@ namespace LevelLearn.WebApi
                     ValidIssuer = appSettings.Emissor
                 };
             });
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            //app.UseCors(option => option.AllowAnyOrigin());
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+        }        
 
 
     }

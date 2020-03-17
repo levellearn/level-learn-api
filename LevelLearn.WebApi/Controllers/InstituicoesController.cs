@@ -3,14 +3,12 @@ using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.ViewModel.Institucional.Instituicao;
-using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -19,6 +17,7 @@ namespace LevelLearn.WebApi.Controllers
     [Route("api/")]
     [Produces("application/json")]
     [Authorize]
+    //[Authorize(Roles = "professor")]
     public class InstituicoesController : ControllerBase
     {
         private readonly IInstituicaoService _instituicaoService;
@@ -76,6 +75,7 @@ namespace LevelLearn.WebApi.Controllers
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
             var responseVM = _mapper.Map<InstituicaoVM>((Instituicao)response.Data);
+
             return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
@@ -96,7 +96,7 @@ namespace LevelLearn.WebApi.Controllers
         [Route("v1/[controller]/{id:guid}")]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]      
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteInstituicao(Guid id)
         {
             ResponseAPI response = await _instituicaoService.RemoverInstituicao(id);

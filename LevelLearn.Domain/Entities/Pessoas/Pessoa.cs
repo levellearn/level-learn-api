@@ -9,8 +9,13 @@ namespace LevelLearn.Domain.Entities.Pessoas
 {
     public abstract class Pessoa : EntityBase
     {
+        private const string IMAGEM_URL_PADRAO = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
+
         #region Ctors
-        protected Pessoa() { }
+        protected Pessoa()
+        {
+            Instituicoes = new List<PessoaInstituicao>();
+        }
 
         public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
             string imagemUrl, DateTime? dataNascimento)
@@ -21,7 +26,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Cpf = cpf;
             Celular = celular;
             Genero = genero;
-            ImagemUrl = imagemUrl; // TODO: Obrigatório?
+            ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl; // TODO: Obrigatório?
             DataNascimento = dataNascimento;
             Instituicoes = new List<PessoaInstituicao>();
 

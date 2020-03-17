@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LevelLearn.ViewModel.Auth
+namespace LevelLearn.ViewModel.Usuarios
 {
     public class Token
     {
