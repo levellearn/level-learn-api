@@ -1,10 +1,9 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Entities.Pessoas;
+﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace LevelLearn.Infra.EFCore.Configurations.Institucional
+namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
     public class PessoaConfiguration : IEntityTypeConfiguration<Pessoa>
     {
@@ -21,21 +20,21 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.OwnsOne(c => c.Cpf)
                 .Ignore(e => e.CascadeMode)
-                .Property(e => e.Number)
+                .Property(e => e.Numero)
                 .HasColumnName("CPF")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.CPF_TAMANHO})")
                 .IsRequired();
 
             builder.OwnsOne(c => c.Email)
                 .Ignore(e => e.CascadeMode)
-                .Property(e => e.Address)
+                .Property(e => e.Endereco)
                 .HasColumnName("Email")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX})")
                 .IsRequired();
 
             builder.OwnsOne(c => c.Celular)
                 .Ignore(e => e.CascadeMode)
-                .Property(c => c.CellPhoneNumber)
+                .Property(c => c.Numero)
                 .HasColumnName("Celular")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.CELULAR_TAMANHO})")
                 .IsRequired();
@@ -43,8 +42,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
             builder.Property(p => p.Nome)
                 .IsRequired()
                 .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})")
-                .IsRequired();
+                .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.UserName)
                .IsRequired()

@@ -21,10 +21,10 @@ namespace LevelLearn.Domain.Validators.Pessoas
         private void ValidarNome()
         {
             RuleFor(p => p.Nome)
-                .NotEmpty().WithMessage("O Nome precisa estar preenchido")
+                .NotEmpty().WithMessage("Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage($"O Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
-                .Must(n => IsFullName(n)).WithMessage("O Nome precisa de um sobrenome");
+                .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
+                .Must(n => IsFullName(n)).WithMessage("Nome precisa de um sobrenome");
         }
         private bool IsFullName(string name)
         {
@@ -41,17 +41,17 @@ namespace LevelLearn.Domain.Validators.Pessoas
             var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
 
             RuleFor(p => p.UserName)
-                .NotEmpty().WithMessage("O Username precisa estar preenchido")
+                .NotEmpty().WithMessage("Username precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("O Username somente deve conter letras, números, (_), (-) ou (.)")
+                .WithMessage("Username somente deve conter letras, números, (_), (-) ou (.)")
                 .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"O Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
+                .WithMessage($"Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()
         {
             RuleFor(p => p.ImagemUrl)
-                .NotEmpty().WithMessage("A Imagem precisa estar preenchida");
+                .NotEmpty().WithMessage("Imagem precisa estar preenchida");
         }       
 
         private void ValidarDataNascimento()
@@ -59,25 +59,25 @@ namespace LevelLearn.Domain.Validators.Pessoas
             var dataAtual = DateTime.Now.Date;
 
             RuleFor(c => c.DataNascimento)
-                //.NotEmpty().WithMessage("A Data Nascimento precisa estar preenchida")
-                .LessThan(dataAtual).WithMessage("A Data Nascimento precisa ser menor que hoje")
+                //.NotEmpty().WithMessage("Data Nascimento precisa estar preenchida")
+                .LessThan(dataAtual).WithMessage("Data Nascimento precisa ser menor que hoje")
                 .When(p => p.DataNascimento.HasValue);
         }
 
         private void ValidarGenero()
         {
             RuleFor(p => p.Genero)
-                .NotEmpty().WithMessage("O Gênero precisa estar preenchido")
+                .NotEmpty().WithMessage("Gênero precisa estar preenchido")
                 .Must(c => c.Equals(Generos.Masculino) || c.Equals(Generos.Feminino))
-                .WithMessage($"O Gênero precisa ser Masculino ou Feminino");
+                .WithMessage($"Gênero precisa ser Masculino ou Feminino");
         }
 
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
-                .NotEmpty().WithMessage("O Tipo de pessoa precisa estar preenchido")
+                .NotEmpty().WithMessage("Tipo de pessoa precisa estar preenchido")
                 .Must(c => c != TiposPessoa.Nenhum)
-                .WithMessage($"O Tipo de pessoa precisa ser Admin, Professor ou Aluno");
+                .WithMessage($"Tipo de pessoa precisa ser Admin, Professor ou Aluno");
         }
 
 

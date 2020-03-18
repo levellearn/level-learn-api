@@ -44,8 +44,6 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
-            //if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));          
-
             ResponseAPI response = await _usuarioService.RegistrarUsuario(usuarioVM);
 
             if (!response.Success) return StatusCode(response.StatusCode, response);

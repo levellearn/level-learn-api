@@ -7,7 +7,7 @@
         {
             public const int NOME_TAMANHO_MIN = 3;
             public const int NOME_TAMANHO_MAX = 150;
-            public const int USERNAME_TAMANHO_MAX = 20;
+            public const int USERNAME_TAMANHO_MAX = 30;
             public const int CELULAR_TAMANHO = 14;
             public const int EMAIL_TAMANHO_MAX = 190;
             public const int CPF_TAMANHO = 11;

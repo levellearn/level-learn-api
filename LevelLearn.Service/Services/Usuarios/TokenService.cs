@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
+using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.ViewModel.Auth;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.Extensions.Options;
@@ -12,7 +13,7 @@ namespace LevelLearn.Service.Services.Usuarios
 {
     public interface ITokenService
     {
-        Token GerarJWT();
+        Token GerarJWT(Pessoa pessoa);
     }
 
     public class TokenService : ITokenService
@@ -24,7 +25,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _appSettings = appSettings.Value;
         }
 
-        public Token GerarJWT()
+        public Token GerarJWT(Pessoa pessoa)
         {
             var key = Encoding.ASCII.GetBytes(_appSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
@@ -35,11 +36,9 @@ namespace LevelLearn.Service.Services.Usuarios
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, "teste"),
-                    //new Claim(ClaimTypes.Name, user.Username.ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, pessoa.Id.ToString()),
+                    new Claim(ClaimTypes.Name, pessoa.UserName)
                     //new Claim(ClaimTypes.Role, user.Role.ToString())
-                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                    //    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserID)
                 }),
                 Expires = dataExpiracao,
                 SigningCredentials = new SigningCredentials(

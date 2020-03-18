@@ -9,21 +9,21 @@ namespace LevelLearn.Domain.ValueObjects
     {
         protected Celular() { }
 
-        public Celular(string number)
+        public Celular(string numero)
         {
-            CellPhoneNumber = number.GetNumbers();
-            CellPhoneNumber = CellPhoneNumber.StartsWith("55") ? CellPhoneNumber : CellPhoneNumber.Insert(0, "55");
+            Numero = numero.GetNumbers();
+            Numero = Numero.StartsWith("55") ? Numero : Numero.Insert(0, "55");
         }
 
-        public string CellPhoneNumber { get; private set; }
+        public string Numero { get; private set; }
 
         private bool Validate()
         {
-            if (string.IsNullOrEmpty(CellPhoneNumber)) return false;
+            if (string.IsNullOrEmpty(Numero)) return false;
 
             string pattern = @"^(55)([1-9][0-9])(\d{5})(\d{4})$";
 
-            if (Regex.IsMatch(CellPhoneNumber, pattern))
+            if (Regex.IsMatch(Numero, pattern))
                 return true;
             else
                 return false;
@@ -31,7 +31,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override bool EstaValido()
         {
-            RuleFor(c => c.CellPhoneNumber)
+            RuleFor(c => c.Numero)
                 .Must(a => Validate()).WithMessage("Celular não é válido")
                 .OverridePropertyName("Celular");
 
@@ -41,7 +41,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override string ToString()
         {
-            return Convert.ToInt64(this.CellPhoneNumber).ToString("+##(##)#####-####");
+            return Convert.ToInt64(this.Numero).ToString("+##(##)#####-####");
         }
     }
 }

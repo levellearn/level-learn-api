@@ -1,7 +1,9 @@
 ﻿using LevelLearn.Domain.Repositories.Institucional;
+using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repositories.Institucional;
+using LevelLearn.Repositories.Pessoas;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.UnityOfWorks
@@ -15,7 +17,10 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             _context = context;
         }
 
+
         public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
+        public IPessoaRepository Pessoas => new PessoaRepository(_context);
+
 
         public bool Complete()
         {

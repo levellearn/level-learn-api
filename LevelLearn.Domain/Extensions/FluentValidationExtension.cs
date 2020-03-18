@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using LevelLearn.Domain.Entities;
 using LevelLearn.Domain.Validators;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Extensions
@@ -22,6 +23,18 @@ namespace LevelLearn.Domain.Extensions
             foreach (var error in validationResult.Errors)
             {
                 errorsResult.Add(new DadoInvalido(error.PropertyName, error.ErrorMessage));
+            }
+
+            return errorsResult;
+        }
+        
+        public static ICollection<DadoInvalido> GetErrorsResult(this IdentityResult identityResult)
+        {
+            var errorsResult = new List<DadoInvalido>();
+
+            foreach (var error in identityResult.Errors)
+            {
+                errorsResult.Add(new DadoInvalido(error.Code, error.Description));
             }
 
             return errorsResult;

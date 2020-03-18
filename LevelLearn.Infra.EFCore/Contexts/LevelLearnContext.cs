@@ -1,6 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
+using LevelLearn.Infra.EFCore.Configurations.Pessoas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -26,6 +27,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //modelBuilder.UseIdentityColumns();
 
             modelBuilder.Ignore<FluentValidation.Results.ValidationFailure>();
@@ -44,6 +46,8 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new TimeConfiguration());
 
             modelBuilder.ApplyConfiguration(new PessoaConfiguration());
+            modelBuilder.ApplyConfiguration(new ProfessorConfigurationtion());
+            modelBuilder.ApplyConfiguration(new AlunoConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoDesafioConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoTimeConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoTurmaConfiguration());
@@ -54,8 +58,6 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
-
-            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

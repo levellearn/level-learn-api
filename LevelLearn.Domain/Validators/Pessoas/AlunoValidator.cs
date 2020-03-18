@@ -13,7 +13,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
         private void ValidarRA()
         {
             RuleFor(p => p.RA)
-                .NotEmpty().WithMessage("O RA precisa estar preenchido");
+                .NotEmpty().WithMessage("RA precisa estar preenchido");
         }
 
 

@@ -8,26 +8,26 @@ namespace LevelLearn.Domain.ValueObjects
     {
         protected CPF() { }
 
-        public CPF(string number)
+        public CPF(string numero)
         {
-            this.Number = number.GetNumbers();
+            this.Numero = numero.GetNumbers();
         }
 
-        public string Number { get; private set; }
+        public string Numero { get; private set; }
 
         private bool Validate()
         {
-            if (string.IsNullOrEmpty(Number)) return false;
+            if (string.IsNullOrEmpty(Numero)) return false;
 
-            if (IsInBlackList(Number)) return false;
+            if (IsInBlackList(Numero)) return false;
 
             var multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             var multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            Number = Number.Trim();
-            Number = Number.Replace(".", "").Replace("-", "");
-            if (Number.Length != 11)
+            Numero = Numero.Trim();
+            Numero = Numero.Replace(".", "").Replace("-", "");
+            if (Numero.Length != 11)
                 return false;
-            var tempCpf = Number.Substring(0, 9);
+            var tempCpf = Numero.Substring(0, 9);
             var soma = 0;
 
             for (var i = 0; i < 9; i++)
@@ -48,7 +48,7 @@ namespace LevelLearn.Domain.ValueObjects
             else
                 resto = 11 - resto;
             digito = digito + resto.ToString();
-            return Number.EndsWith(digito);
+            return Numero.EndsWith(digito);
         }
 
         public bool IsInBlackList(string number)
@@ -70,7 +70,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override bool EstaValido()
         {
-            RuleFor(c => c.Number)
+            RuleFor(c => c.Numero)
                 .Must(a => Validate()).WithMessage("CPF não é válido")
                 .OverridePropertyName("CPF");
 
@@ -80,7 +80,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override string ToString()
         {
-            return Convert.ToInt64(Number).ToString("###\\.###\\.###-##").PadLeft(14, '0');
+            return Convert.ToInt64(Numero).ToString("###\\.###\\.###-##").PadLeft(14, '0');
         }
 
     }
