@@ -4,6 +4,7 @@ Implementar Arquivo resources
 Implementar Validações de senha
 Implementar HTTPS
 
+Add-Migration initial -StartupProject LevelLearn.Infra.EFCore -Context LevelLearnContext -Verbose
 Add-Migration add-identity -Verbose -StartupProject LevelLearn.Infra.EFCore -Context AuthDbContext
 Update-Database -Context AuthDbContext -Verbose
 Update-Database -StartupProject LevelLearn.Infra.EFCore -Context LevelLearnContext -Verbose

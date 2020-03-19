@@ -31,7 +31,6 @@ namespace LevelLearn.Infra.EFCore.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.UseIdentityColumns();
 
             modelBuilder.Ignore<FluentValidation.Results.ValidationFailure>();
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
@@ -58,7 +57,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
 
-            modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
+            //modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
 
             //Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
