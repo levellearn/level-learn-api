@@ -1,7 +1,10 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using LevelLearn.Infra.EFCore.Configurations.Pessoas;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -9,9 +12,9 @@ using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
 {
-    public class LevelLearnContext : DbContext
+    public class LevelLearnContext : IdentityDbContext<IdentityUser>//: DbContext
     {
-        //public LevelLearnContext() => Database.EnsureCreated();
+        public LevelLearnContext() : base() => Database.EnsureCreated();
 
         public LevelLearnContext(DbContextOptions<LevelLearnContext> options)
            : base(options)
@@ -54,6 +57,8 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new NotificacaoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
+
+            modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
 
             //Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

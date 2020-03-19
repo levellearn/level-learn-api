@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LevelLearn.Domain.Services;
+﻿using LevelLearn.Domain.Services;
 using LevelLearn.Domain.Services.Usuarios;
-using LevelLearn.Service.Services.Auth;
-using LevelLearn.ViewModel.Auth;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
 {

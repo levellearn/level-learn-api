@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Infra.EFCore.Configurations.Pessoas;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +13,18 @@ namespace LevelLearn.Infra.EFCore.Contexts
         public AuthDbContext() : base() { }
 
         public AuthDbContext(DbContextOptions<AuthDbContext> options)
-            : base(options) { }
-
+            : base(options) 
+        { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Ignore<FluentValidation.Results.ValidationFailure>();
+            builder.Ignore<FluentValidation.Results.ValidationResult>();
+            //builder.ApplyConfiguration(new PessoaConfiguration());
+            //builder.ApplyConfiguration(new ProfessorConfigurationtion());
+            //builder.ApplyConfiguration(new AlunoConfiguration());
 
             builder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
         }

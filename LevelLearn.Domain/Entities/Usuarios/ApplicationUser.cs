@@ -6,11 +6,14 @@ using LevelLearn.Domain.Validators.Pessoas;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LevelLearn.Domain.Entities.Usuarios
 {
     public class ApplicationUser : IdentityUser
     {
+        protected ApplicationUser() { }
+
         public ApplicationUser(string userName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
             string phoneNumber, bool phoneNumberConfirmed, Pessoa pessoa)
         {
@@ -24,7 +27,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             PhoneNumber = phoneNumber.GetNumbers();
             PhoneNumber = PhoneNumber.StartsWith("55") ? PhoneNumber : PhoneNumber.Insert(0, "55");
             PhoneNumberConfirmed = phoneNumberConfirmed;
-            Pessoa = pessoa;
+            //Pessoa = pessoa;
             PessoaId = pessoa.Id;
 
             ValidationResult = new ValidationResult();
@@ -33,7 +36,10 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string Senha { get; }
         public string ConfirmacaoSenha { get; }
         public Guid PessoaId { get; set; }
-        public Pessoa Pessoa { get; set; }
+
+        [NotMapped]
+        public virtual Pessoa Pessoa { get; set; }
+
         public ValidationResult ValidationResult { get; private set; }
 
         public bool EstaValido()

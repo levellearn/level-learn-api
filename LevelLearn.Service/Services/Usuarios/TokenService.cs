@@ -1,11 +1,13 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.ViewModel.Auth;
+using LevelLearn.Domain.Enums;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -13,7 +15,7 @@ namespace LevelLearn.Service.Services.Usuarios
 {
     public interface ITokenService
     {
-        Token GerarJWT(Pessoa pessoa);
+        Token GerarJWT(Pessoa pessoa, ICollection<PerfisInstituicao> perfis);
     }
 
     public class TokenService : ITokenService
@@ -25,7 +27,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _appSettings = appSettings.Value;
         }
 
-        public Token GerarJWT(Pessoa pessoa)
+        public Token GerarJWT(Pessoa pessoa, ICollection<PerfisInstituicao> perfis)
         {
             var key = Encoding.ASCII.GetBytes(_appSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
@@ -37,8 +39,10 @@ namespace LevelLearn.Service.Services.Usuarios
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(JwtRegisteredClaimNames.UniqueName, pessoa.Id.ToString()),
-                    new Claim(ClaimTypes.Name, pessoa.UserName)
-                    //new Claim(ClaimTypes.Role, user.Role.ToString())
+                    new Claim(ClaimTypes.Name, pessoa.Nome),
+                    new Claim(ClaimTypes.NameIdentifier, pessoa.UserName),
+                    new Claim(ClaimTypes.Email, pessoa.Email.Endereco),
+                    new Claim(ClaimTypes.Role, perfis.First().ToString())
                 }),
                 Expires = dataExpiracao,
                 SigningCredentials = new SigningCredentials(

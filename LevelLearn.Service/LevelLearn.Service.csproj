@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LevelLearn.Domain\LevelLearn.Domain.csproj" />
+    <ProjectReference Include="..\LevelLearn.Infra.EFCore\LevelLearn.Infra.EFCore.csproj" />
   </ItemGroup>
 
 </Project>

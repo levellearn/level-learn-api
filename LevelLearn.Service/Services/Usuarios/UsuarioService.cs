@@ -10,6 +10,7 @@ using LevelLearn.Service.Services.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,17 +45,17 @@ namespace LevelLearn.Service.Services.Usuarios
                 genero = Generos.Nenhum;
 
             // Validação Professor
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular, genero, 
+            var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular, genero,
                 imagemUrl: null, usuarioVM.DataNascimento);
 
-            if (!professor.EstaValido()) 
+            if (!professor.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
 
             // Validação Usuário
-            var user = new ApplicationUser(usuarioVM.UserName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha, 
+            var user = new ApplicationUser(usuarioVM.UserName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor);
 
-            if (!user.EstaValido()) 
+            if (!user.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
 
             // Validação BD
@@ -67,9 +68,11 @@ namespace LevelLearn.Service.Services.Usuarios
             // Criando User Identity
             var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
 
-            if (!identityResult.Succeeded) 
+            if (!identityResult.Succeeded)
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
 
+            var role = PerfisInstituicao.Professor;
+            await _userManager.AddToRoleAsync(user, role.ToString());
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             // Criando Professor
@@ -82,7 +85,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Nome = professor.Nome,
                 UserName = professor.UserName,
                 ImagemUrl = professor.ImagemUrl,
-                Token = _tokenService.GerarJWT()
+                Token = _tokenService.GerarJWT(professor, new List<PerfisInstituicao>() { role })
             };
 
             return ResponseAPI.ResponseAPIFactory.Created(responseVM);
