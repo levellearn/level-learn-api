@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Services;
-using LevelLearn.Domain.Services.Institucional;
+using LevelLearn.Service.Interfaces.Institucional;
+using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

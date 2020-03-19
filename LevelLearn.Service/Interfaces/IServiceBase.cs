@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace LevelLearn.Domain.Services
+namespace LevelLearn.Service.Interfaces
 {
     public interface IServiceBase<TEntity> where TEntity : EntityBase
     {

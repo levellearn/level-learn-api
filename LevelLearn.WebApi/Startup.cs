@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.AppSettings;
-using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Domain.Services.Institucional;
-using LevelLearn.Domain.Services.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
+using LevelLearn.Service.Interfaces.Institucional;
+using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Services.Institucional;
 using LevelLearn.Service.Services.Usuarios;
 using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -70,18 +68,22 @@ namespace LevelLearn.WebApi
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Business Services
-            ConfigureBusinessServices(services);
-
-            // Criação de estruturas, usuários e permissões na base do ASP.NET Identity Core (caso ainda não existam)
-            //new IdentityInitializer(context, userManager, roleManager).Initialize();
+            ConfigureBusinessServices(services);          
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            LevelLearnContext context,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }            
+            }
+
+            // Criação de estruturas, usuários e permissões na base do ASP.NET Identity Core (caso ainda não existam)
+            new IdentityInitializer(context, userManager, roleManager)
+                .Initialize();
 
             app.UseHttpsRedirection();
 

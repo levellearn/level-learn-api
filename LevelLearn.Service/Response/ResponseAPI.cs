@@ -1,10 +1,8 @@
 ﻿using LevelLearn.Domain.Validators;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Net;
 
-namespace LevelLearn.Domain.Services
+namespace LevelLearn.Service.Response
 {
     public class ResponseAPI
     {

@@ -68,8 +68,8 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Genero)
                 .NotEmpty().WithMessage("Gênero precisa estar preenchido")
-                .Must(c => c.Equals(Generos.Masculino) || c.Equals(Generos.Feminino))
-                .WithMessage($"Gênero precisa ser Masculino ou Feminino");
+                .Must(c => c != Generos.Nenhum)
+                    .WithMessage($"Gênero precisa ser informado");
         }
 
         private void ValidarTipoPessoa()

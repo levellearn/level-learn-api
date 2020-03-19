@@ -1,5 +1,5 @@
-﻿using LevelLearn.Domain.Services;
-using LevelLearn.Domain.Services.Usuarios;
+﻿using LevelLearn.Service.Interfaces.Usuarios;
+using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,9 +1,16 @@
-﻿namespace LevelLearn.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace LevelLearn.Domain.Enums
 {
     public enum Generos
     {
+        [Description("Nenhum")]
         Nenhum = 0,
-        Masculino = 1,
-        Feminino = 2
+        [Description("Masculino")]
+        Masculino,
+        [Description("Feminino")]
+        Feminino,
+        [Description("Outros")]
+        Outros
     }
 }

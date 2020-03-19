@@ -27,7 +27,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             PhoneNumber = phoneNumber.GetNumbers();
             PhoneNumber = PhoneNumber.StartsWith("55") ? PhoneNumber : PhoneNumber.Insert(0, "55");
             PhoneNumberConfirmed = phoneNumberConfirmed;
-            //Pessoa = pessoa;
+            Pessoa = pessoa;
             PessoaId = pessoa.Id;
 
             ValidationResult = new ValidationResult();
@@ -36,10 +36,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string Senha { get; }
         public string ConfirmacaoSenha { get; }
         public Guid PessoaId { get; set; }
-
-        [NotMapped]
         public virtual Pessoa Pessoa { get; set; }
-
         public ValidationResult ValidationResult { get; private set; }
 
         public bool EstaValido()

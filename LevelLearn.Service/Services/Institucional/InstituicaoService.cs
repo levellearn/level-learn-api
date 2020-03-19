@@ -1,8 +1,8 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Extensions;
-using LevelLearn.Domain.Services;
-using LevelLearn.Domain.Services.Institucional;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Service.Interfaces.Institucional;
+using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação objeto
             if (!instituicaoNova.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
-            
+
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicaoNova.NomePesquisa))
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");
@@ -42,14 +42,14 @@ namespace LevelLearn.Service.Services.Institucional
         {
             // Validação BD
             //verifica se está tentando atualizar uma instituição que já existe
-            if (await _uow.Instituicoes.EntityExists(i => 
+            if (await _uow.Instituicoes.EntityExists(i =>
                     i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != id)
                 )
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");
 
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
 
-            if (instituicaoExistente == null) 
+            if (instituicaoExistente == null)
                 return ResponseAPI.ResponseAPIFactory.NotFound("Instituição não existente");
 
 

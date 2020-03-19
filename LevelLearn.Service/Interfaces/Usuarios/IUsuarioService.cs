@@ -1,8 +1,9 @@
-﻿using LevelLearn.ViewModel.Usuarios;
+﻿using LevelLearn.Service.Response;
+using LevelLearn.ViewModel.Usuarios;
 using System;
 using System.Threading.Tasks;
 
-namespace LevelLearn.Domain.Services.Usuarios
+namespace LevelLearn.Service.Interfaces.Usuarios
 {
     public interface IUsuarioService : IDisposable
     {

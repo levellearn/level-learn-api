@@ -1,10 +1,10 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Repositories;
+using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
 using System.Threading.Tasks;
 
-namespace LevelLearn.Domain.Services.Institucional
+namespace LevelLearn.Service.Interfaces.Institucional
 {
     public interface IInstituicaoService : IServiceBase<Instituicao>, IDisposable
     {

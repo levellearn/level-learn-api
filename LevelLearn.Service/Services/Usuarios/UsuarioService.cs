@@ -2,16 +2,14 @@
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
-using LevelLearn.Domain.Services;
-using LevelLearn.Domain.Services.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.ValueObjects;
-using LevelLearn.Service.Services.Usuarios;
+using LevelLearn.Service.Interfaces.Usuarios;
+using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Usuarios
@@ -41,8 +39,9 @@ namespace LevelLearn.Service.Services.Usuarios
             var email = new Email(usuarioVM.Email);
             var cpf = new CPF(usuarioVM.Cpf);
             var celular = new Celular(usuarioVM.Celular);
-            if (!Enum.TryParse(usuarioVM.Genero, true, out Generos genero))
-                genero = Generos.Nenhum;
+            //if (!Enum.TryParse(usuarioVM.Genero, true, out Generos genero))
+            //    genero = Generos.Nenhum;
+            var genero = usuarioVM.Genero;
 
             // Validação Professor
             var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular, genero,
