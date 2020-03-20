@@ -1,34 +1,48 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Usuarios
 {
-    public interface ITokenService
-    {
-        Token GerarJWT(Pessoa pessoa, ICollection<PerfisInstituicao> perfis);
-    }
-
     public class TokenService : ITokenService
     {
         private readonly AppSettings _appSettings;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TokenService(IOptions<AppSettings> appSettings)
+        public TokenService(IOptions<AppSettings> appSettings, UserManager<ApplicationUser> userManager)
         {
             _appSettings = appSettings.Value;
+            _userManager = userManager;
         }
 
-        public Token GerarJWT(Pessoa pessoa, ICollection<PerfisInstituicao> perfis)
+        public async Task<Token> GerarJWT(string username)
         {
+            var user = await _userManager.FindByNameAsync(username);
+            var roles = await _userManager.GetRolesAsync(user);
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.NickName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
             var key = Encoding.ASCII.GetBytes(_appSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
             var dataExpiracao = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras);
@@ -36,14 +50,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(JwtRegisteredClaimNames.UniqueName, pessoa.Id.ToString()),
-                    new Claim(ClaimTypes.Name, pessoa.Nome),
-                    new Claim(ClaimTypes.NameIdentifier, pessoa.UserName),
-                    new Claim(ClaimTypes.Email, pessoa.Email.Endereco),
-                    new Claim(ClaimTypes.Role, perfis.First().ToString())
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = dataExpiracao,
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
@@ -65,7 +72,6 @@ namespace LevelLearn.Service.Services.Usuarios
                 AccessToken = token
             };
         }
-
-
+        
     }
 }

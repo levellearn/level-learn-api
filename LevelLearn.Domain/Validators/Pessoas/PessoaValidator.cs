@@ -11,7 +11,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
         public PessoaValidator()
         {
             ValidarNome();
-            ValidarUserName();
+            ValidarNickName();
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
@@ -36,16 +36,16 @@ namespace LevelLearn.Domain.Validators.Pessoas
                 return false;
         }
 
-        private void ValidarUserName()
+        private void ValidarNickName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX + "}$";
 
-            RuleFor(p => p.UserName)
-                .NotEmpty().WithMessage("Username precisa estar preenchido")
+            RuleFor(p => p.NickName)
+                .NotEmpty().WithMessage("NickName precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("Username somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
+                .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
+                .MaximumLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
+                .WithMessage($"NickName pode ter no máximo {PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()

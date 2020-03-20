@@ -18,18 +18,7 @@ namespace LevelLearn.WebApi.Controllers
         public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-        }
-
-        //[Route("v1/[controller]")]
-        //[AllowAnonymous]
-        //[HttpGet]
-        //[ProducesResponseType(typeof(Token), StatusCodes.Status200OK)]
-        //public async Task<ActionResult> GenerateToken()
-        //{
-        //    var token = _tokenService.GerarJWT();
-
-        //    return Ok(token);
-        //}
+        }        
 
         [Route("v1/[controller]/registrar-usuario")]
         [AllowAnonymous]
@@ -43,26 +32,21 @@ namespace LevelLearn.WebApi.Controllers
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
             return StatusCode(response.StatusCode, response.Data);
-            //return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
-        //[Route("v1/[controller]/entrar")]
-        //[AllowAnonymous]
-        //[HttpPost]
-        //[ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState.Values.SelectMany(e => e.Errors));
+        [Route("v1/[controller]/entrar")]
+        [AllowAnonymous]
+        [HttpPost]
+        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
+        {
+            ResponseAPI response = await _usuarioService.LogarUsuario(usuarioVM);
 
-        //    var result = await _signInManager.PasswordSignInAsync(
-        //        usuarioVM.Email, usuarioVM.Password, isPersistent: false, lockoutOnFailure: true
-        //    );
+            if (!response.Success) return StatusCode(response.StatusCode, response);
 
-        //    if (!result.Succeeded) return BadRequest(new { Message = "Usuário e/ou senha inválidos" } );
-
-        //    return Ok(_tokenService.GerarJWT());
-        //}
+            return StatusCode(response.StatusCode, response.Data);
+        }
 
         //[Authorize]
         //[ProducesResponseType(StatusCodes.Status200OK)]

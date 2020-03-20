@@ -11,7 +11,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class ProfessorTest
     {
         #region Fields
-        private string _nome, _userName, _email, _cpf, _celular, _imagemUrl;
+        private string _nome, _nickName, _email, _cpf, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
         #endregion
@@ -20,7 +20,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Leandro Guarino";
-            _userName = "le_guarino";
+            _nickName = "le_guarino";
             _email = "le.guarino@mail.com";
             _cpf = "881.192.990-35";
             _genero = Generos.Masculino;
@@ -52,14 +52,14 @@ namespace LevelLearn.NUnitTest.Pessoas
 
         private Professor CriarProfessor()
         {
-            return new Professor(_nome, _userName, new Email(_email), new CPF(_cpf), new Celular(_celular),
+            return new Professor(_nome, _nickName, new Email(_email), new CPF(_cpf), new Celular(_celular),
                 _genero, _imagemUrl, _dataNascimento);
         }
 
         public static Professor CriarProfessorPadrao()
         {
             var nome = "Leandro Guarino";
-            var userName = "le_guarino";
+            var nickName = "le_guarino";
             var email = "le.guarino@mail.com";
             var cpf = "881.192.990-35";
             var genero = Generos.Masculino;
@@ -67,7 +67,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
             var dataNascimento = DateTime.Parse("30/12/1988");
 
-            return new Professor(nome, userName, new Email(email), new CPF(cpf), new Celular(celular),
+            return new Professor(nome, nickName, new Email(email), new CPF(cpf), new Celular(celular),
                 genero, imagemUrl, dataNascimento);
         }
 

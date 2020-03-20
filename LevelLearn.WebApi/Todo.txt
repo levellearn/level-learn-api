@@ -3,6 +3,7 @@ Implementar Refresh Token
 Implementar Arquivo resources
 Implementar Validações de senha
 Implementar HTTPS
+Melhorar Response API para tipo genérico
 
 Add-Migration initial -StartupProject LevelLearn.Infra.EFCore -Context LevelLearnContext -Verbose
 Add-Migration add-identity -Verbose -StartupProject LevelLearn.Infra.EFCore -Context AuthDbContext

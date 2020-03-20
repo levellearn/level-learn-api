@@ -44,15 +44,15 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
                 .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})");
 
-            builder.Property(p => p.UserName)
+            builder.Property(p => p.NickName)
                .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX})");
+               .HasMaxLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
+               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");
 
-            builder.Property(p => p.UserName)
+            builder.Property(p => p.NickName)
                .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX})");
+               .HasMaxLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
+               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");
 
             builder.Property(p => p.DataNascimento)
                .IsRequired(false);

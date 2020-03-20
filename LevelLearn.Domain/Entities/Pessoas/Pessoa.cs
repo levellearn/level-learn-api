@@ -17,17 +17,17 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Instituicoes = new List<PessoaInstituicao>();
         }
 
-        public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
+        public Pessoa(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero,
             string imagemUrl, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
-            UserName = userName.RemoveExtraSpaces(); // TODO: username único?
+            NickName = nickName.RemoveExtraSpaces(); // TODO: username único?
             Email = email;
             Cpf = cpf;
             Celular = celular;
             Genero = genero;
-            ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl; // TODO: Obrigatório?
-            DataNascimento = dataNascimento;
+            ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl;
+            DataNascimento = dataNascimento; // TODO: Obrigatório?
             Instituicoes = new List<PessoaInstituicao>();
 
             NomePesquisa = Nome.GenerateSlug();
@@ -37,7 +37,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         #region Props
         public string Nome { get; protected set; }
-        public string UserName { get; protected set; }
+        public string NickName { get; protected set; }
         public Email Email { get; protected set; }
         public CPF Cpf { get; protected set; }
         public Celular Celular { get; protected set; }
@@ -108,7 +108,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             return $"ID: {Id}" +
                 $" CPF: {Cpf.ToString()}" +
                 $" Nome: {Nome}" +
-                $" UserName: {UserName}" +
+                $" NickName: {NickName}" +
                 $" E-mail: {Email.ToString()}" +
                 $" Celular: {Celular.ToString()} " +
                 $" Gênero: {Genero.ToString()} " +

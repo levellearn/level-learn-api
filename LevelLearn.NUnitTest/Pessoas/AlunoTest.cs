@@ -12,7 +12,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class AlunoTest
     {
         #region Fields
-        private string _nome, _userName, _email, _cpf, _ra, _celular, _imagemUrl;
+        private string _nome, _nickName, _email, _cpf, _ra, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
         #endregion
@@ -21,7 +21,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Felipe Ayres";
-            _userName = "felipe_ayres";
+            _nickName = "felipe_ayres";
             _email = "felipe.ayres@mail.com";
             _cpf = "881.192.990-35";
             _genero = Generos.Masculino;
@@ -91,43 +91,43 @@ namespace LevelLearn.NUnitTest.Pessoas
         [TestCase("billGates3")]
         [TestCase("shaq_O-Neal")]
         [TestCase("steven.jobs")]
-        public void Aluno_UsernameValido_ReturnTrue(string userName)
+        public void Aluno_NicknameValido_ReturnTrue(string userName)
         {
-            _userName = userName;
+            _nickName = userName;
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == "UserName");
+            bool valido = !erros.Exists(e => e.PropertyName == "NickName");
 
-            Assert.IsTrue(valido, "Aluno deveria ter UserName válido");
+            Assert.IsTrue(valido, "Aluno deveria ter NickName válido");
         }
 
         [Test]
         [TestCase("bill@Gates3")]
         [TestCase("shaq$Neal")]
         [TestCase("#stevenjobs")]
-        public void Aluno_UsernameValido_ReturnFalse(string userName)
+        public void Aluno_NicknameValido_ReturnFalse(string userName)
         {
-            _userName = userName;
+            _nickName = userName;
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == "UserName");
+            bool valido = !erros.Exists(e => e.PropertyName == "NickName");
 
-            Assert.IsFalse(valido, "Aluno deveria ter UserName inválido");
+            Assert.IsFalse(valido, "Aluno deveria ter NickName inválido");
         }
 
 
         private Aluno CriarAluno()
         {
-            return new Aluno(_nome, _userName, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
+            return new Aluno(_nome, _nickName, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
                 _genero, _imagemUrl, _dataNascimento);
         }
 
         public static Aluno CriarAlunoPadrao()
         {
             var nome = "Felipe Ayres";
-            var userName = "felipe_ayres";
+            var nickName = "felipe_ayres";
             var email = "felipe.ayres@mail.com";
             var cpf = "881.192.990-35";
             var genero = Generos.Masculino;
@@ -136,7 +136,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
-            return new Aluno(nome, userName, new Email(email), new CPF(cpf), new Celular(celular), ra,
+            return new Aluno(nome, nickName, new Email(email), new CPF(cpf), new Celular(celular), ra,
                 genero, imagemUrl, dataNascimento);
         }
 

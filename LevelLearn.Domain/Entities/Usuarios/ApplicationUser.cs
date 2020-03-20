@@ -13,14 +13,15 @@ namespace LevelLearn.Domain.Entities.Usuarios
     {
         protected ApplicationUser() { }
 
-        public ApplicationUser(string userName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
+        public ApplicationUser(string nickName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
             string phoneNumber, bool phoneNumberConfirmed, Guid pessoaId)
-        {
-            UserName = userName;
-            NormalizedUserName = userName?.Trim()?.ToLower();
+        {           
             Email = email;
             NormalizedEmail = email?.Trim()?.ToLower();
             EmailConfirmed = emailConfirmed;
+            UserName = Email;
+            NormalizedUserName = NormalizedEmail;
+            NickName = nickName.RemoveExtraSpaces();
             Senha = senha?.Trim() ?? string.Empty;
             ConfirmacaoSenha = confirmacaoSenha?.Trim() ?? string.Empty;
             PhoneNumber = phoneNumber.GetNumbers();
@@ -31,6 +32,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             ValidationResult = new ValidationResult();
         }
 
+        public string NickName { get; set; }
         public string Senha { get; }
         public string ConfirmacaoSenha { get; }
         public Guid PessoaId { get; set; }

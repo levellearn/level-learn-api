@@ -11,21 +11,21 @@ namespace LevelLearn.Domain.Validators.Pessoas
             //CascadeMode = CascadeMode.StopOnFirstFailure;
 
             ValidarEmail();
-            ValidarUserName();
+            ValidarNickName();
             ValidarCelular();
             ValidarSenha();
         }
 
-        private void ValidarUserName()
+        private void ValidarNickName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX + "}$";
 
-            RuleFor(p => p.UserName)
-                .NotEmpty().WithMessage("Username precisa estar preenchido")
+            RuleFor(p => p.NickName)
+                .NotEmpty().WithMessage("NickName precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("Username somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
+                .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
+                .MaximumLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
+                .WithMessage($"NickName pode ter no máximo {PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarEmail()
@@ -51,6 +51,8 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.Senha)
                 .NotNull()
                     .WithMessage("Senha precisa estar preenchida")
+                .Length(PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN, PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX)
+                    .WithMessage($"Senha precisa estar entre {PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN} e {PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX} caracteres")
                 .Equal(p => p.ConfirmacaoSenha)
                     .WithMessage("As senhas não conferem");
         }

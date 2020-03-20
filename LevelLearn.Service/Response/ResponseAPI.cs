@@ -23,7 +23,7 @@ namespace LevelLearn.Service.Response
         #region Factory
         public static class ResponseAPIFactory
         {
-            public static ResponseAPI Ok(object data, string message, int pageIndex = 0, int pageSize = 0, int total = 0)
+            public static ResponseAPI Ok(object data, string message, int? pageIndex = null, int? pageSize = null, int? total = null)
             {
                 return new ResponseAPI()
                 {
@@ -58,13 +58,33 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI BadRequest(string message = "Dados inválidos", ICollection<DadoInvalido> errors = null)
+            public static ResponseAPI BadRequest(string message)
             {
                 return new ResponseAPI()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.BadRequest,
-                    Errors = errors
+                    Errors = new List<DadoInvalido>()
+                };
+            }
+
+            public static ResponseAPI BadRequest(string message = "Dados inválidos", ICollection<DadoInvalido> dadosInvalidos = null)
+            {
+                return new ResponseAPI()
+                {
+                    Message = message,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Errors = dadosInvalidos
+                };
+            }
+
+            public static ResponseAPI BadRequest(string message, DadoInvalido dadoInvalido)
+            {
+                return new ResponseAPI()
+                {
+                    Message = message,
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Errors = new List<DadoInvalido>() { dadoInvalido }
                 };
             }
 

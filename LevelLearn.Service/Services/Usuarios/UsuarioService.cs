@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Domain.Validators;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
@@ -64,26 +65,25 @@ namespace LevelLearn.Service.Services.Usuarios
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
             if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
-            
+
             // Criando User Identity
             var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
 
             if (!identityResult.Succeeded)
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
 
-            var role = PerfisInstituicao.Professor;
-            await _userManager.AddToRoleAsync(user, role.ToString());
+            await _userManager.AddToRoleAsync(user, PerfisInstituicao.Professor.ToString());
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             // remover usuário
-            
+
             var responseVM = new UsuarioVM()
             {
                 Id = professor.Id.ToString(),
                 Nome = professor.Nome,
-                UserName = professor.UserName,
+                NickName = professor.NickName,
                 ImagemUrl = professor.ImagemUrl,
-                Token = _tokenService.GerarJWT(professor, new List<PerfisInstituicao>() { role })
+                Token = await _tokenService.GerarJWT(user.UserName)
             };
 
             return ResponseAPI.ResponseAPIFactory.Created(responseVM);
@@ -91,7 +91,35 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResponseAPI> LogarUsuario(LoginUsuarioVM usuarioVM)
         {
-            throw new NotImplementedException();
+            // Validações
+            var email = new Email(usuarioVM.Email);
+
+            if (!email.EstaValido())
+                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
+
+            if (string.IsNullOrWhiteSpace(usuarioVM.Senha))
+                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
+
+            // SignIn
+            var result = await _signInManager.PasswordSignInAsync(
+                email.Endereco, usuarioVM.Senha, isPersistent: false, lockoutOnFailure: true
+            );
+
+            if (!result.Succeeded)
+                return ResponseAPI.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
+
+            // Gerar Token           
+
+            var responseVM = new UsuarioVM()
+            {
+                Id = professor.Id.ToString(),
+                Nome = professor.Nome,
+                NickName = professor.UserName,
+                ImagemUrl = professor.ImagemUrl,
+                Token = await _tokenService.GerarJWT(email.Endereco)
+            };
+
+            return ResponseAPI.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
         }
 
         public void Dispose()
