@@ -6,7 +6,6 @@ using LevelLearn.Domain.Validators.Pessoas;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LevelLearn.Domain.Entities.Usuarios
 {
@@ -15,7 +14,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
         protected ApplicationUser() { }
 
         public ApplicationUser(string userName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
-            string phoneNumber, bool phoneNumberConfirmed, Pessoa pessoa)
+            string phoneNumber, bool phoneNumberConfirmed, Guid pessoaId)
         {
             UserName = userName;
             NormalizedUserName = userName?.Trim()?.ToLower();
@@ -27,8 +26,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             PhoneNumber = phoneNumber.GetNumbers();
             PhoneNumber = PhoneNumber.StartsWith("55") ? PhoneNumber : PhoneNumber.Insert(0, "55");
             PhoneNumberConfirmed = phoneNumberConfirmed;
-            Pessoa = pessoa;
-            PessoaId = pessoa.Id;
+            PessoaId = pessoaId;
 
             ValidationResult = new ValidationResult();
         }

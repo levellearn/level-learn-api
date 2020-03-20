@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
 {
-    public class LevelLearnContext : IdentityDbContext<IdentityUser>//: DbContext
+    public class LevelLearnContext : IdentityDbContext<ApplicationUser>
     {
         public LevelLearnContext() : base() => Database.EnsureCreated();
 
@@ -57,8 +57,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
 
-            //modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
-            modelBuilder.Entity<Pessoa>().ToTable("Pessoas");
+            //modelBuilder.Entity<Pessoa>().ToTable("Pessoas");
             modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
 
             //Remove delete cascade

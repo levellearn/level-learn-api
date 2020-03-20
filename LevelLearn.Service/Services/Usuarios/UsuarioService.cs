@@ -18,13 +18,13 @@ namespace LevelLearn.Service.Services.Usuarios
     {
         private readonly IUnitOfWork _uow;
         private readonly ITokenService _tokenService;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public UsuarioService(
             IUnitOfWork uow,
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             ITokenService tokenService)
         {
             _uow = uow;
@@ -39,20 +39,17 @@ namespace LevelLearn.Service.Services.Usuarios
             var email = new Email(usuarioVM.Email);
             var cpf = new CPF(usuarioVM.Cpf);
             var celular = new Celular(usuarioVM.Celular);
-            //if (!Enum.TryParse(usuarioVM.Genero, true, out Generos genero))
-            //    genero = Generos.Nenhum;
-            var genero = usuarioVM.Genero;
 
             // Validação Professor
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular, genero,
-                imagemUrl: null, usuarioVM.DataNascimento);
+            var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular,
+                usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             if (!professor.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
 
             // Validação Usuário
             var user = new ApplicationUser(usuarioVM.UserName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
-                usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor);
+                usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor.Id);
 
             if (!user.EstaValido())
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
@@ -64,6 +61,10 @@ namespace LevelLearn.Service.Services.Usuarios
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
                 return ResponseAPI.ResponseAPIFactory.BadRequest("CPF já existente");
 
+            // Criando Professor
+            await _uow.Pessoas.AddAsync(professor);
+            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            
             // Criando User Identity
             var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
 
@@ -74,10 +75,8 @@ namespace LevelLearn.Service.Services.Usuarios
             await _userManager.AddToRoleAsync(user, role.ToString());
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            // Criando Professor
-            await _uow.Pessoas.AddAsync(professor);
-            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
-
+            // remover usuário
+            
             var responseVM = new UsuarioVM()
             {
                 Id = professor.Id.ToString(),

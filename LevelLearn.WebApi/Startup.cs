@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.AppSettings;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
@@ -72,9 +73,7 @@ namespace LevelLearn.WebApi
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            LevelLearnContext context,
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -82,8 +81,7 @@ namespace LevelLearn.WebApi
             }
 
             // Criação de estruturas, usuários e permissões na base do ASP.NET Identity Core (caso ainda não existam)
-            new IdentityInitializer(context, userManager, roleManager)
-                .Initialize();
+            new IdentityInitializer(context, userManager, roleManager).Initialize();
 
             app.UseHttpsRedirection();
 
@@ -106,7 +104,7 @@ namespace LevelLearn.WebApi
 
         private void ConfigureIdentity(IServiceCollection services)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();

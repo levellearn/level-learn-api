@@ -35,6 +35,7 @@ namespace LevelLearn.WebApi.Filters
             response.ContentType = "application/json";
             context.Result = new JsonResult(new { 
                 message = exception.Message,
+                innerException = exception.InnerException.Message,
                 stackTrace = exception.StackTrace, 
             });
         }

@@ -9,12 +9,12 @@ namespace LevelLearn.Service.Services.Usuarios
     public class IdentityInitializer
     {
         private readonly LevelLearnContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public IdentityInitializer(
             LevelLearnContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
