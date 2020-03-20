@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
@@ -17,8 +18,7 @@ namespace LevelLearn.WebApi.Controllers
     [ApiController]
     [Route("api/")]
     [Produces("application/json")]
-    //[Authorize]
-    [Authorize(Roles = "Professor")]
+    [Authorize(Roles = ApplicationRoles.PROFESSOR)]
     public class InstituicoesController : ControllerBase
     {
         private readonly IInstituicaoService _instituicaoService;

@@ -27,16 +27,13 @@ namespace LevelLearn.Service.Services.Usuarios
             _userManager = userManager;
         }
 
-        public async Task<Token> GerarJWT(string username)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            var roles = await _userManager.GetRolesAsync(user);
-            
+        public async Task<Token> GerarJWT(ApplicationUser user, IList<string> roles)
+        {            
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.NickName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
             };
             foreach (var role in roles)
             {

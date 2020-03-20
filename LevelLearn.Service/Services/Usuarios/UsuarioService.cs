@@ -64,26 +64,40 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
-            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            try
+            {
+                if (!await _uow.CompleteAsync())
+                    return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            }
+            catch (Exception)
+            {
+                await RemoverPessoa(professor);
+                throw;
+            }
 
             // Criando User Identity
-            var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
+            try
+            {
+                var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
+                if (!identityResult.Succeeded)
+                    return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
 
-            if (!identityResult.Succeeded)
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
-
-            await _userManager.AddToRoleAsync(user, PerfisInstituicao.Professor.ToString());
-            await _signInManager.SignInAsync(user, isPersistent: false);
-
-            // remover usuário
+                await _userManager.AddToRoleAsync(user, ApplicationRoles.PROFESSOR);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+            }
+            catch (Exception)
+            {
+                await RemoverUsuario(user, ApplicationRoles.PROFESSOR);
+                throw;
+            }            
 
             var responseVM = new UsuarioVM()
             {
-                Id = professor.Id.ToString(),
+                Id = user.Id,
                 Nome = professor.Nome,
-                NickName = professor.NickName,
+                NickName = user.NickName,
                 ImagemUrl = professor.ImagemUrl,
-                Token = await _tokenService.GerarJWT(user.UserName)
+                Token = await _tokenService.GerarJWT(user, new List<string> { ApplicationRoles.PROFESSOR })
             };
 
             return ResponseAPI.ResponseAPIFactory.Created(responseVM);
@@ -109,17 +123,32 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseAPI.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
 
             // Gerar Token           
+            var user = await _userManager.FindByNameAsync(email.Endereco);
+            var roles = await _userManager.GetRolesAsync(user);
+            var pessoa = await _uow.Pessoas.GetAsync(user.PessoaId);
 
             var responseVM = new UsuarioVM()
             {
-                Id = professor.Id.ToString(),
-                Nome = professor.Nome,
-                NickName = professor.UserName,
-                ImagemUrl = professor.ImagemUrl,
-                Token = await _tokenService.GerarJWT(email.Endereco)
+                Id = user.Id,
+                Nome = pessoa.Nome,
+                NickName = user.NickName,
+                ImagemUrl = pessoa.ImagemUrl,
+                Token = await _tokenService.GerarJWT(user, roles)
             };
 
             return ResponseAPI.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
+        }
+
+        private async Task RemoverPessoa(Pessoa pessoa)
+        {
+            _uow.Pessoas.Remove(pessoa);
+            await _uow.CompleteAsync();
+        }
+
+        private async Task RemoverUsuario(ApplicationUser user, string role)
+        {
+            await _userManager.RemoveFromRoleAsync(user, role);
+            await _userManager.DeleteAsync(user);
         }
 
         public void Dispose()

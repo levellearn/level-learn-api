@@ -22,17 +22,22 @@ namespace LevelLearn.WebApi.Filters
 
         public void OnException(ExceptionContext context)
         {
-            if (!_env.IsDevelopment())
-            {
-                return;
-            }
-
             var status = HttpStatusCode.InternalServerError;
             var exception = context.Exception;
 
             var response = context.HttpContext.Response;
             response.StatusCode = (int)status;
             response.ContentType = "application/json";
+
+            if (!_env.IsDevelopment())
+            {
+                context.Result = new JsonResult(new
+                {
+                    message = "Erro interno do servidor"                  
+                });
+                return;
+            }
+           
             context.Result = new JsonResult(new { 
                 message = exception.Message,
                 innerException = exception.InnerException.Message,
