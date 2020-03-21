@@ -80,18 +80,14 @@ namespace LevelLearn.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            // Criação de estruturas, usuários e permissões na base do ASP.NET Identity Core (caso ainda não existam)
+            // Criação de estruturas, usuários e permissões Identity
             new IdentityInitializer(context, userManager, roleManager).Initialize();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors(option => option.AllowAnyOrigin());
-            //app.UseCors(x => x
-            //    .AllowAnyOrigin()
-            //    .AllowAnyMethod()
-            //    .AllowAnyHeader());
+            app.UseCors(option => option.AllowAnyOrigin());            
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -134,12 +130,7 @@ namespace LevelLearn.WebApi
             services.AddDbContext<LevelLearnContext>(opt =>
             {
                 opt.UseSqlServer(connectionString);
-            });
-
-            //services.AddDbContext<AuthDbContext>(opt =>
-            //{
-            //    opt.UseSqlServer(connectionString);
-            //});
+            });           
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)

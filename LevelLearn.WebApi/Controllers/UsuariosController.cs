@@ -48,13 +48,18 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(response.StatusCode, response.Data);
         }
 
-        //[Authorize]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    return Ok();
-        //}
+        [Route("v1/[controller]/sair")]
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Logout()
+        {
+            ResponseAPI response = await _usuarioService.Logout();
+
+            if (!response.Success) return StatusCode(response.StatusCode, response);
+
+            return Ok();
+        }
 
 
     }

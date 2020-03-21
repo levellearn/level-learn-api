@@ -64,32 +64,28 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
-            try
-            {
-                if (!await _uow.CompleteAsync())
-                    return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
-            }
-            catch (Exception)
-            {
-                await RemoverPessoa(professor);
-                throw;
-            }
+            if (!await _uow.CompleteAsync())
+                return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
             // Criando User Identity
             try
             {
                 var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
                 if (!identityResult.Succeeded)
+                {
+                    await RemoverPessoa(professor);
                     return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
+                }
 
                 await _userManager.AddToRoleAsync(user, ApplicationRoles.PROFESSOR);
                 await _signInManager.SignInAsync(user, isPersistent: false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await RemoverUsuario(user, ApplicationRoles.PROFESSOR);
-                throw;
-            }            
+                await RemoverPessoa(professor);
+                throw ex;
+            }
 
             var responseVM = new UsuarioVM()
             {
@@ -139,16 +135,22 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseAPI.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
         }
 
-        private async Task RemoverPessoa(Pessoa pessoa)
+        public async Task<ResponseAPI> Logout()
         {
-            _uow.Pessoas.Remove(pessoa);
-            await _uow.CompleteAsync();
+            await _signInManager.SignOutAsync();
+            return ResponseAPI.ResponseAPIFactory.Ok("Logout feito com sucesso");
         }
 
         private async Task RemoverUsuario(ApplicationUser user, string role)
         {
             await _userManager.RemoveFromRoleAsync(user, role);
             await _userManager.DeleteAsync(user);
+        }
+
+        private async Task RemoverPessoa(Pessoa pessoa)
+        {
+            _uow.Pessoas.Remove(pessoa);
+            await _uow.CompleteAsync();
         }
 
         public void Dispose()

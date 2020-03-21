@@ -5,6 +5,9 @@ Implementar Validações de senha
 Implementar HTTPS
 Melhorar Response API para tipo genérico
 
+Verificar LevelLearnContext if (!relationship.IsOwnership)
+ 
+
 Add-Migration initial -StartupProject LevelLearn.Infra.EFCore -Context LevelLearnContext -Verbose
 Add-Migration add-identity -Verbose -StartupProject LevelLearn.Infra.EFCore -Context AuthDbContext
 Update-Database -Context AuthDbContext -Verbose

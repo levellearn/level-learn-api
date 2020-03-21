@@ -59,6 +59,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         public void Remove(TEntity entity)
         {
+            _context.Set<TEntity>().Attach(entity);
             _context.Set<TEntity>().Remove(entity);
         }
 

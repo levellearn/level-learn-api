@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Filters
 {
@@ -33,15 +28,16 @@ namespace LevelLearn.WebApi.Filters
             {
                 context.Result = new JsonResult(new
                 {
-                    message = "Erro interno do servidor"                  
+                    message = "Erro interno do servidor"
                 });
                 return;
             }
-           
-            context.Result = new JsonResult(new { 
+
+            context.Result = new JsonResult(new
+            {
                 message = exception.Message,
-                innerException = exception.InnerException.Message,
-                stackTrace = exception.StackTrace, 
+                innerException = exception.InnerException?.Message,
+                stackTrace = exception.StackTrace,
             });
         }
     }

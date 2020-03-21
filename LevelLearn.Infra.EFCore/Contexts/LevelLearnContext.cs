@@ -57,12 +57,14 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
             //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
 
-            //modelBuilder.Entity<Pessoa>().ToTable("Pessoas");
             modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
 
             //Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            {
+                if (!relationship.IsOwnership)
+                    relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

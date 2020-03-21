@@ -23,6 +23,16 @@ namespace LevelLearn.Service.Response
         #region Factory
         public static class ResponseAPIFactory
         {
+            public static ResponseAPI Ok(string message)
+            {
+                return new ResponseAPI()
+                {
+                    Message = message,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Success = true
+                };
+            }
+
             public static ResponseAPI Ok(object data, string message, int? pageIndex = null, int? pageSize = null, int? total = null)
             {
                 return new ResponseAPI()
