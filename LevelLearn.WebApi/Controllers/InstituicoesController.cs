@@ -30,6 +30,7 @@ namespace LevelLearn.WebApi.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = ApplicationRoles.ADMIN)]
         [Route("v1/[controller]")]
         [HttpGet]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]

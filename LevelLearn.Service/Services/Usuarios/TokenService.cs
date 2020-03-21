@@ -18,12 +18,12 @@ namespace LevelLearn.Service.Services.Usuarios
 {
     public class TokenService : ITokenService
     {
-        private readonly AppSettings _appSettings;
+        private readonly JWTSettings _jwtSettings;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TokenService(IOptions<AppSettings> appSettings, UserManager<ApplicationUser> userManager)
+        public TokenService(IOptions<JWTSettings> jwtSettings, UserManager<ApplicationUser> userManager)
         {
-            _appSettings = appSettings.Value;
+            _jwtSettings = jwtSettings.Value;
             _userManager = userManager;
         }
 
@@ -40,9 +40,9 @@ namespace LevelLearn.Service.Services.Usuarios
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = Encoding.ASCII.GetBytes(_appSettings.ChavePrivada);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
-            var dataExpiracao = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras);
+            var dataExpiracao = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiracaoMinutos);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -53,8 +53,8 @@ namespace LevelLearn.Service.Services.Usuarios
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
                 ),
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = _jwtSettings.Emissor,
+                Audience = _jwtSettings.ValidoEm,
                 NotBefore = dataCriacao,
             };
 

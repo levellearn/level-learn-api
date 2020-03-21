@@ -10,6 +10,7 @@ using LevelLearn.Service.Services.Institucional;
 using LevelLearn.Service.Services.Usuarios;
 using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,14 +29,7 @@ namespace LevelLearn.WebApi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-
-            //var builder = new ConfigurationBuilder()
-            //   .SetBasePath(env.ContentRootPath)
-            //   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            //   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            //   .AddEnvironmentVariables();
-            //this.Configuration = builder.Build();
+            Configuration = configuration;          
         }
 
         public IConfiguration Configuration { get; }
@@ -53,6 +47,9 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
+            services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
+            var jwtSettings = Configuration.GetSection("JWTSettings").Get<JWTSettings>();
+
             // DBContext
             ConfigureDbContexts(services);
 
@@ -60,7 +57,7 @@ namespace LevelLearn.WebApi
             ConfigureIdentity(services);
 
             // JWT
-            ConfigureJWTAuthentication(services);
+            ConfigureJWTAuthentication(services, jwtSettings);
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
@@ -69,7 +66,7 @@ namespace LevelLearn.WebApi
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Business Services
-            ConfigureBusinessServices(services);          
+            ConfigureBusinessServices(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
@@ -87,7 +84,7 @@ namespace LevelLearn.WebApi
 
             app.UseRouting();
 
-            app.UseCors(option => option.AllowAnyOrigin());            
+            app.UseCors(option => option.AllowAnyOrigin());
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -130,7 +127,7 @@ namespace LevelLearn.WebApi
             services.AddDbContext<LevelLearnContext>(opt =>
             {
                 opt.UseSqlServer(connectionString);
-            });           
+            });
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)
@@ -140,13 +137,9 @@ namespace LevelLearn.WebApi
             services.AddTransient<ITokenService, TokenService>();
         }
 
-        private void ConfigureJWTAuthentication(IServiceCollection services)
+        private void ConfigureJWTAuthentication(IServiceCollection services, JWTSettings jwtSettings)
         {
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            var key = Encoding.ASCII.GetBytes(appSettings.ChavePrivada);
+            var key = Encoding.ASCII.GetBytes(jwtSettings.ChavePrivada);
 
             services.AddAuthentication(x =>
             {
@@ -159,12 +152,12 @@ namespace LevelLearn.WebApi
                 {
                     OnTokenValidated = context =>
                     {
-                        Console.WriteLine("Token válido" + context.SecurityToken);
+                        Debug.WriteLine("Token válido" + context.SecurityToken);
                         return Task.CompletedTask;
                     },
                     OnAuthenticationFailed = context =>
                     {
-                        Console.WriteLine("Token inválido" + context.Exception.Message);
+                        Debug.WriteLine("Token inválido" + context.Exception.Message);
                         return Task.CompletedTask;
                     }
                 };
@@ -176,19 +169,19 @@ namespace LevelLearn.WebApi
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
+                    ValidAudience = jwtSettings.ValidoEm,
+                    ValidIssuer = jwtSettings.Emissor,
+                    ValidateLifetime = true
                 };
             });
 
             // Ativa o uso do token como forma de autorizar o acesso
-            //services.AddAuthorization(auth =>
-            //{
-            //    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-            //        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-            //        .RequireAuthenticatedUser().Build());
-            //});
-
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
         }
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Infra.EFCore.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20200320183748_initial")]
-    partial class initial
+    [Migration("20200321215305_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

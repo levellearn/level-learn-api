@@ -3,10 +3,12 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using LevelLearn.Infra.EFCore.Configurations.Pessoas;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Linq;
 
@@ -14,7 +16,10 @@ namespace LevelLearn.Infra.EFCore.Contexts
 {
     public class LevelLearnContext : IdentityDbContext<ApplicationUser>
     {
-        public LevelLearnContext() : base() => Database.EnsureCreated();
+        public LevelLearnContext() : base()
+        {
+            Database.EnsureCreated();
+        }
 
         public LevelLearnContext(DbContextOptions<LevelLearnContext> options)
            : base(options)
@@ -65,18 +70,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
                 if (!relationship.IsOwnership)
                     relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            optionsBuilder
-                .UseSqlServer(config.GetConnectionString("SQLServerConnection"));
-        }
+        }       
 
 
     }

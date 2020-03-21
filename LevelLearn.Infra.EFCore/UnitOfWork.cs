@@ -17,7 +17,6 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             _context = context;
         }
 
-
         public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
         public IPessoaRepository Pessoas => new PessoaRepository(_context);
 

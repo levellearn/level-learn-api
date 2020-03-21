@@ -5,8 +5,12 @@ Implementar Validações de senha
 Implementar HTTPS
 Melhorar Response API para tipo genérico
 
-Verificar LevelLearnContext if (!relationship.IsOwnership)
- 
+  //var builder = new ConfigurationBuilder()
+            //   .SetBasePath(env.ContentRootPath)
+            //   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            //   .AddEnvironmentVariables();
+            //this.Configuration = builder.Build();
 
 Add-Migration initial -StartupProject LevelLearn.Infra.EFCore -Context LevelLearnContext -Verbose
 Add-Migration add-identity -Verbose -StartupProject LevelLearn.Infra.EFCore -Context AuthDbContext

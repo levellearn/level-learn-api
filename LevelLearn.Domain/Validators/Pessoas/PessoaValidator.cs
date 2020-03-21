@@ -21,10 +21,12 @@ namespace LevelLearn.Domain.Validators.Pessoas
         private void ValidarNome()
         {
             RuleFor(p => p.Nome)
-                .NotEmpty().WithMessage("Nome precisa estar preenchido")
+                .NotEmpty()
+                    .WithMessage("Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
-                .Must(n => IsFullName(n)).WithMessage("Nome precisa de um sobrenome");
+                    .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
+                .Must(n => IsFullName(n))
+                    .WithMessage("Nome precisa de um sobrenome");
         }
         private bool IsFullName(string name)
         {
