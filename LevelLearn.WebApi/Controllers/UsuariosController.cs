@@ -11,6 +11,7 @@ namespace LevelLearn.WebApi.Controllers
     [ApiController]
     [Route("api/")]
     [Produces("application/json")]
+    [AllowAnonymous]
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -20,9 +21,7 @@ namespace LevelLearn.WebApi.Controllers
             _usuarioService = usuarioService;
         }        
 
-        [Route("v1/[controller]/registrar-usuario")]
-        [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("v1/[controller]/registrar-usuario")]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
@@ -34,9 +33,7 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(response.StatusCode, response.Data);
         }
 
-        [Route("v1/[controller]/entrar")]
-        [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("v1/[controller]/entrar")]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
@@ -48,8 +45,7 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(response.StatusCode, response.Data);
         }
 
-        [Route("v1/[controller]/sair")]
-        [HttpPost]
+        [HttpPost("v1/[controller]/sair")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Logout()

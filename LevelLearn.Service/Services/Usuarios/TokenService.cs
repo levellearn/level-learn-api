@@ -27,7 +27,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _userManager = userManager;
         }
 
-        public async Task<Token> GerarJWT(ApplicationUser user, IList<string> roles)
+        public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
         {            
             var claims = new List<Claim>
             {
@@ -55,15 +55,14 @@ namespace LevelLearn.Service.Services.Usuarios
                 ),
                 Issuer = _jwtSettings.Emissor,
                 Audience = _jwtSettings.ValidoEm,
-                NotBefore = dataCriacao,
+                NotBefore = dataCriacao
             };
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
 
-            return new Token()
+            return new TokenVM()
             {
-                Authenticated = true,
                 Created = dataCriacao,
                 Expiration = dataExpiracao,
                 AccessToken = token

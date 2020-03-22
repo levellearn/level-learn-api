@@ -31,8 +31,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         [Authorize(Roles = ApplicationRoles.ADMIN)]
-        [Route("v1/[controller]")]
-        [HttpGet]
+        [HttpGet("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoes(
             [FromQuery]string query,
@@ -53,8 +52,7 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(listVM);
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpGet]
+        [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetInstituicao(Guid id)
@@ -66,8 +64,7 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(_mapper.Map<InstituicaoVM>(instituicao));
         }
 
-        [Route("v1/[controller]")]
-        [HttpPost]
+        [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
@@ -81,8 +78,7 @@ namespace LevelLearn.WebApi.Controllers
             return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpPut]
+        [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -95,8 +91,7 @@ namespace LevelLearn.WebApi.Controllers
             return NoContent();
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpDelete]
+        [HttpDelete("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteInstituicao(Guid id)

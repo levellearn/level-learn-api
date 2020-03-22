@@ -9,6 +9,6 @@ namespace LevelLearn.Service.Interfaces.Usuarios
 {
     public interface ITokenService
     {
-        Task<Token> GerarJWT(ApplicationUser user, IList<string> roles);
+        Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles);
     }
 }

@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
@@ -161,7 +162,7 @@ namespace LevelLearn.WebApi
                         return Task.CompletedTask;
                     }
                 };
-                x.RequireHttpsMetadata = false; //TODO: Ajustar HTTPS 
+                x.RequireHttpsMetadata = true; //TODO: Ajustar HTTPS 
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -171,7 +172,8 @@ namespace LevelLearn.WebApi
                     ValidateAudience = true,
                     ValidAudience = jwtSettings.ValidoEm,
                     ValidIssuer = jwtSettings.Emissor,
-                    ValidateLifetime = true
+                    ValidateLifetime = true, 
+                    ClockSkew = TimeSpan.FromSeconds(60)
                 };
             });
 
