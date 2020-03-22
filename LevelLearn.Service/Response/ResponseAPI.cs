@@ -4,7 +4,7 @@ using System.Net;
 
 namespace LevelLearn.Service.Response
 {
-    public class ResponseAPI
+    public class ResponseAPI<T> where T : class
     {
         protected ResponseAPI()
         {
@@ -14,7 +14,7 @@ namespace LevelLearn.Service.Response
         public int StatusCode { get; private set; }
         public bool Success { get; private set; }
         public string Message { get; private set; }
-        public object Data { get; private set; }
+        public T Data { get; private set; }
         public ICollection<DadoInvalido> Errors { get; private set; }
         public int? PageIndex { get; private set; }
         public int? PageSize { get; private set; }
@@ -23,9 +23,9 @@ namespace LevelLearn.Service.Response
         #region Factory
         public static class ResponseAPIFactory
         {
-            public static ResponseAPI Ok(string message)
+            public static ResponseAPI<T> Ok(string message)
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.OK,
@@ -33,9 +33,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI Ok(object data, string message, int? pageIndex = null, int? pageSize = null, int? total = null)
+            public static ResponseAPI<T> Ok(T data, string message, int? pageIndex = null, int? pageSize = null, int? total = null)
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.OK,
@@ -47,9 +47,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI Created(object data, string message = "Cadastrado com sucesso")
+            public static ResponseAPI<T> Created(T data, string message = "Cadastrado com sucesso")
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.Created,
@@ -58,9 +58,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI NoContent(string message = "Editado com sucesso")
+            public static ResponseAPI<T> NoContent(string message = "Editado com sucesso")
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.NoContent,
@@ -68,9 +68,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI BadRequest(string message)
+            public static ResponseAPI<T> BadRequest(string message)
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.BadRequest,
@@ -78,9 +78,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI BadRequest(string message = "Dados inválidos", ICollection<DadoInvalido> dadosInvalidos = null)
+            public static ResponseAPI<T> BadRequest(string message = "Dados inválidos", ICollection<DadoInvalido> dadosInvalidos = null)
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.BadRequest,
@@ -88,9 +88,9 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI BadRequest(string message, DadoInvalido dadoInvalido)
+            public static ResponseAPI<T> BadRequest(string message, DadoInvalido dadoInvalido)
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.BadRequest,
@@ -98,18 +98,18 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI NotFound(string message = "Não encontrado")
+            public static ResponseAPI<T> NotFound(string message = "Não encontrado")
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.NotFound
                 };
             }
 
-            public static ResponseAPI InternalServerError(string message = "Erro interno do servidor")
+            public static ResponseAPI<T> InternalServerError(string message = "Erro interno do servidor")
             {
-                return new ResponseAPI()
+                return new ResponseAPI<T>()
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.InternalServerError

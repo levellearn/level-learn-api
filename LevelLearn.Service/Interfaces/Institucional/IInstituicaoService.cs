@@ -8,8 +8,8 @@ namespace LevelLearn.Service.Interfaces.Institucional
 {
     public interface IInstituicaoService : IServiceBase<Instituicao>, IDisposable
     {
-        Task<ResponseAPI> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM);
-        Task<ResponseAPI> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM);
-        Task<ResponseAPI> RemoverInstituicao(Guid id);
+        Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM);
+        Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM);
+        Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id);
     }
 }

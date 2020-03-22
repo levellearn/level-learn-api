@@ -19,69 +19,71 @@ namespace LevelLearn.Service.Services.Institucional
             _uow = uow;
         }
 
-        public async Task<ResponseAPI> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM)
+        public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM)
         {
             var instituicaoNova = new Instituicao(instituicaoVM.Nome, instituicaoVM.Descricao);
 
             // Validação objeto
             if (!instituicaoNova.EstaValido())
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
 
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicaoNova.NomePesquisa))
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Instituição já existente");
 
             // Salva no BD
             await _uow.Instituicoes.AddAsync(instituicaoNova);
-            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            if (!await _uow.CompleteAsync()) return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI.ResponseAPIFactory.Created(instituicaoNova);
+            return ResponseAPI<Instituicao>.ResponseAPIFactory.Created(instituicaoNova);
         }
 
-        public async Task<ResponseAPI> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM)
+        public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM)
         {
             // Validação BD
             //verifica se está tentando atualizar uma instituição que já existe
             if (await _uow.Instituicoes.EntityExists(i =>
                     i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != id)
                 )
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Instituição já existente");
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Instituição já existente");
 
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
 
             if (instituicaoExistente == null)
-                return ResponseAPI.ResponseAPIFactory.NotFound("Instituição não existente");
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
 
-
+            // Modifica objeto
             instituicaoExistente.Atualizar(instituicaoVM.Nome, instituicaoVM.Descricao);
 
             // Validação objeto
             if (!instituicaoExistente.EstaValido())
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoExistente.DadosInvalidos());
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoExistente.DadosInvalidos());
 
             // Salva no BD
             _uow.Instituicoes.Update(instituicaoExistente);
-            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            if (!await _uow.CompleteAsync()) 
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI.ResponseAPIFactory.NoContent();
+            return ResponseAPI<Instituicao>.ResponseAPIFactory.NoContent();
         }
 
-        public async Task<ResponseAPI> RemoverInstituicao(Guid id)
+        public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id)
         {
             // Validação BD
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
 
             if (instituicaoExistente == null)
-                return ResponseAPI.ResponseAPIFactory.NotFound("Instituição não existente");
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
 
             // TODO: Alguma regra de negócio?
             // TODO: Remover ou desativar?
 
             _uow.Instituicoes.Remove(instituicaoExistente);
 
-            if (!await _uow.CompleteAsync()) return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            if (!await _uow.CompleteAsync()) 
+                return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI.ResponseAPIFactory.NoContent();
+            return ResponseAPI<Instituicao>.ResponseAPIFactory.NoContent();
         }
 
         public void Dispose()

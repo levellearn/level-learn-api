@@ -7,9 +7,9 @@ namespace LevelLearn.Service.Interfaces.Usuarios
 {
     public interface IUsuarioService : IDisposable
     {
-        Task<ResponseAPI> RegistrarUsuario(RegistrarUsuarioVM usuarioVM);
-        Task<ResponseAPI> LogarUsuario(LoginUsuarioVM usuarioVM);
-        Task<ResponseAPI> Logout();
+        Task<ResponseAPI<UsuarioVM>> RegistrarUsuario(RegistrarUsuarioVM usuarioVM);
+        Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM);
+        Task<ResponseAPI<UsuarioVM>> Logout();
 
     }
 }

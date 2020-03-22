@@ -103,22 +103,22 @@ namespace LevelLearn.WebApi
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();
 
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    // Password settings
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequiredLength = 6;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
 
-            //    // Lockout settings
-            //    options.Lockout.DefaultLockoutTimeSpan = System.TimeSpan.FromDays(30);
-            //    options.Lockout.MaxFailedAccessAttempts = 10;
+                // Lockout settings
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
 
-            //    // User settings
-            //    options.User.RequireUniqueEmail = true;
-            //});
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
         }
 
         private void ConfigureDbContexts(IServiceCollection services)
@@ -173,7 +173,7 @@ namespace LevelLearn.WebApi
                     ValidAudience = jwtSettings.ValidoEm,
                     ValidIssuer = jwtSettings.Emissor,
                     ValidateLifetime = true, 
-                    ClockSkew = TimeSpan.FromSeconds(60)
+                    ClockSkew = TimeSpan.FromSeconds(30)
                 };
             });
 

@@ -26,7 +26,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
-            ResponseAPI response = await _usuarioService.RegistrarUsuario(usuarioVM);
+            ResponseAPI<UsuarioVM> response = await _usuarioService.RegistrarUsuario(usuarioVM);
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
@@ -38,7 +38,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
         {
-            ResponseAPI response = await _usuarioService.LogarUsuario(usuarioVM);
+            ResponseAPI<UsuarioVM> response = await _usuarioService.LogarUsuario(usuarioVM);
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
@@ -50,7 +50,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Logout()
         {
-            ResponseAPI response = await _usuarioService.Logout();
+            var response = await _usuarioService.Logout();
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 

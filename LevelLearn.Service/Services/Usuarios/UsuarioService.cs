@@ -34,7 +34,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _tokenService = tokenService;
         }
 
-        public async Task<ResponseAPI> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
+        public async Task<ResponseAPI<UsuarioVM>> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
             // VOs
             var email = new Email(usuarioVM.Email);
@@ -46,26 +46,26 @@ namespace LevelLearn.Service.Services.Usuarios
                 usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             if (!professor.EstaValido())
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
 
             // Validação Usuário
             var user = new ApplicationUser(usuarioVM.UserName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor.Id);
 
             if (!user.EstaValido())
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
 
             // Validação BD
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == professor.Email.Endereco))
-                return ResponseAPI.ResponseAPIFactory.BadRequest("E-mail já existente");
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("E-mail já existente");
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
-                return ResponseAPI.ResponseAPIFactory.BadRequest("CPF já existente");
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("CPF já existente");
 
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
             if (!await _uow.CompleteAsync())
-                return ResponseAPI.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
             // Criando User Identity
             try
@@ -74,7 +74,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 if (!identityResult.Succeeded)
                 {
                     await RemoverPessoa(professor);
-                    return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
+                    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
                 }
 
                 await _userManager.AddToRoleAsync(user, ApplicationRoles.PROFESSOR);
@@ -96,19 +96,19 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, new List<string> { ApplicationRoles.PROFESSOR })
             };
 
-            return ResponseAPI.ResponseAPIFactory.Created(responseVM);
+            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Created(responseVM);
         }
 
-        public async Task<ResponseAPI> LogarUsuario(LoginUsuarioVM usuarioVM)
+        public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
         {
             // Validações
             var email = new Email(usuarioVM.Email);
 
             if (!email.EstaValido())
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
 
             if (string.IsNullOrWhiteSpace(usuarioVM.Senha))
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
 
             // SignIn
             var result = await _signInManager.PasswordSignInAsync(
@@ -116,7 +116,7 @@ namespace LevelLearn.Service.Services.Usuarios
             );
 
             if (!result.Succeeded)
-                return ResponseAPI.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
 
             // Gerar Token           
             var user = await _userManager.FindByNameAsync(email.Endereco);
@@ -132,13 +132,13 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, roles)
             };
 
-            return ResponseAPI.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
+            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
         }
 
-        public async Task<ResponseAPI> Logout()
+        public async Task<ResponseAPI<UsuarioVM>> Logout()
         {
             await _signInManager.SignOutAsync();
-            return ResponseAPI.ResponseAPIFactory.Ok("Logout feito com sucesso");
+            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok("Logout feito com sucesso");
         }
 
         private async Task RemoverUsuario(ApplicationUser user, string role)
