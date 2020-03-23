@@ -1,20 +1,23 @@
-﻿using LevelLearn.Domain.Entities.Usuarios;
+﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace LevelLearn.Service.Services.Usuarios
 {
+    /// <summary>
+    /// Criação de estruturas, usuários e permissões Identity
+    /// </summary>
     public class IdentityInitializer
     {
         private readonly LevelLearnContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public IdentityInitializer(
-            LevelLearnContext context,
-            UserManager<ApplicationUser> userManager,
+        public IdentityInitializer(LevelLearnContext context, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -24,73 +27,54 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public void Initialize()
         {
-            //if (!_context.Database.EnsureCreated())
-            //{
-            //return;
+            _context.Database.EnsureCreated();
 
-            var perfilAdmin = PerfisInstituicao.Admin.ToString();
-            if (!_roleManager.RoleExistsAsync(perfilAdmin).Result)
-            {
-                var identityRole = new IdentityRole() { Name = perfilAdmin, NormalizedName = perfilAdmin.ToLower() };
-                var resultado = _roleManager.CreateAsync(identityRole).Result;
-                if (!resultado.Succeeded)
-                {
-                    throw new Exception($"Erro durante a criação da role {perfilAdmin}.");
-                }
-            }
+            CreateRole(ApplicationRoles.ADMIN);
+            CreateRole(ApplicationRoles.PROFESSOR);
+            CreateRole(ApplicationRoles.ALUNO);
 
-            var perfilProfessor = PerfisInstituicao.Professor.ToString();
-            if (!_roleManager.RoleExistsAsync(perfilProfessor).Result)
-            {
-                var identityRole = new IdentityRole() { Name = perfilProfessor, NormalizedName = perfilProfessor.ToLower() };
-                var resultado = _roleManager.CreateAsync(identityRole).Result;
-                if (!resultado.Succeeded)
-                {
-                    throw new Exception($"Erro durante a criação da role {perfilProfessor}.");
-                }
-            }
+            var email = "felipe.ayres93@gmail.com";
+            var celular = "(12)98845-7832";
+            var pessoa = new Admin("Felipe Ayres", "felipe.ayres", new Email(email), new CPF("226.547.010-42"),
+               new Celular(celular), Generos.Masculino, imagemUrl: null, DateTime.Parse("1993-10-26"));
 
-            var perfilAluno = PerfisInstituicao.Aluno.ToString();
-            if (!_roleManager.RoleExistsAsync(perfilAluno).Result)
-            {
-                var identityRole = new IdentityRole() { Name = perfilAluno, NormalizedName = perfilAluno.ToLower() };
-                var resultado = _roleManager.CreateAsync(identityRole).Result;
-                if (!resultado.Succeeded)
-                {
-                    throw new Exception($"Erro durante a criação da role {perfilAluno}.");
-                }
-            }
+            var user = new ApplicationUser(pessoa.NickName, email, true, "Gamificando@123", "Gamificando@123",
+                celular, true, pessoa.Id);
 
-            //CreateUser(
-            //    new ApplicationUser()
-            //    {
-            //        UserName = "admin_apiprodutos",
-            //        Email = "admin-apiprodutos@teste.com.br",
-            //        EmailConfirmed = true
-            //    }, "AdminAPIProdutos01!", Roles.ROLE_API_PRODUTOS);
-
-            //CreateUser(
-            //    new ApplicationUser()
-            //    {
-            //        UserName = "usrinvalido_apiprodutos",
-            //        Email = "usrinvalido-apiprodutos@teste.com.br",
-            //        EmailConfirmed = true
-            //    }, "UsrInvAPIProdutos01!");
+            CreateUser(user, pessoa, ApplicationRoles.ADMIN);
         }
-        //private void CreateUser(ApplicationUser user, string password, string initialRole = null)
-        //{
-        //    if (_userManager.FindByNameAsync(user.UserName).Result == null)
-        //    {
-        //        var resultado = _userManager
-        //            .CreateAsync(user, password).Result;
 
-        //        if (resultado.Succeeded &&
-        //            !String.IsNullOrWhiteSpace(initialRole))
-        //        {
-        //            _userManager.AddToRoleAsync(user, initialRole).Wait();
-        //        }
-        //    }
-        //}
+        private void CreateRole(string role)
+        {
+            if (_roleManager.RoleExistsAsync(role).Result)
+                return;
+
+            var identityRole = new IdentityRole()
+            {
+                Name = role,
+                NormalizedName = role.ToUpper()
+            };
+
+            var result = _roleManager.CreateAsync(identityRole).Result;
+
+            if (!result.Succeeded)
+                throw new Exception($"Erro durante a criação da role {role}.");
+        }
+
+        private void CreateUser(ApplicationUser user, Pessoa pessoa, string initialRole)
+        {
+            if (_userManager.FindByNameAsync(user.UserName).Result != null)
+                return;
+
+            _context.Pessoas.Add(pessoa);
+
+            if (_context.SaveChanges() == 0) return;
+
+            var result = _userManager.CreateAsync(user, user.Senha).Result;
+
+            if (result.Succeeded && !string.IsNullOrWhiteSpace(initialRole))
+                _userManager.AddToRoleAsync(user, initialRole).Wait();
+        }
 
 
     }

@@ -11,6 +11,8 @@ namespace LevelLearn.ViewModel
 
         private int CalcTotalPage()
         {
+            //if (Total == 0) return 0;
+
             Total = (Total <= 0) ? 1 : Total;
             PageSize = (PageSize <= 0) ? 1 : PageSize;
 

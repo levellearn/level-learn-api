@@ -62,6 +62,9 @@ namespace LevelLearn.Service.Services.Usuarios
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
                 return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("CPF já existente");
 
+            //if (await _uow.Pessoas.EntityExists(i => i.NickName == professor.NickName))
+            //    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Nickname já existente");
+
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
             if (!await _uow.CompleteAsync())

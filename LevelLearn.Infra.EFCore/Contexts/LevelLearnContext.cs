@@ -26,8 +26,9 @@ namespace LevelLearn.Infra.EFCore.Contexts
         { }
 
         public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<Aluno> Alunos { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Professor> Professores { get; set; }
+        public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
         //public DbSet<Curso> Cursos { get; set; }
         //public DbSet<Turma> Turmas { get; set; }
@@ -41,6 +42,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
 
             modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
+            
             //modelBuilder.ApplyConfiguration(new CursoConfiguration());
             //modelBuilder.ApplyConfiguration(new TurmaConfiguration());
 

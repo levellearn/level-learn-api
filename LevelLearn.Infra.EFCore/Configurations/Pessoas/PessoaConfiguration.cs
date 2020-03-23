@@ -47,12 +47,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
             builder.Property(p => p.NickName)
                .IsRequired()
                .HasMaxLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");
-
-            builder.Property(p => p.NickName)
-               .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");
+               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");           
 
             builder.Property(p => p.DataNascimento)
                .IsRequired(false);
@@ -66,7 +61,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
             builder.Property(p => p.Genero)
               .IsRequired();
 
-
+            // Relacionamentos
             builder.HasMany(p => p.Instituicoes);
         }
     }

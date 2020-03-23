@@ -29,6 +29,13 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.HasMany(p => p.Pessoas);
             builder.HasMany(p => p.Cursos);
+
+            //builder.HasQueryFilter(p => p.Ativo);
+
+            builder.HasData(
+                new Instituicao("Instituição Teste", "Descrição Teste")
+            );
+
         }
     }
 }
