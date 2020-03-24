@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +32,7 @@ namespace LevelLearn.WebApi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;          
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -48,8 +50,11 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
-            var jwtSettings = Configuration.GetSection("JWTSettings").Get<JWTSettings>();
+            // GZip
+            ConfigureGZipCompression(services);
+
+            // AppSettings
+            services.Configure<AppSettings>(Configuration);
 
             // DBContext
             ConfigureDbContexts(services);
@@ -58,7 +63,7 @@ namespace LevelLearn.WebApi
             ConfigureIdentity(services);
 
             // JWT
-            ConfigureJWTAuthentication(services, jwtSettings);
+            ConfigureJWTAuthentication(services);
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
@@ -96,8 +101,23 @@ namespace LevelLearn.WebApi
             });
         }
 
+        private static void ConfigureGZipCompression(IServiceCollection services)
+        {
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Fastest;
+            })
+            .AddResponseCompression(options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
+                options.EnableForHttps = true;
+            });
+        }
+
         private void ConfigureIdentity(IServiceCollection services)
         {
+            var appSettings = Configuration.Get<AppSettings>();
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
@@ -107,14 +127,14 @@ namespace LevelLearn.WebApi
             {
                 // Password settings
                 options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = appSettings.IdentitySettings.TamanhoMinimoSenha;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
 
                 // Lockout settings
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(appSettings.IdentitySettings.TempoBloqueioMinutos);
 
                 // User settings
                 options.User.RequireUniqueEmail = true;
@@ -138,9 +158,11 @@ namespace LevelLearn.WebApi
             services.AddTransient<ITokenService, TokenService>();
         }
 
-        private void ConfigureJWTAuthentication(IServiceCollection services, JWTSettings jwtSettings)
+        private void ConfigureJWTAuthentication(IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(jwtSettings.ChavePrivada);
+            var appSettings = Configuration.Get<AppSettings>();
+
+            var key = Encoding.ASCII.GetBytes(appSettings.JWTSettings.ChavePrivada);
 
             services.AddAuthentication(x =>
             {
@@ -170,10 +192,10 @@ namespace LevelLearn.WebApi
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = jwtSettings.ValidoEm,
-                    ValidIssuer = jwtSettings.Emissor,
-                    ValidateLifetime = true, 
-                    ClockSkew = TimeSpan.FromSeconds(30)
+                    ValidAudience = appSettings.JWTSettings.ValidoEm,
+                    ValidIssuer = appSettings.JWTSettings.Emissor,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromSeconds(appSettings.JWTSettings.TempoToleranciaSegundos)
                 };
             });
 

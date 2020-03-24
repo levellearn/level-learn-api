@@ -23,7 +23,7 @@ namespace LevelLearn.Service.Response
         #region Factory
         public static class ResponseAPIFactory
         {
-            public static ResponseAPI<T> Ok(string message)
+            public static ResponseAPI<T> Ok(string message = "Sucesso")
             {
                 return new ResponseAPI<T>()
                 {

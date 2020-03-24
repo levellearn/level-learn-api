@@ -19,7 +19,6 @@ namespace LevelLearn.WebApi.Controllers
     [Route("api/")]
     [Produces("application/json")]
     [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
-    //[Authorize(Roles = ApplicationRoles.PROFESSOR)]
     public class InstituicoesController : ControllerBase
     {
         private readonly IInstituicaoService _instituicaoService;

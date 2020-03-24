@@ -104,19 +104,19 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
         {
-            // Validações
             var email = new Email(usuarioVM.Email);
 
-            if (!email.EstaValido())
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
-
-            if (string.IsNullOrWhiteSpace(usuarioVM.Senha))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
+            // Validações
+            var respostaValidacao = ValidarCredenciaisUsuario(email, usuarioVM.Senha);
+            if (!respostaValidacao.Success) return respostaValidacao;
 
             // SignIn
             var result = await _signInManager.PasswordSignInAsync(
-                email.Endereco, usuarioVM.Senha, isPersistent: false, lockoutOnFailure: true
-            );
+                 email.Endereco, usuarioVM.Senha, isPersistent: false, lockoutOnFailure: true
+             );
+
+            if (result.IsLockedOut)
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Sua conta está bloqueada");
 
             if (!result.Succeeded)
                 return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
@@ -144,6 +144,21 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok("Logout feito com sucesso");
         }
 
+        #region Privates Methods
+
+        private ResponseAPI<UsuarioVM> ValidarCredenciaisUsuario(Email email, string senha)
+        {
+            if (!email.EstaValido())
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory
+                    .BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
+
+            if (string.IsNullOrWhiteSpace(senha))
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory
+                    .BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
+
+            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+        }
+
         private async Task RemoverUsuario(ApplicationUser user, string role)
         {
             await _userManager.RemoveFromRoleAsync(user, role);
@@ -155,6 +170,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _uow.Pessoas.Remove(pessoa);
             await _uow.CompleteAsync();
         }
+        #endregion
 
         public void Dispose()
         {

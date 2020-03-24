@@ -1,10 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
-using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Domain.Enums;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,17 +15,15 @@ namespace LevelLearn.Service.Services.Usuarios
 {
     public class TokenService : ITokenService
     {
-        private readonly JWTSettings _jwtSettings;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AppSettings _appSettings;
 
-        public TokenService(IOptions<JWTSettings> jwtSettings, UserManager<ApplicationUser> userManager)
+        public TokenService(IOptions<AppSettings> appSettings)
         {
-            _jwtSettings = jwtSettings.Value;
-            _userManager = userManager;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
-        {            
+        {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -40,9 +35,9 @@ namespace LevelLearn.Service.Services.Usuarios
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.ChavePrivada);
+            var key = Encoding.ASCII.GetBytes(_appSettings.JWTSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
-            var dataExpiracao = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiracaoMinutos);
+            var dataExpiracao = DateTime.UtcNow.AddSeconds(_appSettings.JWTSettings.ExpiracaoSegundos);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -53,8 +48,8 @@ namespace LevelLearn.Service.Services.Usuarios
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
                 ),
-                Issuer = _jwtSettings.Emissor,
-                Audience = _jwtSettings.ValidoEm,
+                Issuer = _appSettings.JWTSettings.Emissor,
+                Audience = _appSettings.JWTSettings.ValidoEm,
                 NotBefore = dataCriacao
             };
 
@@ -68,6 +63,6 @@ namespace LevelLearn.Service.Services.Usuarios
                 AccessToken = token
             };
         }
-        
+
     }
 }
