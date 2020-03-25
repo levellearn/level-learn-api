@@ -59,7 +59,11 @@ namespace LevelLearn.WebApi.Controllers
         {
             var instituicao = await _instituicaoService.GetAsync(id);
 
-            if (instituicao == null) return NotFound(new { message = "Instituição não encontrada" });
+            if (instituicao == null)
+            {
+                var response = ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
+                return NotFound(response);
+            }
 
             return Ok(_mapper.Map<InstituicaoVM>(instituicao));
         }

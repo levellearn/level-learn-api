@@ -6,6 +6,18 @@ namespace LevelLearn.Service.Response
 {
     public class ResponseAPI<T> where T : class
     {
+        public ResponseAPI(int statusCode, bool success, string message, T data, ICollection<DadoInvalido> errors, int? pageIndex, int? pageSize, int? total)
+        {
+            StatusCode = statusCode;
+            Success = success;
+            Message = message;
+            Data = data;
+            Errors = errors;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Total = total;
+        }
+
         protected ResponseAPI()
         {
             Errors = new List<DadoInvalido>();

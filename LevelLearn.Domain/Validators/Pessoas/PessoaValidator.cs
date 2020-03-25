@@ -45,9 +45,9 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.NickName)
                 .NotEmpty().WithMessage("NickName precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
+                    .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
                 .MaximumLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
-                .WithMessage($"NickName pode ter no máximo {PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
+                    .WithMessage($"NickName pode ter no máximo {PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()

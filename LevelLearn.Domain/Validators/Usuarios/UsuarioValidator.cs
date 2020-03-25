@@ -49,7 +49,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
         private void ValidarSenha()
         {
             RuleFor(p => p.Senha)
-                .NotNull()
+                .NotEmpty()
                     .WithMessage("Senha precisa estar preenchida")
                 .Length(PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN, PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX)
                     .WithMessage($"Senha precisa estar entre {PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN} e {PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX} caracteres")

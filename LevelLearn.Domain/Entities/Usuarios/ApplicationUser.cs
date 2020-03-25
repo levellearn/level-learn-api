@@ -21,9 +21,9 @@ namespace LevelLearn.Domain.Entities.Usuarios
             EmailConfirmed = emailConfirmed;
             UserName = Email;
             NormalizedUserName = NormalizedEmail;
-            NickName = nickName.RemoveExtraSpaces();
-            Senha = senha?.Trim() ?? string.Empty;
-            ConfirmacaoSenha = confirmacaoSenha?.Trim() ?? string.Empty;
+            NickName = nickName?.Trim() ?? string.Empty;
+            Senha = senha ?? string.Empty;
+            ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
             PhoneNumber = phoneNumber.GetNumbers();
             PhoneNumber = PhoneNumber.StartsWith("55") ? PhoneNumber : PhoneNumber.Insert(0, "55");
             PhoneNumberConfirmed = phoneNumberConfirmed;

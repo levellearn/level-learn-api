@@ -12,7 +12,7 @@ namespace LevelLearn.Domain.Extensions
         /// Generates a slug for passed string
         /// </summary>
         /// <param name="text"></param>
-        /// <returns>clean slug string (ex. "some-cool-topic")</returns>
+        /// <returns>clean slug string (ex. TeSte Teste => testeteste)</returns>
         public static string GenerateSlug(this string text)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
@@ -20,7 +20,7 @@ namespace LevelLearn.Domain.Extensions
             string result = text.RemoveAccent().ToLower(); // remove invalid chars and lowercase          
             result = Regex.Replace(result, @"[^a-z0-9\s]", string.Empty); // remove special chars  
             result = Regex.Replace(result, @"\s+", string.Empty).Trim();  // convert multiple spaces into empty 
-            result = Regex.Replace(result, @"\s", "-");  
+            //result = Regex.Replace(result, @"\s", "-");  
             
             return result;
         }
@@ -60,6 +60,11 @@ namespace LevelLearn.Domain.Extensions
             return letters;
         }
 
+        /// <summary>
+        /// Convert multiple spaces into one space
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string RemoveExtraSpaces(this string text)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;

@@ -1,6 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
@@ -36,59 +35,34 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResponseAPI<UsuarioVM>> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
-            // VOs
-            var email = new Email(usuarioVM.Email);
-            var cpf = new CPF(usuarioVM.Cpf);
-            var celular = new Celular(usuarioVM.Celular);
-
             // Validação Professor
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.UserName, email, cpf, celular,
-                usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
+            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, new Email(usuarioVM.Email),
+                new CPF(usuarioVM.Cpf), new Celular(usuarioVM.Celular), usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             if (!professor.EstaValido())
                 return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
 
             // Validação Usuário
-            var user = new ApplicationUser(usuarioVM.UserName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
+            var user = new ApplicationUser(usuarioVM.NickName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor.Id);
 
             if (!user.EstaValido())
                 return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
 
-            // Validação BD
-            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == professor.Email.Endereco))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("E-mail já existente");
-
-            if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("CPF já existente");
-
-            //if (await _uow.Pessoas.EntityExists(i => i.NickName == professor.NickName))
-            //    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Nickname já existente");
+            // Validações BD
+            var respostaValidacao = await ValidarCriarUsuarioBD(professor);
+            if (!respostaValidacao.Success) return respostaValidacao;
 
             // Criando Professor
             await _uow.Pessoas.AddAsync(professor);
+
             if (!await _uow.CompleteAsync())
                 return ResponseAPI<UsuarioVM>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
 
             // Criando User Identity
-            try
-            {
-                var identityResult = await _userManager.CreateAsync(user, usuarioVM.Senha);
-                if (!identityResult.Succeeded)
-                {
-                    await RemoverPessoa(professor);
-                    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
-                }
+            var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
 
-                await _userManager.AddToRoleAsync(user, ApplicationRoles.PROFESSOR);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-            }
-            catch (Exception ex)
-            {
-                await RemoverUsuario(user, ApplicationRoles.PROFESSOR);
-                await RemoverPessoa(professor);
-                throw ex;
-            }
+            if (!resultadoIdentity.Success) return resultadoIdentity;
 
             var responseVM = new UsuarioVM()
             {
@@ -144,7 +118,22 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok("Logout feito com sucesso");
         }
 
+
         #region Privates Methods
+
+        private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa professor)
+        {
+            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == professor.Email.Endereco))
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("E-mail já existente");
+
+            if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("CPF já existente");
+
+            if (await _uow.Pessoas.EntityExists(i => i.NickName == professor.NickName))
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Nickname já existente");
+
+            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+        }
 
         private ResponseAPI<UsuarioVM> ValidarCredenciaisUsuario(Email email, string senha)
         {
@@ -159,6 +148,30 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
         }
 
+        private async Task<ResponseAPI<UsuarioVM>> CriarUsuarioIdentity(ApplicationUser user, string role, Pessoa pessoa)
+        {
+            try
+            {
+                var identityResult = await _userManager.CreateAsync(user, user.Senha);
+                if (!identityResult.Succeeded)
+                {
+                    await RemoverPessoa(pessoa);
+                    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
+                }
+
+                await _userManager.AddToRoleAsync(user, role);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+            }
+            catch (Exception ex)
+            {
+                await RemoverUsuario(user, role);
+                await RemoverPessoa(pessoa);
+                throw ex;
+            }
+        }
+
         private async Task RemoverUsuario(ApplicationUser user, string role)
         {
             await _userManager.RemoveFromRoleAsync(user, role);
@@ -170,7 +183,9 @@ namespace LevelLearn.Service.Services.Usuarios
             _uow.Pessoas.Remove(pessoa);
             await _uow.CompleteAsync();
         }
-        #endregion
+
+
+        #endregion Privates Methods
 
         public void Dispose()
         {
