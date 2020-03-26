@@ -37,6 +37,8 @@ namespace LevelLearn.Domain.Entities.Institucional
         public virtual Instituicao Instituicao { get; private set; }
         public virtual ICollection<PessoaCurso> Pessoas { get; private set; }
 
+        // TODO: Turmas
+
         #endregion Props
 
         #region Methods

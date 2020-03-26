@@ -4,8 +4,8 @@ namespace LevelLearn.ViewModel
 {
     public class ListBaseVM
     {
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 1;
         public int Total { get; set; }
         public int TotalPages => CalcTotalPage();
 

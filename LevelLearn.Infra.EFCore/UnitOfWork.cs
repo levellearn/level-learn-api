@@ -28,8 +28,7 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
 
         public async Task<bool> CompleteAsync()
         {
-            var numberEntriesSaved = await _context.SaveChangesAsync();
-            return numberEntriesSaved > 0 ? true : false;
+            return await _context.SaveChangesAsync() > 0 ? true : false;
         }
 
         public void Dispose()

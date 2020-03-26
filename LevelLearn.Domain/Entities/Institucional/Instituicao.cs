@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
@@ -17,7 +18,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         public Instituicao(string nome, string descricao)
         {
             Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim();
+            Descricao = descricao?.Trim() ?? string.Empty;
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
 
@@ -72,6 +73,22 @@ namespace LevelLearn.Domain.Entities.Institucional
             {
                 Pessoas.Add(pessoa);
             }
+        }
+
+        public override void Ativar()
+        {
+            base.Ativar();
+
+            Cursos.ToList()
+                .ForEach(c => c.Ativar());            
+        }
+
+        public override void Desativar()
+        {
+            base.Desativar();
+
+            Cursos.ToList()
+                .ForEach(c => c.Desativar());            
         }
 
         public override bool EstaValido()

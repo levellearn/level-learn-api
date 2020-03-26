@@ -88,6 +88,7 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .AsNoTracking()
                 .Skip(skip)
                 .Take(limit)
+                .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
 
@@ -96,6 +97,7 @@ namespace LevelLearn.Infra.EFCore.Repository
             return await _context.Set<TEntity>()
                 .AsNoTracking()
                 .Where(filter)
+                .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
 
@@ -114,15 +116,17 @@ namespace LevelLearn.Infra.EFCore.Repository
             return await _context.Set<TEntity>().AsNoTracking().CountAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
+        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize)
         {
+            pageNumber = (pageNumber <= 0) ? 1 : pageNumber;
+            pageSize = (pageSize <= 0) ? 1 : pageSize;
             query = query.GenerateSlug();
 
             return await _context.Set<TEntity>()
                 //.IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(p => p.NomePesquisa.Contains(query))
-                .Skip((pageIndex - 1) * pageSize)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();

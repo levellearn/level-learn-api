@@ -28,6 +28,7 @@ namespace LevelLearn.Service.Services.Usuarios
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ApplicationClaims.PESSOA_ID, user.PessoaId.ToString()),
                 new Claim(ClaimTypes.Name, user.NickName),
                 new Claim(ClaimTypes.Email, user.Email),
             };

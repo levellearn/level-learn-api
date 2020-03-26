@@ -143,11 +143,12 @@ namespace LevelLearn.WebApi
 
         private void ConfigureDbContexts(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("SQLServerConnection");
+            //var connectionString = Configuration.GetConnectionString("LevelLearnSQLServer");
+            var appSettings = Configuration.Get<AppSettings>();
 
             services.AddDbContext<LevelLearnContext>(opt =>
             {
-                opt.UseSqlServer(connectionString);
+                opt.UseSqlServer(appSettings.ConnectionStrings.LevelLearnSQLServer);
             });
         }
 

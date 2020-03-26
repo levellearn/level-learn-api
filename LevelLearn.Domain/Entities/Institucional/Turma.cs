@@ -16,7 +16,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         public Turma(string nome, string descricao, string nomeDisciplina, Guid cursoId, Guid professorId)
         {
             Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim();
+            Descricao = descricao?.Trim() ?? string.Empty;
             Meta = decimal.Zero;
             NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
             CursoId = cursoId;

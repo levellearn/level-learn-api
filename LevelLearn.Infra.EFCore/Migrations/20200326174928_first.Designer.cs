@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Infra.EFCore.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20200323155210_add-admin")]
-    partial class addadmin
+    [Migration("20200326174928_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,17 +86,6 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.HasIndex("NomePesquisa");
 
                     b.ToTable("Instituicoes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("bf3957e3-54f8-42fd-9103-c8c4dfa9aa40"),
-                            Ativo = true,
-                            DataCadastro = new DateTime(2020, 3, 23, 12, 52, 9, 584, DateTimeKind.Local).AddTicks(6156),
-                            Descricao = "Descrição Teste",
-                            Nome = "Instituição Teste",
-                            NomePesquisa = "instituicaoteste"
-                        });
                 });
 
             modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.Pessoa", b =>

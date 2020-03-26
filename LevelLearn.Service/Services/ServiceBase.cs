@@ -59,9 +59,9 @@ namespace LevelLearn.Service.Services
             return await _repository.GetAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
+        public async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize)
         {
-            return await _repository.GetWithPagination(query, pageIndex, pageSize);
+            return await _repository.GetWithPagination(query, pageNumber, pageSize);
         }
 
         public void Remove(TEntity entity)

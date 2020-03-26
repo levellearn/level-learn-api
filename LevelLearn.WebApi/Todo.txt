@@ -4,6 +4,14 @@ Implementar Arquivo resources
 Implementar HTTPS
 Melhorar ListVM para tipo genérico
 Validação usuário pertence a entidade
+Arrumar add e edit instituicao para add professor
+
+
+
+
+
+
+
 
 Add-Migration initial -Verbose
 Update-Database -Verbose -Project LevelLearn.Infra.EFCore

@@ -21,7 +21,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             string imagemUrl, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
-            NickName = nickName?.Trim() ?? string.Empty; // TODO: username único?
+            NickName = nickName?.Trim() ?? string.Empty; // TODO: Username único?
             Email = email;
             Cpf = cpf;
             Celular = celular;

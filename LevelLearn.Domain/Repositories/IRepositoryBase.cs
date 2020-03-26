@@ -31,7 +31,7 @@ namespace LevelLearn.Domain.Repositories
         int Count();
         Task<int> CountAsync();
 
-        Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize);
+        Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize);
         Task<int> CountWithPagination(string query);
         Task<bool> EntityExists(Expression<Func<TEntity, bool>> filter);
 

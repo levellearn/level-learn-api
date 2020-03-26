@@ -45,7 +45,7 @@ namespace LevelLearn.Service.Response
                 };
             }
 
-            public static ResponseAPI<T> Ok(T data, string message, int? pageIndex = null, int? pageSize = null, int? total = null)
+            public static ResponseAPI<T> Ok(T data, string message = "Sucesso", int? total = null, int ? pageIndex = null, int? pageSize = null)
             {
                 return new ResponseAPI<T>()
                 {
@@ -116,6 +116,15 @@ namespace LevelLearn.Service.Response
                 {
                     Message = message,
                     StatusCode = (int)HttpStatusCode.NotFound
+                };
+            }
+
+            public static ResponseAPI<T> Forbidden(string message)
+            {
+                return new ResponseAPI<T>()
+                {
+                    Message = message,
+                    StatusCode = (int)HttpStatusCode.Forbidden
                 };
             }
 

@@ -14,7 +14,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Aluno(string nome, string nickName, Email email, CPF cpf, Celular celular, string ra, Generos genero, string imagemUrl, DateTime? dataNascimento)
             : base(nome, nickName, email, cpf, celular, genero, imagemUrl, dataNascimento)
         {
-            RA = ra.RemoveExtraSpaces(); // TODO: Obrigatório?
+            RA = ra.RemoveExtraSpaces();
             TipoPessoa = TiposPessoa.Aluno;
         }
 
