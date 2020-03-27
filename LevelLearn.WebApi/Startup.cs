@@ -42,6 +42,9 @@ namespace LevelLearn.WebApi
             // CORS
             services.AddCors();
 
+            // GZip
+            ConfigureGZipCompression(services);
+
             services.AddControllers(c =>
             {
                 c.Filters.Add(typeof(CustomExceptionFilter));
@@ -50,13 +53,13 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            // GZip
-            ConfigureGZipCompression(services);
-
-            // AppSettings
+            // App Settings
             services.Configure<AppSettings>(Configuration);
 
-            // DBContext
+            // Redis Cache
+            ConfigureRedis(services);
+
+            // DB Context
             ConfigureDbContexts(services);
 
             // Identity
@@ -65,16 +68,16 @@ namespace LevelLearn.WebApi
             // JWT
             ConfigureJWTAuthentication(services);
 
-            // AutoMapper
+            // Auto Mapper
             services.AddAutoMapper(typeof(Startup));
 
-            // UnitOfWork
+            // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Business Services
             ConfigureBusinessServices(services);
         }
-
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -140,6 +143,17 @@ namespace LevelLearn.WebApi
                 options.User.RequireUniqueEmail = true;
             });
         }
+
+        private void ConfigureRedis(IServiceCollection services)
+        {
+            var appSettings = Configuration.Get<AppSettings>();
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = appSettings.ConnectionStrings.RedisCache;
+                options.InstanceName = appSettings.ConnectionStrings.RedisInstanceName;
+            });
+        }
+
 
         private void ConfigureDbContexts(IServiceCollection services)
         {

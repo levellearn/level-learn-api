@@ -37,7 +37,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             // Validação objeto
             if (!instituicaoNova.EstaValido())
-                return ResponseFactory<Instituicao>.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest(instituicaoNova.DadosInvalidos());
 
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicaoNova.NomePesquisa))
@@ -77,7 +77,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             // Validação objeto
             if (!instituicaoExistente.EstaValido())
-                return ResponseFactory<Instituicao>.BadRequest("Dados inválidos", instituicaoExistente.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest(instituicaoExistente.DadosInvalidos());
 
             // Salva no BD
             _uow.Instituicoes.Update(instituicaoExistente);

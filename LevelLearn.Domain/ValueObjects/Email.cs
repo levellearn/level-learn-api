@@ -9,7 +9,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public Email(string endereco)
         {
-            this.Endereco = endereco?.Trim()?.ToLower();
+            this.Endereco = endereco?.Trim()?.ToLower() ?? string.Empty;
         }
 
         public string Endereco { get; private set; }
@@ -17,7 +17,7 @@ namespace LevelLearn.Domain.ValueObjects
         public override bool EstaValido()
         {
             RuleFor(e => e.Endereco)
-                .NotNull().WithMessage("E-mail precisa estar preenchido")
+                .NotEmpty().WithMessage("E-mail precisa estar preenchido")
                 .MaximumLength(PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX)
                     .WithMessage($"E-mail pode ter no máximo {PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX} caracteres")
                 .EmailAddress().WithMessage("E-mail não é válido")

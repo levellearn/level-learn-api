@@ -2,8 +2,10 @@
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,10 +18,12 @@ namespace LevelLearn.Service.Services.Usuarios
     public class TokenService : ITokenService
     {
         private readonly AppSettings _appSettings;
+        private readonly IDistributedCache _redisCache;
 
-        public TokenService(IOptions<AppSettings> appSettings)
+        public TokenService(IOptions<AppSettings> appSettings, IDistributedCache redisCache)
         {
             _appSettings = appSettings.Value;
+            _redisCache = redisCache;
         }
 
         public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
@@ -57,14 +61,28 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
+            var refreshToken = Guid.NewGuid().ToString();
+
+            await SalvarRefreshTokenCache(user.UserName, refreshToken);
 
             return new TokenVM()
             {
                 Created = dataCriacao,
                 Expiration = dataExpiracao,
-                AccessToken = token
+                AccessToken = token,
+                RefreshToken = refreshToken
             };
         }
 
+        private async Task SalvarRefreshTokenCache(string userName, string refreshToken)
+        {
+            var expiracaoRefreshToken = TimeSpan.FromSeconds(_appSettings.JWTSettings.RefreshTokenExpiracaoSegundos);
+
+            var refreshTokenData = new RefreshTokenData(refreshToken, userName);
+
+            var opcoesCache = new DistributedCacheEntryOptions();
+            opcoesCache.SetAbsoluteExpiration(expiracaoRefreshToken);
+            await _redisCache.SetStringAsync(refreshToken, JsonConvert.SerializeObject(refreshTokenData), opcoesCache);
+        }
     }
 }
