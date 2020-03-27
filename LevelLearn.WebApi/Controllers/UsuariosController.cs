@@ -47,14 +47,14 @@ namespace LevelLearn.WebApi.Controllers
 
         [HttpPost("v1/[controller]/sair")]
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
             var response = await _usuarioService.Logout();
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
-            return Ok();
+            return NoContent();
         }
 
 

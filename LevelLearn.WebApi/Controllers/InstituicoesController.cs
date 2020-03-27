@@ -87,7 +87,7 @@ namespace LevelLearn.WebApi.Controllers
 
             if (instituicao == null)
             {
-                var response = ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
+                var response = ResponseFactory<Instituicao>.NotFound("Instituição não existente");
                 return NotFound(response);
             }
 

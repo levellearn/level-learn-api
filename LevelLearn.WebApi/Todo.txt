@@ -1,8 +1,23 @@
 Implementar Log
 Implementar Refresh Token
 Implementar Arquivo resources
-Implementar HTTPS
+Configurar HTTPS
 Melhorar ListVM para tipo genérico
+Add Swagger
+Add firebase/dropbox/gravatar para guaradar imagens usuário
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Add-Migration initial -Verbose
 Update-Database -Verbose -Project LevelLearn.Infra.EFCore

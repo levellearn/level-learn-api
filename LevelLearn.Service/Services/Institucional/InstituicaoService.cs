@@ -28,30 +28,29 @@ namespace LevelLearn.Service.Services.Institucional
             var instituicoes = await _uow.Instituicoes.InstituicoesProfessor(new Guid(pessoaId), queryVM.Query, queryVM.PageNumber, queryVM.PageSize);
             var total = await _uow.Instituicoes.TotalInstituicoesProfessor(new Guid(pessoaId), queryVM.Query);
 
-            return ResponseAPI<IEnumerable<Instituicao>>.ResponseAPIFactory.Ok(instituicoes, "", total);
+            return ResponseFactory<IEnumerable<Instituicao>>.Ok(instituicoes, "", total);
         }
 
-        public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(
-            CadastrarInstituicaoVM instituicaoVM, string pessoaId)
+        public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM, string pessoaId)
         {
             var instituicaoNova = new Instituicao(instituicaoVM.Nome, instituicaoVM.Descricao);
 
             // Validação objeto
             if (!instituicaoNova.EstaValido())
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest("Dados inválidos", instituicaoNova.DadosInvalidos());
 
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicaoNova.NomePesquisa))
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Instituição já existente");
+                return ResponseFactory<Instituicao>.BadRequest("Instituição já existente");
 
             // Salva no BD
             var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.Admin, new Guid(pessoaId), instituicaoNova.Id);
             instituicaoNova.AtribuirPessoa(pessoaInstituicao);
 
             await _uow.Instituicoes.AddAsync(instituicaoNova);
-            if (!await _uow.CompleteAsync()) return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Instituicao>.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI<Instituicao>.ResponseAPIFactory.Created(instituicaoNova);
+            return ResponseFactory<Instituicao>.Created(instituicaoNova);
         }
 
         public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM, string pessoaId)
@@ -59,33 +58,32 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação BD
             var isAdmin = await _uow.Instituicoes.IsAdmin(id, new Guid(pessoaId));
 
-            if(!isAdmin)
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.Forbidden("Você não é Administrador dessa instituição");
+            if (!isAdmin)
+                return ResponseFactory<Instituicao>.Forbidden("Você não é Administrador dessa instituição");
 
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
 
             if (instituicaoExistente == null)
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
+                return ResponseFactory<Instituicao>.NotFound("Instituição não existente");
 
             // Verifica se está tentando atualizar uma instituição que já existe
             if (await _uow.Instituicoes.EntityExists(i =>
                     i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != id)
                 )
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Instituição já existente");
+                return ResponseFactory<Instituicao>.BadRequest("Instituição já existente");
 
             // Modifica objeto
             instituicaoExistente.Atualizar(instituicaoVM.Nome, instituicaoVM.Descricao);
 
             // Validação objeto
             if (!instituicaoExistente.EstaValido())
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.BadRequest("Dados inválidos", instituicaoExistente.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest("Dados inválidos", instituicaoExistente.DadosInvalidos());
 
             // Salva no BD
             _uow.Instituicoes.Update(instituicaoExistente);
-            if (!await _uow.CompleteAsync())
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Instituicao>.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI<Instituicao>.ResponseAPIFactory.NoContent();
+            return ResponseFactory<Instituicao>.NoContent();
         }
 
         public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id, string pessoaId)
@@ -94,12 +92,12 @@ namespace LevelLearn.Service.Services.Institucional
             var isAdmin = await _uow.Instituicoes.IsAdmin(id, new Guid(pessoaId));
 
             if (!isAdmin)
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.Forbidden("Você não é Administrador dessa instituição");
+                return ResponseFactory<Instituicao>.Forbidden("Você não é Administrador dessa instituição");
 
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
 
             if (instituicaoExistente == null)
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.NotFound("Instituição não existente");
+                return ResponseFactory<Instituicao>.NotFound("Instituição não existente");
 
             // TODO: Alguma regra de negócio?
             // TODO: Remover ou desativar?
@@ -109,9 +107,9 @@ namespace LevelLearn.Service.Services.Institucional
             _uow.Instituicoes.Remove(instituicaoExistente);
 
             if (!await _uow.CompleteAsync())
-                return ResponseAPI<Instituicao>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+                return ResponseFactory<Instituicao>.InternalServerError("Falha ao salvar");
 
-            return ResponseAPI<Instituicao>.ResponseAPIFactory.NoContent();
+            return ResponseFactory<Instituicao>.NoContent();
         }
 
         public void Dispose()

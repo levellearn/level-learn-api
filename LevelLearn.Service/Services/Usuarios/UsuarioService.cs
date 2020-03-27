@@ -40,14 +40,14 @@ namespace LevelLearn.Service.Services.Usuarios
                 new CPF(usuarioVM.Cpf), new Celular(usuarioVM.Celular), usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             if (!professor.EstaValido())
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", professor.DadosInvalidos());
+                return ResponseFactory<UsuarioVM>.BadRequest("Dados inválidos", professor.DadosInvalidos());
 
             // Validação Usuário
             var user = new ApplicationUser(usuarioVM.NickName, usuarioVM.Email, emailConfirmed: true, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, usuarioVM.Celular, phoneNumberConfirmed: true, professor.Id);
 
             if (!user.EstaValido())
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", user.DadosInvalidos());
+                return ResponseFactory<UsuarioVM>.BadRequest("Dados inválidos", user.DadosInvalidos());
 
             // Validações BD
             var respostaValidacao = await ValidarCriarUsuarioBD(professor);
@@ -57,7 +57,7 @@ namespace LevelLearn.Service.Services.Usuarios
             await _uow.Pessoas.AddAsync(professor);
 
             if (!await _uow.CompleteAsync())
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.InternalServerError("Falha ao salvar");
+                return ResponseFactory<UsuarioVM>.InternalServerError("Falha ao salvar");
 
             // Criando User Identity
             var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
@@ -73,7 +73,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, new List<string> { ApplicationRoles.PROFESSOR })
             };
 
-            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Created(responseVM);
+            return ResponseFactory<UsuarioVM>.Created(responseVM);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
@@ -90,10 +90,10 @@ namespace LevelLearn.Service.Services.Usuarios
              );
 
             if (result.IsLockedOut)
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Sua conta está bloqueada");
+                return ResponseFactory<UsuarioVM>.BadRequest("Sua conta está bloqueada");
 
             if (!result.Succeeded)
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Usuário e/ou senha inválidos");
+                return ResponseFactory<UsuarioVM>.BadRequest("Usuário e/ou senha inválidos");
 
             // Gerar Token           
             var user = await _userManager.FindByNameAsync(email.Endereco);
@@ -109,13 +109,13 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, roles)
             };
 
-            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok(responseVM, "Login feito com sucesso");
+            return ResponseFactory<UsuarioVM>.Ok(responseVM, "Login feito com sucesso");
         }
 
         public async Task<ResponseAPI<UsuarioVM>> Logout()
         {
             await _signInManager.SignOutAsync();
-            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok("Logout feito com sucesso");
+            return ResponseFactory<UsuarioVM>.NoContent("Logout feito com sucesso");
         }
 
 
@@ -124,28 +124,26 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa professor)
         {
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == professor.Email.Endereco))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("E-mail já existente");
+                return ResponseFactory<UsuarioVM>.BadRequest("E-mail já existente");
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("CPF já existente");
+                return ResponseFactory<UsuarioVM>.BadRequest("CPF já existente");
 
             if (await _uow.Pessoas.EntityExists(i => i.NickName == professor.NickName))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Nickname já existente");
+                return ResponseFactory<UsuarioVM>.BadRequest("Nickname já existente");
 
-            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+            return ResponseFactory<UsuarioVM>.NoContent();
         }
 
         private ResponseAPI<UsuarioVM> ValidarCredenciaisUsuario(Email email, string senha)
         {
             if (!email.EstaValido())
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory
-                    .BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
+                return ResponseFactory<UsuarioVM>.BadRequest("Dados inválidos", email.ValidationResult.GetErrorsResult());
 
             if (string.IsNullOrWhiteSpace(senha))
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory
-                    .BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
+                return ResponseFactory<UsuarioVM>.BadRequest("Dados inválidos", new DadoInvalido("Senha", "Senha precisa estar preenchida"));
 
-            return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+            return ResponseFactory<UsuarioVM>.NoContent();
         }
 
         private async Task<ResponseAPI<UsuarioVM>> CriarUsuarioIdentity(ApplicationUser user, string role, Pessoa pessoa)
@@ -156,13 +154,13 @@ namespace LevelLearn.Service.Services.Usuarios
                 if (!identityResult.Succeeded)
                 {
                     await RemoverPessoa(pessoa);
-                    return ResponseAPI<UsuarioVM>.ResponseAPIFactory.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
+                    return ResponseFactory<UsuarioVM>.BadRequest("Dados inválidos", identityResult.GetErrorsResult());
                 }
 
                 await _userManager.AddToRoleAsync(user, role);
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return ResponseAPI<UsuarioVM>.ResponseAPIFactory.Ok();
+                return ResponseFactory<UsuarioVM>.NoContent();
             }
             catch (Exception ex)
             {
