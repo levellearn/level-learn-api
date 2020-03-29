@@ -1,19 +1,18 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.ValueObjects;
 using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace LevelLearn.NUnitTest.Institucional
 {
     [TestFixture]
     public class CursoTest
     {
-        #region Fields
+        // Fields
         private string _nome, _sigla, _descricao;
-        #endregion
 
         [SetUp]
         public void Setup()
@@ -38,10 +37,10 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("", "ADS", "Descrição de teste")]
-        [TestCase("Análise e Desenvolvimento de Sistemas", "", "Descrição de teste")]
-        [TestCase("Análise", "ADS", "")]
-        [TestCase("An", "ADS", "Descrição de teste")]
+        [TestCase("", "ADS", "Descrição de teste")] // nome inválido
+        [TestCase("An", "ADS", "Descrição de teste")] // nome inválido
+        [TestCase("Análise e Desenvolvimento de Sistemas", "", "Descrição de teste")] // sigla inválida
+        [TestCase("Análise", "ADS", "")] // descrição inválida
         public void Cadastrar_InstituicaoValida_ReturnFalse(string nome, string sigla, string descricao)
         {
             _nome = nome;
@@ -59,20 +58,23 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var curso = new Curso(_nome, _sigla, _descricao, instituicao.Id);
 
+            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.ProfessorAdmin).Pessoa;
+            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.Aluno).Pessoa;
+            var professorCurso = new PessoaCurso(TiposPessoa.Professor, professor.Id, curso.Id);
+            var alunoCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
+
+            curso.AtribuirPessoa(professorCurso);
+            curso.AtribuirPessoa(alunoCurso);
+
             instituicao.AtribuirCurso(curso);
-
-            var aluno = AlunoTest.CriarAlunoPadrao();
-            var professor = ProfessorTest.CriarProfessorPadrao();
-
-            var pessoaCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
-
-            curso.AtribuirPessoa(pessoaCurso);
 
             return curso;
         }
 
-        public static Curso CriarCursoPadrao(Guid instituicaoId)
+        public static Curso CriarCursoPadrao()
         {
+            var instituicao = InstituicaoTest.CriarInstituicaoPadrao();           
+
             var nome = "Análise e Desenvolvimento de Sistemas";
             var sigla = "ADS";
             var descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, " +
@@ -82,7 +84,19 @@ namespace LevelLearn.NUnitTest.Institucional
                 "de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança " +
                 "de programas computacionais são fundamentais à atuação desse profissional.";
 
-            return new Curso(nome, sigla, descricao, instituicaoId);
+            var curso = new Curso(nome, sigla, descricao, instituicao.Id);
+
+            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.ProfessorAdmin).Pessoa;
+            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.Aluno).Pessoa;
+            var professorCurso = new PessoaCurso(TiposPessoa.Professor, professor.Id, curso.Id);
+            var alunoCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
+
+            curso.AtribuirPessoa(professorCurso);
+            curso.AtribuirPessoa(alunoCurso);
+
+            instituicao.AtribuirCurso(curso);
+
+            return curso;
         }
 
     }

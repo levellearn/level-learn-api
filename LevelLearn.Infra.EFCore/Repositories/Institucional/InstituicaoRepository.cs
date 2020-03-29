@@ -21,7 +21,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public async Task<List<Instituicao>> InstituicoesAdmin(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Admin)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
@@ -34,7 +34,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId)
-                .Where(p => p.Perfil == PerfisInstituicao.Professor || p.Perfil == PerfisInstituicao.Admin)
+                .Where(p => p.Perfil == PerfisInstituicao.Professor || p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(query) && p.Ativo)
                     .Skip((pageNumber - 1) * pageSize)
@@ -49,7 +49,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId)
-                .Where(p => p.Perfil == PerfisInstituicao.Professor || p.Perfil == PerfisInstituicao.Admin)
+                .Where(p => p.Perfil == PerfisInstituicao.Professor || p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(query) && p.Ativo)
                 .CountAsync();
@@ -78,7 +78,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId && 
                             p.InstituicaoId == instituicaoId && 
-                            p.Perfil == PerfisInstituicao.Admin)
+                            p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .AnyAsync();         
         }
 

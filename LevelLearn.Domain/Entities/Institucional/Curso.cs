@@ -12,16 +12,18 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         protected Curso() {
             Pessoas = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
         }
 
         public Curso(string nome, string sigla, string descricao, Guid instituicaoId)
         {
-            Nome = nome.RemoveExtraSpaces();
+            Nome = nome.RemoveExtraSpaces().ToUpper();
             Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
             InstituicaoId = instituicaoId;
-            Pessoas = new List<PessoaCurso>();
 
+            Pessoas = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
             NomePesquisa = Nome.GenerateSlug();
         }
 
@@ -35,9 +37,10 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public Guid InstituicaoId { get; private set; }
         public virtual Instituicao Instituicao { get; private set; }
-        public virtual ICollection<PessoaCurso> Pessoas { get; private set; }
 
-        // TODO: Turmas
+        public virtual ICollection<PessoaCurso> Pessoas { get; private set; }
+        public virtual ICollection<Turma> Turmas { get; private set; }
+
 
         #endregion Props
 
@@ -53,6 +56,19 @@ namespace LevelLearn.Domain.Entities.Institucional
             foreach (PessoaCurso pessoa in pessoas)
             {
                 Pessoas.Add(pessoa);
+            }
+        }
+
+        public void AtribuirTurma(Turma turma)
+        {
+            Turmas.Add(turma);
+        }
+
+        public void AtribuirTurmas(ICollection<Turma> turmas)
+        {
+            foreach (Turma turma in turmas)
+            {
+                Turmas.Add(turma);
             }
         }
 

@@ -27,6 +27,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
                .HasColumnType($"varchar({PropertiesConfig.Instituicao.DESCRICAO_TAMANHO_MAX})");
 
 
+            // Relacionamentos
             builder.HasMany(p => p.Pessoas);
             builder.HasMany(p => p.Cursos);
 

@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Enums;
+﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
@@ -15,6 +16,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
         protected Pessoa()
         {
             Instituicoes = new List<PessoaInstituicao>();
+            Cursos = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
         }
 
         public Pessoa(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero,
@@ -28,8 +31,10 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Genero = genero;
             ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl;
             DataNascimento = dataNascimento;
-            Instituicoes = new List<PessoaInstituicao>();
 
+            Instituicoes = new List<PessoaInstituicao>();
+            Cursos = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
             NomePesquisa = Nome.GenerateSlug();
         }
 
@@ -47,6 +52,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public DateTime? DataNascimento { get; protected set; }
 
         public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
+        public virtual ICollection<PessoaCurso> Cursos { get; protected set; }
+        public virtual ICollection<Turma> Turmas { get; protected set; }
 
         #endregion Props
 
@@ -85,19 +92,42 @@ namespace LevelLearn.Domain.Entities.Pessoas
             this.ValidationResult.AddErrors(Celular.ValidationResult);
         }
 
-        public void AtribuirPessoa(PessoaInstituicao instituicao)
+        public void AtribuirInstituicao(PessoaInstituicao instituicao)
         {
-            //if (!instituicao.EstaValido()) return;
-
             Instituicoes.Add(instituicao);
         }
 
-        public void AtribuirPessoas(ICollection<PessoaInstituicao> instituicoes)
+        public void AtribuirInstituicoes(ICollection<PessoaInstituicao> instituicoes)
         {
             foreach (PessoaInstituicao instituicao in instituicoes)
             {
-                //if (instituicao.EstaValido())
                 Instituicoes.Add(instituicao);
+            }
+        }
+
+        public void AtribuirCurso(PessoaCurso curso)
+        {
+            Cursos.Add(curso);
+        }
+
+        public void AtribuirCursos(ICollection<PessoaCurso> cursos)
+        {
+            foreach (PessoaCurso curso in cursos)
+            {
+                Cursos.Add(curso);
+            }
+        }
+
+        public void AtribuirTurma(Turma turma)
+        {
+            Turmas.Add(turma);
+        }
+
+        public void AtribuirTurmas(ICollection<Turma> turmas)
+        {
+            foreach (Turma turma in turmas)
+            {
+                Turmas.Add(turma);
             }
         }
 

@@ -44,7 +44,7 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseFactory<Instituicao>.BadRequest("Instituição já existente");
 
             // Salva no BD
-            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.Admin, new Guid(pessoaId), instituicaoNova.Id);
+            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, new Guid(pessoaId), instituicaoNova.Id);
             instituicaoNova.AtribuirPessoa(pessoaInstituicao);
 
             await _uow.Instituicoes.AddAsync(instituicaoNova);

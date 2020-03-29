@@ -4,15 +4,15 @@ using LevelLearn.Domain.Enums;
 using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace LevelLearn.NUnitTest.Institucional
 {
     [TestFixture]
     public class TurmaTest
     {
-        #region Fields
+        // Fields
         private string _nome, _descricao, _nomeDisciplina;
-        #endregion
 
         [SetUp]
         public void Setup()
@@ -34,9 +34,9 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("", "Descrição de teste")]
-        [TestCase("Turma XYZ", "")]
-        [TestCase("Tu", "Descrição de teste")]
+        [TestCase("", "Descrição de teste")] // nome inválido
+        [TestCase("Tu", "Descrição de teste")] // nome inválido
+        [TestCase("Turma XYZ", "")] // descrição inválida
         public void Cadastrar_TurmaValida_ReturnFalse(string nome, string descricao)
         {
             _nome = nome;
@@ -51,9 +51,7 @@ namespace LevelLearn.NUnitTest.Institucional
         {
             var instituicao = InstituicaoTest.CriarInstituicaoPadrao();
 
-            var curso = CursoTest.CriarCursoPadrao(instituicao.Id);
-
-            instituicao.AtribuirCurso(curso);
+            var curso = CursoTest.CriarCursoPadrao();
 
             var aluno = AlunoTest.CriarAlunoPadrao();
             var professor = ProfessorTest.CriarProfessorPadrao();
@@ -66,15 +64,25 @@ namespace LevelLearn.NUnitTest.Institucional
             return turma;
         }
 
-        public static Turma CriarTurmaPadrao(Guid cursoId, Guid professorId)
+        public static Turma CriarTurmaPadrao()
         {
+            var curso = CursoTest.CriarCursoPadrao();
+
             var nome = "6ª Turma ADS - 1º Semestre - ALGORITMOS";
             var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso" +
                 " de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de " +
                 "algoritmos e programas de computador.";
-            var nomeDisciplina = "Algoritmos";
+            var nomeDisciplina = "ALGORITMOS";
 
-            return new Turma(nome, descricao, nomeDisciplina, cursoId, professorId);
+            var professor = curso.Pessoas.First(p => p.Perfil == TiposPessoa.Professor).Pessoa;
+
+            var turma = new Turma(nome, descricao, nomeDisciplina, curso.Id, professor.Id);
+
+            var aluno = curso.Pessoas.First(p => p.Perfil == TiposPessoa.Aluno).Pessoa;
+
+            turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
+
+            return turma;
         }
 
     }

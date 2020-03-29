@@ -30,8 +30,11 @@ namespace LevelLearn.Infra.EFCore.Contexts
         public DbSet<Professor> Professores { get; set; }
         public DbSet<Aluno> Alunos { get; set; }
         public DbSet<Instituicao> Instituicoes { get; set; }
-        //public DbSet<Curso> Cursos { get; set; }
-        //public DbSet<Turma> Turmas { get; set; }
+        public DbSet<PessoaInstituicao> PessoasInstituicoes { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
+        public DbSet<PessoaCurso> PessoasCursos { get; set; }
+        public DbSet<Turma> Turmas { get; set; }
+        public DbSet<AlunoTurma> AlunosTurmas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,9 +45,8 @@ namespace LevelLearn.Infra.EFCore.Contexts
             modelBuilder.Ignore<FluentValidation.Results.ValidationResult>();
 
             modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
-            
-            //modelBuilder.ApplyConfiguration(new CursoConfiguration());
-            //modelBuilder.ApplyConfiguration(new TurmaConfiguration());
+            modelBuilder.ApplyConfiguration(new CursoConfiguration());
+            modelBuilder.ApplyConfiguration(new TurmaConfiguration());
 
             //modelBuilder.ApplyConfiguration(new ChamadaConfiguration());
             //modelBuilder.ApplyConfiguration(new DesafioConfiguration());
@@ -57,12 +59,12 @@ namespace LevelLearn.Infra.EFCore.Contexts
             modelBuilder.ApplyConfiguration(new PessoaConfiguration());
             modelBuilder.ApplyConfiguration(new ProfessorConfigurationtion());
             modelBuilder.ApplyConfiguration(new AlunoConfiguration());
-            //modelBuilder.ApplyConfiguration(new AlunoDesafioConfiguration());
+            modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
+            modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
+            modelBuilder.ApplyConfiguration(new AlunoTurmaConfiguration());
             //modelBuilder.ApplyConfiguration(new AlunoTimeConfiguration());
-            //modelBuilder.ApplyConfiguration(new AlunoTurmaConfiguration());
+            //modelBuilder.ApplyConfiguration(new AlunoDesafioConfiguration());
             //modelBuilder.ApplyConfiguration(new NotificacaoConfiguration());
-            //modelBuilder.ApplyConfiguration(new PessoaCursoConfiguration());
-            //modelBuilder.ApplyConfiguration(new PessoaInstituicaoConfiguration());
 
             modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
 
@@ -72,7 +74,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
                 if (!relationship.IsOwnership)
                     relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-        }       
+        }
 
 
     }

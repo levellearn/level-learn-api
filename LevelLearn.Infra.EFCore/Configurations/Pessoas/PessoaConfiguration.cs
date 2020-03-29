@@ -63,6 +63,12 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 
             // Relacionamentos
             builder.HasMany(p => p.Instituicoes);
+            builder.HasMany(p => p.Cursos);
+            builder.HasMany(p => p.Turmas);
+            //builder.HasMany(p => p.Turmas)
+            //    .WithOne(t => t.Professor)
+            //    .HasForeignKey(t => t.ProfessorId);
+
         }
     }
 }

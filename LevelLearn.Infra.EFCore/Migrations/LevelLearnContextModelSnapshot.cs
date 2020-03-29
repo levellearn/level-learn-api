@@ -32,16 +32,21 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(2000)")
+                        .HasMaxLength(2000);
 
                     b.Property<Guid>("InstituicaoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("NomePesquisa")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("Sigla")
                         .HasColumnType("nvarchar(max)");
@@ -50,7 +55,9 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
                     b.HasIndex("InstituicaoId");
 
-                    b.ToTable("Curso");
+                    b.HasIndex("NomePesquisa");
+
+                    b.ToTable("Cursos");
                 });
 
             modelBuilder.Entity("LevelLearn.Domain.Entities.Institucional.Instituicao", b =>
@@ -84,6 +91,75 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.HasIndex("NomePesquisa");
 
                     b.ToTable("Instituicoes");
+                });
+
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Institucional.Turma", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CursoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("varchar(2000)")
+                        .HasMaxLength(2000);
+
+                    b.Property<decimal>("Meta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("NomeDisciplina")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomePesquisa")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<Guid?>("PessoaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProfessorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CursoId");
+
+                    b.HasIndex("NomePesquisa");
+
+                    b.HasIndex("PessoaId");
+
+                    b.HasIndex("ProfessorId");
+
+                    b.ToTable("Turmas");
+                });
+
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.AlunoTurma", b =>
+                {
+                    b.Property<Guid>("AlunoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TurmaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AlunoId", "TurmaId");
+
+                    b.HasIndex("TurmaId");
+
+                    b.ToTable("AlunoTurmas");
                 });
 
             modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.Pessoa", b =>
@@ -159,7 +235,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("PessoaCurso");
+                    b.ToTable("PessoaCursos");
                 });
 
             modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.PessoaInstituicao", b =>
@@ -183,7 +259,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("PessoaInstituicao");
+                    b.ToTable("PessoaInstituicoes");
                 });
 
             modelBuilder.Entity("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", b =>
@@ -403,7 +479,6 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.HasBaseType("LevelLearn.Domain.Entities.Pessoas.Pessoa");
 
                     b.Property<string>("RA")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Aluno");
@@ -425,6 +500,41 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Institucional.Turma", b =>
+                {
+                    b.HasOne("LevelLearn.Domain.Entities.Institucional.Curso", "Curso")
+                        .WithMany("Turmas")
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LevelLearn.Domain.Entities.Pessoas.Pessoa", null)
+                        .WithMany("Turmas")
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LevelLearn.Domain.Entities.Pessoas.Professor", "Professor")
+                        .WithMany()
+                        .HasForeignKey("ProfessorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.AlunoTurma", b =>
+                {
+                    b.HasOne("LevelLearn.Domain.Entities.Pessoas.Pessoa", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LevelLearn.Domain.Entities.Institucional.Turma", "Turma")
+                        .WithMany("Alunos")
+                        .HasForeignKey("TurmaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LevelLearn.Domain.Entities.Pessoas.Pessoa", b =>
                 {
                     b.OwnsOne("LevelLearn.Domain.ValueObjects.CPF", "Cpf", b1 =>
@@ -433,7 +543,6 @@ namespace LevelLearn.Infra.EFCore.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Numero")
-                                .IsRequired()
                                 .HasColumnName("CPF")
                                 .HasColumnType("varchar(11)");
 
@@ -451,7 +560,6 @@ namespace LevelLearn.Infra.EFCore.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Numero")
-                                .IsRequired()
                                 .HasColumnName("Celular")
                                 .HasColumnType("varchar(14)");
 
@@ -469,7 +577,6 @@ namespace LevelLearn.Infra.EFCore.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Endereco")
-                                .IsRequired()
                                 .HasColumnName("Email")
                                 .HasColumnType("varchar(190)");
 
@@ -491,7 +598,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .IsRequired();
 
                     b.HasOne("LevelLearn.Domain.Entities.Pessoas.Pessoa", "Pessoa")
-                        .WithMany()
+                        .WithMany("Cursos")
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

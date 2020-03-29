@@ -17,8 +17,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public Instituicao(string nome, string descricao)
         {
-            Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim() ?? string.Empty;
+            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Descricao = descricao?.Trim();
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
 
@@ -31,6 +31,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
+
         public virtual ICollection<Curso> Cursos { get; private set; }
         public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }
 
@@ -40,7 +41,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public void Atualizar(string nome, string descricao)
         {
-            Nome = nome.RemoveExtraSpaces();
+            Nome = nome.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
 
             NomePesquisa = Nome.GenerateSlug();
@@ -79,6 +80,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             base.Ativar();
 
+            // Ativação em cascata
             Cursos.ToList()
                 .ForEach(c => c.Ativar());            
         }
@@ -87,6 +89,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             base.Desativar();
 
+            // Desativação em cascata
             Cursos.ToList()
                 .ForEach(c => c.Desativar());            
         }

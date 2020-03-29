@@ -1,19 +1,16 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.ValueObjects;
 using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
-using System;
 
 namespace LevelLearn.NUnitTest.Institucional
 {
     [TestFixture]
     public class InstituicaoTest
     {
-        #region Fields
+        // Fields
         private string _nome, _descricao;
-        #endregion
 
         [SetUp]
         public void Setup()
@@ -34,9 +31,9 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("UniFatea", "")]
-        [TestCase("Un", "")]
-        [TestCase("", "Descrição de teste")]
+        [TestCase("UniFatea", "")] // descrição inválida
+        [TestCase("Un", "")] // nome e descrição inválida
+        [TestCase("", "Descrição de teste")] // nome inválido
         public void Cadastrar_InstituicaoValida_ReturnFalse(string nome, string descricao)
         {
             _nome = nome;
@@ -52,10 +49,13 @@ namespace LevelLearn.NUnitTest.Institucional
             var instituicao = new Instituicao(_nome, _descricao);
 
             var aluno = AlunoTest.CriarAlunoPadrao();
+            var professor = ProfessorTest.CriarProfessorPadrao();
 
-            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id);
+            var professorAdminInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, professor.Id, instituicao.Id);
+            var alunoInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id);
 
-            instituicao.AtribuirPessoa(pessoaInstituicao);
+            instituicao.AtribuirPessoa(professorAdminInstituicao);
+            instituicao.AtribuirPessoa(alunoInstituicao);
 
             return instituicao;
         }
@@ -67,7 +67,27 @@ namespace LevelLearn.NUnitTest.Institucional
                 "Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas " +
                 "Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
 
-            return new Instituicao(nome, descricao);
+            var instituicao = new Instituicao(nome, descricao);
+
+            var aluno = AlunoTest.CriarAlunoPadrao();
+            var professor = ProfessorTest.CriarProfessorPadrao();
+
+            var professorAdminInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, professor.Id, instituicao.Id)
+            {
+                Pessoa = professor,
+                Instituicao = instituicao
+            };
+            var alunoInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id)
+            {
+                Pessoa = aluno,
+                Instituicao = instituicao
+            };
+
+            instituicao.AtribuirPessoa(professorAdminInstituicao);
+            instituicao.AtribuirPessoa(alunoInstituicao);
+
+
+            return instituicao;
         }
 
 

@@ -15,10 +15,10 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public Turma(string nome, string descricao, string nomeDisciplina, Guid cursoId, Guid professorId)
         {
-            Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim() ?? string.Empty;
+            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Descricao = descricao?.Trim();
             Meta = decimal.Zero;
-            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
+            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces().ToUpper();
             CursoId = cursoId;
             ProfessorId = professorId;
             Alunos = new List<AlunoTurma>();
@@ -32,7 +32,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public decimal Meta { get; private set; }
+        public decimal Meta { get; private set; } // TODO: decimal?
         public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }

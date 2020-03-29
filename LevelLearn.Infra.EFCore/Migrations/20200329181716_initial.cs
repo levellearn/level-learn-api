@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LevelLearn.Infra.EFCore.Migrations
 {
-    public partial class firstmigration : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -84,23 +84,23 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Curso",
+                name: "Cursos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
-                    NomePesquisa = table.Column<string>(nullable: true),
+                    NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
                     DataCadastro = table.Column<DateTime>(nullable: false),
-                    Nome = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Sigla = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
                     InstituicaoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Curso", x => x.Id);
+                    table.PrimaryKey("PK_Cursos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Curso_Instituicoes_InstituicaoId",
+                        name: "FK_Cursos_Instituicoes_InstituicaoId",
                         column: x => x.InstituicaoId,
                         principalTable: "Instituicoes",
                         principalColumn: "Id",
@@ -141,7 +141,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PessoaInstituicao",
+                name: "PessoaInstituicoes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -151,15 +151,15 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PessoaInstituicao", x => x.Id);
+                    table.PrimaryKey("PK_PessoaInstituicoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PessoaInstituicao_Instituicoes_InstituicaoId",
+                        name: "FK_PessoaInstituicoes_Instituicoes_InstituicaoId",
                         column: x => x.InstituicaoId,
                         principalTable: "Instituicoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PessoaInstituicao_Pessoas_PessoaId",
+                        name: "FK_PessoaInstituicoes_Pessoas_PessoaId",
                         column: x => x.PessoaId,
                         principalTable: "Pessoas",
                         principalColumn: "Id",
@@ -167,7 +167,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PessoaCurso",
+                name: "PessoaCursos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -177,16 +177,55 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PessoaCurso", x => x.Id);
+                    table.PrimaryKey("PK_PessoaCursos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PessoaCurso_Curso_CursoId",
+                        name: "FK_PessoaCursos_Cursos_CursoId",
                         column: x => x.CursoId,
-                        principalTable: "Curso",
+                        principalTable: "Cursos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PessoaCurso_Pessoas_PessoaId",
+                        name: "FK_PessoaCursos_Pessoas_PessoaId",
                         column: x => x.PessoaId,
+                        principalTable: "Pessoas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Turmas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Ativo = table.Column<bool>(nullable: false),
+                    NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
+                    Meta = table.Column<decimal>(nullable: false),
+                    NomeDisciplina = table.Column<string>(nullable: true),
+                    CursoId = table.Column<Guid>(nullable: false),
+                    ProfessorId = table.Column<Guid>(nullable: false),
+                    PessoaId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Turmas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Turmas_Cursos_CursoId",
+                        column: x => x.CursoId,
+                        principalTable: "Cursos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Turmas_Pessoas_PessoaId",
+                        column: x => x.PessoaId,
+                        principalTable: "Pessoas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Turmas_Pessoas_ProfessorId",
+                        column: x => x.ProfessorId,
                         principalTable: "Pessoas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -277,6 +316,35 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AlunoTurmas",
+                columns: table => new
+                {
+                    AlunoId = table.Column<Guid>(nullable: false),
+                    TurmaId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlunoTurmas", x => new { x.AlunoId, x.TurmaId });
+                    table.ForeignKey(
+                        name: "FK_AlunoTurmas_Pessoas_AlunoId",
+                        column: x => x.AlunoId,
+                        principalTable: "Pessoas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AlunoTurmas_Turmas_TurmaId",
+                        column: x => x.TurmaId,
+                        principalTable: "Turmas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlunoTurmas_TurmaId",
+                table: "AlunoTurmas",
+                column: "TurmaId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -323,9 +391,14 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Curso_InstituicaoId",
-                table: "Curso",
+                name: "IX_Cursos_InstituicaoId",
+                table: "Cursos",
                 column: "InstituicaoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cursos_NomePesquisa",
+                table: "Cursos",
+                column: "NomePesquisa");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Instituicoes_NomePesquisa",
@@ -333,33 +406,56 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 column: "NomePesquisa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PessoaCurso_CursoId",
-                table: "PessoaCurso",
+                name: "IX_PessoaCursos_CursoId",
+                table: "PessoaCursos",
                 column: "CursoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PessoaCurso_PessoaId",
-                table: "PessoaCurso",
+                name: "IX_PessoaCursos_PessoaId",
+                table: "PessoaCursos",
                 column: "PessoaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PessoaInstituicao_InstituicaoId",
-                table: "PessoaInstituicao",
+                name: "IX_PessoaInstituicoes_InstituicaoId",
+                table: "PessoaInstituicoes",
                 column: "InstituicaoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PessoaInstituicao_PessoaId",
-                table: "PessoaInstituicao",
+                name: "IX_PessoaInstituicoes_PessoaId",
+                table: "PessoaInstituicoes",
                 column: "PessoaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pessoas_NomePesquisa",
                 table: "Pessoas",
                 column: "NomePesquisa");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turmas_CursoId",
+                table: "Turmas",
+                column: "CursoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turmas_NomePesquisa",
+                table: "Turmas",
+                column: "NomePesquisa");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turmas_PessoaId",
+                table: "Turmas",
+                column: "PessoaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turmas_ProfessorId",
+                table: "Turmas",
+                column: "ProfessorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AlunoTurmas");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -376,10 +472,13 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "PessoaCurso");
+                name: "PessoaCursos");
 
             migrationBuilder.DropTable(
-                name: "PessoaInstituicao");
+                name: "PessoaInstituicoes");
+
+            migrationBuilder.DropTable(
+                name: "Turmas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -388,7 +487,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Curso");
+                name: "Cursos");
 
             migrationBuilder.DropTable(
                 name: "Pessoas");
