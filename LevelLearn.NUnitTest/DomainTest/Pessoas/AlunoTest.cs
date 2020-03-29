@@ -11,11 +11,10 @@ namespace LevelLearn.NUnitTest.Pessoas
     [TestFixture]
     class AlunoTest
     {
-        #region Fields
+        // Fields
         private string _nome, _nickName, _email, _cpf, _ra, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
-        #endregion
 
         [SetUp]
         public void Setup()
@@ -40,12 +39,12 @@ namespace LevelLearn.NUnitTest.Pessoas
         }
 
         [Test]
-        [TestCase("123.456.789-10", "29/10/1993")]
-        [TestCase("881.192.990-35", "")]
+        [TestCase("123.456.789-10", "29/10/1990")] // CPF inválido
+        [TestCase("881.192.990-35", "29/10/3000")] // Data inválida
         public void Cadastrar_AlunoValido_ReturnFalse(string cpf, string dataNascimento)
         {
             _cpf = cpf;
-            _dataNascimento = string.IsNullOrEmpty(dataNascimento) ? DateTime.Now.Date : DateTime.Parse(dataNascimento);
+            _dataNascimento = DateTime.Parse(dataNascimento);
 
             var aluno = CriarAluno();
             bool valido = aluno.EstaValido();
@@ -81,7 +80,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.ErrorMessage == "O Nome precisa de um sobrenome");
+            var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
 
             Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
         }
@@ -97,7 +96,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == "NickName");
+            bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
 
             Assert.IsTrue(valido, "Aluno deveria ter NickName válido");
         }
@@ -112,11 +111,19 @@ namespace LevelLearn.NUnitTest.Pessoas
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == "NickName");
+            bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
 
             Assert.IsFalse(valido, "Aluno deveria ter NickName inválido");
         }
 
+        [Test]
+        public void Cadastrar_AlunoSemCPF_ReturnTrue()
+        {
+            _cpf = null;
+            var aluno = CriarAluno();
+            bool valido = aluno.EstaValido();
+            Assert.IsTrue(valido, "Aluno deveria ser válido");
+        }
 
         private Aluno CriarAluno()
         {

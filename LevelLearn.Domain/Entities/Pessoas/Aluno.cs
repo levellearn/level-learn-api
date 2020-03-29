@@ -19,6 +19,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         }
 
         // Props
+
         public string RA { get; private set; }
 
         // Methods

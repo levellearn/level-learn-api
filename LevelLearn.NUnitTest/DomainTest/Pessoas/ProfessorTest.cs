@@ -10,11 +10,10 @@ namespace LevelLearn.NUnitTest.Pessoas
     [TestFixture]
     class ProfessorTest
     {
-        #region Fields
+        // Fields
         private string _nome, _nickName, _email, _cpf, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
-        #endregion
 
         [SetUp]
         public void Setup()
@@ -38,8 +37,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         }
 
         [Test]
-        [TestCase("le.guarino@mail", "(12)98845-8974")]
-        [TestCase("le.guarino@mail.com", "123456")]
+        [TestCase("le.guarino@mail", "(12)98845-8974")] // email inválido
+        [TestCase("le.guarino@mail.com", "123456")] // celular inválido
         public void Cadastrar_ProfessorValido_ReturnFalse(string email, string celular)
         {
             _email = email;
@@ -49,6 +48,19 @@ namespace LevelLearn.NUnitTest.Pessoas
             bool valido = professor.EstaValido();
             Assert.IsFalse(valido, "Professor deveria ser inválido");
         }
+        
+        [Test]
+        [TestCase("123.456.789-10")]
+        [TestCase("111.222.333-44")]
+        [TestCase("")]
+        public void Cadastrar_ProfessoCPFInvalido_ReturnFalse(string cpf)
+        {
+            _cpf = cpf;
+            var professor = CriarProfessor();
+            bool valido = professor.EstaValido();
+            Assert.IsFalse(valido, "Professor deveria ser inválido");
+        }
+
 
         private Professor CriarProfessor()
         {

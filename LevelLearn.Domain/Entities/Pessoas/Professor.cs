@@ -1,4 +1,6 @@
 ﻿using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using System;
 
@@ -13,6 +15,20 @@ namespace LevelLearn.Domain.Entities.Pessoas
         {
             TipoPessoa = TiposPessoa.Professor;
         }
+
+        public override bool EstaValido()
+        {
+            base.EstaValido();
+
+            var professorValidator = new ProfessorValidator();
+            var professorValidationResult = professorValidator.Validate(this);
+
+            if (!professorValidationResult.IsValid)
+                this.ValidationResult.AddErrors(professorValidationResult);
+
+            return this.ValidationResult.IsValid;
+        }
+
 
     }
 }

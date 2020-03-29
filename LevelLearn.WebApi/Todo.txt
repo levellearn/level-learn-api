@@ -1,12 +1,10 @@
 Implementar Log
-Implementar Refresh Token
 Implementar Arquivo resources
 Configurar HTTPS
 Melhorar ListVM para tipo genérico
 Add Swagger
 Add firebase/dropbox/gravatar para guaradar imagens usuário
-
-Validar token no login
+Desavlidaar token no logout
 
 
 

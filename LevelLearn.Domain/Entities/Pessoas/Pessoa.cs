@@ -27,7 +27,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Celular = celular;
             Genero = genero;
             ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl;
-            DataNascimento = dataNascimento; // TODO: Obrigatório?
+            DataNascimento = dataNascimento;
             Instituicoes = new List<PessoaInstituicao>();
 
             NomePesquisa = Nome.GenerateSlug();

@@ -23,21 +23,21 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.CPF_TAMANHO})")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.OwnsOne(c => c.Email)
                 .Ignore(e => e.CascadeMode)
                 .Property(e => e.Endereco)
                 .HasColumnName("Email")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX})")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.OwnsOne(c => c.Celular)
                 .Ignore(e => e.CascadeMode)
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
                 .HasColumnType($"varchar({PropertiesConfig.Pessoa.CELULAR_TAMANHO})")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(p => p.Nome)
                 .IsRequired()

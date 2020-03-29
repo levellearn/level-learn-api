@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using System;
 
@@ -71,7 +72,9 @@ namespace LevelLearn.Domain.ValueObjects
         public override bool EstaValido()
         {
             RuleFor(c => c.Numero)
-                .Must(a => Validate()).WithMessage("CPF não é válido")
+                .Must(a => Validate())
+                    .WithMessage("CPF não é válido")
+                    .When(p => !string.IsNullOrWhiteSpace(p.Numero))
                 .OverridePropertyName("CPF");
 
             ValidationResult = Validate(this);

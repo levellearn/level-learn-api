@@ -25,10 +25,10 @@ namespace LevelLearn.Domain.Validators.Pessoas
                     .WithMessage("Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
                     .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
-                .Must(n => IsFullName(n))
+                .Must(n => TemPrimeiroNomeSobrenome(n))
                     .WithMessage("Nome precisa de um sobrenome");
         }
-        private bool IsFullName(string name)
+        private bool TemPrimeiroNomeSobrenome(string name)
         {
             var pattern = @"^[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ'-]{3,}\s[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ\s\.'-]{2,}$";
 
@@ -61,15 +61,14 @@ namespace LevelLearn.Domain.Validators.Pessoas
             var dataAtual = DateTime.Now.Date;
 
             RuleFor(c => c.DataNascimento)
-                //.NotEmpty().WithMessage("Data Nascimento precisa estar preenchida")
-                .LessThan(dataAtual).WithMessage("Data Nascimento precisa ser menor que hoje")
+                .LessThan(dataAtual)
+                    .WithMessage("Data Nascimento precisa ser menor que hoje")
                 .When(p => p.DataNascimento.HasValue);
         }
 
         private void ValidarGenero()
         {
             RuleFor(p => p.Genero)
-                .NotEmpty().WithMessage("Gênero precisa estar preenchido")
                 .Must(c => c != Generos.Nenhum)
                     .WithMessage($"Gênero precisa ser informado");
         }
@@ -77,7 +76,6 @@ namespace LevelLearn.Domain.Validators.Pessoas
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
-                .NotEmpty().WithMessage("Tipo de pessoa precisa estar preenchido")
                 .Must(c => c != TiposPessoa.Nenhum)
                 .WithMessage($"Tipo de pessoa precisa ser Admin, Professor ou Aluno");
         }

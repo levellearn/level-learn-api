@@ -9,7 +9,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
         public void Configure(EntityTypeBuilder<Aluno> builder)
         {
             builder.Property(p => p.RA)
-                .IsRequired();
+                .IsRequired(false);
 
         }
     }
