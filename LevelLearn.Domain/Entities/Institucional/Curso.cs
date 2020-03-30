@@ -3,6 +3,7 @@ using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
@@ -79,6 +80,29 @@ namespace LevelLearn.Domain.Entities.Institucional
             
             return this.ValidationResult.IsValid;
         }
+
+        /// <summary>
+        /// Ativação em cascata
+        /// </summary>
+        public override void Ativar()
+        {
+            base.Ativar();
+
+            Turmas.ToList()
+                .ForEach(c => c.Ativar());
+        }
+
+        /// <summary>
+        /// Desativação em cascata
+        /// </summary>
+        public override void Desativar()
+        {
+            base.Desativar();
+
+            Turmas.ToList()
+                .ForEach(c => c.Desativar());
+        }
+
 
         #endregion Methods
 

@@ -29,7 +29,6 @@
     {
         public int TempoBloqueioMinutos { get; set; }
         public int TentativaMaximaAcesso { get; set; }
-        public int TamanhoMinimoSenha { get; set; }
     }
 
 }

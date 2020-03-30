@@ -99,12 +99,11 @@ namespace LevelLearn.Service.Services.Institucional
             if (instituicaoExistente == null)
                 return ResponseFactory<Instituicao>.NotFound("Instituição não existente");
 
-            // TODO: Alguma regra de negócio?
             // TODO: Remover ou desativar?
 
-            //instituicaoExistente.Desativar();
-            //_uow.Instituicoes.Update(instituicaoExistente);
-            _uow.Instituicoes.Remove(instituicaoExistente);
+            instituicaoExistente.Desativar();
+            _uow.Instituicoes.Update(instituicaoExistente);
+            //_uow.Instituicoes.Remove(instituicaoExistente);
 
             if (!await _uow.CompleteAsync())
                 return ResponseFactory<Instituicao>.InternalServerError("Falha ao salvar");

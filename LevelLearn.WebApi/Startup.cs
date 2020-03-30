@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Domain.Validators;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Service.Interfaces.Institucional;
@@ -130,11 +131,11 @@ namespace LevelLearn.WebApi
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = appSettings.IdentitySettings.TamanhoMinimoSenha;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = PropertiesConfig.Pessoa.SENHA_REQUER_DIGITO;
+                options.Password.RequiredLength = PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN;
+                options.Password.RequireNonAlphanumeric = PropertiesConfig.Pessoa.SENHA_REQUER_ESPECIAL;
+                options.Password.RequireUppercase = PropertiesConfig.Pessoa.SENHA_REQUER_MAIUSCULO;
+                options.Password.RequireLowercase = PropertiesConfig.Pessoa.SENHA_REQUER_MINUSCULO;
 
                 // Lockout settings
                 options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;

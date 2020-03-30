@@ -26,7 +26,7 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.NomeDisciplina)
                 .NotEmpty()
                     .WithMessage("Nome da disciplina precisa estar preenchido")
-                .Length(PropertiesConfig.Turma.NOME_TAMANHO_MIN, PropertiesConfig.Turma.NOME_TAMANHO_MAX)
+                .Length(PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MIN, PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
                     .WithMessage($"Nome da disciplina precisa estar entre {PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MIN} e {PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX} caracteres");
         }
 

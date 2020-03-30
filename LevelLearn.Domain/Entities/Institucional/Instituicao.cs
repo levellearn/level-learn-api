@@ -76,24 +76,6 @@ namespace LevelLearn.Domain.Entities.Institucional
             }
         }
 
-        public override void Ativar()
-        {
-            base.Ativar();
-
-            // Ativação em cascata
-            Cursos.ToList()
-                .ForEach(c => c.Ativar());            
-        }
-
-        public override void Desativar()
-        {
-            base.Desativar();
-
-            // Desativação em cascata
-            Cursos.ToList()
-                .ForEach(c => c.Desativar());            
-        }
-
         public override bool EstaValido()
         {
             var validator = new InstituicaoValidator();
@@ -101,6 +83,28 @@ namespace LevelLearn.Domain.Entities.Institucional
 
             return this.ValidationResult.IsValid;
         }
+
+        /// <summary>
+        /// Ativação em cascata
+        /// </summary>
+        public override void Ativar()
+        {
+            base.Ativar();
+
+            Cursos.ToList()
+                .ForEach(c => c.Ativar());            
+        }
+
+        /// <summary>
+        /// Desativação em cascata
+        /// </summary>
+        public override void Desativar()
+        {
+            base.Desativar();
+
+            Cursos.ToList()
+                .ForEach(c => c.Desativar());            
+        }             
 
         #endregion Methods
 

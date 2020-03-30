@@ -21,6 +21,11 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
               .HasMaxLength(PropertiesConfig.Turma.NOME_TAMANHO_MAX)
               .HasColumnType($"varchar({PropertiesConfig.Turma.NOME_TAMANHO_MAX})");
 
+            builder.Property(p => p.NomeDisciplina)
+                .IsRequired()
+                .HasMaxLength(PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
+                .HasColumnType($"varchar({PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX})");
+
             builder.Property(p => p.Descricao)
                 .IsRequired()
                 .HasMaxLength(PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX)

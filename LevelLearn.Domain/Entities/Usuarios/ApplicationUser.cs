@@ -15,17 +15,18 @@ namespace LevelLearn.Domain.Entities.Usuarios
 
         public ApplicationUser(string nickName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
             string phoneNumber, bool phoneNumberConfirmed, Guid pessoaId)
-        {           
+        {
             Email = email;
             NormalizedEmail = email?.Trim()?.ToLower();
             EmailConfirmed = emailConfirmed;
+
             UserName = Email;
             NormalizedUserName = NormalizedEmail;
-            NickName = nickName?.Trim() ?? string.Empty;
-            Senha = senha ?? string.Empty;
-            ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
-            PhoneNumber = phoneNumber.GetNumbers();
-            PhoneNumber = PhoneNumber.StartsWith("55") ? PhoneNumber : PhoneNumber.Insert(0, "55");
+
+            NickName = nickName;
+            Senha = senha;
+            ConfirmacaoSenha = confirmacaoSenha;
+            PhoneNumber = phoneNumber;
             PhoneNumberConfirmed = phoneNumberConfirmed;
             PessoaId = pessoaId;
 
@@ -43,6 +44,13 @@ namespace LevelLearn.Domain.Entities.Usuarios
         {
             var validator = new UsuarioValidator();
             this.ValidationResult = validator.Validate(this);
+
+            // Validações adicionais
+            if (string.IsNullOrWhiteSpace(ConfirmacaoSenha))
+                this.ValidationResult.Errors.Add(new ValidationFailure(nameof(ConfirmacaoSenha), "Confirmação de senha precisa estar preenchida"));
+
+            if (Senha != ConfirmacaoSenha)
+                this.ValidationResult.Errors.Add(new ValidationFailure(nameof(Senha), "Senha e confirmação de senha não conferem"));
 
             return this.ValidationResult.IsValid;
         }
