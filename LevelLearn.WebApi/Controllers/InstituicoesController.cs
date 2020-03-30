@@ -54,7 +54,6 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(listVM);
         }
 
-        [Authorize(Roles = ApplicationRoles.PROFESSOR)]
         [HttpGet("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoes(

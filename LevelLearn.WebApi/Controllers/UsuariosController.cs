@@ -1,4 +1,5 @@
-﻿using LevelLearn.Service.Interfaces.Usuarios;
+﻿using LevelLearn.Domain.Extensions;
+using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +51,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
-            var response = await _usuarioService.Logout();
+            var response = await _usuarioService.Logout(User.GetJWTokenId());
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 

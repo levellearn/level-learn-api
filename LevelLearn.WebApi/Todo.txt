@@ -4,9 +4,6 @@ Configurar HTTPS
 Melhorar ListVM para tipo genérico
 Add Swagger
 Add firebase/dropbox/gravatar para guaradar imagens usuário
-Desvalidar token no logout
-
-
 
 
 

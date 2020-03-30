@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -77,7 +78,7 @@ namespace LevelLearn.WebApi
             // Business Services
             ConfigureBusinessServices(services);
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -175,6 +176,9 @@ namespace LevelLearn.WebApi
 
         private void ConfigureJWTAuthentication(IServiceCollection services)
         {
+            var sp = services.BuildServiceProvider();
+            var redisCache = sp.GetService<IDistributedCache>();
+
             var appSettings = Configuration.Get<AppSettings>();
 
             var key = Encoding.ASCII.GetBytes(appSettings.JWTSettings.ChavePrivada);
@@ -190,16 +194,15 @@ namespace LevelLearn.WebApi
                 {
                     OnTokenValidated = context =>
                     {
-                        Debug.WriteLine("Token válido" + context.SecurityToken);
-                        return Task.CompletedTask;
+                        return ValidateToken(context, redisCache);
                     },
                     OnAuthenticationFailed = context =>
                     {
-                        Debug.WriteLine("Token inválido" + context.Exception.Message);
+                        Debug.WriteLine("Token inválido: " + context.Exception.Message);
                         return Task.CompletedTask;
                     }
                 };
-                x.RequireHttpsMetadata = true; //TODO: Ajustar HTTPS 
+                x.RequireHttpsMetadata = true;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -224,6 +227,19 @@ namespace LevelLearn.WebApi
 
         }
 
+        private Task ValidateToken(TokenValidatedContext context, IDistributedCache redisCache)
+        {
+            var jwtId = context.SecurityToken.Id;
+            var value = redisCache.GetString(jwtId);
 
+            if (string.IsNullOrEmpty(value))
+            {
+                Debug.WriteLine("Token inválido");
+                context.Fail($"Token inválido");
+            }
+
+            Debug.WriteLine("Token válido: " + context.SecurityToken);
+            return Task.CompletedTask;
+        }
     }
 }

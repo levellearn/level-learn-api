@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,9 +29,10 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
         {
+            var jti = Guid.NewGuid().ToString();
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, jti),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ApplicationClaims.PESSOA_ID, user.PessoaId.ToString()),
                 new Claim(ClaimTypes.Name, user.NickName),
@@ -61,9 +63,10 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
-            var refreshToken = Guid.NewGuid().ToString();
+            var refreshToken = GerarRefreshToken();
 
-            await SalvarRefreshTokenCache(user.UserName, refreshToken);
+            await SalvarTokenCache(jti, refreshToken);
+            await SalvarRefreshTokenCache(refreshToken, user.UserName);
 
             return new TokenVM()
             {
@@ -74,15 +77,43 @@ namespace LevelLearn.Service.Services.Usuarios
             };
         }
 
-        private async Task SalvarRefreshTokenCache(string userName, string refreshToken)
+        private async Task SalvarTokenCache(string jti, string refreshToken)
+        {
+            var expiracaoSegundos = _appSettings.JWTSettings.ExpiracaoSegundos;
+            var tempoToleranciaSegundos = _appSettings.JWTSettings.TempoToleranciaSegundos;
+            var expiracaoToken = TimeSpan.FromSeconds(expiracaoSegundos + tempoToleranciaSegundos);
+
+            var opcoesCache = new DistributedCacheEntryOptions() { 
+                AbsoluteExpirationRelativeToNow = expiracaoToken
+            };
+
+            await _redisCache.SetStringAsync(jti, refreshToken, opcoesCache);
+        }
+
+        private async Task SalvarRefreshTokenCache(string refreshToken, string userName)
         {
             var expiracaoRefreshToken = TimeSpan.FromSeconds(_appSettings.JWTSettings.RefreshTokenExpiracaoSegundos);
 
             var refreshTokenData = new RefreshTokenData(refreshToken, userName);
+            string refreshTokenDataSerializado = JsonConvert.SerializeObject(refreshTokenData);
 
             var opcoesCache = new DistributedCacheEntryOptions();
             opcoesCache.SetAbsoluteExpiration(expiracaoRefreshToken);
-            await _redisCache.SetStringAsync(refreshToken, JsonConvert.SerializeObject(refreshTokenData), opcoesCache);
+
+            await _redisCache.SetStringAsync(refreshToken, refreshTokenDataSerializado, opcoesCache);
         }
+
+        private string GerarRefreshToken(int size = 32)
+        {
+            var randomNumber = new byte[size];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
     }
 }

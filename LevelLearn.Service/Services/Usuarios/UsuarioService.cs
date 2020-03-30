@@ -89,23 +89,22 @@ namespace LevelLearn.Service.Services.Usuarios
             switch (usuarioVM.TipoAutenticacao)
             {
                 case TipoAutenticacao.Senha:
-                    {
-                        var respostaValidacao = await ValidarCredenciaisUsuario(email, usuarioVM.Senha);
-                        if (respostaValidacao.Failure) 
-                            return respostaValidacao;
-                        break;
-                    }
-
+                {
+                    var respostaValidacao = await ValidarCredenciaisUsuario(email, usuarioVM.Senha);
+                    if (respostaValidacao.Failure)
+                        return respostaValidacao;
+                    break;
+                }
                 case TipoAutenticacao.Refresh_Token:
-                    {
-                        var respostaValidacao = await ValidarRefreshToken(email, usuarioVM.RefreshToken);
-                        if (respostaValidacao.Failure) 
-                            return respostaValidacao;
-                        break;
-                    }
-
+                {
+                    var respostaValidacao = await ValidarRefreshToken(email, usuarioVM.RefreshToken);
+                    if (respostaValidacao.Failure)
+                        return respostaValidacao;
+                    break;
+                }
                 default:
-                    return ResponseFactory<UsuarioVM>.BadRequest(new DadoInvalido("TipoAutenticacao", "Tipo de autenticação inválida"));
+                    return ResponseFactory<UsuarioVM>.BadRequest(new DadoInvalido(
+                        nameof(LoginUsuarioVM.TipoAutenticacao), "Tipo de autenticação inválida"));
             }
 
             // Gerar Token           
@@ -125,10 +124,15 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseFactory<UsuarioVM>.Ok(responseVM, "Login feito com sucesso");
         }
 
-        public async Task<ResponseAPI<UsuarioVM>> Logout()
+        public async Task<ResponseAPI<UsuarioVM>> Logout(string jwtId)
         {
             await _signInManager.SignOutAsync();
-            // TODO: invalidar token e refresh token
+
+            // Invalidar token e refresh token
+            var refreshToken = await _redisCache.GetStringAsync(jwtId);
+            await _redisCache.RemoveAsync(jwtId);
+            await _redisCache.RemoveAsync(refreshToken);
+
             return ResponseFactory<UsuarioVM>.NoContent("Logout feito com sucesso");
         }
 

@@ -1,7 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Usuarios;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 
@@ -49,13 +49,13 @@ namespace LevelLearn.Domain.Extensions
             return principal.FindAll(ClaimTypes.Role).Select(r => r.Value);
         }
 
-        //public static string GetJWTokenId(this ClaimsPrincipal principal)
-        //{
-        //    if (principal == null)
-        //        throw new ArgumentNullException(nameof(principal));
+        public static string GetJWTokenId(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
 
-        //    return principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
-        //}
+            return principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+        }
 
     }
 }
