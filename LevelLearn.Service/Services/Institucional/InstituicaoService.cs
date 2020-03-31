@@ -23,6 +23,16 @@ namespace LevelLearn.Service.Services.Institucional
             _uow = uow;
         }
 
+        public async Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid id, string pessoaId)
+        {            
+            var instituicao = await _uow.Instituicoes.GetAsync(id);
+
+            if (instituicao == null)
+                return ResponseFactory<Instituicao>.NotFound("Instituição não existente");
+
+            return ResponseFactory<Instituicao>.Ok(instituicao);
+        }
+
         public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(string pessoaId, PaginationQueryVM queryVM)
         {
             var instituicoes = await _uow.Instituicoes.InstituicoesProfessor(new Guid(pessoaId), queryVM.Query, queryVM.PageNumber, queryVM.PageSize);

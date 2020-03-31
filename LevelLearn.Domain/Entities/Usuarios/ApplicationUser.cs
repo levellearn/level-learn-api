@@ -24,8 +24,8 @@ namespace LevelLearn.Domain.Entities.Usuarios
             NormalizedUserName = NormalizedEmail;
 
             NickName = nickName;
-            Senha = senha;
-            ConfirmacaoSenha = confirmacaoSenha;
+            Senha = senha ?? string.Empty;
+            ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
             PhoneNumber = phoneNumber;
             PhoneNumberConfirmed = phoneNumberConfirmed;
             PessoaId = pessoaId;
@@ -43,14 +43,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public bool EstaValido()
         {
             var validator = new UsuarioValidator();
-            this.ValidationResult = validator.Validate(this);
-
-            // Validações adicionais
-            if (string.IsNullOrWhiteSpace(ConfirmacaoSenha))
-                this.ValidationResult.Errors.Add(new ValidationFailure(nameof(ConfirmacaoSenha), "Confirmação de senha precisa estar preenchida"));
-
-            if (Senha != ConfirmacaoSenha)
-                this.ValidationResult.Errors.Add(new ValidationFailure(nameof(Senha), "Senha e confirmação de senha não conferem"));
+            this.ValidationResult = validator.Validate(this);          
 
             return this.ValidationResult.IsValid;
         }

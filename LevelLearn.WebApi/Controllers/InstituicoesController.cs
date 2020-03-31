@@ -63,8 +63,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var queryVM = new PaginationQueryVM(query, pageNumber, pageSize);
 
-            ResponseAPI<IEnumerable<Instituicao>> response = 
-                await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), queryVM);
+            var response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), queryVM);
 
             var listVM = new InstituicaoListVM
             {
@@ -82,15 +81,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetInstituicao(Guid id)
         {
-            var instituicao = await _instituicaoService.GetAsync(id);
+            ResponseAPI<Instituicao> response = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
 
-            if (instituicao == null)
-            {
-                var response = ResponseFactory<Instituicao>.NotFound("Instituição não existente");
-                return NotFound(response);
-            }
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
-            return Ok(_mapper.Map<InstituicaoVM>(instituicao));
+            return Ok(_mapper.Map<InstituicaoVM>(response.Data));
         }
 
         [HttpPost("v1/[controller]")]
@@ -100,7 +95,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             ResponseAPI<Instituicao> response = await _instituicaoService.CadastrarInstituicao(instituicaoVM, User.GetPessoaId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
             var responseVM = _mapper.Map<InstituicaoVM>(response.Data);
 
@@ -115,7 +110,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var response = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }
@@ -127,7 +122,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var response = await _instituicaoService.RemoverInstituicao(id, User.GetPessoaId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }

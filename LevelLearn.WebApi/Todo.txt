@@ -22,3 +22,12 @@ FATEC Guaratinguetá	Autarquia do Governo do Estado de São Paulo vinculada à Secr
 dcd0e6d
 375.237.088-20
 828.247.408-84
+
+DuplicateEmail	E-mail já está em uso.
+InvalidCredentials	E-mail ou senha inválidos.
+InvalidEmail	E-mail inválido.
+InvalidUserEmail	E-mail inválido.
+InvalidUserName	Nome inválido.
+InvalidUserPassword	Senha inválida.
+PasswordDoesNotMatch	As senhas informadas não coincidem.
+UserNotFound	Usuário não encontrado.
