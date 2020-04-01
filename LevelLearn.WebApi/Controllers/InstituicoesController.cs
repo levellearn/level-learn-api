@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;

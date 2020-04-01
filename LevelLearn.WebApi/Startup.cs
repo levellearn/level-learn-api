@@ -5,6 +5,7 @@ using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
+using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Services.Institucional;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -24,6 +26,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +49,10 @@ namespace LevelLearn.WebApi
 
             // GZip
             ConfigureGZipCompression(services);
+
+            // Culture Localization
+            services.AddLocalization();
+            services.AddScoped<ISharedResource, SharedResource>();
 
             services.AddControllers(c =>
             {
@@ -90,6 +97,23 @@ namespace LevelLearn.WebApi
 
             // Criação de estruturas, usuários e permissões Identity
             new IdentityInitializer(context, userManager, roleManager).Initialize();
+
+            #region Culture Localization
+
+            var culturasSuportadas = new[]
+            {
+                new CultureInfo("pt-BR"),
+                new CultureInfo("en-US")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("pt-BR"),
+                SupportedCultures = culturasSuportadas,
+                SupportedUICultures = culturasSuportadas
+            });
+
+            #endregion
 
             app.UseHttpsRedirection();
 
@@ -155,7 +179,6 @@ namespace LevelLearn.WebApi
                 options.InstanceName = appSettings.ConnectionStrings.RedisInstanceName;
             });
         }
-
 
         private void ConfigureDbContexts(IServiceCollection services)
         {
@@ -242,5 +265,6 @@ namespace LevelLearn.WebApi
             Debug.WriteLine("Token válido: " + context.SecurityToken);
             return Task.CompletedTask;
         }
+
     }
 }

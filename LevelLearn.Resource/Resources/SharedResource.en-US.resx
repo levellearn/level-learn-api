@@ -118,15 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InstitutionAlreadyExists" xml:space="preserve">
-    <value>Instituição já existente</value>
+    <value>Institution already exists</value>
   </data>
-  <data name="InstitutionFailure" xml:space="preserve">
-    <value>Falha ao salvar instituição</value>
+  <data name="InstitutionFailedSave" xml:space="preserve">
+    <value>Failed to save institution</value>
   </data>
   <data name="InstitutionNotAllowed" xml:space="preserve">
-    <value>Você não é Administrador dessa instituição</value>
+    <value>You are not the Administrator of this institution</value>
   </data>
   <data name="InstitutionNotFound" xml:space="preserve">
-    <value>Instituição não existente</value>
+    <value>Institution does not exist</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>Oops, an error occurred in the system!</value>
   </data>
 </root>
