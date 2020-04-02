@@ -23,8 +23,8 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.Nome)
                 .NotEmpty()
                     .WithMessage("Nome precisa estar preenchido")
-                .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
-                    .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
+                .Length(RegraAtributo.Pessoa.NOME_TAMANHO_MIN, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
+                    .WithMessage($"Nome precisa estar entre {RegraAtributo.Pessoa.NOME_TAMANHO_MIN} e {RegraAtributo.Pessoa.NOME_TAMANHO_MAX} caracteres")
                 .Must(n => TemPrimeiroNomeSobrenome(n))
                     .WithMessage("Nome precisa de um sobrenome");
         }
@@ -40,14 +40,14 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
         private void ValidarNickName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX + "}$";
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX + "}$";
 
             RuleFor(p => p.NickName)
                 .NotEmpty().WithMessage("NickName precisa estar preenchido")
                 .Must(p => Regex.IsMatch(p, pattern))
                     .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
-                    .WithMessage($"NickName pode ter no máximo {PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
+                .MaximumLength(RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX)
+                    .WithMessage($"NickName pode ter no máximo {RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarImagem()

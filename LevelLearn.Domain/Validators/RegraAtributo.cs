@@ -1,6 +1,6 @@
 ﻿namespace LevelLearn.Domain.Validators
 {
-    public static class PropertiesConfig
+    public static class RegraAtributo
     {
         public static class Pessoa
         {
@@ -10,11 +10,12 @@
             public const int CELULAR_TAMANHO = 14;
             public const int EMAIL_TAMANHO_MAX = 190;
             public const int CPF_TAMANHO = 11;
+
             public const int SENHA_TAMANHO_MIN = 6;
             public const int SENHA_TAMANHO_MAX = 100;
             public const bool SENHA_REQUER_DIGITO = false;
-            public const bool SENHA_REQUER_MAIUSCULO = false;
             public const bool SENHA_REQUER_MINUSCULO = true;
+            public const bool SENHA_REQUER_MAIUSCULO = false;
             public const bool SENHA_REQUER_ESPECIAL = false;
         }
 

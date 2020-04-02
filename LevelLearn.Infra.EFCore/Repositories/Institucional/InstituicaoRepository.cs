@@ -26,7 +26,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
-
         public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string query, int pageNumber, int pageSize)
         {
             query = query.GenerateSlug();
@@ -62,7 +61,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
-
         public Task<bool> IsAdmin(Guid instituicaoId, Guid pessoaId)
         {
             //return _context.Set<Instituicao>()
@@ -81,7 +79,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                             p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .AnyAsync();         
         }
-
         public override async Task<Instituicao> GetAsync(Guid id)
         {
             return await _context.Instituicoes
@@ -91,8 +88,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
-
-
 
     }
 }

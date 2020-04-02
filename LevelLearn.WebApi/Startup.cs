@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Resource;
@@ -83,9 +84,12 @@ namespace LevelLearn.WebApi
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            // Validators
+            ConfigureValidators(services);
+
             // Business Services
             ConfigureBusinessServices(services);
-        }
+        }      
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -155,11 +159,11 @@ namespace LevelLearn.WebApi
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = PropertiesConfig.Pessoa.SENHA_REQUER_DIGITO;
-                options.Password.RequiredLength = PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN;
-                options.Password.RequireNonAlphanumeric = PropertiesConfig.Pessoa.SENHA_REQUER_ESPECIAL;
-                options.Password.RequireUppercase = PropertiesConfig.Pessoa.SENHA_REQUER_MAIUSCULO;
-                options.Password.RequireLowercase = PropertiesConfig.Pessoa.SENHA_REQUER_MINUSCULO;
+                options.Password.RequireDigit = RegraAtributo.Pessoa.SENHA_REQUER_DIGITO;
+                options.Password.RequiredLength = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
+                options.Password.RequireNonAlphanumeric = RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL;
+                options.Password.RequireUppercase = RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO;
+                options.Password.RequireLowercase = RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO;
 
                 // Lockout settings
                 options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;
@@ -270,6 +274,11 @@ namespace LevelLearn.WebApi
 
             Debug.WriteLine("Token válido: " + context.SecurityToken);
             return Task.CompletedTask;
+        }
+
+        private static void ConfigureValidators(IServiceCollection services)
+        {
+            services.AddScoped<IInstituicaoValidator, InstituicaoValidator>();
         }
 
     }

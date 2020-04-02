@@ -17,8 +17,8 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.Nome)
                 .NotEmpty()
                     .WithMessage("Nome precisa estar preenchido")
-                .Length(PropertiesConfig.Turma.NOME_TAMANHO_MIN, PropertiesConfig.Turma.NOME_TAMANHO_MAX)
-                    .WithMessage($"Nome precisa estar entre {PropertiesConfig.Turma.NOME_TAMANHO_MIN} e {PropertiesConfig.Turma.NOME_TAMANHO_MAX} caracteres");
+                .Length(RegraAtributo.Turma.NOME_TAMANHO_MIN, RegraAtributo.Turma.NOME_TAMANHO_MAX)
+                    .WithMessage($"Nome precisa estar entre {RegraAtributo.Turma.NOME_TAMANHO_MIN} e {RegraAtributo.Turma.NOME_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarNomeDisciplina()
@@ -26,8 +26,8 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.NomeDisciplina)
                 .NotEmpty()
                     .WithMessage("Nome da disciplina precisa estar preenchido")
-                .Length(PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MIN, PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
-                    .WithMessage($"Nome da disciplina precisa estar entre {PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MIN} e {PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX} caracteres");
+                .Length(RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MIN, RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
+                    .WithMessage($"Nome da disciplina precisa estar entre {RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MIN} e {RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MAX} caracteres");
         }
 
         private void ValidarDescricao()
@@ -35,8 +35,8 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.Descricao)
                 .NotEmpty()
                     .WithMessage("Descrição precisa estar preenchida")
-                .MaximumLength(PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX)
-                    .WithMessage($"Descrição pode ter no máximo {PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX} caracteres");
+                .MaximumLength(RegraAtributo.Turma.DESCRICAO_TAMANHO_MAX)
+                    .WithMessage($"Descrição pode ter no máximo {RegraAtributo.Turma.DESCRICAO_TAMANHO_MAX} caracteres");
         }
 
 

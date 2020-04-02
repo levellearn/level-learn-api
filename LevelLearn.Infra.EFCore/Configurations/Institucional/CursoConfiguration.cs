@@ -18,13 +18,13 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Curso.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Curso.NOME_TAMANHO_MAX})");
+                .HasMaxLength(RegraAtributo.Curso.NOME_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraAtributo.Curso.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.Descricao)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Curso.DESCRICAO_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Curso.DESCRICAO_TAMANHO_MAX})");
+                .HasMaxLength(RegraAtributo.Curso.DESCRICAO_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraAtributo.Curso.DESCRICAO_TAMANHO_MAX})");
 
             // Relacionamentos
 

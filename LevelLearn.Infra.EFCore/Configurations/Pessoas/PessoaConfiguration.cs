@@ -22,32 +22,32 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .Ignore(e => e.CascadeMode)
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.CPF_TAMANHO})")
+                .HasColumnType($"varchar({RegraAtributo.Pessoa.CPF_TAMANHO})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Email)
                 .Ignore(e => e.CascadeMode)
                 .Property(e => e.Endereco)
                 .HasColumnName("Email")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX})")
+                .HasColumnType($"varchar({RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Celular)
                 .Ignore(e => e.CascadeMode)
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.CELULAR_TAMANHO})")
+                .HasColumnType($"varchar({RegraAtributo.Pessoa.CELULAR_TAMANHO})")
                 .IsRequired(false);
 
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})");
+                .HasMaxLength(RegraAtributo.Instituicao.NOME_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraAtributo.Instituicao.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.NickName)
                .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.NICKNAME_TAMANHO_MAX})");           
+               .HasMaxLength(RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX)
+               .HasColumnType($"varchar({RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX})");           
 
             builder.Property(p => p.DataNascimento)
                .IsRequired(false);

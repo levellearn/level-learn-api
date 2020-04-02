@@ -117,19 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadRequest" xml:space="preserve">
+    <value>Dados inválidos</value>
+  </data>
+  <data name="DeletedSuccessfully" xml:space="preserve">
+    <value>Deletado com sucesso</value>
+  </data>
   <data name="InstitutionAlreadyExists" xml:space="preserve">
     <value>Instituição já existente</value>
   </data>
+  <data name="InstitutionDescriptionLength" xml:space="preserve">
+    <value>Descrição pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="InstitutionDescriptionRequired" xml:space="preserve">
+    <value>Descrição precisa estar preenchida</value>
+  </data>
   <data name="InstitutionFailedSave" xml:space="preserve">
     <value>Falha ao salvar instituição</value>
+  </data>
+  <data name="InstitutionNameLength" xml:space="preserve">
+    <value>Nome precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="InstitutionNameRequired" xml:space="preserve">
+    <value>Nome precisa estar preenchido</value>
   </data>
   <data name="InstitutionNotAllowed" xml:space="preserve">
     <value>Você não é Administrador dessa instituição</value>
   </data>
   <data name="InstitutionNotFound" xml:space="preserve">
-    <value>Instituição não existente</value>
+    <value>Instituição não encontrada</value>
   </data>
   <data name="InternalServerError" xml:space="preserve">
     <value>Ops, ocorreu um erro no sistema!</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Registro não encontrado</value>
+  </data>
+  <data name="RegisteredSuccessfully" xml:space="preserve">
+    <value>Cadastrado com sucesso</value>
+  </data>
+  <data name="UpdatedSuccessfully" xml:space="preserve">
+    <value>Atualizado com sucesso</value>
   </data>
 </root>

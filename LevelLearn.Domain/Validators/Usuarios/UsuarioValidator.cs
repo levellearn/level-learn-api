@@ -17,15 +17,15 @@ namespace LevelLearn.Domain.Validators.Pessoas
             RuleFor(p => p.Senha)
                 .NotEmpty()
                     .WithMessage("Senha precisa estar preenchida")
-                .Length(PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN, PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX)
-                    .WithMessage($"Senha precisa estar entre {PropertiesConfig.Pessoa.SENHA_TAMANHO_MIN} e {PropertiesConfig.Pessoa.SENHA_TAMANHO_MAX} caracteres")
-                .Must(p => Regex.IsMatch(p, "[A-Z]") || PropertiesConfig.Pessoa.SENHA_REQUER_MAIUSCULO == false)
+                .Length(RegraAtributo.Pessoa.SENHA_TAMANHO_MIN, RegraAtributo.Pessoa.SENHA_TAMANHO_MAX)
+                    .WithMessage($"Senha precisa estar entre {RegraAtributo.Pessoa.SENHA_TAMANHO_MIN} e {RegraAtributo.Pessoa.SENHA_TAMANHO_MAX} caracteres")
+                .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO == false)
                     .WithMessage("Senha precisa no mínimo de uma letra maiúscula")
-                .Must(p => Regex.IsMatch(p, "[a-z]") || PropertiesConfig.Pessoa.SENHA_REQUER_MINUSCULO == false)
+                .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO == false)
                     .WithMessage("Senha precisa no mínimo de uma letra minúscula")
-                .Must(p => Regex.IsMatch(p, "[0-9]") || PropertiesConfig.Pessoa.SENHA_REQUER_DIGITO == false)
+                .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_DIGITO == false)
                     .WithMessage("Senha precisa no mínimo de um dígito")
-                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || PropertiesConfig.Pessoa.SENHA_REQUER_ESPECIAL == false)
+                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL == false)
                     .WithMessage("Senha precisa no mínimo de um caractere especial");
         }
 

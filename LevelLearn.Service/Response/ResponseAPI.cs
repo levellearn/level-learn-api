@@ -68,7 +68,7 @@ namespace LevelLearn.Service.Response
             );
         }
 
-        public static ResponseAPI<T> Created(T data, string message = "Cadastrado com sucesso")
+        public static ResponseAPI<T> Created(T data, string message)
         {
             return new ResponseAPI<T>(
                 message,
@@ -78,7 +78,12 @@ namespace LevelLearn.Service.Response
             );
         }
 
-        public static ResponseAPI<T> NoContent(string message = "Sucesso")
+        public static ResponseAPI<T> NoContent()
+        {
+            return new ResponseAPI<T>(null, (int)HttpStatusCode.NoContent, true);
+        }
+
+        public static ResponseAPI<T> NoContent(string message)
         {
             return new ResponseAPI<T>(message, (int)HttpStatusCode.NoContent, true);
         }
@@ -92,7 +97,7 @@ namespace LevelLearn.Service.Response
             );
         }
 
-        public static ResponseAPI<T> BadRequest(ICollection<DadoInvalido> dadosInvalidos, string message = "Dados inválidos")
+        public static ResponseAPI<T> BadRequest(ICollection<DadoInvalido> dadosInvalidos, string message)
         {
             return new ResponseAPI<T>(
                 message,
@@ -101,7 +106,7 @@ namespace LevelLearn.Service.Response
             );
         }
 
-        public static ResponseAPI<T> BadRequest(DadoInvalido dadoInvalido, string message = "Dado inválido")
+        public static ResponseAPI<T> BadRequest(DadoInvalido dadoInvalido, string message)
         {
             return new ResponseAPI<T>(
                 message,
@@ -110,7 +115,7 @@ namespace LevelLearn.Service.Response
             );
         }
 
-        public static ResponseAPI<T> NotFound(string message = "Não encontrado")
+        public static ResponseAPI<T> NotFound(string message)
         {
             return new ResponseAPI<T>(message, (int)HttpStatusCode.NotFound);
         }
@@ -120,7 +125,7 @@ namespace LevelLearn.Service.Response
             return new ResponseAPI<T>(message, (int)HttpStatusCode.Forbidden);
         }
 
-        public static ResponseAPI<T> InternalServerError(string message = "Erro interno do servidor")
+        public static ResponseAPI<T> InternalServerError(string message)
         {
             return new ResponseAPI<T>(message, (int)HttpStatusCode.InternalServerError);
         }

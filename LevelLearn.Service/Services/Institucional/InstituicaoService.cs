@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
@@ -19,12 +20,14 @@ namespace LevelLearn.Service.Services.Institucional
     {
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _localizer;
+        private readonly IInstituicaoValidator _validator;
 
-        public InstituicaoService(IUnitOfWork uow, ISharedResource sharedLocalizer)
+        public InstituicaoService(IUnitOfWork uow, ISharedResource sharedLocalizer, IInstituicaoValidator validator)
             : base(uow.Instituicoes)
         {
             _uow = uow;
             _localizer = sharedLocalizer;
+            _validator = validator;
         }
 
         public async Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid id, string pessoaId)
@@ -52,9 +55,11 @@ namespace LevelLearn.Service.Services.Institucional
         {
             var instituicaoNova = new Instituicao(instituicaoVM.Nome, instituicaoVM.Descricao);
 
+            _validator.Validar(instituicaoNova);
+
             // Validação objeto
             if (!instituicaoNova.EstaValido())
-                return ResponseFactory<Instituicao>.BadRequest(instituicaoNova.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest(instituicaoNova.DadosInvalidos(), _localizer.BadRequest);
 
             // Validação BD
             if (await _uow.Instituicoes.EntityExists(i => i.NomePesquisa == instituicaoNova.NomePesquisa))
@@ -68,7 +73,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!await _uow.CompleteAsync())
                 return ResponseFactory<Instituicao>.InternalServerError(_localizer.InstitutionFailedSave);
 
-            return ResponseFactory<Instituicao>.Created(instituicaoNova);
+            return ResponseFactory<Instituicao>.Created(instituicaoNova, _localizer.RegisteredSuccessfully);
         }
 
         public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM, string pessoaId)
@@ -95,14 +100,14 @@ namespace LevelLearn.Service.Services.Institucional
 
             // Validação objeto
             if (!instituicaoExistente.EstaValido())
-                return ResponseFactory<Instituicao>.BadRequest(instituicaoExistente.DadosInvalidos());
+                return ResponseFactory<Instituicao>.BadRequest(instituicaoExistente.DadosInvalidos(), _localizer.BadRequest);
 
             // Salva no BD
             _uow.Instituicoes.Update(instituicaoExistente);
             if (!await _uow.CompleteAsync())
                 return ResponseFactory<Instituicao>.InternalServerError(_localizer.InstitutionFailedSave);
 
-            return ResponseFactory<Instituicao>.NoContent();
+            return ResponseFactory<Instituicao>.NoContent(_localizer.UpdatedSuccessfully);
         }
 
         public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id, string pessoaId)
@@ -127,7 +132,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!await _uow.CompleteAsync())
                 return ResponseFactory<Instituicao>.InternalServerError(_localizer.InstitutionFailedSave);
 
-            return ResponseFactory<Instituicao>.NoContent();
+            return ResponseFactory<Instituicao>.NoContent(_localizer.DeletedSuccessfully);
         }
 
         public void Dispose()

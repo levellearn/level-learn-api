@@ -18,18 +18,18 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.Property(p => p.Nome)
               .IsRequired()
-              .HasMaxLength(PropertiesConfig.Turma.NOME_TAMANHO_MAX)
-              .HasColumnType($"varchar({PropertiesConfig.Turma.NOME_TAMANHO_MAX})");
+              .HasMaxLength(RegraAtributo.Turma.NOME_TAMANHO_MAX)
+              .HasColumnType($"varchar({RegraAtributo.Turma.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.NomeDisciplina)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Turma.NOME_DISCIPLINA_TAMANHO_MAX})");
+                .HasMaxLength(RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraAtributo.Turma.NOME_DISCIPLINA_TAMANHO_MAX})");
 
             builder.Property(p => p.Descricao)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Turma.DESCRICAO_TAMANHO_MAX})");
+                .HasMaxLength(RegraAtributo.Turma.DESCRICAO_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraAtributo.Turma.DESCRICAO_TAMANHO_MAX})");
 
             builder.Property(p => p.Meta)
                .IsRequired();

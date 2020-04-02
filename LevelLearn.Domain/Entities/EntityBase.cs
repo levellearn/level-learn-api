@@ -22,7 +22,7 @@ namespace LevelLearn.Domain.Entities
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
         public DateTime DataCadastro { get; private set; }
-        public ValidationResult ValidationResult { get; protected set; }
+        public ValidationResult ValidationResult { get; set; }
 
         #endregion
 
