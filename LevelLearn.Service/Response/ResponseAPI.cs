@@ -7,7 +7,7 @@ namespace LevelLearn.Service.Response
     public class ResponseAPI<T> where T : class
     {
         public ResponseAPI(string message, int statusCode, bool success = false, T data = null,
-            ICollection<DadoInvalido> errors = null, int? pageIndex = null, int? pageSize = null, int? total = null)
+            ICollection<DadoInvalido> errors = null, int? pageNumber = null, int? pageSize = null, int? total = null)
         {
             Message = message;
             StatusCode = statusCode;
@@ -15,7 +15,7 @@ namespace LevelLearn.Service.Response
             Failure = !success;
             Data = data;
             Errors = errors;
-            PageIndex = pageIndex;
+            PageNumber = pageNumber;
             PageSize = pageSize;
             Total = total;
         }
@@ -26,7 +26,7 @@ namespace LevelLearn.Service.Response
         public bool Failure { get; private set; }
         public T Data { get; private set; }
         public ICollection<DadoInvalido> Errors { get; private set; }
-        public int? PageIndex { get; private set; }
+        public int? PageNumber { get; private set; }
         public int? PageSize { get; private set; }
         public int? Total { get; private set; }
 
@@ -35,16 +35,36 @@ namespace LevelLearn.Service.Response
     #region Factory
     public static class ResponseFactory<T> where T : class
     {
-        public static ResponseAPI<T> Ok(T data, string message = "Sucesso", int? total = null, int? pageIndex = null, int? pageSize = null)
+        public static ResponseAPI<T> Ok(T data, int? total = null, int? pageNumber = null, int? pageSize = null)
+        {
+            return new ResponseAPI<T>(
+                message: null,
+                (int)HttpStatusCode.OK,
+                success: true,
+                data,
+                pageNumber: pageNumber,
+                pageSize: pageSize,
+                total: total
+            );
+        }
+
+        public static ResponseAPI<T> Ok(T data)
+        {
+            return new ResponseAPI<T>(
+                message: null,
+                (int)HttpStatusCode.OK,
+                success: true,
+                data
+            );
+        }
+
+        public static ResponseAPI<T> Ok(T data, string message)
         {
             return new ResponseAPI<T>(
                 message,
                 (int)HttpStatusCode.OK,
                 success: true,
-                data,
-                pageIndex: pageIndex,
-                pageSize: pageSize,
-                total: total
+                data
             );
         }
 

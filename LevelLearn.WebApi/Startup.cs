@@ -251,6 +251,12 @@ namespace LevelLearn.WebApi
 
         }
 
+        /// <summary>
+        /// Verifica se o token está armazando no BD de cache 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="redisCache"></param>
+        /// <returns></returns>
         private Task ValidateToken(TokenValidatedContext context, IDistributedCache redisCache)
         {
             var jwtId = context.SecurityToken.Id;

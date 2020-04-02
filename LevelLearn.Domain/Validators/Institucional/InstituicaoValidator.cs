@@ -15,7 +15,7 @@ namespace LevelLearn.Domain.Validators.Institucional
         {
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                    .WithMessage("Nome precisa estar preenchido")
+                    //.WithMessage("Nome precisa estar preenchido")
                 .Length(PropertiesConfig.Instituicao.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
                     .WithMessage($"Nome precisa estar entre {PropertiesConfig.Instituicao.NOME_TAMANHO_MIN} e {PropertiesConfig.Instituicao.NOME_TAMANHO_MAX} caracteres");
         }
