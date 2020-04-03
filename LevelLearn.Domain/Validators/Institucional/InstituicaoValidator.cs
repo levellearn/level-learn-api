@@ -31,9 +31,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Nome)
             .NotEmpty()
-                .WithMessage(p => _sharedLocalizer.InstitutionNameRequired)
+                .WithMessage(p => _sharedLocalizer.InstituicaoNomeObrigatorio)
             .Length(tamanhoMin, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage(p => _sharedLocalizer.InstitutionNameLength(tamanhoMin, tamanhoMax));
+                .WithMessage(p => _sharedLocalizer.InstituicaoNomeTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarDescricao()
@@ -42,9 +42,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Descricao)
                 .NotEmpty()
-                    .WithMessage(p => _sharedLocalizer.InstitutionDescriptionRequired)
+                    .WithMessage(p => _sharedLocalizer.InstituicaoDescricaoObrigatorio)
                 .MaximumLength(tamanhoMax)
-                    .WithMessage(p => _sharedLocalizer.InstitutionDescriptionLength(tamanhoMax));
+                    .WithMessage(p => _sharedLocalizer.InstituicaoDescricaoTamanho(tamanhoMax));
         }
 
     }

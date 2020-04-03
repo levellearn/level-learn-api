@@ -117,46 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BadRequest" xml:space="preserve">
-    <value>Invalid data</value>
+  <data name="AtualizadoSucesso" xml:space="preserve">
+    <value>Updated successfully</value>
   </data>
-  <data name="DeletedSuccessfully" xml:space="preserve">
-    <value>Deleted successfully</value>
-  </data>
-  <data name="InstitutionAlreadyExists" xml:space="preserve">
-    <value>Institution already exists</value>
-  </data>
-  <data name="InstitutionDescriptionLength" xml:space="preserve">
-    <value>Description can have a maximum of {0} characters</value>
-  </data>
-  <data name="InstitutionDescriptionRequired" xml:space="preserve">
-    <value>Description must be filled</value>
-  </data>
-  <data name="InstitutionFailedSave" xml:space="preserve">
-    <value>Failed to save institution</value>
-  </data>
-  <data name="InstitutionNameLength" xml:space="preserve">
-    <value>Name must be between {0} and {1} characters</value>
-  </data>
-  <data name="InstitutionNameRequired" xml:space="preserve">
-    <value>Name must be filled</value>
-  </data>
-  <data name="InstitutionNotAllowed" xml:space="preserve">
-    <value>You are not the Administrator of this institution</value>
-  </data>
-  <data name="InstitutionNotFound" xml:space="preserve">
-    <value>Institution does not exist</value>
-  </data>
-  <data name="InternalServerError" xml:space="preserve">
-    <value>Oops, an error occurred in the system!</value>
-  </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>Register not found</value>
-  </data>
-  <data name="RegisteredSuccessfully" xml:space="preserve">
+  <data name="CadastradoSucesso" xml:space="preserve">
     <value>Registered successfully</value>
   </data>
-  <data name="UpdatedSuccessfully" xml:space="preserve">
-    <value>Updated successfully</value>
+  <data name="ContaBloqueada" xml:space="preserve">
+    <value>Your account is blocked</value>
+  </data>
+  <data name="CPFJaExiste" xml:space="preserve">
+    <value>CPF already exists</value>
+  </data>
+  <data name="DadosInvalidos" xml:space="preserve">
+    <value>Invalid data</value>
+  </data>
+  <data name="DeletadoSucesso" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="EmailJaExiste" xml:space="preserve">
+    <value>E-mail already exists</value>
+  </data>
+  <data name="ErroInternoServidor" xml:space="preserve">
+    <value>Oops, an error occurred in the system!</value>
+  </data>
+  <data name="FalhaAtualizar" xml:space="preserve">
+    <value>Failed to update</value>
+  </data>
+  <data name="FalhaCadastrar" xml:space="preserve">
+    <value>Failed to register</value>
+  </data>
+  <data name="FalhaDeletar" xml:space="preserve">
+    <value>Failed to delete</value>
+  </data>
+  <data name="InstituicaoDescricaoObrigatorio" xml:space="preserve">
+    <value>Description must be filled</value>
+  </data>
+  <data name="InstituicaoDescricaoTamanho" xml:space="preserve">
+    <value>Description can have a maximum of {0} characters</value>
+  </data>
+  <data name="InstituicaoJaExiste" xml:space="preserve">
+    <value>Institution already exists</value>
+  </data>
+  <data name="InstituicaoNaoEncontrada" xml:space="preserve">
+    <value>Institution does not exist</value>
+  </data>
+  <data name="InstituicaoNaoPermitida" xml:space="preserve">
+    <value>You are not the Administrator of this institution</value>
+  </data>
+  <data name="InstituicaoNomeObrigatorio" xml:space="preserve">
+    <value>Name must be filled</value>
+  </data>
+  <data name="InstituicaoNomeTamanho" xml:space="preserve">
+    <value>Name must be between {0} and {1} characters</value>
+  </data>
+  <data name="LoginFalha" xml:space="preserve">
+    <value>Invalid username and / or password</value>
+  </data>
+  <data name="LoginSucesso" xml:space="preserve">
+    <value>Login successfully</value>
+  </data>
+  <data name="LogoutSucesso" xml:space="preserve">
+    <value>Logout successfully</value>
+  </data>
+  <data name="NaoEncontrado" xml:space="preserve">
+    <value>Register not found</value>
+  </data>
+  <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
+    <value>Password and password confirmation do not match</value>
+  </data>
+  <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
+    <value>Password confirmation must be completed</value>
+  </data>
+  <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
+    <value>Password must be filled</value>
+  </data>
+  <data name="UsuarioSenhaRequerDigito" xml:space="preserve">
+    <value>Password needs at least one digit</value>
+  </data>
+  <data name="UsuarioSenhaRequerEspecial" xml:space="preserve">
+    <value>Password needs at least one special character</value>
+  </data>
+  <data name="UsuarioSenhaRequerMaiusculo" xml:space="preserve">
+    <value>Password needs at least one uppercase letter</value>
+  </data>
+  <data name="UsuarioSenhaRequerMinusculo" xml:space="preserve">
+    <value>Password needs at least one lowercase letter</value>
+  </data>
+  <data name="UsuarioSenhaTamanho" xml:space="preserve">
+    <value>Password must be between {0} and {1} characters</value>
   </data>
 </root>

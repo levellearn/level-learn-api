@@ -46,19 +46,20 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             var email = new Email(usuarioVM.Email);
             var celular = new Celular(usuarioVM.Celular);
+
             // Validação Professor
             var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email,
                 new CPF(usuarioVM.Cpf), celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             if (!professor.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _localizer.BadRequest);
+                return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _localizer.DadosInvalidos);
 
             // Validação Usuário
             var user = new ApplicationUser(professor.NickName, email.Endereco, emailConfirmed: true, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, celular.Numero, phoneNumberConfirmed: true, professor.Id);
 
             if (!user.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _localizer.BadRequest);
+                return ResponseFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _localizer.DadosInvalidos);
 
             // Validações BD
             var respostaValidacao = await ValidarCriarUsuarioBD(professor);
@@ -68,7 +69,7 @@ namespace LevelLearn.Service.Services.Usuarios
             await _uow.Pessoas.AddAsync(professor);
 
             if (!await _uow.CompleteAsync())
-                return ResponseFactory<UsuarioVM>.InternalServerError(_localizer.InternalServerError);
+                return ResponseFactory<UsuarioVM>.InternalServerError(_localizer.FalhaCadastrar);
 
             // Criando User Identity
             var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
@@ -84,7 +85,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, new List<string> { ApplicationRoles.PROFESSOR })
             };
 
-            return ResponseFactory<UsuarioVM>.Created(responseVM, _localizer.RegisteredSuccessfully);
+            return ResponseFactory<UsuarioVM>.Created(responseVM, _localizer.CadastradoSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
@@ -109,8 +110,7 @@ namespace LevelLearn.Service.Services.Usuarios
                         break;
                     }
                 default:
-                    return ResponseFactory<UsuarioVM>
-                        .BadRequest(new DadoInvalido(nameof(LoginUsuarioVM.TipoAutenticacao), "Tipo de autenticação inválida"), _localizer.BadRequest);
+                    return ResponseFactory<UsuarioVM>.BadRequest("Tipo de autenticação inválida");
             }
 
             // Gerar VM e JWToken           
@@ -127,19 +127,19 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, roles)
             };
 
-            return ResponseFactory<UsuarioVM>.Ok(responseVM, "Login feito com sucesso");
+            return ResponseFactory<UsuarioVM>.Ok(responseVM, _localizer.LoginSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> Logout(string jwtId)
         {
             await _signInManager.SignOutAsync();
 
-            // Invalida token e refresh token
+            // Invalida o token e refresh token
             var refreshToken = await _redisCache.GetStringAsync(jwtId);
             await _redisCache.RemoveAsync(jwtId);
             await _redisCache.RemoveAsync(refreshToken);
 
-            return ResponseFactory<UsuarioVM>.NoContent("Logout feito com sucesso");
+            return ResponseFactory<UsuarioVM>.NoContent(_localizer.LogoutSucesso);
         }
 
 
@@ -148,10 +148,10 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa pessoa)
         {
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == pessoa.Email.Endereco))
-                return ResponseFactory<UsuarioVM>.BadRequest("E-mail já existente");
+                return ResponseFactory<UsuarioVM>.BadRequest(_localizer.EmailJaExiste);
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == pessoa.Cpf.Numero))
-                return ResponseFactory<UsuarioVM>.BadRequest("CPF já existente");
+                return ResponseFactory<UsuarioVM>.BadRequest(_localizer.CPFJaExiste);
 
             //if (await _uow.Pessoas.EntityExists(i => i.NickName == pessoa.NickName))
             //    return ResponseFactory<UsuarioVM>.BadRequest("Nickname já existente");
@@ -162,24 +162,31 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarCredenciaisUsuario(Email email, string senha)
         {
             if (!email.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(email.ValidationResult.GetErrorsResult(), _localizer.BadRequest);
+                return ResponseFactory<UsuarioVM>.BadRequest(email.ValidationResult.GetErrorsResult(), _localizer.DadosInvalidos);
 
             if (string.IsNullOrWhiteSpace(senha))
-                return ResponseFactory<UsuarioVM>.BadRequest(new DadoInvalido("Senha", "Senha precisa estar preenchida"), _localizer.BadRequest);
+            {
+                var dadoInvalido = new DadoInvalido("Senha", _localizer.UsuarioSenhaObrigatoria);
+                return ResponseFactory<UsuarioVM>.BadRequest(dadoInvalido, _localizer.DadosInvalidos);
+            }
+            var senhaTamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
+            var senhaTamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
 
-            if (senha.Length < RegraAtributo.Pessoa.SENHA_TAMANHO_MIN || senha.Length > RegraAtributo.Pessoa.SENHA_TAMANHO_MAX)
-                return ResponseFactory<UsuarioVM>.BadRequest(new DadoInvalido("Senha", "Senha com tamanho inválido"), _localizer.BadRequest);
-
+            if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
+            {
+                var dadoInvalido = new DadoInvalido("Senha", _localizer.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
+                return ResponseFactory<UsuarioVM>.BadRequest(dadoInvalido, _localizer.DadosInvalidos);
+            }
             // Sign in Identity
             var result = await _signInManager.PasswordSignInAsync(
                  email.Endereco, senha, isPersistent: false, lockoutOnFailure: true
              );
 
             if (result.IsLockedOut)
-                return ResponseFactory<UsuarioVM>.BadRequest("Sua conta está bloqueada");
+                return ResponseFactory<UsuarioVM>.BadRequest(_localizer.ContaBloqueada);
 
             if (!result.Succeeded)
-                return ResponseFactory<UsuarioVM>.BadRequest("Usuário e/ou senha inválidos");
+                return ResponseFactory<UsuarioVM>.BadRequest(_localizer.LoginFalha);
 
             return ResponseFactory<UsuarioVM>.NoContent();
         }
@@ -187,11 +194,11 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarRefreshToken(Email email, string refreshToken)
         {
             if (!email.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(email.ValidationResult.GetErrorsResult(), _localizer.BadRequest);
+                return ResponseFactory<UsuarioVM>
+                    .BadRequest(email.ValidationResult.GetErrorsResult(), _localizer.DadosInvalidos);
 
             if (string.IsNullOrWhiteSpace(refreshToken))
-                return ResponseFactory<UsuarioVM>
-                    .BadRequest(new DadoInvalido("RefreshToken", "Refresh Token precisa estar preenchida"), _localizer.BadRequest);
+                return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token precisa estar preenchida");
 
             string tokenArmazenadoCache = await _redisCache.GetStringAsync(refreshToken);
 
@@ -220,7 +227,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 if (!identityResult.Succeeded)
                 {
                     await RemoverPessoa(pessoa);
-                    return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _localizer.BadRequest);
+                    return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _localizer.DadosInvalidos);
                 }
 
                 await _userManager.AddToRoleAsync(user, role);

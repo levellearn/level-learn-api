@@ -30,19 +30,7 @@ namespace LevelLearn.Service.Services.Usuarios
         public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
         {
             var jti = Guid.NewGuid().ToString();
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, jti),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ApplicationClaims.PESSOA_ID, user.PessoaId.ToString()),
-                new Claim(ClaimTypes.Name, user.NickName),
-                new Claim(ClaimTypes.Email, user.Email),
-            };
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
+            var claims = CriarClaimsJWT(user, roles, jti);
             var key = Encoding.ASCII.GetBytes(_appSettings.JWTSettings.ChavePrivada);
             var dataCriacao = DateTime.UtcNow;
             var dataExpiracao = DateTime.UtcNow.AddSeconds(_appSettings.JWTSettings.ExpiracaoSegundos);
@@ -75,6 +63,25 @@ namespace LevelLearn.Service.Services.Usuarios
                 AccessToken = token,
                 RefreshToken = refreshToken
             };
+        }
+
+        private ICollection<Claim> CriarClaimsJWT(ApplicationUser user, IList<string> roles, string jti)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, jti),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ApplicationClaims.PESSOA_ID, user.PessoaId.ToString()),
+                new Claim(ClaimTypes.Name, user.NickName),
+                new Claim(ClaimTypes.Email, user.Email),
+            };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return claims;
         }
 
         private async Task SalvarTokenCache(string jti, string refreshToken)

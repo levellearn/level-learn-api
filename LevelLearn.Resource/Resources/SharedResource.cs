@@ -9,23 +9,42 @@ namespace LevelLearn.Resource
 
 
         #region Geral
-        public string InternalServerError { get; }
-        public string RegisteredSuccessfully { get; }
-        public string UpdatedSuccessfully { get; }
-        public string DeletedSuccessfully { get; }
-        public string BadRequest { get; }
-        public string NotFound { get; }
+        public string ErroInternoServidor { get; }
+        public string CadastradoSucesso { get; }
+        public string AtualizadoSucesso { get; }
+        public string DeletadoSucesso { get; }
+        public string DadosInvalidos { get; }
+        public string NaoEncontrado { get; }
+        public string FalhaCadastrar { get; }
+        public string FalhaAtualizar { get; }
+        public string FalhaDeletar { get; }
         #endregion
 
-        #region Institution
-        public string InstitutionNameRequired { get; }
-        public string InstitutionDescriptionRequired { get; }
-        public string InstitutionNameLength(params object[] arguments);
-        public string InstitutionDescriptionLength(params object[] arguments);
-        public string InstitutionFailedSave { get; }
-        public string InstitutionNotFound { get; }
-        public string InstitutionNotAllowed { get; }
-        public string InstitutionAlreadyExists { get; } 
+        #region Instituicao
+        public string InstituicaoNomeObrigatorio { get; }
+        public string InstituicaoNomeTamanho(params object[] arguments);
+        public string InstituicaoDescricaoObrigatorio { get; }
+        public string InstituicaoDescricaoTamanho(params object[] arguments);
+        public string InstituicaoNaoEncontrada { get; }
+        public string InstituicaoNaoPermitida { get; }
+        public string InstituicaoJaExiste { get; }
+        #endregion
+
+        #region Usuario
+        public string LoginSucesso { get; }
+        public string LogoutSucesso { get; }
+        public string EmailJaExiste { get; }
+        public string CPFJaExiste { get; }
+        public string ContaBloqueada { get; }
+        public string LoginFalha { get; }
+        public string UsuarioSenhaObrigatoria { get; }
+        public string UsuarioSenhaTamanho(params object[] arguments);
+        public string UsuarioConfirmacaoSenhaObrigatoria { get; }
+        public string UsuarioConfirmacaoSenhaNaoConfere { get; }
+        public string UsuarioSenhaRequerMaiusculo { get; }
+        public string UsuarioSenhaRequerMinusculo { get; }
+        public string UsuarioSenhaRequerDigito { get; }
+        public string UsuarioSenhaRequerEspecial { get; }
         #endregion
 
     }
@@ -40,29 +59,52 @@ namespace LevelLearn.Resource
         }
 
         #region Geral
-        public string InternalServerError => GetValue(nameof(InternalServerError));
-        public string RegisteredSuccessfully => GetValue(nameof(RegisteredSuccessfully));
-        public string UpdatedSuccessfully => GetValue(nameof(UpdatedSuccessfully));
-        public string DeletedSuccessfully => GetValue(nameof(DeletedSuccessfully));
-        public string BadRequest => GetValue(nameof(BadRequest));
-        public string NotFound => GetValue(nameof(NotFound));
+        public string ErroInternoServidor => GetValue(nameof(ErroInternoServidor));
+        public string CadastradoSucesso => GetValue(nameof(CadastradoSucesso));
+        public string AtualizadoSucesso => GetValue(nameof(AtualizadoSucesso));
+        public string DeletadoSucesso => GetValue(nameof(DeletadoSucesso));
+        public string DadosInvalidos => GetValue(nameof(DadosInvalidos));
+        public string NaoEncontrado => GetValue(nameof(NaoEncontrado));
+        public string FalhaCadastrar => GetValue(nameof(FalhaCadastrar));
+        public string FalhaAtualizar => GetValue(nameof(FalhaAtualizar));
+        public string FalhaDeletar => GetValue(nameof(FalhaDeletar));
+
         #endregion
 
-        #region Institution
-        public string InstitutionFailedSave => GetValue(nameof(InstitutionFailedSave));
-        public string InstitutionNotFound => GetValue(nameof(InstitutionNotFound));
-        public string InstitutionNotAllowed => GetValue(nameof(InstitutionNotAllowed));
-        public string InstitutionAlreadyExists => GetValue(nameof(InstitutionAlreadyExists));
-        public string InstitutionNameRequired => GetValue(nameof(InstitutionNameRequired));
-        public string InstitutionNameLength(params object[] arguments)
+        #region Instituicao
+        public string InstituicaoNaoEncontrada => GetValue(nameof(InstituicaoNaoEncontrada));
+        public string InstituicaoNaoPermitida => GetValue(nameof(InstituicaoNaoPermitida));
+        public string InstituicaoJaExiste => GetValue(nameof(InstituicaoJaExiste));
+        public string InstituicaoNomeObrigatorio => GetValue(nameof(InstituicaoNomeObrigatorio));
+        public string InstituicaoNomeTamanho(params object[] arguments)
         {
-            return GetValue(nameof(InstitutionNameLength), arguments);
+            return GetValue(nameof(InstituicaoNomeTamanho), arguments);
         }
-        public string InstitutionDescriptionRequired => GetValue(nameof(InstitutionDescriptionRequired));
-        public string InstitutionDescriptionLength(params object[] arguments)
+        public string InstituicaoDescricaoObrigatorio => GetValue(nameof(InstituicaoDescricaoObrigatorio));
+        public string InstituicaoDescricaoTamanho(params object[] arguments)
         {
-            return GetValue(nameof(InstitutionDescriptionLength), arguments);
+            return GetValue(nameof(InstituicaoDescricaoTamanho), arguments);
         }
+        #endregion
+
+        #region Usuario
+        public string LoginSucesso => GetValue(nameof(LoginSucesso));
+        public string LogoutSucesso => GetValue(nameof(LogoutSucesso));
+        public string EmailJaExiste => GetValue(nameof(EmailJaExiste));
+        public string CPFJaExiste => GetValue(nameof(CPFJaExiste));
+        public string ContaBloqueada => GetValue(nameof(ContaBloqueada));
+        public string LoginFalha => GetValue(nameof(LoginFalha)); 
+        public string UsuarioSenhaObrigatoria => GetValue(nameof(UsuarioSenhaObrigatoria)); 
+        public string UsuarioSenhaTamanho(params object[] arguments)
+        {
+            return GetValue(nameof(UsuarioSenhaTamanho), arguments);
+        }
+        public string UsuarioConfirmacaoSenhaObrigatoria => GetValue(nameof(UsuarioConfirmacaoSenhaObrigatoria)); 
+        public string UsuarioConfirmacaoSenhaNaoConfere => GetValue(nameof(UsuarioConfirmacaoSenhaNaoConfere));
+        public string UsuarioSenhaRequerMaiusculo => GetValue(nameof(UsuarioSenhaRequerMaiusculo));
+        public string UsuarioSenhaRequerMinusculo => GetValue(nameof(UsuarioSenhaRequerMinusculo));
+        public string UsuarioSenhaRequerDigito => GetValue(nameof(UsuarioSenhaRequerDigito));
+        public string UsuarioSenhaRequerEspecial => GetValue(nameof(UsuarioSenhaRequerEspecial));
         #endregion
 
         public string GetValue(string resourceKey)
