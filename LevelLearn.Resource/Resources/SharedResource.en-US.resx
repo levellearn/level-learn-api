@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlunoRAObrigatorio" xml:space="preserve">
+    <value>RA needs to be filled</value>
+  </data>
   <data name="AtualizadoSucesso" xml:space="preserve">
     <value>Updated successfully</value>
   </data>
@@ -183,11 +186,56 @@
   <data name="NaoEncontrado" xml:space="preserve">
     <value>Register not found</value>
   </data>
+  <data name="PessoaCelularInvalido" xml:space="preserve">
+    <value>Cell is not valid</value>
+  </data>
+  <data name="PessoaCPFInvalido" xml:space="preserve">
+    <value>CPF is not valid</value>
+  </data>
+  <data name="PessoaDataNascimentoInvalida" xml:space="preserve">
+    <value>Birth Date must be less than today</value>
+  </data>
+  <data name="PessoaGeneroObrigatorio" xml:space="preserve">
+    <value>Gender must be filled</value>
+  </data>
+  <data name="PessoaImagemObrigatoria" xml:space="preserve">
+    <value>Image must be filled</value>
+  </data>
+  <data name="PessoaNickNameInvalido" xml:space="preserve">
+    <value>NickName must only contain letters, numbers, dash (_), hyphen (-) and dot (.)</value>
+  </data>
+  <data name="PessoaNickNameObrigatorio" xml:space="preserve">
+    <value>NickName must be filled</value>
+  </data>
+  <data name="PessoaNickNameTamanhoMaximo" xml:space="preserve">
+    <value>NickName can be a maximum of {0} characters</value>
+  </data>
+  <data name="PessoaNomeObrigatorio" xml:space="preserve">
+    <value>Name must be filled</value>
+  </data>
+  <data name="PessoaNomePrecisaSobrenome" xml:space="preserve">
+    <value>First name needs a surname</value>
+  </data>
+  <data name="PessoaNomeTamanho" xml:space="preserve">
+    <value>Name must be between {0} and {1} characters</value>
+  </data>
+  <data name="PessoaTipoPessoaInvalido" xml:space="preserve">
+    <value>Type of person needs to be Admin, Teacher or Student</value>
+  </data>
+  <data name="ProfessorCPFObrigatorio" xml:space="preserve">
+    <value>CPF needs to be filled</value>
+  </data>
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
     <value>Password and password confirmation do not match</value>
   </data>
   <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
     <value>Password confirmation must be completed</value>
+  </data>
+  <data name="UsuarioEmailInvalido" xml:space="preserve">
+    <value>Email is not valid</value>
+  </data>
+  <data name="UsuarioEmailTamanhoMaximo" xml:space="preserve">
+    <value>E-mail can be a maximum of {0} characters</value>
   </data>
   <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
     <value>Password must be filled</value>

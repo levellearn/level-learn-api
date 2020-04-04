@@ -3,7 +3,7 @@ using LevelLearn.Domain.Validators;
 
 namespace LevelLearn.Domain.ValueObjects
 {
-    public class Email : ValueObject<Email>
+    public class Email : ValueObject
     {
         protected Email() { }
 
@@ -16,15 +16,6 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override bool EstaValido()
         {
-            RuleFor(e => e.Endereco)
-                .NotEmpty().WithMessage("E-mail precisa estar preenchido")
-                .MaximumLength(RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX)
-                    .WithMessage($"E-mail pode ter no máximo {RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX} caracteres")
-                .EmailAddress().WithMessage("E-mail não é válido")
-                .OverridePropertyName("Email");
-
-            ValidationResult = Validate(this);
-
             return ValidationResult.IsValid;
         }
 

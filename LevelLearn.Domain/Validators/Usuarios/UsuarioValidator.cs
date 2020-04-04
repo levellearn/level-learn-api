@@ -9,11 +9,11 @@ namespace LevelLearn.Domain.Validators.Pessoas
 {
     public class UsuarioValidator : AbstractValidator<ApplicationUser>, IValidatorApp<ApplicationUser>
     {
-        private readonly ISharedResource _sharedLocalizer;
+        private readonly ISharedResource _sharedResource;
 
         public UsuarioValidator(ISharedResource sharedResource)
         {
-            _sharedLocalizer = sharedResource;
+            _sharedResource = sharedResource;
         }
 
         public ValidationResult Validar(ApplicationUser instance)
@@ -33,26 +33,26 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
             RuleFor(p => p.Senha)
                 .NotEmpty()
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaObrigatoria)
+                    .WithMessage(_sharedResource.UsuarioSenhaObrigatoria)
                 .Length(tamanhoMin, tamanhoMax)
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaTamanho(tamanhoMin, tamanhoMax))
+                    .WithMessage(_sharedResource.UsuarioSenhaTamanho(tamanhoMin, tamanhoMax))
                 .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO == false)
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerMaiusculo)
+                    .WithMessage(_sharedResource.UsuarioSenhaRequerMaiusculo)
                 .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO == false)
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerMinusculo)
+                    .WithMessage(_sharedResource.UsuarioSenhaRequerMinusculo)
                 .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_DIGITO == false)
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerDigito)
+                    .WithMessage(_sharedResource.UsuarioSenhaRequerDigito)
                 .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL == false)
-                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerEspecial);
+                    .WithMessage(_sharedResource.UsuarioSenhaRequerEspecial);
         }
 
         private void ValidarConfirmacaoSenha()
         {
             RuleFor(p => p.ConfirmacaoSenha)
                 .NotEmpty()
-                    .WithMessage(_sharedLocalizer.UsuarioConfirmacaoSenhaObrigatoria)
+                    .WithMessage(_sharedResource.UsuarioConfirmacaoSenhaObrigatoria)
                 .Equal(p => p.Senha)
-                    .WithMessage(_sharedLocalizer.UsuarioConfirmacaoSenhaNaoConfere);
+                    .WithMessage(_sharedResource.UsuarioConfirmacaoSenhaNaoConfere);
         }
 
         //public DadoInvalido SenhaEstaValida(string senha)

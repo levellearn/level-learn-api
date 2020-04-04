@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.ValueObjects
 {
-    public class Celular : ValueObject<Celular>
+    public class Celular : ValueObject
     {
         protected Celular() { }
 
@@ -33,11 +33,10 @@ namespace LevelLearn.Domain.ValueObjects
         {
             RuleFor(c => c.Numero)
                 .Must(a => Validate())
-                    .WithMessage("Celular não é válido")
+                    .WithMessage("")
                     .When(p => !string.IsNullOrWhiteSpace(p.Numero))
                 .OverridePropertyName("Celular");
 
-            ValidationResult = Validate(this);
             return ValidationResult.IsValid;
         }
 

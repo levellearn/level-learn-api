@@ -45,6 +45,28 @@ namespace LevelLearn.Resource
         public string UsuarioSenhaRequerMinusculo { get; }
         public string UsuarioSenhaRequerDigito { get; }
         public string UsuarioSenhaRequerEspecial { get; }
+        public string UsuarioEmailObrigatorio { get; }
+        public string UsuarioEmailTamanhoMaximo(int argument);
+        public string UsuarioEmailInvalido { get; }
+
+        #endregion
+
+        #region Pessoa
+        public string PessoaDataNascimentoInvalida { get; }
+        public string PessoaGeneroObrigatorio { get; }
+        public string PessoaImagemObrigatoria { get; }
+        public string PessoaNickNameInvalido { get; }
+        public string PessoaNickNameObrigatorio { get; }
+        public string PessoaNickNameTamanhoMaximo(int argument);
+        public string PessoaNomeObrigatorio { get; }
+        public string PessoaNomePrecisaSobrenome { get; }
+        public string PessoaNomeTamanho(params object[] arguments);
+        public string PessoaTipoPessoaInvalido { get; }
+        public string PessoaCelularInvalido { get; }
+        public string PessoaCPFInvalido { get; }
+        public string AlunoRAObrigatorio { get; }
+        public string ProfessorCPFObrigatorio { get; }
+
         #endregion
 
     }
@@ -107,7 +129,37 @@ namespace LevelLearn.Resource
         public string UsuarioSenhaRequerMinusculo => GetValue(nameof(UsuarioSenhaRequerMinusculo));
         public string UsuarioSenhaRequerDigito => GetValue(nameof(UsuarioSenhaRequerDigito));
         public string UsuarioSenhaRequerEspecial => GetValue(nameof(UsuarioSenhaRequerEspecial));
+        public string UsuarioEmailObrigatorio => GetValue(nameof(UsuarioEmailObrigatorio));
+        public string UsuarioEmailTamanhoMaximo(int argument)
+        {
+           return GetValue(nameof(UsuarioEmailTamanhoMaximo), argument);
+        }
+        public string UsuarioEmailInvalido => GetValue(nameof(UsuarioEmailInvalido));
         #endregion
+
+        #region Pessoa
+        public string PessoaDataNascimentoInvalida => GetValue(nameof(PessoaDataNascimentoInvalida));
+        public string PessoaGeneroObrigatorio => GetValue(nameof(PessoaGeneroObrigatorio));
+        public string PessoaImagemObrigatoria => GetValue(nameof(PessoaImagemObrigatoria));
+        public string PessoaNickNameInvalido => GetValue(nameof(PessoaNickNameInvalido));
+        public string PessoaNickNameObrigatorio => GetValue(nameof(PessoaNickNameObrigatorio));
+        public string PessoaNickNameTamanhoMaximo(int argument)
+        {
+            return GetValue(nameof(PessoaNickNameTamanhoMaximo), argument);
+        }
+        public string PessoaNomeObrigatorio => GetValue(nameof(PessoaNomeObrigatorio));
+        public string PessoaNomePrecisaSobrenome => GetValue(nameof(PessoaNomePrecisaSobrenome));
+        public string PessoaNomeTamanho(params object[] arguments)
+        {
+            return GetValue(nameof(UsuarioSenhaTamanho), arguments);
+        }
+        public string PessoaTipoPessoaInvalido => GetValue(nameof(PessoaTipoPessoaInvalido));
+        public string PessoaCelularInvalido => GetValue(nameof(PessoaCelularInvalido));
+        public string PessoaCPFInvalido => GetValue(nameof(PessoaCPFInvalido));
+        public string AlunoRAObrigatorio => GetValue(nameof(AlunoRAObrigatorio));
+        public string ProfessorCPFObrigatorio => GetValue(nameof(ProfessorCPFObrigatorio));
+        #endregion
+
 
         public string GetValue(string resourceKey)
         {

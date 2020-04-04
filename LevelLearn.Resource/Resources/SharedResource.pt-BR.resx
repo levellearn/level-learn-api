@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlunoRAObrigatorio" xml:space="preserve">
+    <value>RA precisa estar preenchido</value>
+  </data>
   <data name="AtualizadoSucesso" xml:space="preserve">
     <value>Atualizado com sucesso</value>
   </data>
@@ -183,11 +186,59 @@
   <data name="NaoEncontrado" xml:space="preserve">
     <value>Registro não encontrado</value>
   </data>
+  <data name="PessoaCelularInvalido" xml:space="preserve">
+    <value>Celular não é válido</value>
+  </data>
+  <data name="PessoaCPFInvalido" xml:space="preserve">
+    <value>CPF não é válido</value>
+  </data>
+  <data name="PessoaDataNascimentoInvalida" xml:space="preserve">
+    <value>Data Nascimento precisa ser menor que hoje</value>
+  </data>
+  <data name="PessoaGeneroObrigatorio" xml:space="preserve">
+    <value>Gênero precisa ser informado</value>
+  </data>
+  <data name="PessoaImagemObrigatoria" xml:space="preserve">
+    <value>Imagem precisa estar preenchida</value>
+  </data>
+  <data name="PessoaNickNameInvalido" xml:space="preserve">
+    <value>NickName somente deve conter letras, números, traço(_), hífen(-) e ponto(.)</value>
+  </data>
+  <data name="PessoaNickNameObrigatorio" xml:space="preserve">
+    <value>NickName precisa estar preenchido</value>
+  </data>
+  <data name="PessoaNickNameTamanhoMaximo" xml:space="preserve">
+    <value>NickName pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="PessoaNomeObrigatorio" xml:space="preserve">
+    <value>Nome precisa estar preenchido</value>
+  </data>
+  <data name="PessoaNomePrecisaSobrenome" xml:space="preserve">
+    <value>Nome precisa de um sobrenome</value>
+  </data>
+  <data name="PessoaNomeTamanho" xml:space="preserve">
+    <value>Nome precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="PessoaTipoPessoaInvalido" xml:space="preserve">
+    <value>Tipo de pessoa precisa ser Admin, Professor ou Aluno</value>
+  </data>
+  <data name="ProfessorCPFObrigatorio" xml:space="preserve">
+    <value>CPF precisa estar preenchido</value>
+  </data>
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
     <value>Senha e confirmação de senha não coincidem</value>
   </data>
   <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
     <value>Confirmação de senha precisa estar preenchida</value>
+  </data>
+  <data name="UsuarioEmailInvalido" xml:space="preserve">
+    <value>E-mail não é válido</value>
+  </data>
+  <data name="UsuarioEmailObrigatorio" xml:space="preserve">
+    <value>E-mail precisa estar preenchido</value>
+  </data>
+  <data name="UsuarioEmailTamanhoMaximo" xml:space="preserve">
+    <value>E-mail pode ter no máximo {0} caracteres</value>
   </data>
   <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
     <value>Senha precisa estar preenchida</value>

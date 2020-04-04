@@ -22,11 +22,11 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                    .WithMessage("Nome precisa estar preenchido")
+                    .WithMessage("")
                 .Length(RegraAtributo.Pessoa.NOME_TAMANHO_MIN, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-                    .WithMessage($"Nome precisa estar entre {RegraAtributo.Pessoa.NOME_TAMANHO_MIN} e {RegraAtributo.Pessoa.NOME_TAMANHO_MAX} caracteres")
+                    .WithMessage("")
                 .Must(n => TemPrimeiroNomeSobrenome(n))
-                    .WithMessage("Nome precisa de um sobrenome");
+                    .WithMessage("");
         }
         private bool TemPrimeiroNomeSobrenome(string name)
         {
@@ -40,20 +40,21 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
         private void ValidarNickName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX + "}$";
+            var tamanhoMax = RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX;
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
 
             RuleFor(p => p.NickName)
-                .NotEmpty().WithMessage("NickName precisa estar preenchido")
+                .NotEmpty().WithMessage("")
                 .Must(p => Regex.IsMatch(p, pattern))
-                    .WithMessage("NickName somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX)
-                    .WithMessage($"NickName pode ter no máximo {RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX} caracteres");
+                    .WithMessage("")
+                .MaximumLength(tamanhoMax)
+                    .WithMessage("");
         }
 
         private void ValidarImagem()
         {
             RuleFor(p => p.ImagemUrl)
-                .NotEmpty().WithMessage("Imagem precisa estar preenchida");
+                .NotEmpty().WithMessage("");
         }       
 
         private void ValidarDataNascimento()
@@ -62,7 +63,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
             RuleFor(c => c.DataNascimento)
                 .LessThan(dataAtual)
-                    .WithMessage("Data Nascimento precisa ser menor que hoje")
+                    .WithMessage("")
                 .When(p => p.DataNascimento.HasValue);
         }
 
@@ -70,14 +71,14 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Genero)
                 .Must(c => c != Generos.Nenhum)
-                    .WithMessage($"Gênero precisa ser informado");
+                    .WithMessage("");
         }
 
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
                 .Must(c => c != TiposPessoa.Nenhum)
-                .WithMessage($"Tipo de pessoa precisa ser Admin, Professor ou Aluno");
+                .WithMessage("");
         }
 
 

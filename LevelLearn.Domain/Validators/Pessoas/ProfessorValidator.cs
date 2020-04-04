@@ -14,7 +14,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Cpf.Numero)
                 .NotEmpty()
-                    .WithMessage("CPF precisa estar preenchido");
+                    .WithMessage("");
         }
 
 
