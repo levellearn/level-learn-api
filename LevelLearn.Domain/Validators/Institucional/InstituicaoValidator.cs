@@ -5,13 +5,18 @@ using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.Institucional
 {
-    public class InstituicaoValidator : AbstractValidator<Instituicao>, IInstituicaoValidator
+    public class InstituicaoValidator : AbstractValidator<Instituicao>, IValidatorApp<Instituicao>
     {
-        private readonly ISharedResource _sharedLocalizer;
+        private readonly ISharedResource _sharedResource;
+
+        public InstituicaoValidator()
+        {
+            _sharedResource = new SharedResource();
+        }
 
         public InstituicaoValidator(ISharedResource sharedLocalizer)
         {
-            _sharedLocalizer = sharedLocalizer;
+            _sharedResource = sharedLocalizer;
         }
 
         public ValidationResult Validar(Instituicao instance)
@@ -31,9 +36,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Nome)
             .NotEmpty()
-                .WithMessage(p => _sharedLocalizer.InstituicaoNomeObrigatorio)
+                .WithMessage(_sharedResource.InstituicaoNomeObrigatorio)
             .Length(tamanhoMin, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage(p => _sharedLocalizer.InstituicaoNomeTamanho(tamanhoMin, tamanhoMax));
+                .WithMessage(_sharedResource.InstituicaoNomeTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarDescricao()
@@ -42,9 +47,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Descricao)
                 .NotEmpty()
-                    .WithMessage(p => _sharedLocalizer.InstituicaoDescricaoObrigatorio)
+                    .WithMessage(_sharedResource.InstituicaoDescricaoObrigatorio)
                 .MaximumLength(tamanhoMax)
-                    .WithMessage(p => _sharedLocalizer.InstituicaoDescricaoTamanho(tamanhoMax));
+                    .WithMessage(_sharedResource.InstituicaoDescricaoTamanho(tamanhoMax));
         }
 
     }

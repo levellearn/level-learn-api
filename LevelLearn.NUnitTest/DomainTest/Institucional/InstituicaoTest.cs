@@ -1,6 +1,8 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 
@@ -11,6 +13,8 @@ namespace LevelLearn.NUnitTest.Institucional
     {
         // Fields
         private string _nome, _descricao;
+        private readonly IValidatorApp<Instituicao> _validator = new InstituicaoValidator();
+
 
         [SetUp]
         public void Setup()
@@ -26,7 +30,9 @@ namespace LevelLearn.NUnitTest.Institucional
         {
             var instituicao = CriarInstituicao();
 
+            _validator.Validar(instituicao);
             bool valido = instituicao.EstaValido();
+
             Assert.IsTrue(valido, "Instituição deveria ser válida");
         }
 
@@ -40,7 +46,10 @@ namespace LevelLearn.NUnitTest.Institucional
             _descricao = descricao;
 
             var instituicao = CriarInstituicao();
+
+            _validator.Validar(instituicao);
             bool valido = instituicao.EstaValido();
+
             Assert.IsFalse(valido, "Instituição deveria ser inválida");
         }
 

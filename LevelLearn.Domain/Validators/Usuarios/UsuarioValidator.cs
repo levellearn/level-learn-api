@@ -1,42 +1,76 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Validators.Institucional;
+using LevelLearn.Resource;
 using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.Pessoas
 {
-    public class UsuarioValidator : AbstractValidator<ApplicationUser>
+    public class UsuarioValidator : AbstractValidator<ApplicationUser>, IValidatorApp<ApplicationUser>
     {
-        public UsuarioValidator()
-        {            
+        private readonly ISharedResource _sharedLocalizer;
+
+        public UsuarioValidator(ISharedResource sharedResource)
+        {
+            _sharedLocalizer = sharedResource;
+        }
+
+        public ValidationResult Validar(ApplicationUser instance)
+        {
             ValidarSenha();
             ValidarConfirmacaoSenha();
+
+            instance.ValidationResult = this.Validate(instance);
+
+            return instance.ValidationResult;
         }
-        
+
         private void ValidarSenha()
         {
+            var tamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
+            var tamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
+
             RuleFor(p => p.Senha)
                 .NotEmpty()
-                    .WithMessage("Senha precisa estar preenchida")
-                .Length(RegraAtributo.Pessoa.SENHA_TAMANHO_MIN, RegraAtributo.Pessoa.SENHA_TAMANHO_MAX)
-                    .WithMessage($"Senha precisa estar entre {RegraAtributo.Pessoa.SENHA_TAMANHO_MIN} e {RegraAtributo.Pessoa.SENHA_TAMANHO_MAX} caracteres")
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaObrigatoria)
+                .Length(tamanhoMin, tamanhoMax)
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaTamanho(tamanhoMin, tamanhoMax))
                 .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO == false)
-                    .WithMessage("Senha precisa no mínimo de uma letra maiúscula")
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerMaiusculo)
                 .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO == false)
-                    .WithMessage("Senha precisa no mínimo de uma letra minúscula")
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerMinusculo)
                 .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_DIGITO == false)
-                    .WithMessage("Senha precisa no mínimo de um dígito")
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerDigito)
                 .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL == false)
-                    .WithMessage("Senha precisa no mínimo de um caractere especial");
+                    .WithMessage(_sharedLocalizer.UsuarioSenhaRequerEspecial);
         }
 
         private void ValidarConfirmacaoSenha()
         {
             RuleFor(p => p.ConfirmacaoSenha)
                 .NotEmpty()
-                    .WithMessage("Confirmação de senha precisa estar preenchida")
+                    .WithMessage(_sharedLocalizer.UsuarioConfirmacaoSenhaObrigatoria)
                 .Equal(p => p.Senha)
-                    .WithMessage("Senha e confirmação de senha não conferem");
+                    .WithMessage(_sharedLocalizer.UsuarioConfirmacaoSenhaNaoConfere);
         }
+
+        //public DadoInvalido SenhaEstaValida(string senha)
+        //{
+        //    if (string.IsNullOrWhiteSpace(senha))
+        //    {
+        //        return new DadoInvalido("Senha", _sharedLocalizer.UsuarioSenhaObrigatoria);
+        //    }
+        //    var senhaTamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
+        //    var senhaTamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
+
+        //    if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
+        //    {
+        //        return new DadoInvalido("Senha", _sharedLocalizer.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
+        //    }
+
+        //    return null;
+        //}
 
     }
 }

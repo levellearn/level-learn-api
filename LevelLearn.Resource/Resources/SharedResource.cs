@@ -53,6 +53,8 @@ namespace LevelLearn.Resource
     {
         private readonly IStringLocalizer _localizer;
 
+        public SharedResource() { }
+
         public SharedResource(IStringLocalizer<SharedResource> localizer)
         {
             _localizer = localizer;
@@ -109,12 +111,12 @@ namespace LevelLearn.Resource
 
         public string GetValue(string resourceKey)
         {
-            return _localizer[resourceKey].Value;
+            return _localizer?[resourceKey]?.Value ?? resourceKey;
         }
 
         public string GetValue(string resourceKey, params object[] arguments)
         {
-            return _localizer[resourceKey, arguments].Value;
+            return _localizer?[resourceKey, arguments]?.Value ?? resourceKey;
         }
         
     }

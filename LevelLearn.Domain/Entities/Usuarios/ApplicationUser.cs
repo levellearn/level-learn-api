@@ -38,13 +38,10 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string ConfirmacaoSenha { get; }
         public Guid PessoaId { get; set; }
         public virtual Pessoa Pessoa { get; set; }
-        public ValidationResult ValidationResult { get; private set; }
+        public ValidationResult ValidationResult { get; set; }
 
         public bool EstaValido()
         {
-            var validator = new UsuarioValidator();
-            this.ValidationResult = validator.Validate(this);          
-
             return this.ValidationResult.IsValid;
         }
 

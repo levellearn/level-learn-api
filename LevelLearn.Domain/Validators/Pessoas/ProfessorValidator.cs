@@ -7,7 +7,6 @@ namespace LevelLearn.Domain.Validators.Pessoas
     {
         public ProfessorValidator()
         {
-            //CascadeMode = CascadeMode.StopOnFirstFailure;
             ValidarDocumento();
         }
 

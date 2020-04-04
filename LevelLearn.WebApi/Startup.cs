@@ -278,7 +278,7 @@ namespace LevelLearn.WebApi
 
         private static void ConfigureValidators(IServiceCollection services)
         {
-            services.AddScoped<IInstituicaoValidator, InstituicaoValidator>();
+            //services.AddScoped<IInstituicaoValidator, InstituicaoValidator>();
         }
 
     }

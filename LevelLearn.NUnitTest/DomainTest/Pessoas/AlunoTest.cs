@@ -64,7 +64,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var aluno = CriarAluno();
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.ErrorMessage == "O Nome precisa de um sobrenome");
+            var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
 
             Assert.IsTrue(condition, "Aluno deveria ter nome completo");
         }

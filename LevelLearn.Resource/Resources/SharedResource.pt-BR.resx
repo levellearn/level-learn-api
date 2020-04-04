@@ -184,7 +184,7 @@
     <value>Registro não encontrado</value>
   </data>
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
-    <value>Senha e confirmação de senha não conferem</value>
+    <value>Senha e confirmação de senha não coincidem</value>
   </data>
   <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
     <value>Confirmação de senha precisa estar preenchida</value>
