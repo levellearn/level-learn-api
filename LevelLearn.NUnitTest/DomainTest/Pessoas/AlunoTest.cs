@@ -1,5 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
@@ -15,6 +17,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _nickName, _email, _cpf, _ra, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
+        private readonly IValidatorApp<Aluno> _validator = new AlunoValidator();
 
         [SetUp]
         public void Setup()
@@ -34,20 +37,26 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Cadastrar_AlunoValido_ReturnTrue()
         {
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
+
             Assert.IsTrue(valido, "Aluno deveria ser válido");
         }
 
         [Test]
         [TestCase("123.456.789-10", "29/10/1990")] // CPF inválido
-        [TestCase("881.192.990-35", "29/10/3000")] // Data inválida
+        [TestCase("881.192.990-35", "29/10/5000")] // Data inválida
         public void Cadastrar_AlunoValido_ReturnFalse(string cpf, string dataNascimento)
         {
             _cpf = cpf;
             _dataNascimento = DateTime.Parse(dataNascimento);
 
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
+
             Assert.IsFalse(valido, "Aluno deveria ser inválido");
         }
 
@@ -62,6 +71,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nome = nome;
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
@@ -78,6 +89,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nome = nome;
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
@@ -94,6 +107,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nickName = userName;
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
@@ -109,6 +124,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _nickName = userName;
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
@@ -121,7 +138,10 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _cpf = null;
             var aluno = CriarAluno();
+
+            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
+
             Assert.IsTrue(valido, "Aluno deveria ser válido");
         }
 

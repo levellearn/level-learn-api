@@ -57,40 +57,12 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         #endregion Props
 
-
         #region Methods
 
         public override bool EstaValido()
         {
-            var validator = new PessoaValidator();
-
-            this.ValidationResult = validator.Validate(this);
-
-            // VOs
-            ValidarCPF();
-            ValidarEmail();
-            ValidarCelular();
-
-            return this.ValidationResult.IsValid;
-        }
-
-        protected void ValidarCPF()
-        {
-            if (Cpf.EstaValido()) return;
-            this.ValidationResult.AddErrors(Cpf.ValidationResult);
-        }
-
-        protected void ValidarEmail()
-        {
-            if (Email.EstaValido()) return;
-            this.ValidationResult.AddErrors(Email.ValidationResult);
-        }
-
-        protected void ValidarCelular()
-        {
-            if (Celular.EstaValido()) return;
-            this.ValidationResult.AddErrors(Celular.ValidationResult);
-        }
+            return this.ResultadoValidacao.IsValid;
+        }       
 
         public void AtribuirInstituicao(PessoaInstituicao instituicao)
         {

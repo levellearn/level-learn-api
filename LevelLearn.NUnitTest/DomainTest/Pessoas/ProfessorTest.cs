@@ -1,9 +1,10 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
-using System.Linq;
 
 namespace LevelLearn.NUnitTest.Pessoas
 {
@@ -14,6 +15,8 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _nickName, _email, _cpf, _celular, _imagemUrl;
         private DateTime _dataNascimento;
         private Generos _genero;
+        private readonly IValidatorApp<Professor> _validator = new ProfessorValidator();
+
 
         [SetUp]
         public void Setup()
@@ -32,7 +35,10 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Cadastrar_ProfessorValido_ReturnTrue()
         {
             var professor = CriarProfessor();
+
+            _validator.Validar(professor);
             bool valido = professor.EstaValido();
+
             Assert.IsTrue(valido, "Professor deveria ser válido");
         }
 
@@ -45,10 +51,13 @@ namespace LevelLearn.NUnitTest.Pessoas
             _celular = celular;
 
             var professor = CriarProfessor();
+
+            _validator.Validar(professor);
             bool valido = professor.EstaValido();
+
             Assert.IsFalse(valido, "Professor deveria ser inválido");
         }
-        
+
         [Test]
         [TestCase("123.456.789-10")]
         [TestCase("111.222.333-44")]
@@ -57,7 +66,10 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             _cpf = cpf;
             var professor = CriarProfessor();
+
+            _validator.Validar(professor);
             bool valido = professor.EstaValido();
+
             Assert.IsFalse(valido, "Professor deveria ser inválido");
         }
 

@@ -15,7 +15,6 @@ namespace LevelLearn.NUnitTest.Institucional
         private string _nome, _descricao;
         private readonly IValidatorApp<Instituicao> _validator = new InstituicaoValidator();
 
-
         [SetUp]
         public void Setup()
         {

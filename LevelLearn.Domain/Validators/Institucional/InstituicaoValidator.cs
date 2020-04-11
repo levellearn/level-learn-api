@@ -7,26 +7,29 @@ namespace LevelLearn.Domain.Validators.Institucional
 {
     public class InstituicaoValidator : AbstractValidator<Instituicao>, IValidatorApp<Instituicao>
     {
+        #region Ctors
         private readonly ISharedResource _sharedResource;
 
+        // Unit Test
         public InstituicaoValidator()
         {
             _sharedResource = new SharedResource();
         }
 
-        public InstituicaoValidator(ISharedResource sharedLocalizer)
+        public InstituicaoValidator(ISharedResource sharedResource)
         {
-            _sharedResource = sharedLocalizer;
-        }
+            _sharedResource = sharedResource;
+        } 
+        #endregion
 
         public ValidationResult Validar(Instituicao instance)
         {
             ValidarNome();
             ValidarDescricao();
 
-            instance.ValidationResult = this.Validate(instance);
+            instance.ResultadoValidacao = this.Validate(instance);
 
-            return instance.ValidationResult;
+            return instance.ResultadoValidacao;
         }
 
         private void ValidarNome()

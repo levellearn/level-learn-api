@@ -19,21 +19,18 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
             //builder.Property("Discriminator").HasMaxLength(200);
 
             builder.OwnsOne(c => c.Cpf)
-                .Ignore(e => e.CascadeMode)
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
                 .HasColumnType($"varchar({RegraAtributo.Pessoa.CPF_TAMANHO})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Email)
-                .Ignore(e => e.CascadeMode)
                 .Property(e => e.Endereco)
                 .HasColumnName("Email")
                 .HasColumnType($"varchar({RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Celular)
-                .Ignore(e => e.CascadeMode)
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
                 .HasColumnType($"varchar({RegraAtributo.Pessoa.CELULAR_TAMANHO})")

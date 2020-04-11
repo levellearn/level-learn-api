@@ -18,15 +18,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public override bool EstaValido()
         {
-            base.EstaValido();
+            base.EstaValido();           
 
-            var professorValidator = new ProfessorValidator();
-            var professorValidationResult = professorValidator.Validate(this);
-
-            if (!professorValidationResult.IsValid)
-                this.ValidationResult.AddErrors(professorValidationResult);
-
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
 

@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Resource;
 using System.Text.RegularExpressions;
 
@@ -21,9 +20,9 @@ namespace LevelLearn.Domain.Validators.Pessoas
             ValidarSenha();
             ValidarConfirmacaoSenha();
 
-            instance.ValidationResult = this.Validate(instance);
+            instance.ResultadoValidacao = this.Validate(instance);
 
-            return instance.ValidationResult;
+            return instance.ResultadoValidacao;
         }
 
         private void ValidarSenha()

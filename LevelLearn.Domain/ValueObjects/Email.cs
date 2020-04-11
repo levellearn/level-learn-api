@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using LevelLearn.Domain.Validators;
-
-namespace LevelLearn.Domain.ValueObjects
+﻿namespace LevelLearn.Domain.ValueObjects
 {
     public class Email : ValueObject
     {
@@ -16,7 +13,7 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override bool EstaValido()
         {
-            return ValidationResult.IsValid;
+            return ResultadoValidacao.IsValid;
         }
 
         public override string ToString()

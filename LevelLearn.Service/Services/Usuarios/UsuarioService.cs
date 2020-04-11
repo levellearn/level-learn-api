@@ -3,7 +3,6 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
@@ -171,7 +170,7 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarCredenciaisUsuario(Email email, string senha)
         {
             if (!email.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(email.ValidationResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
+                return ResponseFactory<UsuarioVM>.BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
             if (string.IsNullOrWhiteSpace(senha))
             {
@@ -204,7 +203,7 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             if (!email.EstaValido())
                 return ResponseFactory<UsuarioVM>
-                    .BadRequest(email.ValidationResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
+                    .BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
             if (string.IsNullOrWhiteSpace(refreshToken))
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token precisa estar preenchida");

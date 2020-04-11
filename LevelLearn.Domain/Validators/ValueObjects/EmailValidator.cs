@@ -27,9 +27,9 @@ namespace LevelLearn.Domain.Validators.ValueObjects
                     .WithMessage(_sharedResource.UsuarioEmailInvalido)
                 .OverridePropertyName("Email");
 
-            instance.ValidationResult = this.Validate(instance);
+            instance.ResultadoValidacao = this.Validate(instance);
 
-            return instance.ValidationResult;
+            return instance.ResultadoValidacao;
         }
     }
 }

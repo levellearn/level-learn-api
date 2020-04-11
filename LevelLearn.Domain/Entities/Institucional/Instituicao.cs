@@ -79,7 +79,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public override bool EstaValido()
         {
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
         /// <summary>

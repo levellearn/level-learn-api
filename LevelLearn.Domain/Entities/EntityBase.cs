@@ -13,7 +13,7 @@ namespace LevelLearn.Domain.Entities
             Id = Guid.NewGuid();
             Ativo = true;
             DataCadastro = DateTime.Now;
-            ValidationResult = new ValidationResult();
+            ResultadoValidacao = new ValidationResult();
         }
 
         #region Props
@@ -22,7 +22,7 @@ namespace LevelLearn.Domain.Entities
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
         public DateTime DataCadastro { get; private set; }
-        public ValidationResult ValidationResult { get; set; }
+        public ValidationResult ResultadoValidacao { get; set; }
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace LevelLearn.Domain.Entities
         /// <returns>Retorna uma lista de dados inválidos da entidade</returns>
         public ICollection<DadoInvalido> DadosInvalidos()
         {
-            return ValidationResult.GetErrorsResult();
+            return ResultadoValidacao.GetErrorsResult();
         }
 
         /// <summary>

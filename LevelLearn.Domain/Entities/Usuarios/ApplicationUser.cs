@@ -2,7 +2,6 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Pessoas;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             PhoneNumberConfirmed = phoneNumberConfirmed;
             PessoaId = pessoaId;
 
-            ValidationResult = new ValidationResult();
+            ResultadoValidacao = new ValidationResult();
         }
 
         public string NickName { get; set; }
@@ -38,16 +37,16 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string ConfirmacaoSenha { get; }
         public Guid PessoaId { get; set; }
         public virtual Pessoa Pessoa { get; set; }
-        public ValidationResult ValidationResult { get; set; }
+        public ValidationResult ResultadoValidacao { get; set; }
 
         public bool EstaValido()
         {
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
         public ICollection<DadoInvalido> DadosInvalidos()
         {
-            return ValidationResult.GetErrorsResult();
+            return ResultadoValidacao.GetErrorsResult();
         }
 
     }

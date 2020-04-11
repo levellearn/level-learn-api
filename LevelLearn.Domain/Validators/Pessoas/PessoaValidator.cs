@@ -1,32 +1,62 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.ValueObjects;
+using LevelLearn.Resource;
 using System;
 using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.Pessoas
 {
-    public class PessoaValidator : AbstractValidator<Pessoa>
+    public class PessoaValidator : AbstractValidator<Pessoa>, IValidatorApp<Pessoa>
     {
+        private readonly ISharedResource _sharedResource;
+
+        // Unit Test
         public PessoaValidator()
         {
+            _sharedResource = new SharedResource();
+        }
+
+        public PessoaValidator(ISharedResource sharedResource)
+        {
+            _sharedResource = sharedResource;
+        }      
+
+        public ValidationResult Validar(Pessoa instance)
+        {
+            // Pessoa
             ValidarNome();
             ValidarNickName();
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
             ValidarImagem();
+
+            instance.ResultadoValidacao = this.Validate(instance);
+
+            // VOs            
+            ValidarCPF(instance);
+            ValidarEmail(instance);
+            ValidarCelular(instance);           
+
+            return instance.ResultadoValidacao;
         }
 
         private void ValidarNome()
         {
+            var tamanhoMin = RegraAtributo.Pessoa.NOME_TAMANHO_MIN;
+            var tamanhoMax = RegraAtributo.Pessoa.NOME_TAMANHO_MAX;
+
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                    .WithMessage("")
-                .Length(RegraAtributo.Pessoa.NOME_TAMANHO_MIN, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-                    .WithMessage("")
+                    .WithMessage(_sharedResource.PessoaNomeObrigatorio)
+                .Length(tamanhoMin, tamanhoMax)
+                    .WithMessage(_sharedResource.PessoaNomeTamanho(tamanhoMin, tamanhoMax))
                 .Must(n => TemPrimeiroNomeSobrenome(n))
-                    .WithMessage("");
+                    .WithMessage(_sharedResource.PessoaNomePrecisaSobrenome);
         }
         private bool TemPrimeiroNomeSobrenome(string name)
         {
@@ -44,17 +74,19 @@ namespace LevelLearn.Domain.Validators.Pessoas
             var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
 
             RuleFor(p => p.NickName)
-                .NotEmpty().WithMessage("")
+                .NotEmpty()
+                    .WithMessage(_sharedResource.PessoaNickNameObrigatorio)
                 .Must(p => Regex.IsMatch(p, pattern))
-                    .WithMessage("")
+                    .WithMessage(_sharedResource.PessoaNickNameInvalido)
                 .MaximumLength(tamanhoMax)
-                    .WithMessage("");
+                    .WithMessage(_sharedResource.PessoaNickNameTamanhoMaximo(tamanhoMax));
         }
 
         private void ValidarImagem()
         {
             RuleFor(p => p.ImagemUrl)
-                .NotEmpty().WithMessage("");
+                .NotEmpty()
+                    .WithMessage(_sharedResource.PessoaImagemObrigatoria);
         }       
 
         private void ValidarDataNascimento()
@@ -63,7 +95,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
 
             RuleFor(c => c.DataNascimento)
                 .LessThan(dataAtual)
-                    .WithMessage("")
+                    .WithMessage(_sharedResource.PessoaDataNascimentoInvalida)
                 .When(p => p.DataNascimento.HasValue);
         }
 
@@ -71,16 +103,42 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             RuleFor(p => p.Genero)
                 .Must(c => c != Generos.Nenhum)
-                    .WithMessage("");
+                    .WithMessage(_sharedResource.PessoaGeneroObrigatorio);
         }
 
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
                 .Must(c => c != TiposPessoa.Nenhum)
-                .WithMessage("");
+                    .WithMessage(_sharedResource.PessoaTipoPessoaInvalido);
         }
 
+        protected void ValidarCPF(Pessoa instance)
+        {
+            var cpfValidator = new CPFValidator(_sharedResource);
+            var cpfResultadoValidacao = cpfValidator.Validar(instance.Cpf);
+
+            if (!cpfResultadoValidacao.IsValid)
+                instance.ResultadoValidacao.AddErrors(cpfResultadoValidacao);
+        }
+
+        protected void ValidarEmail(Pessoa instance)
+        {
+            var emailValidator = new EmailValidator(_sharedResource);
+            var emailValidatorResultadoValidacao = emailValidator.Validar(instance.Email);
+
+            if (!emailValidatorResultadoValidacao.IsValid)
+                instance.ResultadoValidacao.AddErrors(emailValidatorResultadoValidacao);
+        }
+
+        protected void ValidarCelular(Pessoa instance)
+        {
+            var celularValidator = new CelularValidator(_sharedResource);
+            var celularResultadoValidacao = celularValidator.Validar(instance.Celular);
+
+            if (!celularResultadoValidacao.IsValid)
+                instance.ResultadoValidacao.AddErrors(celularResultadoValidacao);
+        }
 
     }
 }

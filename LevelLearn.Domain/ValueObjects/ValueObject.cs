@@ -7,10 +7,10 @@ namespace LevelLearn.Domain.ValueObjects
     {
         protected ValueObject()
         {
-            ValidationResult = new ValidationResult();
+            ResultadoValidacao = new ValidationResult();
         }
 
-        public ValidationResult ValidationResult { get; set; }
+        public ValidationResult ResultadoValidacao { get; set; }
 
         public abstract bool EstaValido();
     }

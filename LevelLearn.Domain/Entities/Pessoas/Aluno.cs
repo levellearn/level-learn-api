@@ -26,15 +26,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public override bool EstaValido()
         {
-            base.EstaValido();
+            base.EstaValido();          
 
-            var alunoValidator = new AlunoValidator();
-            var alunoValidationResult = alunoValidator.Validate(this);
-
-            if (!alunoValidationResult.IsValid)
-                this.ValidationResult.AddErrors(alunoValidationResult);
-
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
     }

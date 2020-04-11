@@ -68,9 +68,9 @@ namespace LevelLearn.Domain.Entities.Institucional
         public override bool EstaValido()
         {
             var validator = new TurmaValidator();
-            this.ValidationResult = validator.Validate(this);
+            this.ResultadoValidacao = validator.Validate(this);
 
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
         #endregion Methods
