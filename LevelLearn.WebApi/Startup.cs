@@ -82,10 +82,7 @@ namespace LevelLearn.WebApi
             services.AddAutoMapper(typeof(Startup));
 
             // Unit of Work
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // Validators
-            ConfigureValidators(services);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();          
 
             // Business Services
             ConfigureBusinessServices(services);
@@ -275,11 +272,7 @@ namespace LevelLearn.WebApi
             Debug.WriteLine("Token válido: " + context.SecurityToken);
             return Task.CompletedTask;
         }
-
-        private static void ConfigureValidators(IServiceCollection services)
-        {
-            //services.AddScoped<IInstituicaoValidator, InstituicaoValidator>();
-        }
+        
 
     }
 }

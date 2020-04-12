@@ -10,7 +10,6 @@ using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,9 +22,9 @@ namespace LevelLearn.Service.Services.Usuarios
         #region Atributos
         private readonly IUnitOfWork _uow;
         private readonly ITokenService _tokenService;
-        private readonly IDistributedCache _redisCache;
         private readonly ISharedResource _sharedResource;
         private readonly IValidatorApp<ApplicationUser> _validatorUsuario;
+        private readonly IValidatorApp<Professor> _validatorProfessor;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         #endregion
@@ -36,16 +35,15 @@ namespace LevelLearn.Service.Services.Usuarios
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ITokenService tokenService,
-            IDistributedCache redisCache,
             ISharedResource sharedResource)
         {
             _uow = uow;
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
-            _redisCache = redisCache;
             _sharedResource = sharedResource;
             _validatorUsuario = new UsuarioValidator(_sharedResource);
+            _validatorProfessor = new ProfessorValidator(_sharedResource);
         }
         #endregion
 
@@ -57,7 +55,8 @@ namespace LevelLearn.Service.Services.Usuarios
             // Criação e Validação Professor
             var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email,
                 new CPF(usuarioVM.Cpf), celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
-
+            
+            _validatorProfessor.Validar(professor);
             if (!professor.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
@@ -76,8 +75,7 @@ namespace LevelLearn.Service.Services.Usuarios
             // Criando Professor BD
             await _uow.Pessoas.AddAsync(professor);
 
-            if (!await _uow.CompleteAsync())
-                return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
+            if (!await _uow.CompleteAsync()) return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Criando User Identity
             var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
@@ -141,11 +139,7 @@ namespace LevelLearn.Service.Services.Usuarios
         public async Task<ResponseAPI<UsuarioVM>> Logout(string jwtId)
         {
             await _signInManager.SignOutAsync();
-
-            // Invalida o token e refresh token
-            var refreshToken = await _redisCache.GetStringAsync(jwtId);
-            await _redisCache.RemoveAsync(jwtId);
-            await _redisCache.RemoveAsync(refreshToken);
+            await _tokenService.InvalidarTokenERefreshTokenCache(jwtId);
 
             return ResponseFactory<UsuarioVM>.NoContent(_sharedResource.LogoutSucesso);
         }
@@ -208,21 +202,21 @@ namespace LevelLearn.Service.Services.Usuarios
             if (string.IsNullOrWhiteSpace(refreshToken))
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token precisa estar preenchida");
 
-            string tokenArmazenadoCache = await _redisCache.GetStringAsync(refreshToken);
+            string tokenArmazenadoCache = await _tokenService.ObterRefreshTokenCache(refreshToken);
 
             if (string.IsNullOrWhiteSpace(tokenArmazenadoCache))
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token expirado ou não existente");
 
-            var refreshTokenBase = JsonConvert.DeserializeObject<RefreshTokenData>(tokenArmazenadoCache);
+            var refreshTokenData = JsonConvert.DeserializeObject<RefreshTokenData>(tokenArmazenadoCache);
 
-            var credenciaisValidas = (email.Endereco == refreshTokenBase.UserName
-                                        && refreshToken == refreshTokenBase.RefreshToken);
+            var credenciaisValidas = (email.Endereco == refreshTokenData.UserName
+                                        && refreshToken == refreshTokenData.RefreshToken);
 
             if (!credenciaisValidas)
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token inválido");
 
             // Remove o refresh token já que um novo será gerado
-            await _redisCache.RemoveAsync(refreshToken);
+            await _tokenService.InvalidarRefreshTokenCache(refreshToken);
 
             return ResponseFactory<UsuarioVM>.NoContent();
         }
@@ -243,11 +237,11 @@ namespace LevelLearn.Service.Services.Usuarios
 
                 return ResponseFactory<UsuarioVM>.NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await RemoverUsuario(user, role);
                 await RemoverPessoa(pessoa);
-                throw ex;
+                return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
         }
 

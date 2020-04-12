@@ -1,7 +1,7 @@
 Implementar Log
 Configurar HTTPS
 Add Swagger
-Add firebase/dropbox/gravatar para guaradar imagens usuário
+Add firebase/dropbox para guardar imagens usuário
 
 
 

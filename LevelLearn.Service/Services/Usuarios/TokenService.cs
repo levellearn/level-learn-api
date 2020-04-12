@@ -84,6 +84,24 @@ namespace LevelLearn.Service.Services.Usuarios
             return claims;
         }
 
+        public string GerarRefreshToken(int size = 32)
+        {
+            var randomNumber = new byte[size];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        /// <summary>
+        /// Salva o token como "chave" e o refreshToken como "valor"
+        /// </summary>
+        /// <param name="jti">JWT ID</param>
+        /// <param name="refreshToken"></param>
+        /// <returns></returns>
         private async Task SalvarTokenCache(string jti, string refreshToken)
         {
             var expiracaoSegundos = _appSettings.JWTSettings.ExpiracaoSegundos;
@@ -97,6 +115,12 @@ namespace LevelLearn.Service.Services.Usuarios
             await _redisCache.SetStringAsync(jti, refreshToken, opcoesCache);
         }
 
+        /// <summary>
+        /// Salva o Refresh Token como "chave" e o RefreshTokenData como "valor"
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         private async Task SalvarRefreshTokenCache(string refreshToken, string userName)
         {
             var expiracaoRefreshToken = TimeSpan.FromSeconds(_appSettings.JWTSettings.RefreshTokenExpiracaoSegundos);
@@ -110,16 +134,21 @@ namespace LevelLearn.Service.Services.Usuarios
             await _redisCache.SetStringAsync(refreshToken, refreshTokenDataSerializado, opcoesCache);
         }
 
-        private string GerarRefreshToken(int size = 32)
+        public async Task<string> ObterRefreshTokenCache(string refreshToken)
         {
-            var randomNumber = new byte[size];
+            return await _redisCache.GetStringAsync(refreshToken);
+        }
 
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-            }
+        public async Task InvalidarTokenERefreshTokenCache(string jti)
+        {
+            var refreshToken = await _redisCache.GetStringAsync(jti);
+            await _redisCache.RemoveAsync(jti);
+            await InvalidarRefreshTokenCache(refreshToken);
+        }
 
-            return Convert.ToBase64String(randomNumber);
+        public async Task InvalidarRefreshTokenCache(string refreshToken)
+        {
+            await _redisCache.RemoveAsync(refreshToken);
         }
 
     }
