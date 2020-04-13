@@ -5,6 +5,8 @@
         public ConnectionStrings ConnectionStrings { get; set; }
         public JWTSettings JWTSettings { get; set; }
         public IdentitySettings IdentitySettings { get; set; }
+        public EmailSettings EmailSettings { get; set; }
+        public ApiSettings ApiSettings { get; set; }
     }
 
     public class ConnectionStrings
@@ -30,5 +32,22 @@
         public int TempoBloqueioMinutos { get; set; }
         public int TentativaMaximaAcesso { get; set; }
     }
+
+    public class EmailSettings
+    {
+        public string DisplayName { get; set; }
+        public string Host { get; set; }
+        public int Porta { get; set; }
+        public string Email { get; set; }
+        public string Senha { get; set; }
+    }
+
+    public class ApiSettings
+    {
+        public string BaseUrl { get; set; }
+        public string BaseUrlSSL { get; set; }
+    }
+
+
 
 }

@@ -58,6 +58,19 @@ namespace LevelLearn.WebApi.Controllers
             return NoContent();
         }
 
+        [HttpPost("v1/[controller]/confirmar-email")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ConfirmarEmail([FromQuery]string userId, [FromQuery]string confirmationToken)
+        {
+            var response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
+
+            if (!response.Success) return StatusCode(response.StatusCode, response);
+
+            return NoContent();
+        }
+
 
     }
 }

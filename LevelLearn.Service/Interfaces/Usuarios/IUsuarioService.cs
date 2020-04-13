@@ -10,6 +10,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         Task<ResponseAPI<UsuarioVM>> RegistrarUsuario(RegistrarUsuarioVM usuarioVM);
         Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM);
         Task<ResponseAPI<UsuarioVM>> Logout(string jwtId);
+        Task<ResponseAPI<UsuarioVM>> ConfirmarEmail(string userId, string confirmationToken);
 
     }
 }

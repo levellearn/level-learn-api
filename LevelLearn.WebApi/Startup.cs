@@ -168,6 +168,7 @@ namespace LevelLearn.WebApi
 
                 // User settings
                 options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             });
         }
 
@@ -197,6 +198,7 @@ namespace LevelLearn.WebApi
             services.AddTransient<IInstituicaoService, InstituicaoService>();
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)

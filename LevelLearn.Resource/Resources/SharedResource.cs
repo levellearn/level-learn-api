@@ -31,12 +31,14 @@ namespace LevelLearn.Resource
         #endregion
 
         #region Usuario
-        public string LoginSucesso { get; }
-        public string LogoutSucesso { get; }
-        public string EmailJaExiste { get; }
-        public string CPFJaExiste { get; }
-        public string ContaBloqueada { get; }
-        public string LoginFalha { get; }
+        public string UsuarioLoginSucesso { get; }
+        public string UsuarioLoginFalha { get; }
+        public string UsuarioLogoutSucesso { get; }
+        public string UsuarioEmailJaExiste { get; }
+        public string UsuarioContaBloqueada { get; }
+        public string UsuarioEmailNaoConfirmado { get; }
+        public string UsuarioEmailConfirmarFalha { get; }
+        public string UsuarioEmailConfirmarSucesso { get; }
         public string UsuarioSenhaObrigatoria { get; }
         public string UsuarioSenhaTamanho(params object[] arguments);
         public string UsuarioConfirmacaoSenhaObrigatoria { get; }
@@ -52,6 +54,7 @@ namespace LevelLearn.Resource
         #endregion
 
         #region Pessoa
+        public string PessoaCPFJaExiste { get; }
         public string PessoaDataNascimentoInvalida { get; }
         public string PessoaGeneroObrigatorio { get; }
         public string PessoaImagemObrigatoria { get; }
@@ -112,12 +115,14 @@ namespace LevelLearn.Resource
         #endregion
 
         #region Usuario
-        public string LoginSucesso => GetValue(nameof(LoginSucesso));
-        public string LogoutSucesso => GetValue(nameof(LogoutSucesso));
-        public string EmailJaExiste => GetValue(nameof(EmailJaExiste));
-        public string CPFJaExiste => GetValue(nameof(CPFJaExiste));
-        public string ContaBloqueada => GetValue(nameof(ContaBloqueada));
-        public string LoginFalha => GetValue(nameof(LoginFalha)); 
+        public string UsuarioLoginSucesso => GetValue(nameof(UsuarioLoginSucesso));
+        public string UsuarioLogoutSucesso => GetValue(nameof(UsuarioLogoutSucesso));
+        public string UsuarioEmailJaExiste => GetValue(nameof(UsuarioEmailJaExiste));
+        public string UsuarioContaBloqueada => GetValue(nameof(UsuarioContaBloqueada));
+        public string UsuarioEmailNaoConfirmado => GetValue(nameof(UsuarioEmailNaoConfirmado));
+        public string UsuarioEmailConfirmarFalha => GetValue(nameof(UsuarioEmailConfirmarFalha));
+        public string UsuarioEmailConfirmarSucesso => GetValue(nameof(UsuarioEmailConfirmarSucesso));
+        public string UsuarioLoginFalha => GetValue(nameof(UsuarioLoginFalha)); 
         public string UsuarioSenhaObrigatoria => GetValue(nameof(UsuarioSenhaObrigatoria)); 
         public string UsuarioSenhaTamanho(params object[] arguments)
         {
@@ -138,6 +143,7 @@ namespace LevelLearn.Resource
         #endregion
 
         #region Pessoa
+        public string PessoaCPFJaExiste => GetValue(nameof(PessoaCPFJaExiste));
         public string PessoaDataNascimentoInvalida => GetValue(nameof(PessoaDataNascimentoInvalida));
         public string PessoaGeneroObrigatorio => GetValue(nameof(PessoaGeneroObrigatorio));
         public string PessoaImagemObrigatoria => GetValue(nameof(PessoaImagemObrigatoria));

@@ -22,6 +22,7 @@ namespace LevelLearn.Service.Services.Usuarios
         #region Atributos
         private readonly IUnitOfWork _uow;
         private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
         private readonly ISharedResource _sharedResource;
         private readonly IValidatorApp<ApplicationUser> _validatorUsuario;
         private readonly IValidatorApp<Professor> _validatorProfessor;
@@ -35,12 +36,14 @@ namespace LevelLearn.Service.Services.Usuarios
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ITokenService tokenService,
+            IEmailService emailService,
             ISharedResource sharedResource)
         {
             _uow = uow;
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
+            _emailService = emailService;
             _sharedResource = sharedResource;
             _validatorUsuario = new UsuarioValidator(_sharedResource);
             _validatorProfessor = new ProfessorValidator(_sharedResource);
@@ -53,15 +56,14 @@ namespace LevelLearn.Service.Services.Usuarios
             var celular = new Celular(usuarioVM.Celular);
 
             // Criação e Validação Professor
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email,
-                new CPF(usuarioVM.Cpf), celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
-            
+            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email, new CPF(usuarioVM.Cpf), celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
+
             _validatorProfessor.Validar(professor);
             if (!professor.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Criação e Validação Usuário
-            var user = new ApplicationUser(professor.NickName, email.Endereco, emailConfirmed: true, usuarioVM.Senha,
+            var user = new ApplicationUser(professor.NickName, email.Endereco, emailConfirmed: false, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, celular.Numero, phoneNumberConfirmed: true, professor.Id);
 
             _validatorUsuario.Validar(user);
@@ -79,8 +81,12 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criando User Identity
             var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
+            if (resultadoIdentity.Failure) return resultadoIdentity;
 
-            if (!resultadoIdentity.Success) return resultadoIdentity;
+            // Enviar email de confirmação
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            // TODO: Não esperar enviar email?
+            await _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, confirmationToken);
 
             var responseVM = new UsuarioVM()
             {
@@ -133,7 +139,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, roles)
             };
 
-            return ResponseFactory<UsuarioVM>.Ok(responseVM, _sharedResource.LoginSucesso);
+            return ResponseFactory<UsuarioVM>.Ok(responseVM, _sharedResource.UsuarioLoginSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> Logout(string jwtId)
@@ -141,19 +147,34 @@ namespace LevelLearn.Service.Services.Usuarios
             await _signInManager.SignOutAsync();
             await _tokenService.InvalidarTokenERefreshTokenCache(jwtId);
 
-            return ResponseFactory<UsuarioVM>.NoContent(_sharedResource.LogoutSucesso);
+            return ResponseFactory<UsuarioVM>.NoContent(_sharedResource.UsuarioLogoutSucesso);
         }
 
+        public async Task<ResponseAPI<UsuarioVM>> ConfirmarEmail(string userId, string confirmationToken)
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmationToken))
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
+
+            var identityResult = await _userManager.ConfirmEmailAsync(user, confirmationToken);
+            if (!identityResult.Succeeded)
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailConfirmarFalha);
+
+            return ResponseFactory<UsuarioVM>.NoContent(_sharedResource.UsuarioEmailConfirmarSucesso);
+        }
 
         #region Privates Methods
 
         private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa pessoa)
         {
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == pessoa.Email.Endereco))
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.EmailJaExiste);
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailJaExiste);
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == pessoa.Cpf.Numero))
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.CPFJaExiste);
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.PessoaCPFJaExiste);
 
             //if (await _uow.Pessoas.EntityExists(i => i.NickName == pessoa.NickName))
             //    return ResponseFactory<UsuarioVM>.BadRequest("Nickname já existente");
@@ -179,16 +200,20 @@ namespace LevelLearn.Service.Services.Usuarios
                 var dadoInvalido = new DadoInvalido("Senha", _sharedResource.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
                 return ResponseFactory<UsuarioVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
+
             // Sign in Identity
             var result = await _signInManager.PasswordSignInAsync(
                  email.Endereco, senha, isPersistent: false, lockoutOnFailure: true
              );
 
             if (result.IsLockedOut)
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.ContaBloqueada);
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioContaBloqueada);
+
+            if (result.IsNotAllowed)
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailNaoConfirmado);
 
             if (!result.Succeeded)
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.LoginFalha);
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioLoginFalha);
 
             return ResponseFactory<UsuarioVM>.NoContent();
         }
