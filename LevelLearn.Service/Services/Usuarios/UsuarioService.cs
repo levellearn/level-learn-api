@@ -85,9 +85,8 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Enviar email de confirmação
             var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            // TODO: Não esperar enviar email?
-            await _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, confirmationToken);
-
+            var task = _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, confirmationToken);
+            
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,

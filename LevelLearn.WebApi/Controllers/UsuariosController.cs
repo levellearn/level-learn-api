@@ -58,7 +58,7 @@ namespace LevelLearn.WebApi.Controllers
             return NoContent();
         }
 
-        [HttpPost("v1/[controller]/confirmar-email")]
+        [HttpGet("v1/[controller]/confirmar-email")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

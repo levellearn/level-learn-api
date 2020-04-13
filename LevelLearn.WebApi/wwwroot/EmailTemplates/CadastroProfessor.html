@@ -1,28 +1,164 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>
+
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+        }
+
+        hr {
+            box-sizing: content-box;
+            height: 0;
+            overflow: visible;
+        }
+
+        .container {
+            width: 70%;
+            margin-right: auto;
+            margin-left: auto;
+            border: 1px solid #b5b5b5;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+        .background-logo {
+            background-color: #0078c0;
+            padding: 30px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .rounded {
+            border-radius: .25rem !important;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .small,
+        small {
+            font-size: 80%;
+            font-weight: 400;
+        }
+
+        .mr-auto,
+        .mx-auto {
+            margin-right: auto !important;
+        }
+
+        .btn-block {
+            display: block;
+            width: 60%;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            color: #212529;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .btn,
+        .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #0078c0;
+            border-color: #0078c0;
+        }
+
+        a {
+            color: #0078c0;
+            text-decoration: none;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
 <body>
 
     <div class="container">
 
-        <img src="../Logo/logotipo-levellearn.JPG" height="260" />
+        <div class="text-center rounded background-logo">
+            <img class="img-fluid" src="http://www.levellearn.com.br/Imagens/brand-logo.png" alt="logo_level_learn" />
+        </div>
+
+        <br /> <br />
+
+        <h1 class="text-center">
+            <small class="text-muted">
+                Olá <span class="font-weight-bold">{nome}</span>,
+                Bem-vindo ao sistema <span class="font-weight-bold">Level Learn:</span> um ambiente gratuito de
+                gamification.
+            </small>
+        </h1>
+
+        <br /> <br /> <br /> <br /> <br />
+        <hr />
+
+        <h3 class="text-center">
+            <small class="text-muted">Clique no botão abaixo para poder confirmar seu E-mail:</small>
+        </h3>
 
         <br />
-        <br />
 
-        <h1 class="text-center">Olá {nome}, Bem-vindo ao {nomeAplicacao}</h1>
+        <div class="text-center">
+            <a href="{linkConfirmacao}" class="btn btn-primary btn-lg btn-block ">
+                Confirmar E-mail
+            </a>
+        </div>
 
-        <br />
-        <br />
-
-        <p>Clique no link abaixo para poder confirmar seu E-mail:</p>
-
-        <a href="{linkConfirmacao}" class="btn btn-primary btn-lg btn-block ">Confirmar E-mail</a>  
+        <br /> <br />
 
     </div>
 
 </body>
+
 </html>

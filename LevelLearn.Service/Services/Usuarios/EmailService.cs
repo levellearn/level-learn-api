@@ -1,8 +1,10 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -11,13 +13,13 @@ namespace LevelLearn.Service.Services.Usuarios
 {
     public class EmailService : IEmailService
     {
-        private const string NOME_APLICACAO = "Level Learn: um ambiente gratuito de gamification.";
-
         private readonly AppSettings _appSettings;
+        private readonly IWebHostEnvironment _env;
 
-        public EmailService(IOptions<AppSettings> appSettings)
+        public EmailService(IOptions<AppSettings> appSettings, IWebHostEnvironment env)
         {
             _appSettings = appSettings.Value;
+            _env = env;
         }
 
         public async Task EnviarEmailCadastroProfessor(string email, string nome, string userId, string confirmationToken)
@@ -27,8 +29,16 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
 
-            var mensagem = @$"<h1>Olá {nome}, Bem-vindo ao {NOME_APLICACAO}</h1> 
-                           Clique no link de confirmação de email: {linkConfirmacao}";
+            var mensagem = "";
+
+            var filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroProfessor.html");
+
+            using (var reader = new StreamReader(filePath))
+            {
+                mensagem = await reader.ReadToEndAsync();
+            }
+            mensagem = mensagem.Replace("{nome}", nome);
+            mensagem = mensagem.Replace("{linkConfirmacao}", linkConfirmacao);
 
             await EnviarEmailAsync(email, assunto, mensagem);
         }
