@@ -21,3 +21,5 @@ dcd0e6d
 375.237.088-20
 828.247.408-84
 https://code-maze.com/email-confirmation-aspnet-core-identity/
+https://www.c-sharpcorner.com/article/sending-email-by-using-email-templates-in-asp-net-webform/
+https://www.youtube.com/watch?v=FFg4lK6KHz4

@@ -22,11 +22,13 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task EnviarEmailCadastroProfessor(string email, string nome, string userId, string confirmationToken)
         {
-            var confirmationLink = $"{_appSettings.ApiSettings.BaseUrl}/usuarios/confirmar-email?userId={userId}&confirmationToken={confirmationToken}";
+            var rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={confirmationToken}";
+            var linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
 
             var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
+
             var mensagem = @$"<h1>Olá {nome}, Bem-vindo ao {NOME_APLICACAO}</h1> 
-                           Clique no link de confirmação de email: {confirmationLink}";
+                           Clique no link de confirmação de email: {linkConfirmacao}";
 
             await EnviarEmailAsync(email, assunto, mensagem);
         }
