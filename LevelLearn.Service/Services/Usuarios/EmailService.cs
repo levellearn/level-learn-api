@@ -28,10 +28,8 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             var rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
             var linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
-            //var link = Url.Action("confirmar-email", "Usuarios", new { userId = userId, confirmationToken = tokenEncoded }, protocol: HttpContext.Request.Scheme);
 
-            var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
-
+           var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
             var mensagem = "";
 
             var filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
@@ -55,12 +53,14 @@ namespace LevelLearn.Service.Services.Usuarios
                 Body = mensagem,
                 IsBodyHtml = true,
                 Priority = MailPriority.High,
+                SubjectEncoding = Encoding.UTF8,
+                BodyEncoding = Encoding.UTF8,     
             };
-
             mail.To.Add(new MailAddress(email));
 
             using (var smtp = new SmtpClient(_appSettings.EmailSettings.Host, _appSettings.EmailSettings.Porta))
             {
+                smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(_appSettings.EmailSettings.Email, _appSettings.EmailSettings.Senha);
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(mail);

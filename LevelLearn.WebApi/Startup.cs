@@ -63,6 +63,8 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
+            //services.AddHttpContextAccessor();
+
             // App Settings
             services.Configure<AppSettings>(Configuration);
 

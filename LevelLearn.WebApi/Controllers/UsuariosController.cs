@@ -20,7 +20,7 @@ namespace LevelLearn.WebApi.Controllers
         public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-        }        
+        }
 
         [HttpPost("v1/[controller]/registrar-usuario")]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]

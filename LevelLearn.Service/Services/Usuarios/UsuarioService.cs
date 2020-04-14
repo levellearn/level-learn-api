@@ -82,26 +82,26 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!await _uow.CompleteAsync()) return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Criando User Identity
-            var resultadoIdentity = await CriarUsuarioIdentity(user, ApplicationRoles.PROFESSOR, professor);
+            var role = ApplicationRoles.PROFESSOR;
+            var resultadoIdentity = await CriarUsuarioIdentity(user, role, professor);
             if (resultadoIdentity.Failure) return resultadoIdentity;
 
             // Enviar email de confirmação
-            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            byte[] confirmationTokenBytes = Encoding.UTF8.GetBytes(confirmationToken);
-            string tokenEncoded = WebEncoders.Base64UrlEncode(confirmationTokenBytes);
-            _ = _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, tokenEncoded);
+            var resultadoEnvioEmail = await EnviarEmail(professor, user, role);
+            if (resultadoEnvioEmail.Failure) return resultadoEnvioEmail;
 
+            // TODO: Remover retorno VM
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,
                 Nome = professor.Nome,
                 NickName = user.NickName,
                 ImagemUrl = professor.ImagemUrl,
-                Token = await _tokenService.GerarJWT(user, new List<string> { ApplicationRoles.PROFESSOR })
+                Token = await _tokenService.GerarJWT(user, new List<string> { role })
             };
 
             return ResponseFactory<UsuarioVM>.Created(responseVM, _sharedResource.CadastradoSucesso);
-        }
+        }       
 
         public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
         {
@@ -274,6 +274,26 @@ namespace LevelLearn.Service.Services.Usuarios
                 await RemoverPessoa(pessoa);
                 return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
+        }
+
+        private async Task<ResponseAPI<UsuarioVM>> EnviarEmail(Professor professor, ApplicationUser user, string role)
+        {
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            byte[] confirmationTokenBytes = Encoding.UTF8.GetBytes(confirmationToken);
+            string tokenEncoded = WebEncoders.Base64UrlEncode(confirmationTokenBytes);
+
+            try
+            {
+                await _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, tokenEncoded);
+            }
+            catch (Exception ex)
+            {
+                await RemoverUsuario(user, role);
+                await RemoverPessoa(professor);
+                return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
+            }
+
+            return ResponseFactory<UsuarioVM>.NoContent();
         }
 
         private async Task RemoverUsuario(ApplicationUser user, string role)
