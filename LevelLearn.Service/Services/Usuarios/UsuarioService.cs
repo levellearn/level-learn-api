@@ -10,9 +10,11 @@ using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Usuarios
@@ -85,8 +87,10 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Enviar email de confirmação
             var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var task = _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, confirmationToken);
-            
+            byte[] confirmationTokenBytes = Encoding.UTF8.GetBytes(confirmationToken);
+            string tokenEncoded = WebEncoders.Base64UrlEncode(confirmationTokenBytes);
+            _ = _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, tokenEncoded);
+
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,
@@ -158,7 +162,10 @@ namespace LevelLearn.Service.Services.Usuarios
 
             if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
-            var identityResult = await _userManager.ConfirmEmailAsync(user, confirmationToken);
+            byte[] tokenDecodedBytes = WebEncoders.Base64UrlDecode(confirmationToken);
+            string tokenDecoded = Encoding.UTF8.GetString(tokenDecodedBytes);
+
+            var identityResult = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
             if (!identityResult.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailConfirmarFalha);
 
