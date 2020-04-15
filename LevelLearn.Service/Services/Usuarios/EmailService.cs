@@ -1,10 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
@@ -29,7 +26,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
             var linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
 
-           var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
+            var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
             var mensagem = "";
 
             var filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
@@ -54,7 +51,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 IsBodyHtml = true,
                 Priority = MailPriority.High,
                 SubjectEncoding = Encoding.UTF8,
-                BodyEncoding = Encoding.UTF8,     
+                BodyEncoding = Encoding.UTF8,
             };
             mail.To.Add(new MailAddress(email));
 

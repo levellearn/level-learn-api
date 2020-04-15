@@ -16,9 +16,6 @@
             margin-bottom: 1rem;
             border: 0;
             border-top: 1px solid rgba(0, 0, 0, .1);
-        }
-
-        hr {
             box-sizing: content-box;
             height: 0;
             overflow: visible;
@@ -113,7 +110,7 @@
         }
 
         .btn-primary {
-            color: #fff;
+            color: #fff !important;
             background-color: #0078c0;
             border-color: #0078c0;
         }
@@ -122,6 +119,14 @@
             color: #0078c0;
             text-decoration: none;
             background-color: transparent;
+        }
+
+        .social-links {
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            padding: 1rem;
         }
     </style>
 </head>
@@ -144,10 +149,10 @@
             </small>
         </h1>
 
-        <br /> <br /> <br /> <br />
+        <br /> <br /> <br />
 
         <h3 class="text-center">
-            <small class="text-muted">Clique no botão abaixo para poder confirmar seu E-mail:</small>
+            <small class="text-muted">Clique no botão abaixo para poder confirmar seu e-mail.</small>
         </h3>
         <br />
         <div class="text-center">
@@ -160,17 +165,20 @@
 
         <footer class="text-muted text-center">
             <small>
-                Este e-mail foi enviado para confirmar seu endereço de E-mail, com isso você poderá prosseguir
+                Este e-mail foi enviado para confirmar seu endereço de e-mail, com isso você poderá prosseguir
                 com a utilização do sistema.
             </small>
 
-            <!--<a target="_blank" class="social-links" href="https://www.facebook.com/levellearn">
-                <span class="facebook fa fa-facebook fa-2x"></span>
-            </a>
+            <div class="social-links" style="display: none">
+                <a target="_blank" href="https://www.facebook.com/levellearn">
+                    <span class="facebook fa fa-facebook fa-2x"></span> Facebook
+                </a>
 
-            <a target="_blank" class="social-links" href="https://www.youtube.com/channel/UC_0XLSwcKXzNH95o4afsdzQ">
-                <span class="youtube fa fa-youtube-play fa-2x"></span>
-            </a>-->
+                <a style="color: #ff0000" target="_blank" href="https://www.youtube.com/channel/UC_0XLSwcKXzNH95o4afsdzQ">
+                    <span class="youtube fa fa-youtube-play fa-2x"></span> Youtube
+                </a>
+            </div>
+
         </footer>
 
     </div>
