@@ -30,6 +30,8 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly IValidatorApp<Professor> _validatorProfessor;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+
+        private ApplicationUser _usuarioLogado = null;
         #endregion
 
         #region Ctor
@@ -119,7 +121,6 @@ namespace LevelLearn.Service.Services.Usuarios
                     {
                         var respostaValidacao = await ValidarRefreshToken(email, usuarioVM.RefreshToken);
                         if (respostaValidacao.Failure) return respostaValidacao;
-
                         break;
                     }
                 default:
@@ -127,17 +128,17 @@ namespace LevelLearn.Service.Services.Usuarios
             }
 
             // Gerar VM e JWToken  
-            var user = await _userManager.FindByNameAsync(email.Endereco);
-            var roles = await _userManager.GetRolesAsync(user);
-            var pessoa = await _uow.Pessoas.GetAsync(user.PessoaId);
+            _usuarioLogado ??= await _userManager.FindByNameAsync(email.Endereco);
+            var roles = await _userManager.GetRolesAsync(_usuarioLogado);
+            var pessoa = await _uow.Pessoas.GetAsync(_usuarioLogado.PessoaId);
 
             var responseVM = new UsuarioVM()
             {
-                Id = user.Id,
+                Id = _usuarioLogado.Id,
                 Nome = pessoa.Nome,
-                NickName = user.NickName,
+                NickName = _usuarioLogado.NickName,
                 ImagemUrl = pessoa.ImagemUrl,
-                Token = await _tokenService.GerarJWT(user, roles)
+                Token = await _tokenService.GerarJWT(_usuarioLogado, roles)
             };
 
             return ResponseFactory<UsuarioVM>.Ok(responseVM, _sharedResource.UsuarioLoginSucesso);
@@ -206,21 +207,19 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseFactory<UsuarioVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
 
-            // Sign in Identity
-            var result = await _signInManager.PasswordSignInAsync(
-                 email.Endereco, senha, isPersistent: false, lockoutOnFailure: true
-             );
-
-            //var user = await _userManager.FindByNameAsync(email.Endereco);
-
-            //var a = await _signInManager.CheckPasswordSignInAsync(user, senha, lockoutOnFailure: true);
-
-            if (result.IsLockedOut)
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioContaBloqueada);
+            // Sign in Identity            
+            _usuarioLogado = await _userManager.FindByNameAsync(email.Endereco);
+            if (_usuarioLogado == null)
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioLoginFalha);
 
             // TODO: Tentar reenviar email?
-            if (result.IsNotAllowed)
+            if (!_usuarioLogado.EmailConfirmed && await _userManager.CheckPasswordAsync(_usuarioLogado, senha))
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailNaoConfirmado);
+
+            var result = await _signInManager.CheckPasswordSignInAsync(_usuarioLogado, senha, lockoutOnFailure: true);
+
+            if (result.IsLockedOut)
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioContaBloqueada);           
 
             if (!result.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioLoginFalha);
