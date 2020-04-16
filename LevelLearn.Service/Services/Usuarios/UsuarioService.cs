@@ -56,15 +56,20 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             var email = new Email(usuarioVM.Email);
             var celular = new Celular(usuarioVM.Celular);
+            var cpf = new CPF(usuarioVM.Cpf);
 
-            // Criação e Validação Professor
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email, new CPF(usuarioVM.Cpf), celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
+            // Validações BD
+            var respostaValidacao = await ValidarCriarUsuarioBD(email.Endereco, cpf.Numero);
+            if (!respostaValidacao.Success) return respostaValidacao;
+
+            // Criação e Validação PROFESSOR
+            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email, cpf, celular, usuarioVM.Genero, imagemUrl: null, usuarioVM.DataNascimento);
 
             _validatorProfessor.Validar(professor);
             if (!professor.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            // Criação e Validação Usuário
+            // Criação e Validação USER
             var user = new ApplicationUser(professor.NickName, email.Endereco, emailConfirmed: false, usuarioVM.Senha,
                 usuarioVM.ConfirmacaoSenha, celular.Numero, phoneNumberConfirmed: true, professor.Id);
 
@@ -72,25 +77,19 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!user.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            // Validações BD
-            var respostaValidacao = await ValidarCriarUsuarioBD(professor);
-            if (!respostaValidacao.Success) return respostaValidacao;
-
-            // Criando Professor BD
+            // Criando PROFESSOR BD
             await _uow.Pessoas.AddAsync(professor);
-
             if (!await _uow.CompleteAsync()) return ResponseFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
-            // Criando User Identity
+            // Criando USER Identity
             var role = ApplicationRoles.PROFESSOR;
             var resultadoIdentity = await CriarUsuarioIdentity(user, role, professor);
             if (resultadoIdentity.Failure) return resultadoIdentity;
 
             // Enviar email de confirmação
-            var resultadoEnvioEmail = await EnviarEmail(professor, user, role);
-            if (resultadoEnvioEmail.Failure) return resultadoEnvioEmail;
+            _ = EnviarEmail(professor, user, role);
 
-            // TODO: Remover retorno VM
+            // TODO: Remover retorno VM?
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,
@@ -101,7 +100,7 @@ namespace LevelLearn.Service.Services.Usuarios
             };
 
             return ResponseFactory<UsuarioVM>.Created(responseVM, _sharedResource.CadastradoSucesso);
-        }       
+        }
 
         public async Task<ResponseAPI<UsuarioVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
         {
@@ -113,22 +112,21 @@ namespace LevelLearn.Service.Services.Usuarios
                 case TipoAutenticacao.Senha:
                     {
                         var respostaValidacao = await ValidarCredenciaisUsuario(email, usuarioVM.Senha);
-                        if (respostaValidacao.Failure)
-                            return respostaValidacao;
+                        if (respostaValidacao.Failure) return respostaValidacao;
                         break;
                     }
                 case TipoAutenticacao.Refresh_Token:
                     {
                         var respostaValidacao = await ValidarRefreshToken(email, usuarioVM.RefreshToken);
-                        if (respostaValidacao.Failure)
-                            return respostaValidacao;
+                        if (respostaValidacao.Failure) return respostaValidacao;
+
                         break;
                     }
                 default:
                     return ResponseFactory<UsuarioVM>.BadRequest("Tipo de autenticação inválida");
             }
 
-            // Gerar VM e JWToken           
+            // Gerar VM e JWToken  
             var user = await _userManager.FindByNameAsync(email.Endereco);
             var roles = await _userManager.GetRolesAsync(user);
             var pessoa = await _uow.Pessoas.GetAsync(user.PessoaId);
@@ -159,13 +157,13 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
 
             var user = await _userManager.FindByIdAsync(userId);
-
             if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
             byte[] tokenDecodedBytes = WebEncoders.Base64UrlDecode(confirmationToken);
             string tokenDecoded = Encoding.UTF8.GetString(tokenDecodedBytes);
 
             var identityResult = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
+
             if (!identityResult.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailConfirmarFalha);
 
@@ -174,12 +172,12 @@ namespace LevelLearn.Service.Services.Usuarios
 
         #region Privates Methods
 
-        private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa pessoa)
+        private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(string email, string cpf)
         {
-            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == pessoa.Email.Endereco))
+            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == email))
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailJaExiste);
 
-            if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == pessoa.Cpf.Numero))
+            if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.PessoaCPFJaExiste);
 
             //if (await _uow.Pessoas.EntityExists(i => i.NickName == pessoa.NickName))
@@ -198,6 +196,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 var dadoInvalido = new DadoInvalido("Senha", _sharedResource.UsuarioSenhaObrigatoria);
                 return ResponseFactory<UsuarioVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
+
             var senhaTamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
             var senhaTamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
 
@@ -212,9 +211,14 @@ namespace LevelLearn.Service.Services.Usuarios
                  email.Endereco, senha, isPersistent: false, lockoutOnFailure: true
              );
 
+            //var user = await _userManager.FindByNameAsync(email.Endereco);
+
+            //var a = await _signInManager.CheckPasswordSignInAsync(user, senha, lockoutOnFailure: true);
+
             if (result.IsLockedOut)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioContaBloqueada);
 
+            // TODO: Tentar reenviar email?
             if (result.IsNotAllowed)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.UsuarioEmailNaoConfirmado);
 
@@ -226,6 +230,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
         private async Task<ResponseAPI<UsuarioVM>> ValidarRefreshToken(Email email, string refreshToken)
         {
+            // Validações
             if (!email.EstaValido())
                 return ResponseFactory<UsuarioVM>
                     .BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
@@ -233,6 +238,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (string.IsNullOrWhiteSpace(refreshToken))
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token precisa estar preenchida");
 
+            // Verifica REFRESH TOKEN no BD cache 
             string tokenArmazenadoCache = await _tokenService.ObterRefreshTokenCache(refreshToken);
 
             if (string.IsNullOrWhiteSpace(tokenArmazenadoCache))
@@ -246,7 +252,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!credenciaisValidas)
                 return ResponseFactory<UsuarioVM>.BadRequest("Refresh Token inválido");
 
-            // Remove o refresh token já que um novo será gerado
+            // Remove o REFRESH TOKEN já que um novo será gerado
             await _tokenService.InvalidarRefreshTokenCache(refreshToken);
 
             return ResponseFactory<UsuarioVM>.NoContent();

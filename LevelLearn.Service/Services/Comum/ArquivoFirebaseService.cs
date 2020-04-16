@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Comum
 {
-    public class ArquivoService : IArquivoService
+    public class ArquivoFirebaseService : IArquivoService
     {
 
-        public ArquivoService()
+        public ArquivoFirebaseService()
         {
 
         }
