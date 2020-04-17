@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
-using LevelLearn.Domain.Validators.Pessoas;
 using LevelLearn.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -62,7 +61,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public override bool EstaValido()
         {
             return this.ResultadoValidacao.IsValid;
-        }       
+        }
 
         public void AtribuirInstituicao(PessoaInstituicao instituicao)
         {

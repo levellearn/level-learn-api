@@ -291,7 +291,7 @@ namespace LevelLearn.Service.Services.Usuarios
             {
                 await _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, tokenEncoded);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await RemoverUsuario(user, role);
                 await RemoverPessoa(professor);

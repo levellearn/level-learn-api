@@ -7,6 +7,7 @@
         public IdentitySettings IdentitySettings { get; set; }
         public EmailSettings EmailSettings { get; set; }
         public ApiSettings ApiSettings { get; set; }
+        public FirebaseSettings FirebaseSettings { get; set; }
     }
 
     public class ConnectionStrings
@@ -48,6 +49,13 @@
         public string BaseUrlSSL { get; set; }
     }
 
+    public class FirebaseSettings
+    {
+        public string ApiKey { get; set; }
+        public string Bucket { get; set; }
+        public string AuthEmail { get; set; }
+        public string AuthPassword { get; set; }
+    }
 
 
 }

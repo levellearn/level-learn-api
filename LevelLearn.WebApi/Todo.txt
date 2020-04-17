@@ -21,4 +21,3 @@ dcd0e6d
 375.237.088-20
 828.247.408-84
 https://code-maze.com/email-confirmation-aspnet-core-identity/
-https://myaccount.google.com/u/0/lesssecureapps?pageId=none&pli=1

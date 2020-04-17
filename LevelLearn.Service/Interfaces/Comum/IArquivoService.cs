@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces.Comum
 {
     public interface IArquivoService
     {
-        Task<object> ObterArquivo();
-        Task<IEnumerable<object>> ObterArquivos();
-        Task SalvarArquivo();
+        Task<string> ObterArquivo(string dir, string nomeArquivo);
+        Task SalvarArquivo(IFormFile formFile, string dir);
         Task DeletarArquivo();
     }
 }
