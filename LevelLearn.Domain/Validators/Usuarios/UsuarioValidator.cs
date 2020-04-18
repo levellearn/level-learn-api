@@ -4,7 +4,7 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Resource;
 using System.Text.RegularExpressions;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
     public class UsuarioValidator : AbstractValidator<ApplicationUser>, IValidatorApp<ApplicationUser>
     {

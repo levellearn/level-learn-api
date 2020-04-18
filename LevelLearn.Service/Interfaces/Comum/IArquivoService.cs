@@ -7,7 +7,7 @@ namespace LevelLearn.Service.Interfaces.Comum
     {
         Task<string> ObterImagem(string nomeArquivo);
         Task<string> ObterArquivo(string nomeArquivo);
-        Task<string> SalvarArquivo(IFormFile formFile, string diretorio);
+        Task<string> SalvarArquivo(IFormFile arquivo, string diretorio);
         Task DeletarArquivo();
     }
 }

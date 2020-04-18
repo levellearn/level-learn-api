@@ -12,7 +12,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         Task<ResponseAPI<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM usuarioVM);
         Task<ResponseAPI<UsuarioVM>> Logout(string jwtId);
         Task<ResponseAPI<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken);
-        Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile formFile);
+        Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo);
 
     }
 }

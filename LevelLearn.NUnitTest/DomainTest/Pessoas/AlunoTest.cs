@@ -1,7 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Pessoas;
+using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;

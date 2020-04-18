@@ -4,7 +4,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Resource;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
     public class AlunoValidator : AbstractValidator<Aluno>, IValidatorApp<Aluno>
     {

@@ -8,7 +8,7 @@ using LevelLearn.Resource;
 using System;
 using System.Text.RegularExpressions;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
     public class PessoaValidator : AbstractValidator<Pessoa>, IValidatorApp<Pessoa>
     {

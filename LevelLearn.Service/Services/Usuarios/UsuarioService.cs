@@ -3,7 +3,7 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Pessoas;
+using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Comum;
@@ -192,21 +192,34 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseFactory<UsuarioTokenVM>.Ok(responseVM, _sharedResource.UsuarioEmailConfirmarSucesso);
         }
 
-        public async Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile formFile)
+        public async Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
-            const string DIRETORIO = "Arquivos";
+            const string DIRETORIO = "Imagens";
 
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
 
+            // Validações
             if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
-            var imagemUrl = await _arquivoService.SalvarArquivo(formFile, DIRETORIO);
+            // Validações Arquivo
+            if (arquivo == null || arquivo.Length <= 0)
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
+
+            if(arquivo.ContentType != "image/jpeg" && arquivo.ContentType != "image/png" && arquivo.ContentType != "image/gif")
+                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
+
+            // Resize
+
+            var imagemUrl = await _arquivoService.SalvarArquivo(arquivo, DIRETORIO);
 
             user.AlterarFotoPerfil(imagemUrl);
 
-            _validatorUsuario.Validar(user);
-            if (!user.EstaValido())
-                return ResponseFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _sharedResource.DadosInvalidos);
+            // Atualizando Usuário BD
+            var identityResult = await _userManager.UpdateAsync(user);
+
+            if (!identityResult.Succeeded)
+                return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
+         
 
             var responseVM = new UsuarioVM()
             {

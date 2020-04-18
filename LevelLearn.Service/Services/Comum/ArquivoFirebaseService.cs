@@ -67,20 +67,14 @@ namespace LevelLearn.Service.Services.Comum
             throw new NotImplementedException();
         }
 
-        public async Task<string> SalvarArquivo(IFormFile formFile, string diretorio)
+        public async Task<string> SalvarArquivo(IFormFile arquivo, string diretorio)
         {
-            // Validações
-            if (formFile.Length <= 0)
-                return string.Empty;
-
-            //if(formFile.ContentType != "jpg")
-
             var cancellationToken = new CancellationTokenSource();
 
             var downloadUrl = await _firebaseStorage
                 .Child(diretorio)
-                .Child(formFile.FileName)
-                .PutAsync(formFile.OpenReadStream(), cancellationToken.Token);
+                .Child(arquivo.FileName)
+                .PutAsync(arquivo.OpenReadStream(), cancellationToken.Token);
 
             return downloadUrl;
         }
