@@ -7,8 +7,10 @@ using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Resource;
+using LevelLearn.Service.Interfaces.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Interfaces.Usuarios;
+using LevelLearn.Service.Services.Comum;
 using LevelLearn.Service.Services.Institucional;
 using LevelLearn.Service.Services.Usuarios;
 using LevelLearn.WebApi.Filters;
@@ -201,6 +203,7 @@ namespace LevelLearn.WebApi
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IArquivoService, ArquivoFirebaseService>();
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)
@@ -257,7 +260,7 @@ namespace LevelLearn.WebApi
         }
 
         /// <summary>
-        /// Verifica se o token está armazando no BD de cache 
+        /// Verifica se o token está armazando no BD de cache ou se já expirou
         /// </summary>
         /// <param name="context"></param>
         /// <param name="redisCache"></param>

@@ -47,10 +47,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                .HasColumnType($"varchar({RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX})");           
 
             builder.Property(p => p.DataNascimento)
-               .IsRequired(false);
-
-            builder.Property(p => p.ImagemUrl)
-              .IsRequired();
+               .IsRequired(false);           
 
             builder.Property(p => p.TipoPessoa)
               .IsRequired();

@@ -14,7 +14,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class AlunoTest
     {
         // Fields
-        private string _nome, _nickName, _email, _cpf, _ra, _celular, _imagemUrl;
+        private string _nome, _nickName, _email, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
         private readonly IValidatorApp<Aluno> _validator = new AlunoValidator();
@@ -29,7 +29,6 @@ namespace LevelLearn.NUnitTest.Pessoas
             _genero = Generos.Masculino;
             _celular = "(12)98845-7832";
             _ra = "f1310513";
-            _imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
             _dataNascimento = DateTime.Parse("26/10/1993");
         }
 
@@ -148,7 +147,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         private Aluno CriarAluno()
         {
             return new Aluno(_nome, _nickName, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
-                _genero, _imagemUrl, _dataNascimento);
+                _genero, _dataNascimento);
         }
 
         public static Aluno CriarAlunoPadrao()
@@ -160,11 +159,10 @@ namespace LevelLearn.NUnitTest.Pessoas
             var genero = Generos.Masculino;
             var celular = "(12)98845-7832";
             var ra = "f1310513";
-            var imagemUrl = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
             return new Aluno(nome, nickName, new Email(email), new CPF(cpf), new Celular(celular), ra,
-                genero, imagemUrl, dataNascimento);
+                genero, dataNascimento);
         }
 
     }

@@ -36,7 +36,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var email = "felipe.ayres93@gmail.com";
             var celular = "(12)98845-7832";
             var pessoa = new Admin("Felipe Ayres", "felipe.ayres", new Email(email), new CPF("226.547.010-42"),
-               new Celular(celular), Generos.Masculino, imagemUrl: null, DateTime.Parse("1993-10-26"));
+               new Celular(celular), Generos.Masculino, DateTime.Parse("1993-10-26"));
 
             var user = new ApplicationUser(pessoa.NickName, email, true, "Gamificando@123", "Gamificando@123",
                 celular, true, pessoa.Id);

@@ -10,6 +10,8 @@ namespace LevelLearn.Domain.Entities.Usuarios
 {
     public class ApplicationUser : IdentityUser
     {
+        private const string IMAGEM_URL_PADRAO = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/default-user.png?alt=media&token=5718efef-96f2-4933-802e-0aec94063608";
+
         protected ApplicationUser() { }
 
         public ApplicationUser(string nickName, string email, bool emailConfirmed, string senha, string confirmacaoSenha,
@@ -22,6 +24,8 @@ namespace LevelLearn.Domain.Entities.Usuarios
             UserName = Email;
             NormalizedUserName = NormalizedEmail;
 
+            ImagemUrl = IMAGEM_URL_PADRAO;
+
             NickName = nickName;
             Senha = senha ?? string.Empty;
             ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
@@ -33,11 +37,15 @@ namespace LevelLearn.Domain.Entities.Usuarios
         }
 
         public string NickName { get; set; }
-        public string Senha { get; }
-        public string ConfirmacaoSenha { get; }
+        public string ImagemUrl { get; set; }
         public Guid PessoaId { get; set; }
         public virtual Pessoa Pessoa { get; set; }
-        public ValidationResult ResultadoValidacao { get; set; }
+
+        public string Senha { get; } // Não Mapeado
+        public string ConfirmacaoSenha { get; } // Não Mapeado
+        public ValidationResult ResultadoValidacao { get; set; } // Não Mapeado
+
+        // Methods 
 
         public bool EstaValido()
         {
@@ -47,6 +55,13 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public ICollection<DadoInvalido> DadosInvalidos()
         {
             return ResultadoValidacao.GetErrorsResult();
+        }
+
+        public void AlterarFotoPerfil(string imagemUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imagemUrl)) return;
+
+            ImagemUrl = imagemUrl;
         }
 
     }

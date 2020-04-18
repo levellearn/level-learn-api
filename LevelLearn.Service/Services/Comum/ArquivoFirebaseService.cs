@@ -5,7 +5,6 @@ using LevelLearn.Service.Interfaces.Comum;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,70 +12,78 @@ namespace LevelLearn.Service.Services.Comum
 {
     public class ArquivoFirebaseService : IArquivoService
     {
+        #region Atributos
+
         private readonly FirebaseSettings _firebaseSettings;
-        private Task<FirebaseAuthLink> _firebaseAuthLink;
+        private readonly FirebaseStorage _firebaseStorage;
+        private const string DIRETORIO_IMAGEM = "Imagens";
+        private const string DIRETORIO_ARQUIVO = "Arquivos";
+
+        #endregion
+
+        #region Ctor
 
         public ArquivoFirebaseService(IOptions<AppSettings> appSettings)
         {
             _firebaseSettings = appSettings.Value.FirebaseSettings;
 
+            var firebaseAuthLink = AutenticarAsync().Result;
+
+            var options = new FirebaseStorageOptions
+            {
+                AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
+                ThrowOnCancel = true
+            };
+
+            _firebaseStorage = new FirebaseStorage(_firebaseSettings.Bucket, options);
         }
 
-        private void Autenticar()
-        {
-            if (_firebaseAuthLink != null)
-                return;
+        #endregion
 
+        private async Task<FirebaseAuthLink> AutenticarAsync()
+        {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(_firebaseSettings.ApiKey));
-            _firebaseAuthLink = auth.SignInWithEmailAndPasswordAsync(_firebaseSettings.AuthEmail, _firebaseSettings.AuthPassword);
+
+            FirebaseAuthLink firebaseAuthLink = await auth.SignInWithEmailAndPasswordAsync(
+                _firebaseSettings.AuthEmail,
+                _firebaseSettings.AuthPassword
+            );
+
+            return firebaseAuthLink;
         }
 
-        public async Task<string> ObterArquivo(string dir, string nomeArquivo)
+        public async Task<string> ObterImagem(string nomeArquivo)
         {
-            Autenticar();
-
-            string downloadUrl = await new FirebaseStorage
-                (
-                     _firebaseSettings.Bucket,
-                    new FirebaseStorageOptions
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(_firebaseAuthLink.Result.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                )
-                .Child(dir)
+            var downloadUrl = await _firebaseStorage
+                .Child(DIRETORIO_IMAGEM)
                 .Child(nomeArquivo)
                 .GetDownloadUrlAsync();
-
-            //task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
 
             return downloadUrl;
         }
 
-        public async Task SalvarArquivo(IFormFile formFile, string dir)
+        public Task<string> ObterArquivo(string nomeArquivo)
         {
-            Autenticar();
+            throw new NotImplementedException();
+        }
 
-            // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
-            //var stream = File.Open(@"C:\Users\you\file.png", FileMode.Open);
+        public async Task<string> SalvarArquivo(IFormFile formFile, string diretorio)
+        {
+            // Validações
+            if (formFile.Length <= 0)
+                return string.Empty;
+
+            //if(formFile.ContentType != "jpg")
 
             var cancellationToken = new CancellationTokenSource();
 
-            var upload = await new FirebaseStorage
-                (
-                    _firebaseSettings.Bucket,
-                    new FirebaseStorageOptions
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(_firebaseAuthLink.Result.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                )
-                .Child(dir)
+            var downloadUrl = await _firebaseStorage
+                .Child(diretorio)
                 .Child(formFile.FileName)
                 .PutAsync(formFile.OpenReadStream(), cancellationToken.Token);
+
+            return downloadUrl;
         }
-
-
 
         public Task DeletarArquivo()
         {

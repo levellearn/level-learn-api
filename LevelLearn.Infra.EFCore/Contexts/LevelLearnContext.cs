@@ -67,6 +67,8 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new NotificacaoConfiguration());
 
             modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
+            modelBuilder.Entity<ApplicationUser>().Property(p => p.ImagemUrl).IsRequired();
+             
 
             //Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -74,7 +75,25 @@ namespace LevelLearn.Domain.Extensions
             return text;
         }
 
+        public static string EncodeTextToBase64(this string text)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
 
+            byte[] textBytes = Encoding.UTF8.GetBytes(text);
+            string textEncoded = WebEncoders.Base64UrlEncode(textBytes);
+
+            return textEncoded;
+        }
+
+        public static string DecodeBase64ToText(this string textEncoded)
+        {
+            if (string.IsNullOrEmpty(textEncoded)) return string.Empty;
+
+            byte[] textDecodedBytes = WebEncoders.Base64UrlDecode(textEncoded);
+            string decodedText = Encoding.UTF8.GetString(textDecodedBytes);
+
+            return decodedText;
+        }
 
     }
 }

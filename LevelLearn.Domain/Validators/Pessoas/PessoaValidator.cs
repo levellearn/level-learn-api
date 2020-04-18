@@ -33,7 +33,6 @@ namespace LevelLearn.Domain.Validators.Pessoas
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
-            ValidarImagem();
 
             instance.ResultadoValidacao = this.Validate(instance);
 
@@ -80,14 +79,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
                     .WithMessage(_sharedResource.PessoaNickNameInvalido)
                 .MaximumLength(tamanhoMax)
                     .WithMessage(_sharedResource.PessoaNickNameTamanhoMaximo(tamanhoMax));
-        }
-
-        private void ValidarImagem()
-        {
-            RuleFor(p => p.ImagemUrl)
-                .NotEmpty()
-                    .WithMessage(_sharedResource.PessoaImagemObrigatoria);
-        }       
+        }        
 
         private void ValidarDataNascimento()
         {

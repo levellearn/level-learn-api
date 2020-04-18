@@ -9,9 +9,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
 {
     public abstract class Pessoa : EntityBase
     {
-        private const string IMAGEM_URL_PADRAO = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
-
         #region Ctors
+
         protected Pessoa()
         {
             Instituicoes = new List<PessoaInstituicao>();
@@ -19,8 +18,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Turmas = new List<Turma>();
         }
 
-        public Pessoa(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero,
-            string imagemUrl, DateTime? dataNascimento)
+        public Pessoa(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
             NickName = nickName?.Trim() ?? string.Empty; // TODO: Username único?
@@ -28,7 +26,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Cpf = cpf;
             Celular = celular;
             Genero = genero;
-            ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl;
             DataNascimento = dataNascimento;
 
             Instituicoes = new List<PessoaInstituicao>();
@@ -47,7 +44,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Celular Celular { get; protected set; }
         public Generos Genero { get; protected set; }
         public TiposPessoa TipoPessoa { get; protected set; }
-        public string ImagemUrl { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
 
         public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
@@ -114,7 +110,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
                 $" Celular: {Celular.ToString()} " +
                 $" Gênero: {Genero.ToString()} " +
                 $" Tipo Pessoa: {TipoPessoa.ToString()} " +
-                $" Imagem: {ImagemUrl} " +
                 $" Data Nascimento: {dataNascimento.ToString("dd/MM/yyyy")}" +
                 $" Data Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}" +
                 $" Ativo: { (Ativo ? "Sim" : "Não") }";

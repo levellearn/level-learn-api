@@ -23,7 +23,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         [HttpPost("v1/[controller]/registrar-usuario")]
-        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
@@ -35,15 +35,15 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         [HttpPost("v1/[controller]/entrar")]
-        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
         {
-            ResponseAPI<UsuarioVM> response = await _usuarioService.LogarUsuario(usuarioVM);
+            ResponseAPI<UsuarioTokenVM> response = await _usuarioService.LogarUsuario(usuarioVM);
 
             if (!response.Success) return StatusCode(response.StatusCode, response);
 
-            return StatusCode(response.StatusCode, response.Data);
+            return Ok(response.Data);
         }
 
         [HttpPost("v1/[controller]/sair")]
@@ -59,16 +59,29 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         [HttpGet("v1/[controller]/confirmar-email")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ConfirmarEmail([FromQuery]string userId, [FromQuery]string confirmationToken)
         {
-            var response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
+            ResponseAPI<UsuarioTokenVM> response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
-            return NoContent();
+            return Ok(response.Data);
+        }
+
+        [HttpPost("v1/[controller]/alterar-foto-perfil")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AlterarFotoPerfil([FromForm] IFormFile arquivo)
+        {
+            var response = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
+
+            if (response.Failure) return StatusCode(response.StatusCode, response);
+
+            return Ok(response.Data);
         }
 
 

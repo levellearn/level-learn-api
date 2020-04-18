@@ -19,6 +19,7 @@ namespace LevelLearn.Domain.Validators.Pessoas
         {
             ValidarSenha();
             ValidarConfirmacaoSenha();
+            ValidarImagem();
 
             instance.ResultadoValidacao = this.Validate(instance);
 
@@ -52,6 +53,13 @@ namespace LevelLearn.Domain.Validators.Pessoas
                     .WithMessage(_sharedResource.UsuarioConfirmacaoSenhaObrigatoria)
                 .Equal(p => p.Senha)
                     .WithMessage(_sharedResource.UsuarioConfirmacaoSenhaNaoConfere);
+        }
+
+        private void ValidarImagem()
+        {
+            RuleFor(p => p.ImagemUrl)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.PessoaImagemObrigatoria);
         }
 
         //public DadoInvalido SenhaEstaValida(string senha)

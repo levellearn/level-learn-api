@@ -77,9 +77,7 @@ namespace LevelLearn.Service.Services.Usuarios
             };
 
             foreach (var role in roles)
-            {
                 claims.Add(new Claim(ClaimTypes.Role, role));
-            }
 
             return claims;
         }
@@ -108,7 +106,8 @@ namespace LevelLearn.Service.Services.Usuarios
             var tempoToleranciaSegundos = _appSettings.JWTSettings.TempoToleranciaSegundos;
             var expiracaoToken = TimeSpan.FromSeconds(expiracaoSegundos + tempoToleranciaSegundos);
 
-            var opcoesCache = new DistributedCacheEntryOptions() { 
+            var opcoesCache = new DistributedCacheEntryOptions()
+            {
                 AbsoluteExpirationRelativeToNow = expiracaoToken
             };
 
