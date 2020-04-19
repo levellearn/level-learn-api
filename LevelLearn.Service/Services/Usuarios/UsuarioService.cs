@@ -14,8 +14,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -194,43 +200,51 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
-            const string DIRETORIO = "Imagens";
+            const int TAMANHO_MAXIMO_BYTES = 5_000_000;
+            var diretorio = Comum.DiretoriosFirebase.ImagensPerfilUsuario;
+            var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
 
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
 
-            // Validações
+            // Validações BD
             if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
             // Validações Arquivo
-            if (arquivo == null || arquivo.Length <= 0)
+            if (arquivo == null || arquivo.Length <= 0 || arquivo.Length > TAMANHO_MAXIMO_BYTES)
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
 
-            if(arquivo.ContentType != "image/jpeg" && arquivo.ContentType != "image/png" && arquivo.ContentType != "image/gif")
+            if (!mimeTypesAceitos.Any(m => m == arquivo.ContentType))
                 return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
 
-            // Resize
+            Stream imagemRedimensionada = RedimensionarImagem(arquivo);
 
-            var imagemUrl = await _arquivoService.SalvarArquivo(arquivo, DIRETORIO);
+            // Upload Firebase Storage
+            var nomeArquivo = user.GerarNomeFotoPerfil();
 
-            user.AlterarFotoPerfil(imagemUrl);
+            var imagemUrl = await _arquivoService.SalvarArquivo(imagemRedimensionada, diretorio, nomeArquivo);
 
-            // Atualizando Usuário BD
+            var nomeImagemAntiga = user.AlterarFotoPerfil(imagemUrl);
+
+            _ = _arquivoService.DeletarArquivo(diretorio, nomeImagemAntiga);
+
+            // Atualizando USUÁRIO BD
             var identityResult = await _userManager.UpdateAsync(user);
 
             if (!identityResult.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
-         
 
+            // TODO: Arrumar nome
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,
-               //Nome = professor.Nome,
+                //Nome = professor.Nome,
                 NickName = user.NickName,
                 ImagemUrl = user.ImagemUrl
             };
 
             return ResponseFactory<UsuarioVM>.Ok(responseVM, _sharedResource.AtualizadoSucesso);
         }
+
 
         #region Privates Methods
 
@@ -359,6 +373,39 @@ namespace LevelLearn.Service.Services.Usuarios
             }
 
             return ResponseFactory<UsuarioVM>.NoContent();
+        }
+
+        private Stream RedimensionarImagem(IFormFile arquivoImagem, int altura = 256, int largura = 256)
+        {
+            using Stream inputStream = arquivoImagem.OpenReadStream();
+            Stream outputStream = new MemoryStream();
+
+            try
+            {
+
+                using (var image = Image.Load(inputStream))
+                {
+                    image.Mutate(x => x.Resize(
+                        new ResizeOptions
+                        {
+                            Size = new Size(largura, altura),
+                            Mode = ResizeMode.Max,
+                        })
+                    );
+
+                    image.SaveAsJpeg(outputStream, new JpegEncoder() { Quality = 95 });
+                }
+
+                outputStream.Seek(0, SeekOrigin.Begin);
+
+                return outputStream;
+            }
+            catch (Exception ex)
+            {
+                // Retorna a imagem original
+                Console.WriteLine(ex.Message);
+                return inputStream;
+            }
         }
 
         private async Task RemoverUsuario(ApplicationUser user, string role)

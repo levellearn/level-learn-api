@@ -5,6 +5,7 @@ using LevelLearn.Domain.Validators;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Entities.Usuarios
 {
@@ -57,12 +58,36 @@ namespace LevelLearn.Domain.Entities.Usuarios
             return ResultadoValidacao.GetErrorsResult();
         }
 
-        public void AlterarFotoPerfil(string imagemUrl)
-        {
-            if (string.IsNullOrWhiteSpace(imagemUrl)) return;
+        #region Metodos Foto Perfil
 
-            ImagemUrl = imagemUrl;
+        public string GerarNomeFotoPerfil()
+        {
+            return this.Id.ToString() + "_" + DateTime.Now.Ticks.ToString();
         }
+
+        /// <summary>
+        /// Altera a ImagemUrl da foto de perfil, retornando o nome da imagem antiga
+        /// </summary>
+        /// <param name="imagemUrl"></param>
+        /// <returns>Retorna o nome da Imagem antiga</returns>
+        public string AlterarFotoPerfil(string imagemUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imagemUrl)) return string.Empty;
+
+            string imagemUrlAntiga = this.ImagemUrl;           
+
+            this.ImagemUrl = imagemUrl;
+
+            var patternNomeImagem = @"[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}_\d{1,}";
+            var regexOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match matchResult = Regex.Match(imagemUrlAntiga, patternNomeImagem, regexOptions);
+            var nomeImagemAntiga = matchResult.Success ? matchResult.Value : string.Empty;
+
+            return nomeImagemAntiga;
+        } 
+
+        #endregion
 
     }
 }

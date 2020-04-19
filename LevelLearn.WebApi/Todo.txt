@@ -1,11 +1,6 @@
 Implementar Log
-Configurar HTTPS
 Add Swagger
-Add firebase/dropbox para guardar imagens usuário
-
-
-
-
+Configurar HTTPS
 
 
 

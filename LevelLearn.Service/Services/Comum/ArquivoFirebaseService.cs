@@ -2,22 +2,26 @@
 using Firebase.Storage;
 using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Service.Interfaces.Comum;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Comum
 {
+    public enum DiretoriosFirebase
+    {
+        Arquivos,
+        Imagens,
+        ImagensPerfilUsuario
+    }
+
     public class ArquivoFirebaseService : IArquivoService
     {
         #region Atributos
 
         private readonly FirebaseSettings _firebaseSettings;
         private readonly FirebaseStorage _firebaseStorage;
-        private const string DIRETORIO_IMAGEM = "Imagens";
-        private const string DIRETORIO_ARQUIVO = "Arquivos";
 
         #endregion
 
@@ -29,6 +33,7 @@ namespace LevelLearn.Service.Services.Comum
 
             var firebaseAuthLink = AutenticarAsync().Result;
 
+            // Firebase Storage
             var options = new FirebaseStorageOptions
             {
                 AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
@@ -52,36 +57,37 @@ namespace LevelLearn.Service.Services.Comum
             return firebaseAuthLink;
         }
 
-        public async Task<string> ObterImagem(string nomeArquivo)
+
+        public async Task<string> ObterArquivo(DiretoriosFirebase diretorio, string nomeArquivo)
         {
             var downloadUrl = await _firebaseStorage
-                .Child(DIRETORIO_IMAGEM)
+                .Child(diretorio.ToString())
                 .Child(nomeArquivo)
                 .GetDownloadUrlAsync();
 
             return downloadUrl;
         }
 
-        public Task<string> ObterArquivo(string nomeArquivo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<string> SalvarArquivo(IFormFile arquivo, string diretorio)
+        public async Task<string> SalvarArquivo(Stream arquivo, DiretoriosFirebase diretorio, string nomeArquivo)
         {
             var cancellationToken = new CancellationTokenSource();
 
             var downloadUrl = await _firebaseStorage
-                .Child(diretorio)
-                .Child(arquivo.FileName)
-                .PutAsync(arquivo.OpenReadStream(), cancellationToken.Token);
+                .Child(diretorio.ToString())
+                .Child(nomeArquivo)
+                .PutAsync(arquivo, cancellationToken.Token);
 
             return downloadUrl;
         }
 
-        public Task DeletarArquivo()
+        public async Task DeletarArquivo(DiretoriosFirebase diretorio, string nomeArquivo)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(nomeArquivo)) return;
+
+            await _firebaseStorage
+                .Child(diretorio.ToString())
+                .Child(nomeArquivo)
+                .DeleteAsync();
         }
 
 
