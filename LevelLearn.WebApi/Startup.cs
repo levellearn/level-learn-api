@@ -27,9 +27,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,11 +88,14 @@ namespace LevelLearn.WebApi
             services.AddAutoMapper(typeof(Startup));
 
             // Unit of Work
-            services.AddScoped<IUnitOfWork, UnitOfWork>();          
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Business Services
             ConfigureBusinessServices(services);
-        }      
+
+            // Swagger documentação API
+            ConfigureSwagger(services);
+        }        
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -119,6 +124,16 @@ namespace LevelLearn.WebApi
             });
 
             #endregion
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.). Specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Level Learn API");
+            });
+
 
             app.UseHttpsRedirection();
 
@@ -279,7 +294,32 @@ namespace LevelLearn.WebApi
             Debug.WriteLine("Token válido: " + context.SecurityToken);
             return Task.CompletedTask;
         }
-        
+
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Level Learn API",
+                        Version = "v1",
+                        Description = "API REST Level Learn - ambiente de gamification.",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Time Level Learn",
+                            Email = "levellearngame@gmail.com",
+                            Url = new Uri("https://bitbucket.org/teamlevellearn/level-learn-core/src/master/")
+                        }
+                    });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+        }
+
 
     }
 }

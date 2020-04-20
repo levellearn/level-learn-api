@@ -53,7 +53,16 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(listVM);
         }
 
-        [HttpGet("v1/[controller]")]
+        /// <summary>
+        /// Retorna todas as instituições de um professor paginadas
+        /// </summary>        
+        /// <param name="query">Termo de pesquisa</param>
+        /// <param name="pageNumber">Número da página</param>
+        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <returns>Lista instituições</returns>
+        /// <response code="200">Lista de instituições</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpGet("v1/[controller]", Name = "GetInstituicoes")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoes(
             [FromQuery]string query,
@@ -75,6 +84,13 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(listVM);
         }
 
+        /// <summary>
+        /// Retorna uma instituição de um professor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Instituição</returns>
+        /// <response code="200">Retorna uma instituição de um professor</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LevelLearn.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoes(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retorna todas as instituições de um professor paginadas
+            </summary>        
+            <param name="query">Termo de pesquisa</param>
+            <param name="pageNumber">Número da página</param>
+            <param name="pageSize">Quantidade de itens por página</param>
+            <returns>Lista instituições</returns>
+            <response code="200">Lista de instituições</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicao(System.Guid)">
+            <summary>
+            Retorna uma instituição de um professor
+            </summary>
+            <param name="id"></param>
+            <returns>Instituição</returns>
+            <response code="200">Retorna uma instituição de um professor</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Startup.ValidateToken(Microsoft.AspNetCore.Authentication.JwtBearer.TokenValidatedContext,Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
+            <summary>
+            Verifica se o token está armazando no BD de cache ou se já expirou
+            </summary>
+            <param name="context"></param>
+            <param name="redisCache"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

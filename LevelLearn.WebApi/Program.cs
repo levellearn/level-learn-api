@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LevelLearn.WebApi
 {
+#pragma warning disable CS1591
     public class Program
     {
         public static void Main(string[] args)
@@ -22,5 +17,7 @@ namespace LevelLearn.WebApi
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
+#pragma warning restore CS1591
 }
