@@ -2,8 +2,6 @@
 using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Infra.EFCore.Contexts;
-using LevelLearn.Infra.EFCore.Repositories.Institucional;
-using LevelLearn.Repositories.Pessoas;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.UnityOfWorks
@@ -12,13 +10,22 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
     {
         protected readonly LevelLearnContext _context;
 
-        public UnitOfWork(LevelLearnContext context)
+        public UnitOfWork(
+            LevelLearnContext context,
+            IInstituicaoRepository instituicaoRepository,
+            IPessoaRepository pessoaRepository
+            )
         {
             _context = context;
+            Instituicoes = instituicaoRepository;
+            Pessoas = pessoaRepository;
         }
 
-        public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
-        public IPessoaRepository Pessoas => new PessoaRepository(_context);
+        //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
+        //public IPessoaRepository Pessoas => new PessoaRepository(_context);
+
+        public IInstituicaoRepository Instituicoes { get; }
+        public IPessoaRepository Pessoas { get; }
 
 
         public bool Complete()

@@ -36,12 +36,12 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly IEmailService _emailService;
         private readonly IArquivoService _arquivoService;
         private readonly ISharedResource _sharedResource;
-        private readonly IValidatorApp<ApplicationUser> _validatorUsuario;
+        private readonly IValidatorApp<Usuario> _validatorUsuario;
         private readonly IValidatorApp<Professor> _validatorProfessor;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
 
-        private ApplicationUser _usuarioLogado = null;
+        private Usuario _usuarioLogado = null;
 
         #endregion
 
@@ -49,8 +49,8 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public UsuarioService(
             IUnitOfWork uow,
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<Usuario> signInManager,
+            UserManager<Usuario> userManager,
             ITokenService tokenService,
             IEmailService emailService,
             IArquivoService arquivoService,
@@ -77,21 +77,22 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Validações BD
             var respostaValidacao = await ValidarCriarUsuarioBD(email.Endereco, cpf.Numero);
-            if (!respostaValidacao.Success) return respostaValidacao;
+            if (respostaValidacao.Failure) return respostaValidacao;
 
             // Criação e Validação PROFESSOR
-            var professor = new Professor(usuarioVM.Nome, usuarioVM.NickName, email, cpf, celular,
-                                            usuarioVM.Genero, usuarioVM.DataNascimento);
+            var professor = new Professor(usuarioVM.Nome, email, cpf, celular, usuarioVM.Genero, usuarioVM.DataNascimento);
 
             _validatorProfessor.Validar(professor);
+
             if (!professor.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Criação e Validação USER
-            var user = new ApplicationUser(professor.NickName, email.Endereco, emailConfirmed: false, usuarioVM.Senha,
-                usuarioVM.ConfirmacaoSenha, celular.Numero, phoneNumberConfirmed: true, professor.Id);
+            var user = new Usuario(professor.Nome, usuarioVM.NickName, email.Endereco, celular.Numero, professor.Id);
+            user.AtribuirSenha(usuarioVM.Senha, usuarioVM.ConfirmacaoSenha);
 
             _validatorUsuario.Validar(user);
+
             if (!user.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
@@ -107,15 +108,7 @@ namespace LevelLearn.Service.Services.Usuarios
             // Enviar EMAIL de confirmação
             _ = EnviarEmail(professor, user, role);
 
-            var responseVM = new UsuarioVM()
-            {
-                Id = user.Id,
-                Nome = professor.Nome,
-                NickName = user.NickName,
-                ImagemUrl = user.ImagemUrl
-            };
-
-            return ResponseFactory<UsuarioVM>.Created(responseVM, _sharedResource.CadastradoSucesso);
+            return ResponseFactory<UsuarioVM>.NoContent(_sharedResource.CadastradoSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
@@ -144,12 +137,11 @@ namespace LevelLearn.Service.Services.Usuarios
             // Gerar VM e JWToken  
             _usuarioLogado ??= await _userManager.FindByNameAsync(email.Endereco);
             var roles = await _userManager.GetRolesAsync(_usuarioLogado);
-            var pessoa = await _uow.Pessoas.GetAsync(_usuarioLogado.PessoaId);
 
             var responseVM = new UsuarioTokenVM()
             {
                 Id = _usuarioLogado.Id,
-                Nome = pessoa.Nome,
+                Nome = _usuarioLogado.Nome,
                 NickName = _usuarioLogado.NickName,
                 ImagemUrl = _usuarioLogado.ImagemUrl,
                 Token = await _tokenService.GerarJWT(_usuarioLogado, roles)
@@ -184,12 +176,11 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(_sharedResource.UsuarioEmailConfirmarFalha);
 
             var roles = await _userManager.GetRolesAsync(user);
-            var pessoa = await _uow.Pessoas.GetAsync(user.PessoaId);
 
             var responseVM = new UsuarioTokenVM()
             {
                 Id = user.Id,
-                Nome = pessoa.Nome,
+                Nome = user.Nome,
                 NickName = user.NickName,
                 ImagemUrl = user.ImagemUrl,
                 Token = await _tokenService.GerarJWT(user, roles)
@@ -204,7 +195,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var diretorio = Comum.DiretoriosFirebase.ImagensPerfilUsuario;
             var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
 
-            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+            Usuario user = await _userManager.FindByIdAsync(userId);
 
             // Validações BD
             if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
@@ -223,9 +214,9 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var imagemUrl = await _arquivoService.SalvarArquivo(imagemRedimensionada, diretorio, nomeArquivo);
 
-            var nomeImagemAntiga = user.AlterarFotoPerfil(imagemUrl);
+            var nomeImagemAnterior = user.AlterarFotoPerfil(imagemUrl, nomeArquivo);
 
-            _ = _arquivoService.DeletarArquivo(diretorio, nomeImagemAntiga);
+            _ = _arquivoService.DeletarArquivo(diretorio, nomeImagemAnterior);
 
             // Atualizando USUÁRIO BD
             var identityResult = await _userManager.UpdateAsync(user);
@@ -233,11 +224,10 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!identityResult.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
-            // TODO: Arrumar nome
             var responseVM = new UsuarioVM()
             {
                 Id = user.Id,
-                //Nome = professor.Nome,
+                Nome = user.Nome,
                 NickName = user.NickName,
                 ImagemUrl = user.ImagemUrl
             };
@@ -273,8 +263,8 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
 
-            var senhaTamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
-            var senhaTamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
+            var senhaTamanhoMin = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
+            var senhaTamanhoMax = RegraAtributo.Usuario.SENHA_TAMANHO_MAX;
 
             if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
             {
@@ -287,7 +277,6 @@ namespace LevelLearn.Service.Services.Usuarios
             if (_usuarioLogado == null)
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(_sharedResource.UsuarioLoginFalha);
 
-            // TODO: Tentar reenviar email?
             if (!_usuarioLogado.EmailConfirmed && await _userManager.CheckPasswordAsync(_usuarioLogado, senha))
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(_sharedResource.UsuarioEmailNaoConfirmado);
 
@@ -320,7 +309,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var refreshTokenData = JsonConvert.DeserializeObject<RefreshTokenData>(tokenArmazenadoCache);
 
-            var credenciaisValidas = (email.Endereco == refreshTokenData.UserName
+            var credenciaisValidas = (email.Endereco == refreshTokenData.Email
                                         && refreshToken == refreshTokenData.RefreshToken);
 
             if (!credenciaisValidas)
@@ -332,7 +321,7 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResponseFactory<UsuarioTokenVM>.NoContent();
         }
 
-        private async Task<ResponseAPI<UsuarioVM>> CriarUsuarioIdentity(ApplicationUser user, string role, Pessoa pessoa)
+        private async Task<ResponseAPI<UsuarioVM>> CriarUsuarioIdentity(Usuario user, string role, Pessoa pessoa)
         {
             try
             {
@@ -356,7 +345,7 @@ namespace LevelLearn.Service.Services.Usuarios
             }
         }
 
-        private async Task<ResponseAPI<UsuarioVM>> EnviarEmail(Professor professor, ApplicationUser user, string role)
+        private async Task<ResponseAPI<UsuarioVM>> EnviarEmail(Professor professor, Usuario user, string role)
         {
             var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var tokenEncoded = confirmationToken.EncodeTextToBase64();
@@ -402,13 +391,14 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
+                // TODO: Colocar Log
                 // Retorna a imagem original
                 Console.WriteLine(ex.Message);
                 return inputStream;
             }
         }
 
-        private async Task RemoverUsuario(ApplicationUser user, string role)
+        private async Task RemoverUsuario(Usuario user, string role)
         {
             await _userManager.RemoveFromRoleAsync(user, role);
             await _userManager.DeleteAsync(user);

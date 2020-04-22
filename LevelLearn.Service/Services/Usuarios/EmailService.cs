@@ -43,6 +43,8 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task EnviarEmailAsync(string email, string assunto, string mensagem)
         {
+            if (!_appSettings.EmailSettings.Enviar) return;
+
             var mail = new MailMessage()
             {
                 From = new MailAddress(_appSettings.EmailSettings.Email, _appSettings.EmailSettings.DisplayName),

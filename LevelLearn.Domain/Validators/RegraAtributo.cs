@@ -2,21 +2,24 @@
 {
     public static class RegraAtributo
     {
-        public static class Pessoa
-        {
-            public const int NOME_TAMANHO_MIN = 3;
-            public const int NOME_TAMANHO_MAX = 150;
+        public static class Usuario
+        {           
             public const int NICKNAME_TAMANHO_MAX = 30;
-            public const int CELULAR_TAMANHO = 14;
             public const int EMAIL_TAMANHO_MAX = 190;
-            public const int CPF_TAMANHO = 11;
-
             public const int SENHA_TAMANHO_MIN = 6;
             public const int SENHA_TAMANHO_MAX = 100;
             public const bool SENHA_REQUER_DIGITO = false;
             public const bool SENHA_REQUER_MINUSCULO = true;
             public const bool SENHA_REQUER_MAIUSCULO = false;
             public const bool SENHA_REQUER_ESPECIAL = false;
+        }
+
+        public static class Pessoa
+        {
+            public const int NOME_TAMANHO_MIN = 3;
+            public const int NOME_TAMANHO_MAX = 150;
+            public const int CELULAR_TAMANHO = 14;
+            public const int CPF_TAMANHO = 11;           
         }
 
         public static class Instituicao

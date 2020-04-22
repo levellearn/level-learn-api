@@ -4,9 +4,32 @@
         <name>LevelLearn.WebApi</name>
     </assembly>
     <members>
+        <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">
+            <summary>
+            Instituicoes Controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.#ctor(LevelLearn.Service.Interfaces.Institucional.IInstituicaoService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="instituicaoService">IInstituicaoService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoesAdmin(System.String,System.Int32,System.Int32)">
+            <summary>
+            Retorna todas as instituições paginadas com filtro nome
+            </summary>        
+            <param name="query">Termo de pesquisa</param>
+            <param name="pageNumber">Número da página</param>
+            <param name="pageSize">Quantidade de itens por página</param>
+            <returns>Lista instituições</returns>
+            <response code="200">Lista de instituições</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoes(System.String,System.Int32,System.Int32)">
             <summary>
-            Retorna todas as instituições de um professor paginadas
+            Retorna todas as instituições de um professor paginadas com filtro nome
             </summary>        
             <param name="query">Termo de pesquisa</param>
             <param name="pageNumber">Número da página</param>
@@ -17,12 +40,126 @@
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicao(System.Guid)">
             <summary>
-            Retorna uma instituição de um professor
+            Retorna uma instituição
             </summary>
-            <param name="id"></param>
+            <param name="id">Id Instituição</param>
             <returns>Instituição</returns>
-            <response code="200">Retorna uma instituição de um professor</response>
+            <response code="200">Retorna uma instituição</response>
+            <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.CreateInstituicao(LevelLearn.ViewModel.Institucional.Instituicao.CadastrarInstituicaoVM)">
+            <summary>
+            Cadastro de instituição
+            </summary>
+            <param name="instituicaoVM">Dados de cadastro da instituição</param>
+            <returns>Retorna a instituição cadastrada</returns>
+            <response code="201">Retorna instituição cadastrada</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.EditInstituicao(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarInstituicaoVM)">
+            <summary>
+            Edição de instituição
+            </summary>
+            <param name="id">Id instituição</param>
+            <param name="instituicaoVM">Dados de cadastro da instituição</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="403">Não é admin da instituição</response>
+            <response code="404">Instituição não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.DeleteInstituicao(System.Guid)">
+            <summary>
+            Remoção de instituição
+            </summary>
+            <param name="id">Id instituição</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="403">Não é admin da instituição</response>
+            <response code="404">Instituição não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.UsuariosController">
+            <summary>
+            UsuariosController
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="usuarioService">IUsuarioService</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarUsuario(LevelLearn.ViewModel.Usuarios.RegistrarUsuarioVM)">
+            <summary>
+            Registro de usuário
+            </summary>
+            <param name="usuarioVM">Dados de cadastro do usuário</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginUsuarioVM)">
+            <summary>
+            Login de usuário
+            </summary>
+            <param name="usuarioVM">Dados de login do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Logout">
+            <summary>
+            Logout de usuário
+            </summary>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.ConfirmarEmail(System.String,System.String)">
+            <summary>
+            Verifica a confirmação do email
+            </summary>
+            <param name="userId">Id usuário</param>
+            <param name="confirmationToken">Token de confirmação do email</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.AlterarFotoPerfil(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Alteração da foto perfil do usuário
+            </summary>
+            <param name="arquivo">Arquivo com a imagem do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="T:LevelLearn.WebApi.Filters.CustomExceptionFilter">
+            <summary>
+            Filtro Customizado de exceções
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="env">IWebHostEnvironment</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            Chamado depois de uma action lançar uma exceção
+            </summary>
+            <param name="context">ExceptionContext</param>
         </member>
         <member name="M:LevelLearn.WebApi.Startup.ValidateToken(Microsoft.AspNetCore.Authentication.JwtBearer.TokenValidatedContext,Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
             <summary>

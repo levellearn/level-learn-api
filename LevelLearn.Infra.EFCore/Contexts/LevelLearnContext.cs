@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
 {
-    public class LevelLearnContext : IdentityDbContext<ApplicationUser>
+    public class LevelLearnContext : IdentityDbContext<Usuario>
     {
         public LevelLearnContext() : base()
         {
@@ -46,15 +46,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
 
             modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
             modelBuilder.ApplyConfiguration(new CursoConfiguration());
-            modelBuilder.ApplyConfiguration(new TurmaConfiguration());
-
-            //modelBuilder.ApplyConfiguration(new ChamadaConfiguration());
-            //modelBuilder.ApplyConfiguration(new DesafioConfiguration());
-            //modelBuilder.ApplyConfiguration(new MissaoConfiguration());
-            //modelBuilder.ApplyConfiguration(new MoedaConfiguration());
-            //modelBuilder.ApplyConfiguration(new PresencaConfiguration());
-            //modelBuilder.ApplyConfiguration(new RespostaConfiguration());
-            //modelBuilder.ApplyConfiguration(new TimeConfiguration());
+            modelBuilder.ApplyConfiguration(new TurmaConfiguration());           
 
             modelBuilder.ApplyConfiguration(new PessoaConfiguration());
             modelBuilder.ApplyConfiguration(new ProfessorConfigurationtion());
@@ -66,14 +58,20 @@ namespace LevelLearn.Infra.EFCore.Contexts
             //modelBuilder.ApplyConfiguration(new AlunoDesafioConfiguration());
             //modelBuilder.ApplyConfiguration(new NotificacaoConfiguration());
 
-            modelBuilder.Entity<ApplicationUser>().HasOne(p => p.Pessoa).WithOne();
-            modelBuilder.Entity<ApplicationUser>().Property(p => p.ImagemUrl).IsRequired();
-             
+            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
 
-            //Remove delete cascade
+            //modelBuilder.ApplyConfiguration(new ChamadaConfiguration());
+            //modelBuilder.ApplyConfiguration(new DesafioConfiguration());
+            //modelBuilder.ApplyConfiguration(new MissaoConfiguration());
+            //modelBuilder.ApplyConfiguration(new MoedaConfiguration());
+            //modelBuilder.ApplyConfiguration(new PresencaConfiguration());
+            //modelBuilder.ApplyConfiguration(new RespostaConfiguration());
+            //modelBuilder.ApplyConfiguration(new TimeConfiguration());
+
+            // Remove delete cascade
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                if (!relationship.IsOwnership)
+                if (!relationship.IsOwnership) // !VO
                     relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
         }

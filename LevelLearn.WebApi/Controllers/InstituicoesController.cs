@@ -16,6 +16,10 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
 {
+
+    /// <summary>
+    /// Instituicoes Controller
+    /// </summary>
     [ApiController]
     [Route("api/")]
     [Produces("application/json")]
@@ -25,12 +29,26 @@ namespace LevelLearn.WebApi.Controllers
         private readonly IInstituicaoService _instituicaoService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="instituicaoService">IInstituicaoService</param>
+        /// <param name="mapper">IMapper</param>
         public InstituicoesController(IInstituicaoService instituicaoService, IMapper mapper)
         {
             _instituicaoService = instituicaoService;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retorna todas as instituições paginadas com filtro nome
+        /// </summary>        
+        /// <param name="query">Termo de pesquisa</param>
+        /// <param name="pageNumber">Número da página</param>
+        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <returns>Lista instituições</returns>
+        /// <response code="200">Lista de instituições</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
@@ -54,7 +72,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retorna todas as instituições de um professor paginadas
+        /// Retorna todas as instituições de um professor paginadas com filtro nome
         /// </summary>        
         /// <param name="query">Termo de pesquisa</param>
         /// <param name="pageNumber">Número da página</param>
@@ -85,11 +103,12 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retorna uma instituição de um professor
+        /// Retorna uma instituição
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id Instituição</param>
         /// <returns>Instituição</returns>
-        /// <response code="200">Retorna uma instituição de um professor</response>
+        /// <response code="200">Retorna uma instituição</response>
+        /// <response code="404">Instituição não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status200OK)]
@@ -103,6 +122,14 @@ namespace LevelLearn.WebApi.Controllers
             return Ok(_mapper.Map<InstituicaoVM>(response.Data));
         }
 
+        /// <summary>
+        /// Cadastro de instituição
+        /// </summary>
+        /// <param name="instituicaoVM">Dados de cadastro da instituição</param>
+        /// <returns>Retorna a instituição cadastrada</returns>
+        /// <response code="201">Retorna instituição cadastrada</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -117,9 +144,21 @@ namespace LevelLearn.WebApi.Controllers
             return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
+        /// <summary>
+        /// Edição de instituição
+        /// </summary>
+        /// <param name="id">Id instituição</param>
+        /// <param name="instituicaoVM">Dados de cadastro da instituição</param>
+        /// <returns></returns>
+        /// <response code="204">Sem Conteúdo</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="403">Não é admin da instituição</response>
+        /// <response code="404">Instituição não encontrada</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
@@ -130,8 +169,18 @@ namespace LevelLearn.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Remoção de instituição
+        /// </summary>
+        /// <param name="id">Id instituição</param>
+        /// <returns></returns>
+        /// <response code="204">Sem Conteúdo</response>
+        /// <response code="403">Não é admin da instituição</response>
+        /// <response code="404">Instituição não encontrada</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpDelete("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteInstituicao(Guid id)
         {

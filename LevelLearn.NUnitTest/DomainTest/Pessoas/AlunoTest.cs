@@ -14,7 +14,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class AlunoTest
     {
         // Fields
-        private string _nome, _nickName, _email, _cpf, _ra, _celular;
+        private string _nome, _email, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
         private readonly IValidatorApp<Aluno> _validator = new AlunoValidator();
@@ -23,7 +23,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Felipe Ayres";
-            _nickName = "felipe_ayres";
             _email = "felipe.ayres@mail.com";
             _cpf = "881.192.990-35";
             _genero = Generos.Masculino;
@@ -96,42 +95,7 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
         }
-
-
-        [Test]
-        [TestCase("billGates3")]
-        [TestCase("shaq_O-Neal")]
-        [TestCase("steven.jobs")]
-        public void Aluno_NicknameValido_ReturnTrue(string userName)
-        {
-            _nickName = userName;
-            var aluno = CriarAluno();
-
-            _validator.Validar(aluno);
-            aluno.EstaValido();
-            var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
-
-            Assert.IsTrue(valido, "Aluno deveria ter NickName válido");
-        }
-
-        [Test]
-        [TestCase("bill@Gates3")]
-        [TestCase("shaq$Neal")]
-        [TestCase("#stevenjobs")]
-        public void Aluno_NicknameValido_ReturnFalse(string userName)
-        {
-            _nickName = userName;
-            var aluno = CriarAluno();
-
-            _validator.Validar(aluno);
-            aluno.EstaValido();
-            var erros = aluno.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == nameof(Pessoa.NickName));
-
-            Assert.IsFalse(valido, "Aluno deveria ter NickName inválido");
-        }
-
+      
         [Test]
         public void Cadastrar_AlunoSemCPF_ReturnTrue()
         {
@@ -146,14 +110,13 @@ namespace LevelLearn.NUnitTest.Pessoas
 
         private Aluno CriarAluno()
         {
-            return new Aluno(_nome, _nickName, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
+            return new Aluno(_nome, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
                 _genero, _dataNascimento);
         }
 
         public static Aluno CriarAlunoPadrao()
         {
             var nome = "Felipe Ayres";
-            var nickName = "felipe_ayres";
             var email = "felipe.ayres@mail.com";
             var cpf = "881.192.990-35";
             var genero = Generos.Masculino;
@@ -161,7 +124,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var ra = "f1310513";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
-            return new Aluno(nome, nickName, new Email(email), new CPF(cpf), new Celular(celular), ra,
+            return new Aluno(nome, new Email(email), new CPF(cpf), new Celular(celular), ra,
                 genero, dataNascimento);
         }
 

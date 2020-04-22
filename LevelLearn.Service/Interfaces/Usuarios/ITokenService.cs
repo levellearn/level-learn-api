@@ -16,7 +16,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         /// <param name="user"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles);
+        Task<TokenVM> GerarJWT(Usuario user, IList<string> roles);
 
         /// <summary>
         /// Gera um refresh token de determinado tamanho

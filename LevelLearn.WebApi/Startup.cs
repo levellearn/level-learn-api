@@ -3,7 +3,6 @@ using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Resource;
@@ -67,8 +66,6 @@ namespace LevelLearn.WebApi
                 o.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            //services.AddHttpContextAccessor();
-
             // App Settings
             services.Configure<AppSettings>(Configuration);
 
@@ -87,6 +84,9 @@ namespace LevelLearn.WebApi
             // Auto Mapper
             services.AddAutoMapper(typeof(Startup));
 
+            // Repositories
+            ConfigureRepositories(services);
+
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -95,10 +95,11 @@ namespace LevelLearn.WebApi
 
             // Swagger documentação API
             ConfigureSwagger(services);
-        }        
+        }
+       
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            LevelLearnContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+            LevelLearnContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -167,7 +168,7 @@ namespace LevelLearn.WebApi
         {
             var appSettings = Configuration.Get<AppSettings>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<Usuario, IdentityRole>()
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();
@@ -175,11 +176,11 @@ namespace LevelLearn.WebApi
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = RegraAtributo.Pessoa.SENHA_REQUER_DIGITO;
-                options.Password.RequiredLength = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
-                options.Password.RequireNonAlphanumeric = RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL;
-                options.Password.RequireUppercase = RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO;
-                options.Password.RequireLowercase = RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO;
+                options.Password.RequireDigit = RegraAtributo.Usuario.SENHA_REQUER_DIGITO;
+                options.Password.RequiredLength = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
+                options.Password.RequireNonAlphanumeric = RegraAtributo.Usuario.SENHA_REQUER_ESPECIAL;
+                options.Password.RequireUppercase = RegraAtributo.Usuario.SENHA_REQUER_MAIUSCULO;
+                options.Password.RequireLowercase = RegraAtributo.Usuario.SENHA_REQUER_MINUSCULO;
 
                 // Lockout settings
                 options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;
@@ -210,6 +211,12 @@ namespace LevelLearn.WebApi
             {
                 opt.UseSqlServer(appSettings.ConnectionStrings.LevelLearnSQLServer);
             });
+        }
+
+        private void ConfigureRepositories(IServiceCollection services)
+        {
+            services.AddScoped<Domain.Repositories.Institucional.IInstituicaoRepository, Infra.EFCore.Repositories.Institucional.InstituicaoRepository>();
+            services.AddScoped<Domain.Repositories.Pessoas.IPessoaRepository, Infra.EFCore.Repositories.Pessoas.PessoaRepository>();
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)

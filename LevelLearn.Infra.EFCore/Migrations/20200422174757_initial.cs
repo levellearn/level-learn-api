@@ -45,8 +45,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
                     DataCadastro = table.Column<DateTime>(nullable: false),
-                    Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    NickName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
                     Email = table.Column<string>(type: "varchar(190)", nullable: true),
                     CPF = table.Column<string>(type: "varchar(11)", nullable: true),
                     Celular = table.Column<string>(type: "varchar(14)", nullable: true),
@@ -125,8 +124,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    NickName = table.Column<string>(nullable: true),
+                    Nome = table.Column<string>(nullable: true),
+                    NickName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
                     ImagemUrl = table.Column<string>(nullable: false),
+                    ImagemNome = table.Column<string>(nullable: true),
                     PessoaId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

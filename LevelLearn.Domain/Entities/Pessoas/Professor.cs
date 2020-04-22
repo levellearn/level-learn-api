@@ -8,8 +8,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
     {
         protected Professor() { }
 
-        public Professor(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
-            : base(nome, nickName, email, cpf, celular, genero, dataNascimento)
+        public Professor(string nome, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
+            : base(nome, email, cpf, celular, genero, dataNascimento)
         {
             TipoPessoa = TiposPessoa.Professor;
         }

@@ -16,12 +16,12 @@ namespace LevelLearn.Domain.Validators.ValueObjects
 
         public ValidationResult Validar(Email instance)
         {
-            var tamanhoMax = RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX;
+            var tamanhoMax = RegraAtributo.Usuario.EMAIL_TAMANHO_MAX;
 
             RuleFor(e => e.Endereco)
                 .NotEmpty()
                     .WithMessage(_sharedResource.UsuarioEmailObrigatorio)
-                .MaximumLength(RegraAtributo.Pessoa.EMAIL_TAMANHO_MAX)
+                .MaximumLength(RegraAtributo.Usuario.EMAIL_TAMANHO_MAX)
                     .WithMessage(_sharedResource.UsuarioEmailTamanhoMaximo(tamanhoMax))
                 .EmailAddress()
                     .WithMessage(_sharedResource.UsuarioEmailInvalido)

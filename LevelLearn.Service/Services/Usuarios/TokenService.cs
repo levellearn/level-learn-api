@@ -27,7 +27,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _redisCache = redisCache;
         }
 
-        public async Task<TokenVM> GerarJWT(ApplicationUser user, IList<string> roles)
+        public async Task<TokenVM> GerarJWT(Usuario user, IList<string> roles)
         {
             var jti = Guid.NewGuid().ToString();
             var claims = CriarClaimsJWT(user, roles, jti);
@@ -65,7 +65,7 @@ namespace LevelLearn.Service.Services.Usuarios
             };
         }
 
-        private ICollection<Claim> CriarClaimsJWT(ApplicationUser user, IList<string> roles, string jti)
+        private ICollection<Claim> CriarClaimsJWT(Usuario user, IList<string> roles, string jti)
         {
             var claims = new List<Claim>
             {

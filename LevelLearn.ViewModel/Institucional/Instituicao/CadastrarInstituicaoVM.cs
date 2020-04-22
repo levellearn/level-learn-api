@@ -4,10 +4,16 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
     public class CadastrarInstituicaoVM
     {
+        /// <summary>
+        /// Nome instituição
+        /// </summary>
+        /// 
         //[Required(ErrorMessage = "Campo Nome é obrigatório")]
         public string Nome { get; set; }
 
-        //[Required(ErrorMessage = "Campo Descrição é obrigatório")]
+        /// <summary>
+        /// Descrição da instituição
+        /// </summary>
         public string Descricao { get; set; }
 
     }

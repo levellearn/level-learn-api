@@ -1,5 +1,8 @@
 ﻿namespace LevelLearn.ViewModel
 {
+    /// <summary>
+    /// Classe utilizada para armezenar filtros de consulta
+    /// </summary>
     public class PaginationQueryVM
     {
         public PaginationQueryVM()
@@ -16,8 +19,19 @@
             PageSize = pageSize <= 0 ? 1 : pageSize;
         }
 
+        /// <summary>
+        /// Termo pesquisa
+        /// </summary>
         public string Query { get; set; }
+
+        /// <summary>
+        /// Número da página
+        /// </summary>
         public int PageNumber { get; set; }
+
+        /// <summary>
+        /// Quantidade de itens por página
+        /// </summary>
         public int PageSize { get; set; }
     }
 }

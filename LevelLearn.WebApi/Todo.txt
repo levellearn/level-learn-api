@@ -1,5 +1,5 @@
 Implementar Log
-Add Swagger 
+Add autenticação Swagger 
 	https://localhost:44328/swagger/index.html
 	https://github.com/domaindrivendev/Swashbuckle.AspNetCore
 Configurar HTTPS

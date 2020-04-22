@@ -10,8 +10,8 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <summary>
         /// Verifica se é professor admin de uma determinada instituição
         /// </summary>
-        /// <param name="instituicaoId"></param>
-        /// <param name="pessoaId"></param>
+        /// <param name="instituicaoId">Id instituição</param>
+        /// <param name="pessoaId">Id pessoa</param>
         /// <returns>Retorna verdadeiro ou falso</returns>
         Task<bool> IsAdmin(Guid instituicaoId, Guid pessoaId);
 
@@ -23,19 +23,19 @@ namespace LevelLearn.Domain.Repositories.Institucional
         Task<List<Instituicao>> InstituicoesAdmin(Guid pessoaId);
 
         /// <summary>
-        /// Retorna todas as instituições de um professor PAGINADAS
+        /// Retorna as instituições de um professor paginadas com filtro
         /// </summary>
-        /// <param name="pessoaId"></param>
+        /// <param name="pessoaId">Id pessoa</param>
         /// <param name="query">Termo de pesquisa</param>
-        /// <param name="pageNumber"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageNumber">Número da página</param>
+        /// <param name="pageSize">Quantidade de itens por página</param>
         /// <returns>Lista de instituições</returns>
         Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string query, int pageNumber, int pageSize);
 
         /// <summary>
-        /// Retorna o total de instituições de um professor PARA PAGINAÇÃO
+        /// Retorna o total de instituições de um professor para a paginação
         /// </summary>
-        /// <param name="pessoaId"></param>
+        /// <param name="pessoaId">Id pessoa</param>
         /// <param name="query">Termo de pesquisa</param>
         /// <returns></returns>
         Task<int> TotalInstituicoesProfessor(Guid pessoaId, string query);
@@ -43,7 +43,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <summary>
         /// Retorna todas as instituições de um aluno
         /// </summary>
-        /// <param name="pessoaId"></param>
+        /// <param name="pessoaId">Id pessoa</param>
         /// <returns>Lista de instituições</returns>
         Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId);
 

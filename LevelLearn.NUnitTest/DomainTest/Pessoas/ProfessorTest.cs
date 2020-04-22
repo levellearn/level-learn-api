@@ -12,7 +12,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     class ProfessorTest
     {
         // Fields
-        private string _nome, _nickName, _email, _cpf, _celular;
+        private string _nome, _email, _cpf, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
         private readonly IValidatorApp<Professor> _validator = new ProfessorValidator();
@@ -22,7 +22,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Leandro Guarino";
-            _nickName = "le_guarino";
             _email = "le.guarino@mail.com";
             _cpf = "881.192.990-35";
             _genero = Generos.Masculino;
@@ -75,21 +74,20 @@ namespace LevelLearn.NUnitTest.Pessoas
 
         private Professor CriarProfessor()
         {
-            return new Professor(_nome, _nickName, new Email(_email), new CPF(_cpf), new Celular(_celular),
+            return new Professor(_nome, new Email(_email), new CPF(_cpf), new Celular(_celular),
                 _genero, _dataNascimento);
         }
 
         public static Professor CriarProfessorPadrao()
         {
             var nome = "Leandro Guarino";
-            var nickName = "le_guarino";
             var email = "le.guarino@mail.com";
             var cpf = "881.192.990-35";
             var genero = Generos.Masculino;
             var celular = "(12)98845-8974";
             var dataNascimento = DateTime.Parse("30/12/1988");
 
-            return new Professor(nome, nickName, new Email(email), new CPF(cpf), new Celular(celular),
+            return new Professor(nome, new Email(email), new CPF(cpf), new Celular(celular),
                 genero, dataNascimento);
         }
 

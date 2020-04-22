@@ -18,10 +18,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Turmas = new List<Turma>();
         }
 
-        public Pessoa(string nome, string nickName, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
+        public Pessoa(string nome, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
-            NickName = nickName?.Trim() ?? string.Empty; // TODO: Username único?
             Email = email;
             Cpf = cpf;
             Celular = celular;
@@ -38,7 +37,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         #region Props
         public string Nome { get; protected set; }
-        public string NickName { get; protected set; }
         public Email Email { get; protected set; }
         public CPF Cpf { get; protected set; }
         public Celular Celular { get; protected set; }
@@ -105,7 +103,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
             return $"ID: {Id}" +
                 $" CPF: {Cpf.ToString()}" +
                 $" Nome: {Nome}" +
-                $" NickName: {NickName}" +
                 $" E-mail: {Email.ToString()}" +
                 $" Celular: {Celular.ToString()} " +
                 $" Gênero: {Genero.ToString()} " +

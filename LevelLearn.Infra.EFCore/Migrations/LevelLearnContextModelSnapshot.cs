@@ -186,15 +186,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<int>("Genero")
                         .HasColumnType("int");
 
-                    b.Property<string>("NickName")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)")
-                        .HasMaxLength(30);
-
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("varchar(150)")
+                        .HasMaxLength(150);
 
                     b.Property<string>("NomePesquisa")
                         .IsRequired()
@@ -260,7 +255,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.ToTable("PessoaInstituicoes");
                 });
 
-            modelBuilder.Entity("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", b =>
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Usuarios.Usuario", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -279,6 +274,9 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImagemNome")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImagemUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -290,6 +288,11 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -621,11 +624,11 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", b =>
+            modelBuilder.Entity("LevelLearn.Domain.Entities.Usuarios.Usuario", b =>
                 {
                     b.HasOne("LevelLearn.Domain.Entities.Pessoas.Pessoa", "Pessoa")
                         .WithOne()
-                        .HasForeignKey("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", "PessoaId")
+                        .HasForeignKey("LevelLearn.Domain.Entities.Usuarios.Usuario", "PessoaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -641,7 +644,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", null)
+                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.Usuario", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -650,7 +653,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", null)
+                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.Usuario", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -665,7 +668,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", null)
+                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.Usuario", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -674,7 +677,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.ApplicationUser", null)
+                    b.HasOne("LevelLearn.Domain.Entities.Usuarios.Usuario", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)

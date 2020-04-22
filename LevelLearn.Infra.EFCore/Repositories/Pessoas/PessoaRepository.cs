@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LevelLearn.Repositories.Pessoas
+namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
 {
     public class PessoaRepository : RepositoryBase<Pessoa>, IPessoaRepository
     {

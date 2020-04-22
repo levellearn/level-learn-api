@@ -5,6 +5,8 @@ using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelLearn.Service.Services.Usuarios
 {
@@ -14,10 +16,10 @@ namespace LevelLearn.Service.Services.Usuarios
     public class IdentityInitializer
     {
         private readonly LevelLearnContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public IdentityInitializer(LevelLearnContext context, UserManager<ApplicationUser> userManager,
+        public IdentityInitializer(LevelLearnContext context, UserManager<Usuario> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -35,13 +37,16 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var email = "felipe.ayres93@gmail.com";
             var celular = "(12)98845-7832";
-            var pessoa = new Admin("Felipe Ayres", "felipe.ayres", new Email(email), new CPF("226.547.010-42"),
+            var pessoa = new Admin("Felipe Ayres", new Email(email), new CPF("226.547.010-42"),
                new Celular(celular), Generos.Masculino, DateTime.Parse("1993-10-26"));
 
-            var user = new ApplicationUser(pessoa.NickName, email, true, "Gamificando@123", "Gamificando@123",
-                celular, true, pessoa.Id);
+            var user = new Usuario(pessoa.Nome, "felipe.ayres", email, celular, pessoa.Id);
+            user.AtribuirSenha("Gamificando@123", "Gamificando@123");
+            user.ConfirmarEmail();
+            user.ConfirmarCelular();
 
-            CreateUser(user, pessoa, ApplicationRoles.ADMIN);
+            var roles = new List<string>() { ApplicationRoles.ADMIN, ApplicationRoles.PROFESSOR, ApplicationRoles.ALUNO };
+            CreateUser(user, pessoa, roles);
         }
 
         private void CreateRole(string role)
@@ -61,7 +66,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 throw new Exception($"Erro durante a criação da role {role}.");
         }
 
-        private void CreateUser(ApplicationUser user, Pessoa pessoa, string initialRole)
+        private void CreateUser(Usuario user, Pessoa pessoa, ICollection<string> roles)
         {
             if (_userManager.FindByNameAsync(user.UserName).Result != null)
                 return;
@@ -72,8 +77,8 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var result = _userManager.CreateAsync(user, user.Senha).Result;
 
-            if (result.Succeeded && !string.IsNullOrWhiteSpace(initialRole))
-                _userManager.AddToRoleAsync(user, initialRole).Wait();
+            if (result.Succeeded && roles.Any())
+                _userManager.AddToRolesAsync(user, roles).Wait();
         }
 
 

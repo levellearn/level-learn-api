@@ -6,17 +6,28 @@ using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class UsuarioValidator : AbstractValidator<ApplicationUser>, IValidatorApp<ApplicationUser>
+    public class UsuarioValidator : AbstractValidator<Usuario>, IValidatorApp<Usuario>
     {
         private readonly ISharedResource _sharedResource;
+
+        #region Ctors
+
+        // Unit Test
+        public UsuarioValidator()
+        {
+            _sharedResource = new SharedResource();
+        }
 
         public UsuarioValidator(ISharedResource sharedResource)
         {
             _sharedResource = sharedResource;
-        }
+        } 
 
-        public ValidationResult Validar(ApplicationUser instance)
+        #endregion
+
+        public ValidationResult Validar(Usuario instance)
         {
+            ValidarNickName();
             ValidarSenha();
             ValidarConfirmacaoSenha();
             ValidarImagem();
@@ -26,23 +37,40 @@ namespace LevelLearn.Domain.Validators.Usuarios
             return instance.ResultadoValidacao;
         }
 
+        /// <summary>
+        /// Ex.: bill@GatesIII
+        /// </summary>
+        private void ValidarNickName()
+        {
+            var tamanhoMax = RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX;
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
+
+            RuleFor(p => p.NickName)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.PessoaNickNameObrigatorio)
+                .Must(p => Regex.IsMatch(p, pattern))
+                    .WithMessage(_sharedResource.PessoaNickNameInvalido)
+                .MaximumLength(tamanhoMax)
+                    .WithMessage(_sharedResource.PessoaNickNameTamanhoMaximo(tamanhoMax));
+        }
+
         private void ValidarSenha()
         {
-            var tamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
-            var tamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
+            var tamanhoMin = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
+            var tamanhoMax = RegraAtributo.Usuario.SENHA_TAMANHO_MAX;
 
             RuleFor(p => p.Senha)
                 .NotEmpty()
                     .WithMessage(_sharedResource.UsuarioSenhaObrigatoria)
                 .Length(tamanhoMin, tamanhoMax)
                     .WithMessage(_sharedResource.UsuarioSenhaTamanho(tamanhoMin, tamanhoMax))
-                .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Pessoa.SENHA_REQUER_MAIUSCULO == false)
+                .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Usuario.SENHA_REQUER_MAIUSCULO == false)
                     .WithMessage(_sharedResource.UsuarioSenhaRequerMaiusculo)
-                .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Pessoa.SENHA_REQUER_MINUSCULO == false)
+                .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Usuario.SENHA_REQUER_MINUSCULO == false)
                     .WithMessage(_sharedResource.UsuarioSenhaRequerMinusculo)
-                .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_DIGITO == false)
+                .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Usuario.SENHA_REQUER_DIGITO == false)
                     .WithMessage(_sharedResource.UsuarioSenhaRequerDigito)
-                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Pessoa.SENHA_REQUER_ESPECIAL == false)
+                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Usuario.SENHA_REQUER_ESPECIAL == false)
                     .WithMessage(_sharedResource.UsuarioSenhaRequerEspecial);
         }
 
@@ -62,22 +90,6 @@ namespace LevelLearn.Domain.Validators.Usuarios
                     .WithMessage(_sharedResource.PessoaImagemObrigatoria);
         }
 
-        //public DadoInvalido SenhaEstaValida(string senha)
-        //{
-        //    if (string.IsNullOrWhiteSpace(senha))
-        //    {
-        //        return new DadoInvalido("Senha", _sharedLocalizer.UsuarioSenhaObrigatoria);
-        //    }
-        //    var senhaTamanhoMin = RegraAtributo.Pessoa.SENHA_TAMANHO_MIN;
-        //    var senhaTamanhoMax = RegraAtributo.Pessoa.SENHA_TAMANHO_MAX;
-
-        //    if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
-        //    {
-        //        return new DadoInvalido("Senha", _sharedLocalizer.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
-        //    }
-
-        //    return null;
-        //}
 
     }
 }

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.Service", "Level
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.ViewModel", "LevelLearn.ViewModel\LevelLearn.ViewModel.csproj", "{ED79ED1B-2C49-41B3-A21F-45DFC4C1E754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelLearn.Resource", "LevelLearn.Resource\LevelLearn.Resource.csproj", "{30CA9CD3-867C-491F-9680-956B4C608C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LevelLearn.Resource", "LevelLearn.Resource\LevelLearn.Resource.csproj", "{30CA9CD3-867C-491F-9680-956B4C608C92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

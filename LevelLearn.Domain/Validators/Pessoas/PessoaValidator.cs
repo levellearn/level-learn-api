@@ -29,7 +29,6 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             // Pessoa
             ValidarNome();
-            ValidarNickName();
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
@@ -65,20 +64,6 @@ namespace LevelLearn.Domain.Validators.Usuarios
                 return true;
             else
                 return false;
-        }
-
-        private void ValidarNickName()
-        {
-            var tamanhoMax = RegraAtributo.Pessoa.NICKNAME_TAMANHO_MAX;
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
-
-            RuleFor(p => p.NickName)
-                .NotEmpty()
-                    .WithMessage(_sharedResource.PessoaNickNameObrigatorio)
-                .Must(p => Regex.IsMatch(p, pattern))
-                    .WithMessage(_sharedResource.PessoaNickNameInvalido)
-                .MaximumLength(tamanhoMax)
-                    .WithMessage(_sharedResource.PessoaNickNameTamanhoMaximo(tamanhoMax));
         }        
 
         private void ValidarDataNascimento()
