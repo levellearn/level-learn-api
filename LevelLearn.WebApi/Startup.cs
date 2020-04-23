@@ -96,7 +96,7 @@ namespace LevelLearn.WebApi
             // Swagger documentação API
             ConfigureSwagger(services);
         }
-       
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
@@ -319,6 +319,37 @@ namespace LevelLearn.WebApi
                             Url = new Uri("https://bitbucket.org/teamlevellearn/level-learn-core/src/master/")
                         }
                     });
+
+                c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme." + 
+                                        "Example: 'Bearer 12345abcdef'",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = JwtBearerDefaults.AuthenticationScheme
+                    });
+
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement()
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = JwtBearerDefaults.AuthenticationScheme
+                                },
+                                Scheme = "oauth2",
+                                Name = JwtBearerDefaults.AuthenticationScheme,
+                                In = ParameterLocation.Header
+                            },
+                            new System.Collections.Generic.List<string>()
+                        }
+                    });
+
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
