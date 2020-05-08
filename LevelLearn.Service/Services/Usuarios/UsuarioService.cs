@@ -394,9 +394,8 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
-                _log.LogError(exception: ex, "RedimensionarImagem Error");
-                // Retorna a imagem original
-                return inputStream;
+                _log.LogError(exception: ex, "RedimensionarImagem Error");                
+                return inputStream; // Retorna a imagem original
             }
         }
 

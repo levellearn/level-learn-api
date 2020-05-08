@@ -4,12 +4,17 @@ using LevelLearn.ViewModel.Institucional.Instituicao;
 
 namespace LevelLearn.WebApi.AutoMapper
 {
+    /// <summary>
+    /// Institucional VM To Domain
+    /// </summary>
     public class InstitucionalVMToDomain : Profile
     {
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public InstitucionalVMToDomain()
         {
             InstituicaoMap();
-
         }
 
         private void InstituicaoMap()

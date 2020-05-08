@@ -146,11 +146,10 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpPost("up")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Up()
+        public IActionResult Up()
         {
-
             return Ok("It Works");
         }
 

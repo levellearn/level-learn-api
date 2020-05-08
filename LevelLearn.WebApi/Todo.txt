@@ -1,4 +1,5 @@
 Implementar Log
+	Fazer própria imagem
 Add autenticação Swagger 
 	https://localhost:44328/swagger/index.html
 	https://github.com/domaindrivendev/Swashbuckle.AspNetCore

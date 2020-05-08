@@ -36,6 +36,7 @@ using System.IO.Compression;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable CS1591 // O comentário XML ausente não foi encontrado para o tipo ou membro visível publicamente
 namespace LevelLearn.WebApi
 {
     public class Startup
@@ -62,6 +63,7 @@ namespace LevelLearn.WebApi
             services.AddControllers(c =>
             {
                 c.Filters.Add(typeof(CustomExceptionFilter));
+                c.Filters.Add(typeof(CustomActionFilter));
             }).AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.IgnoreNullValues = true;
@@ -102,7 +104,6 @@ namespace LevelLearn.WebApi
         }
 
 
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -139,7 +140,6 @@ namespace LevelLearn.WebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Level Learn API");
             });
-
 
             app.UseHttpsRedirection();
 
@@ -336,7 +336,7 @@ namespace LevelLearn.WebApi
                 c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
                     new OpenApiSecurityScheme
                     {
-                        Description = "JWT Authorization header using the Bearer scheme." + 
+                        Description = "JWT Authorization header using the Bearer scheme." +
                                         "Example: 'Bearer 12345abcdef'",
                         Name = "Authorization",
                         In = ParameterLocation.Header,
@@ -374,3 +374,5 @@ namespace LevelLearn.WebApi
 
     }
 }
+
+#pragma warning restore CS1591 // O comentário XML ausente não foi encontrado para o tipo ou membro visível publicamente

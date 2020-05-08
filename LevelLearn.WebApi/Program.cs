@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
+#pragma warning disable CS1591
 namespace LevelLearn.WebApi
 {
-#pragma warning disable CS1591
     public class Program
     {
         public static void Main(string[] args)
@@ -19,5 +19,5 @@ namespace LevelLearn.WebApi
                 });
 
     }
-#pragma warning restore CS1591
 }
+#pragma warning restore CS1591

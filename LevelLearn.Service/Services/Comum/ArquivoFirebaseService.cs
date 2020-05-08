@@ -18,12 +18,8 @@ namespace LevelLearn.Service.Services.Comum
 
     public class ArquivoFirebaseService : IArquivoService
     {
-        #region Atributos
-
         private readonly FirebaseSettings _firebaseSettings;
         private readonly FirebaseStorage _firebaseStorage;
-
-        #endregion
 
         #region Ctor
 

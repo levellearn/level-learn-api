@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Net;
 
 namespace LevelLearn.WebApi.Filters
@@ -12,27 +15,33 @@ namespace LevelLearn.WebApi.Filters
     public class CustomExceptionFilter : IExceptionFilter
     {
         private readonly IWebHostEnvironment _env;
+        private readonly ILogger<CustomExceptionFilter> _logger;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="env">IWebHostEnvironment</param>
-        public CustomExceptionFilter(IWebHostEnvironment env)
+        /// <param name="logger">ILogger</param>
+        public CustomExceptionFilter(IWebHostEnvironment env, ILogger<CustomExceptionFilter> logger)
         {
             _env = env;
+            _logger = logger;
         }
 
         /// <summary>
-        /// Chamado depois de uma action lançar uma exceção
+        /// Executado depois de uma action lançar uma exceção
         /// </summary>
         /// <param name="context">ExceptionContext</param>
         public void OnException(ExceptionContext context)
         {
-            var response = context.HttpContext.Response;
+            HttpResponse response = context.HttpContext.Response;
+            Exception exception = context.Exception;
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
             response.ContentType = "application/json";
 
-            if (!_env.IsDevelopment())
+            _logger.LogError(exception, "Ops, ocorreu um erro no sistema!");
+
+            if (_env.IsProduction())
             {
                 context.Result = new JsonResult(new
                 {
@@ -41,15 +50,17 @@ namespace LevelLearn.WebApi.Filters
                 return;
             }
 
-            var exception = context.Exception;
-
-            context.Result = new JsonResult(new
+            var result = new
             {
                 message = exception.Message,
                 innerException = exception.InnerException?.Message,
                 stackTrace = exception.StackTrace,
-            });
+            };
+
+            context.Result = new JsonResult(result);
         }
+
+
     }
 
 }

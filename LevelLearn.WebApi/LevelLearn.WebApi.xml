@@ -153,20 +153,45 @@
             <response code="200">Ok</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
+        <member name="T:LevelLearn.WebApi.Filters.CustomActionFilter">
+            <summary>
+            Filtro Customizado de ações do controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Filters.CustomActionFilter})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="env">IWebHostEnvironment</param>
+            <param name="logger">ILogger</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Executado antes de uma action ser executada
+            </summary>
+            <param name="context">ActionExecutingContext</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Executado depois de uma action ser executada
+            </summary>
+            <param name="context">ActionExecutedContext</param>
+        </member>
         <member name="T:LevelLearn.WebApi.Filters.CustomExceptionFilter">
             <summary>
             Filtro Customizado de exceções
             </summary>
         </member>
-        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Filters.CustomExceptionFilter})">
             <summary>
             Ctor
             </summary>
             <param name="env">IWebHostEnvironment</param>
+            <param name="logger">ILogger</param>
         </member>
         <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
             <summary>
-            Chamado depois de uma action lançar uma exceção
+            Executado depois de uma action lançar uma exceção
             </summary>
             <param name="context">ExceptionContext</param>
         </member>
