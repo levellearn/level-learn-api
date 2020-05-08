@@ -12,17 +12,15 @@ using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Usuarios
@@ -41,6 +39,8 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
 
+        private readonly ILogger<UsuarioService> _log;
+
         private Usuario _usuarioLogado = null;
 
         #endregion
@@ -54,7 +54,8 @@ namespace LevelLearn.Service.Services.Usuarios
             ITokenService tokenService,
             IEmailService emailService,
             IArquivoService arquivoService,
-            ISharedResource sharedResource)
+            ISharedResource sharedResource,
+            ILogger<UsuarioService> logger)
         {
             _uow = uow;
             _signInManager = signInManager;
@@ -65,6 +66,8 @@ namespace LevelLearn.Service.Services.Usuarios
             _sharedResource = sharedResource;
             _validatorUsuario = new UsuarioValidator(_sharedResource);
             _validatorProfessor = new ProfessorValidator(_sharedResource);
+
+            _log = logger;
         }
 
         #endregion
@@ -391,9 +394,8 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
-                // TODO: Colocar Log
+                _log.LogError(exception: ex, "RedimensionarImagem Error");
                 // Retorna a imagem original
-                Console.WriteLine(ex.Message);
                 return inputStream;
             }
         }

@@ -87,11 +87,12 @@
             UsuariosController
             </summary>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService)">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Controllers.UsuariosController})">
             <summary>
             Ctor
             </summary>
             <param name="usuarioService">IUsuarioService</param>
+            <param name="logger">ILogger</param>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarUsuario(LevelLearn.ViewModel.Usuarios.RegistrarUsuarioVM)">
             <summary>
@@ -142,6 +143,14 @@
             <response code="200">Retorna usuário logado</response>
             <response code="400">Dados inválidos</response>
             <response code="404">usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Up">
+            <summary>
+            Verificar API
+            </summary>
+            <returns>It Works</returns>
+            <response code="200">Ok</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="T:LevelLearn.WebApi.Filters.CustomExceptionFilter">

@@ -25,6 +25,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -95,7 +96,11 @@ namespace LevelLearn.WebApi
 
             // Swagger documentação API
             ConfigureSwagger(services);
+
+            //Log Seq
+            ConfigureLogSeq(services);
         }
+
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
@@ -148,6 +153,14 @@ namespace LevelLearn.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+        }
+
+        private void ConfigureLogSeq(IServiceCollection services)
+        {
+            services.AddLogging(builder =>
+            {
+                builder.AddSeq(Configuration.GetSection("Seq"));
             });
         }
 

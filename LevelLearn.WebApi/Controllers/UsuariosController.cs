@@ -5,6 +5,7 @@ using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -18,14 +19,17 @@ namespace LevelLearn.WebApi.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly ILogger<UsuariosController> _log;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="usuarioService">IUsuarioService</param>
-        public UsuariosController(IUsuarioService usuarioService)
+        /// <param name="logger">ILogger</param>
+        public UsuariosController(IUsuarioService usuarioService, ILogger<UsuariosController> logger)
         {
             _usuarioService = usuarioService;
+            _log = logger;
         }
 
         /// <summary>
@@ -133,6 +137,23 @@ namespace LevelLearn.WebApi.Controllers
 
             return Ok(response.Data);
         }
+
+        /// <summary>
+        /// Verificar API
+        /// </summary>
+        /// <returns>It Works</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpPost("up")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Up()
+        {
+
+            return Ok("It Works");
+        }
+
 
 
     }
