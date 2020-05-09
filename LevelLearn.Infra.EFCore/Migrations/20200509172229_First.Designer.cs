@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Infra.EFCore.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20200422174757_initial")]
-    partial class initial
+    [Migration("20200509172229_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,8 +115,8 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("varchar(2000)")
                         .HasMaxLength(2000);
 
-                    b.Property<decimal>("Meta")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Meta")
+                        .HasColumnType("float");
 
                     b.Property<string>("Nome")
                         .IsRequired()

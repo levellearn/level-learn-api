@@ -113,8 +113,8 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("varchar(2000)")
                         .HasMaxLength(2000);
 
-                    b.Property<decimal>("Meta")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Meta")
+                        .HasColumnType("float");
 
                     b.Property<string>("Nome")
                         .IsRequired()

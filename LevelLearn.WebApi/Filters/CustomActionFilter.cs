@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using LevelLearn.Domain.Entities.Comum;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -35,10 +35,10 @@ namespace LevelLearn.WebApi.Filters
         /// <param name="context">ActionExecutingContext</param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            string fullActionName = context.ActionDescriptor.DisplayName;
-            IDictionary<string, object> actionArguments = context.ActionArguments;            
+            IDictionary<string, object> actionArguments = context.ActionArguments;
+            string requestJson = JsonConvert.SerializeObject(actionArguments);
 
-            _logger.LogInformation("Action Executing: {@FullActionName} {@ActionArguments} ", fullActionName, actionArguments);
+            _logger.LogInformation("Action Executing: Request: {@Request}", requestJson);
         }
 
         /// <summary>
@@ -47,8 +47,26 @@ namespace LevelLearn.WebApi.Filters
         /// <param name="context">ActionExecutedContext</param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
+            try
+            {
+                ObjectResult response = context.Result as ObjectResult;
+
+                if (response.StatusCode == (int)HttpStatusCode.NotFound)
+                    _logger.LogWarning(LoggingEvents.GetItemNotFound, "Recurso não encontrado: {@Response}", response.Value);
+
+                if (response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    _logger.LogWarning(LoggingEvents.ForbiddenItem, "Recurso sem permissão de acesso: {@Response}", response.Value);
+
+                if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
+                    _logger.LogError(LoggingEvents.InternalServerError, "Erro interno do servidor: {@Response}", response.Value);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(LoggingEvents.InternalServerError, exception, "Erro ao criar log");
+            }
+
         }
 
-    }
 
+    }
 }

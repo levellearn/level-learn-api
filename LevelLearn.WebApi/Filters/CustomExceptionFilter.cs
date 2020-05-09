@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using LevelLearn.Domain.Entities.Comum;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -39,7 +40,7 @@ namespace LevelLearn.WebApi.Filters
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
             response.ContentType = "application/json";
 
-            _logger.LogError(exception, "Ops, ocorreu um erro no sistema!");
+            _logger.LogError(LoggingEvents.InternalServerError, exception, "Ops, ocorreu um erro no sistema!");
 
             if (_env.IsProduction())
             {

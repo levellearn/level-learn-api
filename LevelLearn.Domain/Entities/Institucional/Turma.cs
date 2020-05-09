@@ -17,7 +17,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             Nome = nome.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
-            Meta = decimal.Zero;
+            Meta = 0d;
             NomeDisciplina = nomeDisciplina.RemoveExtraSpaces().ToUpper();
             CursoId = cursoId;
             ProfessorId = professorId;
@@ -32,7 +32,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public decimal Meta { get; private set; } // TODO: decimal?
+        public double Meta { get; private set; }
         public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }

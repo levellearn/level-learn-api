@@ -4,6 +4,26 @@
         <name>LevelLearn.WebApi</name>
     </assembly>
     <members>
+        <member name="T:LevelLearn.WebApi.AutoMapper.InstitucionalDomainToVM">
+            <summary>
+            Institucional Domain To VM
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.AutoMapper.InstitucionalDomainToVM.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="T:LevelLearn.WebApi.AutoMapper.InstitucionalVMToDomain">
+            <summary>
+            Institucional VM To Domain
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.AutoMapper.InstitucionalVMToDomain.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">
             <summary>
             Instituicoes Controller
