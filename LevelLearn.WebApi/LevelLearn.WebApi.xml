@@ -49,7 +49,7 @@
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoes(System.String,System.Int32,System.Int32)">
             <summary>
-            Retorna todas as instituições de um professor paginadas com filtro nome
+            Retorna todas as instituições de um professor paginadas com filtro por nome
             </summary>        
             <param name="query">Termo de pesquisa</param>
             <param name="pageNumber">Número da página</param>
@@ -196,6 +196,13 @@
             Executado depois de uma action ser executada
             </summary>
             <param name="context">ActionExecutedContext</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.IsSuccessStatusCode(System.Int32)">
+            <summary>
+            Verifica se é um status code de sucesso
+            </summary>
+            <param name="statusCode">Código do status code</param>
+            <returns></returns>
         </member>
         <member name="T:LevelLearn.WebApi.Filters.CustomExceptionFilter">
             <summary>

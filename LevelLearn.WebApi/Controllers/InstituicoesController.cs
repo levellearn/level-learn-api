@@ -72,7 +72,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retorna todas as instituições de um professor paginadas com filtro nome
+        /// Retorna todas as instituições de um professor paginadas com filtro por nome
         /// </summary>        
         /// <param name="query">Termo de pesquisa</param>
         /// <param name="pageNumber">Número da página</param>
@@ -89,14 +89,14 @@ namespace LevelLearn.WebApi.Controllers
         {
             var queryVM = new PaginationQueryVM(query, pageNumber, pageSize);
 
-            var response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), queryVM);
+            ResponseAPI<IEnumerable<Instituicao>> response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), queryVM);
 
             var listVM = new InstituicaoListVM
             {
                 Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data),
                 Total = response.Total.Value,
-                PageNumber = pageNumber,
-                PageSize = pageSize
+                PageNumber = response.PageNumber.Value,
+                PageSize = response.PageSize.Value
             };
 
             return Ok(listVM);

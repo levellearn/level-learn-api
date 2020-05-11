@@ -35,6 +35,7 @@ namespace LevelLearn.WebApi.Filters
         /// <param name="context">ActionExecutingContext</param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            // CRIAÇÃO DO LOG DO REQUEST
             IDictionary<string, object> actionArguments = context.ActionArguments;
             string requestJson = JsonConvert.SerializeObject(actionArguments);
 
@@ -47,24 +48,39 @@ namespace LevelLearn.WebApi.Filters
         /// <param name="context">ActionExecutedContext</param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            try
+            ObjectResult response = context.Result as ObjectResult;
+
+            if (IsSuccessStatusCode(response.StatusCode.Value))
+                return;
+
+            // CRIAÇÃO DO LOG DO RESPONSE EM CASO DE AÇÃO MALSUCEDIDA
+            string dataInfo = new
             {
-                ObjectResult response = context.Result as ObjectResult;
+                User = context.HttpContext.User.Identity.Name,
+                IP = context.HttpContext.Connection.RemoteIpAddress.ToString(),
+                Hostname = context.HttpContext.Request.Host.Host,
+                AreaAccessed = context.ActionDescriptor.DisplayName,
+                DateTime = DateTime.UtcNow
+            }.ToString();
 
-                if (response.StatusCode == (int)HttpStatusCode.NotFound)
-                    _logger.LogWarning(LoggingEvents.GetItemNotFound, "Recurso não encontrado: {@Response}", response.Value);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound)
+                _logger.LogWarning(LoggingEvents.GetItemNotFound, "Recurso não encontrado: {@Response} {@Info}", response.Value, dataInfo);
 
-                if (response.StatusCode == (int)HttpStatusCode.Forbidden)
-                    _logger.LogWarning(LoggingEvents.ForbiddenItem, "Recurso sem permissão de acesso: {@Response}", response.Value);
+            if (response.StatusCode == (int)HttpStatusCode.Forbidden)
+                _logger.LogWarning(LoggingEvents.ForbiddenItem, "Recurso sem permissão de acesso: {@Response} {@Info}", response.Value, dataInfo);
 
-                if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
-                    _logger.LogError(LoggingEvents.InternalServerError, "Erro interno do servidor: {@Response}", response.Value);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(LoggingEvents.InternalServerError, exception, "Erro ao criar log");
-            }
+            if (response.StatusCode == (int)HttpStatusCode.InternalServerError)
+                _logger.LogError(LoggingEvents.InternalServerError, "Erro interno do servidor: {@Response} {@Info}", response.Value, dataInfo);
+        }
 
+        /// <summary>
+        /// Verifica se é um status code de sucesso
+        /// </summary>
+        /// <param name="statusCode">Código do status code</param>
+        /// <returns></returns>
+        public bool IsSuccessStatusCode(int statusCode)
+        {
+            return ((int)statusCode >= 200) && ((int)statusCode <= 299);
         }
 
 
