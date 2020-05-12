@@ -85,6 +85,16 @@ namespace LevelLearn.Resource
             _localizer = localizer;
         }
 
+        public string GetValue(string resourceKey)
+        {
+            return _localizer?[resourceKey]?.Value ?? resourceKey;
+        }
+
+        public string GetValue(string resourceKey, params object[] arguments)
+        {
+            return _localizer?[resourceKey, arguments]?.Value ?? resourceKey;
+        }
+
         #region Geral
         public string ErroInternoServidor => GetValue(nameof(ErroInternoServidor));
         public string CadastradoSucesso => GetValue(nameof(CadastradoSucesso));
@@ -164,18 +174,7 @@ namespace LevelLearn.Resource
         public string PessoaCPFInvalido => GetValue(nameof(PessoaCPFInvalido));
         public string AlunoRAObrigatorio => GetValue(nameof(AlunoRAObrigatorio));
         public string ProfessorCPFObrigatorio => GetValue(nameof(ProfessorCPFObrigatorio));
-        #endregion
-
-
-        public string GetValue(string resourceKey)
-        {
-            return _localizer?[resourceKey]?.Value ?? resourceKey;
-        }
-
-        public string GetValue(string resourceKey, params object[] arguments)
-        {
-            return _localizer?[resourceKey, arguments]?.Value ?? resourceKey;
-        }
+        #endregion       
         
     }
 

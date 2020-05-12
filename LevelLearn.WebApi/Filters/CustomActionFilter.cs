@@ -50,7 +50,7 @@ namespace LevelLearn.WebApi.Filters
         {
             ObjectResult response = context.Result as ObjectResult;
 
-            if (IsSuccessStatusCode(response.StatusCode.Value))
+            if (response == null || IsSuccessStatusCode(response.StatusCode.Value))
                 return;
 
             // CRIAÇÃO DO LOG DO RESPONSE EM CASO DE AÇÃO MALSUCEDIDA

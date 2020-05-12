@@ -85,7 +85,7 @@ namespace LevelLearn.WebApi.Controllers
         public async Task<ActionResult> GetInstituicoes(
             [FromQuery]string query,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
-            [FromQuery][Range(1, 200)]int pageSize)
+            [FromQuery][Range(1, 100)]int pageSize)
         {
             var queryVM = new PaginationQueryVM(query, pageNumber, pageSize);
 

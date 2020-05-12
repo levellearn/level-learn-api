@@ -1,21 +1,20 @@
-Implementar Log
+Log
+	http://localhost:5341
 	Fazer própria imagem
-Add autenticação Swagger 
+Swagger 
 	https://localhost:44328/swagger/index.html
 	https://github.com/domaindrivendev/Swashbuckle.AspNetCore
 Configurar HTTPS
 
+Migrations
+	Add-Migration initial -Project LevelLearn.Infra.EFCore -Verbose
+	Update-Database -Project LevelLearn.Infra.EFCore -Verbose
 
+Intituições
+	Etec Prof. Alfredo de Barros Santos	
+	O Centro Paula Souza (CPS) mantém 223 Escolas Técnicas Estaduais (Etecs), distribuídas por 165 municípios paulistas, e mais de duas centenas de classes descentralizadas – unidades que oferecem um ou mais cursos técnicos ou integrados sob a administração de uma Etec.
+	FATEC Guaratinguetá	
+	Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.
 
-
-
-
-Add-Migration initial -Verbose
-Update-Database -Verbose -Project LevelLearn.Infra.EFCore
-
-Etec Prof. Alfredo de Barros Santos	O Centro Paula Souza (CPS) mantém 223 Escolas Técnicas Estaduais (Etecs), distribuídas por 165 municípios paulistas, e mais de duas centenas de classes descentralizadas – unidades que oferecem um ou mais cursos técnicos ou integrados sob a administração de uma Etec.
-FATEC Guaratinguetá	Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.
-dcd0e6d
-375.237.088-20
-828.247.408-84
-https://code-maze.com/email-confirmation-aspnet-core-identity/
+Identity
+	https://code-maze.com/email-confirmation-aspnet-core-identity/

@@ -18,6 +18,16 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public InstituicaoRepository(LevelLearnContext context)
             : base(context) { }
 
+        public override async Task<Instituicao> GetAsync(Guid id)
+        {
+            return await _context.Instituicoes
+                .Include(i => i.Cursos)
+                .Include(i => i.Pessoas)
+                    .ThenInclude(p => p.Pessoa)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
+        }
+
         public async Task<List<Instituicao>> InstituicoesAdmin(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
@@ -26,6 +36,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
+
         public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string query, int pageNumber, int pageSize)
         {
             query = query.GenerateSlug();
@@ -41,6 +52,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                     .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
+
         public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string query)
         {
             query = query.GenerateSlug();
@@ -53,6 +65,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                     .Where(p => p.NomePesquisa.Contains(query) && p.Ativo)
                 .CountAsync();
         }
+
         public async Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
@@ -61,6 +74,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
+
         public Task<bool> IsAdmin(Guid instituicaoId, Guid pessoaId)
         {
             //return _context.Set<Instituicao>()
@@ -78,16 +92,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                             p.InstituicaoId == instituicaoId && 
                             p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .AnyAsync();         
-        }
-        public override async Task<Instituicao> GetAsync(Guid id)
-        {
-            return await _context.Instituicoes
-                .Include(i => i.Cursos)
-                .Include(i => i.Pessoas)
-                    .ThenInclude(p => p.Pessoa)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.Id == id);
-        }
+        }      
 
     }
 }
