@@ -8,6 +8,7 @@ namespace LevelLearn.Domain.UnityOfWorks
     public interface IUnitOfWork : IDisposable
     {
         IInstituicaoRepository Instituicoes { get; }
+        ICursoRepository Cursos { get; }
         IPessoaRepository Pessoas { get; }
 
         bool Complete();

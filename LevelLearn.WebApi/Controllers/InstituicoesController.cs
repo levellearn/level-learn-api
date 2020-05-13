@@ -148,7 +148,7 @@ namespace LevelLearn.WebApi.Controllers
         /// Edição de instituição
         /// </summary>
         /// <param name="id">Id instituição</param>
-        /// <param name="instituicaoVM">Dados de cadastro da instituição</param>
+        /// <param name="instituicaoVM">Dados de edição da instituição</param>
         /// <returns></returns>
         /// <response code="204">Sem Conteúdo</response>
         /// <response code="400">Dados inválidos</response>
