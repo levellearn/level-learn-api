@@ -7,8 +7,6 @@ using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Curso;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
@@ -17,7 +15,7 @@ namespace LevelLearn.Service.Services.Institucional
     {
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedLocalizer;
-        private readonly IValidatorApp<Curso> _validator;
+        private readonly IValidador<Curso> _validator;
 
         public CursoService(IUnitOfWork uow, ISharedResource sharedLocalizer)
             : base(uow.Cursos)

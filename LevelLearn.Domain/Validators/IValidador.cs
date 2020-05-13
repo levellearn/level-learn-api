@@ -2,7 +2,7 @@
 
 namespace LevelLearn.Domain.Validators
 {
-    public interface IValidatorApp<T> where T : class
+    public interface IValidador<T> where T : class
     {
         ValidationResult Validar(T instance);
     }

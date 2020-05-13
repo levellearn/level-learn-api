@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class UsuarioValidator : AbstractValidator<Usuario>, IValidatorApp<Usuario>
+    public class UsuarioValidator : AbstractValidator<Usuario>, IValidador<Usuario>
     {
         private readonly ISharedResource _sharedResource;
 

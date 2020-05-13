@@ -1,4 +1,5 @@
-﻿using LevelLearn.ViewModel.Pessoas;
+﻿using LevelLearn.ViewModel.Institucional.Curso;
+using LevelLearn.ViewModel.Pessoas;
 using System;
 using System.Collections.Generic;
 

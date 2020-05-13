@@ -13,20 +13,21 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
         public UnitOfWork(
             LevelLearnContext context,
             IInstituicaoRepository instituicaoRepository,
+            ICursoRepository cursoRepository,
             IPessoaRepository pessoaRepository
             )
         {
             _context = context;
             Instituicoes = instituicaoRepository;
+            Cursos = cursoRepository;
             Pessoas = pessoaRepository;
         }
 
         //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
-        //public IPessoaRepository Pessoas => new PessoaRepository(_context);
 
         public IInstituicaoRepository Instituicoes { get; }
         public IPessoaRepository Pessoas { get; }
-
+        public ICursoRepository Cursos { get; }
 
         public bool Complete()
         {

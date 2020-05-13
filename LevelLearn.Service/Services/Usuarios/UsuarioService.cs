@@ -34,8 +34,8 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly IEmailService _emailService;
         private readonly IArquivoService _arquivoService;
         private readonly ISharedResource _sharedResource;
-        private readonly IValidatorApp<Usuario> _validatorUsuario;
-        private readonly IValidatorApp<Professor> _validatorProfessor;
+        private readonly IValidador<Usuario> _validatorUsuario;
+        private readonly IValidador<Professor> _validatorProfessor;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
 

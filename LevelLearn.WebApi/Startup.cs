@@ -229,6 +229,7 @@ namespace LevelLearn.WebApi
         private void ConfigureRepositories(IServiceCollection services)
         {
             services.AddScoped<Domain.Repositories.Institucional.IInstituicaoRepository, Infra.EFCore.Repositories.Institucional.InstituicaoRepository>();
+            services.AddScoped<Domain.Repositories.Institucional.ICursoRepository, Infra.EFCore.Repositories.Institucional.CursoRepository>();
             services.AddScoped<Domain.Repositories.Pessoas.IPessoaRepository, Infra.EFCore.Repositories.Pessoas.PessoaRepository>();
         }
 

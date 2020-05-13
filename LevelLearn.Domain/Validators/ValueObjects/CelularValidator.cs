@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class CelularValidator : AbstractValidator<Celular>, IValidatorApp<Celular>
+    public class CelularValidator : AbstractValidator<Celular>, IValidador<Celular>
     {
         private readonly ISharedResource _sharedResource;
 

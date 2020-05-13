@@ -5,7 +5,7 @@ using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class CPFValidator : AbstractValidator<CPF>, IValidatorApp<CPF>
+    public class CPFValidator : AbstractValidator<CPF>, IValidador<CPF>
     {
         private readonly ISharedResource _sharedResource;
 

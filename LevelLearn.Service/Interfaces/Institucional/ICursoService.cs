@@ -1,9 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Service.Response;
-using LevelLearn.ViewModel;
 using LevelLearn.ViewModel.Institucional.Curso;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces.Institucional

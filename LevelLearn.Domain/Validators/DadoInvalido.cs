@@ -2,14 +2,14 @@
 {
     public class DadoInvalido
     {
-        public DadoInvalido(string propertyName, string errorMessage)
+        public DadoInvalido(string nomePropriedade, string mensagemErro)
         {
-            PropertyName = propertyName;
-            ErrorMessage = errorMessage;
+            NomePropriedade = nomePropriedade;
+            MensagemErro = mensagemErro;
         }
 
-        public string PropertyName { get; private set; }
-        public string ErrorMessage { get; private set; }
+        public string NomePropriedade { get; private set; }
+        public string MensagemErro { get; private set; }
 
     }
 }

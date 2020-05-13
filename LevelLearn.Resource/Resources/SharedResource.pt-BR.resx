@@ -129,6 +129,33 @@
   <data name="CPFJaExiste" xml:space="preserve">
     <value>CPF já existente</value>
   </data>
+  <data name="CursoDescricaoObrigatorio" xml:space="preserve">
+    <value>Descrição precisa estar preenchida</value>
+  </data>
+  <data name="CursoDescricaoTamanho" xml:space="preserve">
+    <value>Descrição pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="CursoJaExiste" xml:space="preserve">
+    <value>Curso já existente</value>
+  </data>
+  <data name="CursoNaoEncontrado" xml:space="preserve">
+    <value>Curso não encontrado</value>
+  </data>
+  <data name="CursoNaoPermitido" xml:space="preserve">
+    <value>Você não é Administrador desse curso</value>
+  </data>
+  <data name="CursoNomeObrigatorio" xml:space="preserve">
+    <value>Nome precisa estar preenchido</value>
+  </data>
+  <data name="CursoNomeTamanho" xml:space="preserve">
+    <value>Nome precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="CursoSiglaObrigatorio" xml:space="preserve">
+    <value>Sigla precisa estar preenchida</value>
+  </data>
+  <data name="CursoSiglaTamanho" xml:space="preserve">
+    <value>Sigla pode ter no máximo {0} caracteres</value>
+  </data>
   <data name="DadosInvalidos" xml:space="preserve">
     <value>Dados inválidos</value>
   </data>

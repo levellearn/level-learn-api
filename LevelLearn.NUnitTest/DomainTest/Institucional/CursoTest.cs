@@ -1,9 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
-using System;
 using System.Linq;
 
 namespace LevelLearn.NUnitTest.Institucional
@@ -28,7 +26,7 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        public void Cadastrar_InstituicaoValida_ReturnTrue()
+        public void Cadastrar_CursoValido_ReturnTrue()
         {
             var curso = CriarCurso();
 
@@ -37,11 +35,11 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("", "ADS", "Descrição de teste")] // nome inválido
-        [TestCase("An", "ADS", "Descrição de teste")] // nome inválido
-        [TestCase("Análise e Desenvolvimento de Sistemas", "", "Descrição de teste")] // sigla inválida
-        [TestCase("Análise", "ADS", "")] // descrição inválida
-        public void Cadastrar_InstituicaoValida_ReturnFalse(string nome, string sigla, string descricao)
+        [TestCase("", "ADS", "Descrição de teste")]                                     // nome inválido
+        [TestCase("An", "ADS", "Descrição de teste")]                                   // nome inválido
+        [TestCase("Análise e Desenvolvimento de Sistemas", "", "Descrição de teste")]   // sigla inválida
+        [TestCase("Análise", "ADS", "")]                                                // descrição inválida
+        public void Cadastrar_CursoValido_ReturnFalse(string nome, string sigla, string descricao)
         {
             _nome = nome;
             _sigla = sigla;
@@ -73,7 +71,7 @@ namespace LevelLearn.NUnitTest.Institucional
 
         public static Curso CriarCursoPadrao()
         {
-            var instituicao = InstituicaoTest.CriarInstituicaoPadrao();           
+            var instituicao = InstituicaoTest.CriarInstituicaoPadrao();
 
             var nome = "Análise e Desenvolvimento de Sistemas";
             var sigla = "ADS";

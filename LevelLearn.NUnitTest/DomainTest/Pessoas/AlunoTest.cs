@@ -17,7 +17,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _email, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
-        private readonly IValidatorApp<Aluno> _validator = new AlunoValidator();
+        private readonly IValidador<Aluno> _validator = new AlunoValidator();
 
         [SetUp]
         public void Setup()
@@ -73,7 +73,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
+            var condition = !erros.Exists(e => e.NomePropriedade == nameof(Pessoa.Nome));
 
             Assert.IsTrue(condition, "Aluno deveria ter nome completo");
         }
@@ -91,7 +91,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.PropertyName == nameof(Pessoa.Nome));
+            var condition = !erros.Exists(e => e.NomePropriedade == nameof(Pessoa.Nome));
 
             Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
         }

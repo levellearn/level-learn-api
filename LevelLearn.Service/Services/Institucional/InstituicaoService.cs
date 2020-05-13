@@ -20,7 +20,7 @@ namespace LevelLearn.Service.Services.Institucional
     {
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedLocalizer;
-        private readonly IValidatorApp<Instituicao> _validator;
+        private readonly IValidador<Instituicao> _validator;
 
         public InstituicaoService(IUnitOfWork uow, ISharedResource sharedLocalizer)
             : base(uow.Instituicoes)

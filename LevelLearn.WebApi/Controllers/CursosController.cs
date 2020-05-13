@@ -4,15 +4,10 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
-using LevelLearn.ViewModel;
-using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Curso;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -39,7 +34,7 @@ namespace LevelLearn.WebApi.Controllers
             _cursoService = cursoService;
             _mapper = mapper;
         }
-        
+
         ///// <summary>
         ///// Retorna todos os cursos de um professor paginadas com filtro por nome
         ///// </summary>        

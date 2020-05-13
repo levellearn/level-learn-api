@@ -15,7 +15,7 @@ namespace LevelLearn.NUnitTest.Usuarios
     {
         // Fields
         private string _nome, _email, _nickName, _celular, _senha, _confirmacaoSenha;
-        private readonly IValidatorApp<Usuario> _validator = new UsuarioValidator();
+        private readonly IValidador<Usuario> _validator = new UsuarioValidator();
 
         [SetUp]
         public void Setup()
@@ -41,7 +41,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             usuario.EstaValido();
 
             var erros = usuario.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == nameof(Usuario.NickName));
+            bool valido = !erros.Exists(e => e.NomePropriedade == nameof(Usuario.NickName));
 
             Assert.IsTrue(valido, "Usuário deveria ter NickName válido");
         }
@@ -58,7 +58,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             _validator.Validar(usuario);
             usuario.EstaValido();
             var erros = usuario.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.PropertyName == nameof(Usuario.NickName));
+            bool valido = !erros.Exists(e => e.NomePropriedade == nameof(Usuario.NickName));
 
             Assert.IsFalse(valido, "Usuário deveria ter NickName inválido");
         }

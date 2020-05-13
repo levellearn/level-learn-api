@@ -3,13 +3,8 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using LevelLearn.Infra.EFCore.Configurations.Pessoas;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.IO;
 using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
@@ -46,7 +41,7 @@ namespace LevelLearn.Infra.EFCore.Contexts
 
             modelBuilder.ApplyConfiguration(new InstituicaoConfiguration());
             modelBuilder.ApplyConfiguration(new CursoConfiguration());
-            modelBuilder.ApplyConfiguration(new TurmaConfiguration());           
+            modelBuilder.ApplyConfiguration(new TurmaConfiguration());
 
             modelBuilder.ApplyConfiguration(new PessoaConfiguration());
             modelBuilder.ApplyConfiguration(new ProfessorConfigurationtion());

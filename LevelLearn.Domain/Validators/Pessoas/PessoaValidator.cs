@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class PessoaValidator : AbstractValidator<Pessoa>, IValidatorApp<Pessoa>
+    public class PessoaValidator : AbstractValidator<Pessoa>, IValidador<Pessoa>
     {
         private readonly ISharedResource _sharedResource;
 

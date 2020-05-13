@@ -5,7 +5,7 @@ using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.Institucional
 {
-    public class InstituicaoValidator : AbstractValidator<Instituicao>, IValidatorApp<Instituicao>
+    public class InstituicaoValidator : AbstractValidator<Instituicao>, IValidador<Instituicao>
     {
         #region Ctors
         private readonly ISharedResource _sharedResource;
@@ -40,7 +40,7 @@ namespace LevelLearn.Domain.Validators.Institucional
             RuleFor(p => p.Nome)
             .NotEmpty()
                 .WithMessage(_sharedResource.InstituicaoNomeObrigatorio)
-            .Length(tamanhoMin, RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
+            .Length(tamanhoMin, tamanhoMax)
                 .WithMessage(_sharedResource.InstituicaoNomeTamanho(tamanhoMin, tamanhoMax));
         }
 

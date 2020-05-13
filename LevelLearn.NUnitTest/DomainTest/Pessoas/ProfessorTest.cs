@@ -15,7 +15,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _email, _cpf, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
-        private readonly IValidatorApp<Professor> _validator = new ProfessorValidator();
+        private readonly IValidador<Professor> _validator = new ProfessorValidator();
 
 
         [SetUp]

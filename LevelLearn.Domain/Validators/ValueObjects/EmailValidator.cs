@@ -5,7 +5,7 @@ using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class EmailValidator : AbstractValidator<Email>, IValidatorApp<Email>
+    public class EmailValidator : AbstractValidator<Email>, IValidador<Email>
     {
         private readonly ISharedResource _sharedResource;
 

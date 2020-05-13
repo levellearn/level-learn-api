@@ -6,7 +6,7 @@ using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class ProfessorValidator : AbstractValidator<Professor>, IValidatorApp<Professor>
+    public class ProfessorValidator : AbstractValidator<Professor>, IValidador<Professor>
     {
         #region Ctors
         private readonly ISharedResource _sharedResource;
