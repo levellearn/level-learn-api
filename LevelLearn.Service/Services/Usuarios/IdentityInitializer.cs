@@ -29,8 +29,6 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public void Initialize()
         {
-            _context.Database.EnsureCreated();
-
             CreateRole(ApplicationRoles.ADMIN);
             CreateRole(ApplicationRoles.PROFESSOR);
             CreateRole(ApplicationRoles.ALUNO);

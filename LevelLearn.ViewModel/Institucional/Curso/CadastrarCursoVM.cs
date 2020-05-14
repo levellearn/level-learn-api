@@ -1,4 +1,6 @@
-﻿namespace LevelLearn.ViewModel.Institucional.Curso
+﻿using System;
+
+namespace LevelLearn.ViewModel.Institucional.Curso
 {
     public class CadastrarCursoVM
     {
@@ -19,5 +21,9 @@
         /// </summary>
         public string Descricao { get; set; }
 
+        /// <summary>
+        /// Instituição Id
+        /// </summary>
+        public Guid InstituicaoId { get; set; }
     }
 }

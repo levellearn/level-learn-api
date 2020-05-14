@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Infra.EFCore.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20200509172229_First")]
-    partial class First
+    [Migration("20200514200200_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,9 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("varchar(250)");
 
                     b.Property<string>("Sigla")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 

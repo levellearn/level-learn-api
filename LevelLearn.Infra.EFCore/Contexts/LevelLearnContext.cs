@@ -10,12 +10,7 @@ using System.Linq;
 namespace LevelLearn.Infra.EFCore.Contexts
 {
     public class LevelLearnContext : IdentityDbContext<Usuario>
-    {
-        public LevelLearnContext() : base()
-        {
-            Database.EnsureCreated();
-        }
-
+    {        
         public LevelLearnContext(DbContextOptions<LevelLearnContext> options)
            : base(options)
         { }

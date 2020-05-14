@@ -10,8 +10,8 @@ namespace LevelLearn.Service.Interfaces.Institucional
     {
         //Task<ResponseAPI<Curso>> ObterCurso(Guid id, string pessoaId);
         //Task<ResponseAPI<IEnumerable<Curso>>> ObterCursosProfessor(string pessoaId, PaginationQueryVM queryVM);
-        Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM instituicaoVM, string pessoaId);
-        //Task<ResponseAPI<Curso>> EditarCurso(Guid id, EditarCursoVM instituicaoVM, string pessoaId);
+        Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, string pessoaId);
+        //Task<ResponseAPI<Curso>> EditarCurso(Guid id, EditarCursoVM cursoVM, string pessoaId);
         //Task<ResponseAPI<Curso>> RemoverCurso(Guid id, string pessoaId);
     }
 }

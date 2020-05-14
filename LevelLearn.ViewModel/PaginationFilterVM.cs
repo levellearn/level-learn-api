@@ -1,20 +1,22 @@
-﻿namespace LevelLearn.ViewModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LevelLearn.ViewModel
 {
     /// <summary>
     /// Classe utilizada para armezenar filtros de consulta
     /// </summary>
-    public class PaginationQueryVM
+    public class PaginationFilterVM
     {
-        public PaginationQueryVM()
+        public PaginationFilterVM()
         {
-            Query = string.Empty;
+            SearchFilter = string.Empty;
             PageNumber = 1;
             PageSize = 100;
         }
 
-        public PaginationQueryVM(string query, int pageNumber, int pageSize)
+        public PaginationFilterVM(string searchFilter, int pageNumber, int pageSize)
         {
-            Query = query;
+            SearchFilter = searchFilter;
             PageNumber = pageNumber <= 0 ? 1 : pageNumber;
             PageSize = pageSize <= 0 ? 1 : pageSize;
         }
@@ -22,16 +24,18 @@
         /// <summary>
         /// Termo pesquisa
         /// </summary>
-        public string Query { get; set; }
+        public string SearchFilter { get; set; }
 
         /// <summary>
         /// Número da página
         /// </summary>
+        [Range(1, int.MaxValue, ErrorMessage = "Intervalo inválido do número da página")]
         public int PageNumber { get; set; }
 
         /// <summary>
         /// Quantidade de itens por página
         /// </summary>
+        [Range(1, 100, ErrorMessage = "Intervalo inválido da quantidade de itens por página")]
         public int PageSize { get; set; }
     }
 }

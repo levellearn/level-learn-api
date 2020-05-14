@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LevelLearn.Infra.EFCore.Migrations
 {
-    public partial class First : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,7 +90,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
                     DataCadastro = table.Column<DateTime>(nullable: false),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Sigla = table.Column<string>(nullable: true),
+                    Sigla = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
                     InstituicaoId = table.Column<Guid>(nullable: false)
                 },

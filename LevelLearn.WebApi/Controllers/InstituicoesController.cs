@@ -43,7 +43,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Retorna todas as instituições paginadas com filtro nome
         /// </summary>        
-        /// <param name="query">Termo de pesquisa</param>
+        /// <param name="searchFilter">Termo de pesquisa</param>
         /// <param name="pageNumber">Número da página</param>
         /// <param name="pageSize">Quantidade de itens por página</param>
         /// <returns>Lista instituições</returns>
@@ -53,12 +53,12 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]/admin")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoesAdmin(
-            [FromQuery]string query,
+            [FromQuery]string searchFilter,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
             [FromQuery][Range(1, 200)]int pageSize)
         {
-            var instituicoes = await _instituicaoService.GetWithPagination(query, pageNumber, pageSize);
-            var count = await _instituicaoService.CountWithPagination(query);
+            var instituicoes = await _instituicaoService.GetWithPagination(searchFilter, pageNumber, pageSize);
+            var count = await _instituicaoService.CountWithPagination(searchFilter);
 
             var listVM = new InstituicaoListVM
             {
@@ -74,7 +74,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Retorna todas as instituições de um professor paginadas com filtro por nome
         /// </summary>        
-        /// <param name="query">Termo de pesquisa</param>
+        /// <param name="searchFilter">Termo de pesquisa</param>
         /// <param name="pageNumber">Número da página</param>
         /// <param name="pageSize">Quantidade de itens por página</param>
         /// <returns>Lista instituições</returns>
@@ -83,13 +83,14 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]", Name = "GetInstituicoes")]
         [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoes(
-            [FromQuery]string query,
+            [FromQuery]string searchFilter,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
             [FromQuery][Range(1, 100)]int pageSize)
         {
-            var queryVM = new PaginationQueryVM(query, pageNumber, pageSize);
+            var filterVM = new PaginationFilterVM(searchFilter, pageNumber, pageSize);
 
-            ResponseAPI<IEnumerable<Instituicao>> response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), queryVM);
+            ResponseAPI<IEnumerable<Instituicao>> response = 
+                await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filterVM);
 
             var listVM = new InstituicaoListVM
             {

@@ -40,15 +40,15 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.Ok(instituicao);
         }
 
-        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(string pessoaId, PaginationQueryVM queryVM)
+        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(string pessoaId, PaginationFilterVM filterVM)
         {
             var instituicoes = await _uow.Instituicoes
-                .InstituicoesProfessor(new Guid(pessoaId), queryVM.Query, queryVM.PageNumber, queryVM.PageSize);
+                .InstituicoesProfessor(new Guid(pessoaId), filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
 
-            var total = await _uow.Instituicoes.TotalInstituicoesProfessor(new Guid(pessoaId), queryVM.Query);
+            var total = await _uow.Instituicoes.TotalInstituicoesProfessor(new Guid(pessoaId), filterVM.SearchFilter);
 
             return ResponseFactory<IEnumerable<Instituicao>>
-                .Ok(instituicoes, total, queryVM.PageNumber, queryVM.PageSize);
+                .Ok(instituicoes, total, filterVM.PageNumber, filterVM.PageSize);
         }
 
         public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM, string pessoaId)
@@ -79,7 +79,7 @@ namespace LevelLearn.Service.Services.Institucional
         public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM, string pessoaId)
         {
             // Validação BD
-            var isProfessorAdmin = await _uow.Instituicoes.IsAdmin(id, new Guid(pessoaId));
+            var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(id, new Guid(pessoaId));
 
             if (!isProfessorAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
@@ -115,7 +115,7 @@ namespace LevelLearn.Service.Services.Institucional
         public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id, string pessoaId)
         {
             // Validação BD
-            var isAdmin = await _uow.Instituicoes.IsAdmin(id, new Guid(pessoaId));
+            var isAdmin = await _uow.Instituicoes.IsProfessorAdmin(id, new Guid(pessoaId));
 
             if (!isAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);

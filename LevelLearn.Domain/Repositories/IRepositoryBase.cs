@@ -31,8 +31,21 @@ namespace LevelLearn.Domain.Repositories
         int Count();
         Task<int> CountAsync();
 
-        Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize);
-        Task<int> CountWithPagination(string query);
+        /// <summary>
+        /// Retorna uma lista paginada com filtro
+        /// </summary>
+        /// <param name="searchFilter">Termo de pesquisa</param>
+        /// <param name="pageNumber">Número da página</param>
+        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetWithPagination(string searchFilter, int pageNumber, int pageSize);
+
+        /// <summary>
+        /// Retorna o total para a paginação
+        /// </summary>
+        /// <param name="searchFilter">Termo de pesquisa</param>
+        /// <returns></returns>
+        Task<int> CountWithPagination(string searchFilter);
         Task<bool> EntityExists(Expression<Func<TEntity, bool>> filter);
 
         //List<TEntity> SelectIncludes(Func<TEntity, bool> where = null, params Expression<Func<TEntity, object>>[] includes);

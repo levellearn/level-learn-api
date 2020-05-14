@@ -1,4 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
 using LevelLearn.Domain.Validators.Institucional;
@@ -24,9 +27,36 @@ namespace LevelLearn.Service.Services.Institucional
             _sharedLocalizer = sharedLocalizer;
             _validator = new CursoValidator(_sharedLocalizer);
         }
-        public Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM instituicaoVM, string pessoaId)
+
+        public async Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, string pessoaId)
         {
-            throw new NotImplementedException();
+            // Validação BD
+            if (await _uow.Cursos.EntityExists(i => i.NomePesquisa == cursoVM.Nome.GenerateSlug()))
+                return ResponseFactory<Curso>.BadRequest(_sharedLocalizer.CursoJaExiste);
+
+            // TODO: Somente pode criar cursos um professor Admin?
+            //var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(cursoVM.InstituicaoId, new Guid(pessoaId));
+
+            //if (!isProfessorAdmin)
+            //   return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
+
+            var curso = new Curso(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao, cursoVM.InstituicaoId);
+
+            // Validação objeto
+            _validator.Validar(curso);
+
+            if (!curso.EstaValido())
+                ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedLocalizer.DadosInvalidos);
+
+            var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, new Guid(pessoaId), curso.Id);
+            curso.AtribuirPessoa(pessoaCurso);            
+
+            // Salva no BD
+            await _uow.Cursos.AddAsync(curso);
+
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedLocalizer.FalhaCadastrar);
+
+            return ResponseFactory<Curso>.Created(curso, _sharedLocalizer.CadastradoSucesso);
         }
 
         public void Dispose()

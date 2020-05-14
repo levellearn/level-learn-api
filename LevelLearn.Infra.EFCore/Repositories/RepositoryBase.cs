@@ -13,9 +13,9 @@ namespace LevelLearn.Infra.EFCore.Repository
 {
     public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
     {
-        protected readonly LevelLearnContext _context;
+        protected readonly DbContext _context;
 
-        public RepositoryBase(LevelLearnContext context)
+        public RepositoryBase(DbContext context)
         {
             _context = context;
         }
@@ -116,29 +116,29 @@ namespace LevelLearn.Infra.EFCore.Repository
             return await _context.Set<TEntity>().AsNoTracking().CountAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize)
+        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string searchFilter, int pageNumber, int pageSize)
         {
             pageNumber = (pageNumber <= 0) ? 1 : pageNumber;
             pageSize = (pageSize <= 0) ? 1 : pageSize;
-            query = query.GenerateSlug();
+            searchFilter = searchFilter.GenerateSlug();
 
             return await _context.Set<TEntity>()
                 //.IgnoreQueryFilters()
                 .AsNoTracking()
-                .Where(p => p.NomePesquisa.Contains(query))
+                .Where(p => p.NomePesquisa.Contains(searchFilter))
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
         
-        public async Task<int> CountWithPagination(string query)
+        public async Task<int> CountWithPagination(string searchFilter)
         {
-            query = query.GenerateSlug();
+            searchFilter = searchFilter.GenerateSlug();
 
             return await _context.Set<TEntity>()
                 .AsNoTracking()
-                .Where(p => p.NomePesquisa.Contains(query))
+                .Where(p => p.NomePesquisa.Contains(searchFilter))
                 .CountAsync();
         }
 

@@ -62,7 +62,7 @@
             <summary>
             Retorna todas as instituições paginadas com filtro nome
             </summary>        
-            <param name="query">Termo de pesquisa</param>
+            <param name="searchFilter">Termo de pesquisa</param>
             <param name="pageNumber">Número da página</param>
             <param name="pageSize">Quantidade de itens por página</param>
             <returns>Lista instituições</returns>
@@ -73,7 +73,7 @@
             <summary>
             Retorna todas as instituições de um professor paginadas com filtro por nome
             </summary>        
-            <param name="query">Termo de pesquisa</param>
+            <param name="searchFilter">Termo de pesquisa</param>
             <param name="pageNumber">Número da página</param>
             <param name="pageSize">Quantidade de itens por página</param>
             <returns>Lista instituições</returns>

@@ -49,7 +49,9 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .HasColumnType("varchar(250)");
 
                     b.Property<string>("Sigla")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
