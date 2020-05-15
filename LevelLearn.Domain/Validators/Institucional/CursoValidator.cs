@@ -24,13 +24,21 @@ namespace LevelLearn.Domain.Validators.Institucional
         
         public ValidationResult Validar(Curso instance)
         {
+            ValidarCursoId();
             ValidarNome();
             ValidarSigla();
             ValidarDescricao();
+            ValidarInstituicaoId();
 
             instance.ResultadoValidacao = this.Validate(instance);
 
             return instance.ResultadoValidacao;
+        }
+        private void ValidarCursoId()
+        {
+            RuleFor(p => p.Id)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.IdObrigatorio);
         }
 
         private void ValidarNome()
@@ -66,6 +74,13 @@ namespace LevelLearn.Domain.Validators.Institucional
                     .WithMessage(_sharedResource.CursoDescricaoObrigatorio)
                 .MaximumLength(tamanhoMax)
                     .WithMessage(_sharedResource.CursoDescricaoTamanho(tamanhoMax));
+        }
+
+        private void ValidarInstituicaoId()
+        {
+            RuleFor(p => p.InstituicaoId)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.IdObrigatorio);                
         }
 
     }

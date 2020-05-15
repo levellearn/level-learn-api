@@ -28,7 +28,7 @@ namespace LevelLearn.Service.Services.Institucional
             _validator = new CursoValidator(_sharedLocalizer);
         }
 
-        public async Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, string pessoaId)
+        public async Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId)
         {
             // Validação BD
             if (await _uow.Cursos.EntityExists(i => i.NomePesquisa == cursoVM.Nome.GenerateSlug()))
@@ -46,9 +46,9 @@ namespace LevelLearn.Service.Services.Institucional
             _validator.Validar(curso);
 
             if (!curso.EstaValido())
-                ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedLocalizer.DadosInvalidos);
+                return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedLocalizer.DadosInvalidos);
 
-            var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, new Guid(pessoaId), curso.Id);
+            var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, pessoaId, curso.Id);
             curso.AtribuirPessoa(pessoaCurso);            
 
             // Salva no BD
@@ -59,9 +59,22 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Curso>.Created(curso, _sharedLocalizer.CadastradoSucesso);
         }
 
+        public async Task<ResponseAPI<Curso>> ObterCurso(Guid cursoId, Guid pessoaId)
+        {
+            Curso curso = await _uow.Cursos.GetAsync(cursoId);
+
+            if (curso == null)
+                return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);
+
+            return ResponseFactory<Curso>.Ok(curso);
+        }
+
+
+
         public void Dispose()
         {
             _uow.Dispose();
         }
+
     }
 }

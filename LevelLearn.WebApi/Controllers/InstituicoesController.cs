@@ -51,7 +51,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
-        [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoesAdmin(
             [FromQuery]string searchFilter,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
@@ -60,7 +60,7 @@ namespace LevelLearn.WebApi.Controllers
             var instituicoes = await _instituicaoService.GetWithPagination(searchFilter, pageNumber, pageSize);
             var count = await _instituicaoService.CountWithPagination(searchFilter);
 
-            var listVM = new InstituicaoListVM
+            var listVM = new InstituicaoListaVM
             {
                 Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
                 Total = count,
@@ -81,7 +81,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]", Name = "GetInstituicoes")]
-        [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetInstituicoes(
             [FromQuery]string searchFilter,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
@@ -92,7 +92,7 @@ namespace LevelLearn.WebApi.Controllers
             ResponseAPI<IEnumerable<Instituicao>> response = 
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filterVM);
 
-            var listVM = new InstituicaoListVM
+            var listVM = new InstituicaoListaVM
             {
                 Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data),
                 Total = response.Total.Value,
@@ -112,7 +112,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="404">Instituição não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/{id:guid}")]
-        [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InstituicaoDetalheVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetInstituicao(Guid id)
         {
@@ -120,7 +120,7 @@ namespace LevelLearn.WebApi.Controllers
 
             if (response.Failure) return StatusCode(response.StatusCode, response);
 
-            return Ok(_mapper.Map<InstituicaoVM>(response.Data));
+            return Ok(_mapper.Map<InstituicaoDetalheVM>(response.Data));
         }
 
         /// <summary>

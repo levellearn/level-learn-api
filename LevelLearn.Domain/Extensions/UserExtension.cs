@@ -14,15 +14,18 @@ namespace LevelLearn.Domain.Extensions
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return userId;
         }
 
-        public static string GetPessoaId(this ClaimsPrincipal principal)
+        public static Guid GetPessoaId(this ClaimsPrincipal principal)
         {
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            return principal.FindFirst(ApplicationClaims.PESSOA_ID)?.Value;
+            string pessoaId =  principal.FindFirst(ApplicationClaims.PESSOA_ID)?.Value;
+            return new Guid(pessoaId);
         }
 
         public static string GetUserEmail(this ClaimsPrincipal principal)

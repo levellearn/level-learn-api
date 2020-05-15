@@ -234,12 +234,14 @@ namespace LevelLearn.WebApi
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)
-        {
-            services.AddTransient<IInstituicaoService, InstituicaoService>();
+        {           
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IArquivoService, ArquivoFirebaseService>();
+
+            services.AddTransient<IInstituicaoService, InstituicaoService>();
+            services.AddTransient<ICursoService, CursoService>();
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)

@@ -1,7 +1,4 @@
-﻿using LevelLearn.ViewModel.Institucional.Curso;
-using LevelLearn.ViewModel.Pessoas;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
@@ -12,7 +9,5 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         public string Descricao { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCadastro { get; set; }
-        public ICollection<CursoVM> Cursos { get; set; }
-        public ICollection<PessoaInstituicaoVM> Pessoas { get; set; }
     }
 }

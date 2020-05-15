@@ -36,6 +36,16 @@
             <param name="cursoService">ICursoService</param>
             <param name="mapper">IMapper</param>
         </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCurso(System.Guid)">
+            <summary>
+            Retorna um curso
+            </summary>
+            <param name="id">Id Curso</param>
+            <returns>Curso</returns>
+            <response code="200">Retorna um curso</response>
+            <response code="404">Curso não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.CreateCurso(LevelLearn.ViewModel.Institucional.Curso.CadastrarCursoVM)">
             <summary>
             Cadastro de curso

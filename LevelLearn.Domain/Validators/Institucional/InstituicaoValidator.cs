@@ -24,12 +24,20 @@ namespace LevelLearn.Domain.Validators.Institucional
 
         public ValidationResult Validar(Instituicao instance)
         {
+            ValidarInstituicaoId();
             ValidarNome();
             ValidarDescricao();
 
             instance.ResultadoValidacao = this.Validate(instance);
 
             return instance.ResultadoValidacao;
+        }
+
+        private void ValidarInstituicaoId()
+        {
+            RuleFor(p => p.Id)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.IdObrigatorio);
         }
 
         private void ValidarNome()

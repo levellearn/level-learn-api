@@ -2,7 +2,7 @@
 
 namespace LevelLearn.ViewModel.Institucional.Instituicao
 {
-    public class InstituicaoListVM : ListBaseVM
+    public class InstituicaoListaVM : ListBaseVM
     {
         public IEnumerable<InstituicaoVM> Data { get; set; }
 

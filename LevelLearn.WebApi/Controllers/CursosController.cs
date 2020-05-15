@@ -8,6 +8,7 @@ using LevelLearn.ViewModel.Institucional.Curso;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -66,25 +67,25 @@ namespace LevelLearn.WebApi.Controllers
         //    return Ok(listVM);
         //}
 
-        ///// <summary>
-        ///// Retorna um curso
-        ///// </summary>
-        ///// <param name="id">Id Curso</param>
-        ///// <returns>Curso</returns>
-        ///// <response code="200">Retorna um curso</response>
-        ///// <response code="404">Curso não encontrado</response>
-        ///// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        //[HttpGet("v1/[controller]/{id:guid}")]
-        //[ProducesResponseType(typeof(CursoVM), StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public async Task<ActionResult> GetCurso(Guid id)
-        //{
-        //    ResponseAPI<Curso> response = await _cursoService.ObterCurso(id, User.GetPessoaId());
+        /// <summary>
+        /// Retorna um curso
+        /// </summary>
+        /// <param name="id">Id Curso</param>
+        /// <returns>Curso</returns>
+        /// <response code="200">Retorna um curso</response>
+        /// <response code="404">Curso não encontrado</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpGet("v1/[controller]/{id:guid}")]
+        [ProducesResponseType(typeof(CursoDetalheVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> GetCurso(Guid id)
+        {
+            ResponseAPI<Curso> response = await _cursoService.ObterCurso(id, User.GetPessoaId());
 
-        //    if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Failure) return StatusCode(response.StatusCode, response);
 
-        //    return Ok(_mapper.Map<CursoVM>(response.Data));
-        //}
+            return Ok(_mapper.Map<CursoDetalheVM>(response.Data));
+        }
 
         /// <summary>
         /// Cadastro de curso
@@ -105,8 +106,7 @@ namespace LevelLearn.WebApi.Controllers
 
             var responseVM = _mapper.Map<CursoVM>(response.Data);
 
-            return CreatedAtAction("GetCurso", new { id = responseVM.Id }, responseVM);
-            //return CreatedAtAction(nameof(GetCurso), new { id = responseVM.Id }, responseVM);
+            return CreatedAtAction(nameof(GetCurso), new { id = responseVM.Id }, responseVM);
         }
 
         ///// <summary>

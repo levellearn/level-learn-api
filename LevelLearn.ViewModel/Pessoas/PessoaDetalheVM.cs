@@ -3,7 +3,7 @@ using System;
 
 namespace LevelLearn.ViewModel.Pessoas
 {
-    public class PessoaVM
+    public class PessoaDetalheVM
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
@@ -12,6 +12,10 @@ namespace LevelLearn.ViewModel.Pessoas
         public string Celular { get; set; }
         public GenerosVM Genero { get; set; }
         public TiposPessoaVM TipoPessoa { get; set; }
-        public DateTime? DataNascimento { get; set; }        
+        public DateTime? DataNascimento { get; set; }
+
+        //public ICollection<PessoaInstituicao> Instituicoes { get; set; }
+        //public ICollection<PessoaCurso> Cursos { get; set; }
+        //public ICollection<Turma> Turmas { get; set; }
     }
 }

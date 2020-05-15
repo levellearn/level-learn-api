@@ -18,6 +18,7 @@ namespace LevelLearn.Resource
         public string FalhaCadastrar { get; }
         public string FalhaAtualizar { get; }
         public string FalhaDeletar { get; }
+        public string IdObrigatorio { get; }
         #endregion
         
         #region Usuario
@@ -117,6 +118,7 @@ namespace LevelLearn.Resource
         public string FalhaCadastrar => GetValue(nameof(FalhaCadastrar));
         public string FalhaAtualizar => GetValue(nameof(FalhaAtualizar));
         public string FalhaDeletar => GetValue(nameof(FalhaDeletar));
+        public string IdObrigatorio => GetValue(nameof(IdObrigatorio));
 
         #endregion
 

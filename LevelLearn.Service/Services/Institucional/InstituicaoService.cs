@@ -30,9 +30,9 @@ namespace LevelLearn.Service.Services.Institucional
             _validator = new InstituicaoValidator(_sharedLocalizer);
         }
 
-        public async Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid id, string pessoaId)
+        public async Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid instituicaoId, Guid pessoaId)
         {
-            var instituicao = await _uow.Instituicoes.GetAsync(id);
+            var instituicao = await _uow.Instituicoes.GetAsync(instituicaoId);
 
             if (instituicao == null)
                 return ResponseFactory<Instituicao>.NotFound(_sharedLocalizer.InstituicaoNaoEncontrada);
@@ -40,18 +40,18 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.Ok(instituicao);
         }
 
-        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(string pessoaId, PaginationFilterVM filterVM)
+        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, PaginationFilterVM filterVM)
         {
             var instituicoes = await _uow.Instituicoes
-                .InstituicoesProfessor(new Guid(pessoaId), filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
+                .InstituicoesProfessor(pessoaId, filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
 
-            var total = await _uow.Instituicoes.TotalInstituicoesProfessor(new Guid(pessoaId), filterVM.SearchFilter);
+            var total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filterVM.SearchFilter);
 
             return ResponseFactory<IEnumerable<Instituicao>>
                 .Ok(instituicoes, total, filterVM.PageNumber, filterVM.PageSize);
         }
 
-        public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM, string pessoaId)
+        public async Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM, Guid pessoaId)
         {
             var instituicaoNova = new Instituicao(instituicaoVM.Nome, instituicaoVM.Descricao);
 
@@ -66,7 +66,7 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseFactory<Instituicao>.BadRequest(_sharedLocalizer.InstituicaoJaExiste);
 
             // Salva no BD
-            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, new Guid(pessoaId), instituicaoNova.Id);
+            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, pessoaId, instituicaoNova.Id);
             instituicaoNova.AtribuirPessoa(pessoaInstituicao);
 
             await _uow.Instituicoes.AddAsync(instituicaoNova);
@@ -76,22 +76,22 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.Created(instituicaoNova, _sharedLocalizer.CadastradoSucesso);
         }
 
-        public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid id, EditarInstituicaoVM instituicaoVM, string pessoaId)
+        public async Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid instituicaoId, EditarInstituicaoVM instituicaoVM, Guid pessoaId)
         {
             // Validação BD
-            var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(id, new Guid(pessoaId));
+            var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(instituicaoId, pessoaId);
 
             if (!isProfessorAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
 
-            var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
+            var instituicaoExistente = await _uow.Instituicoes.GetAsync(instituicaoId);
 
             if (instituicaoExistente == null)
                 return ResponseFactory<Instituicao>.NotFound(_sharedLocalizer.InstituicaoNaoEncontrada);
 
             // Verifica se está tentando atualizar uma instituição que já existe
             if (await _uow.Instituicoes.EntityExists(i =>
-                    i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != id)
+                    i.NomePesquisa == instituicaoVM.Nome.GenerateSlug() && i.Id != instituicaoId)
                 )
                 return ResponseFactory<Instituicao>.BadRequest(_sharedLocalizer.InstituicaoJaExiste);
 
@@ -112,15 +112,15 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.NoContent(_sharedLocalizer.AtualizadoSucesso);
         }
 
-        public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid id, string pessoaId)
+        public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid instituicaoId, Guid pessoaId)
         {
             // Validação BD
-            var isAdmin = await _uow.Instituicoes.IsProfessorAdmin(id, new Guid(pessoaId));
+            var isAdmin = await _uow.Instituicoes.IsProfessorAdmin(instituicaoId, pessoaId);
 
             if (!isAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
 
-            var instituicaoExistente = await _uow.Instituicoes.GetAsync(id);
+            var instituicaoExistente = await _uow.Instituicoes.GetAsync(instituicaoId);
 
             if (instituicaoExistente == null)
                 return ResponseFactory<Instituicao>.NotFound(_sharedLocalizer.InstituicaoNaoEncontrada);

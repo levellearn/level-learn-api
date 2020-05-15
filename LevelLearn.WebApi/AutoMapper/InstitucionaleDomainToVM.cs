@@ -19,13 +19,20 @@ namespace LevelLearn.WebApi.AutoMapper
         /// </summary>
         public InstitucionalDomainToVM()
         {
+            CreateMap<Instituicao, InstituicaoDetalheVM>();
             CreateMap<Instituicao, InstituicaoVM>();
+
             CreateMap<Curso, CursoVM>();
+            CreateMap<Curso, CursoDetalheVM>();
+
             CreateMap<Pessoa, PessoaVM>();
+
             CreateMap<PerfisInstituicao, PerfisInstituicaoVM>();
             CreateMap<Generos, GenerosVM>();
             CreateMap<TiposPessoa, TiposPessoaVM>();
+
             CreateMap<PessoaInstituicao, PessoaInstituicaoVM>();
+            CreateMap<PessoaCurso, PessoaCursoVM>();
 
         }
     }
