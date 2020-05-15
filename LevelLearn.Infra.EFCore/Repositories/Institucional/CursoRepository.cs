@@ -57,13 +57,18 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        public async Task<List<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId)
+        public async Task<List<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, string searchFilter, int pageNumber, int pageSize)
         {
+            searchFilter = searchFilter.GenerateSlug();
+
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
                 .Select(p => p.Curso)
                     .Where(c => c.InstituicaoId == instituicaoId)
+                    .Where(c => c.NomePesquisa.Contains(searchFilter) && c.Ativo)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
                     .OrderBy(c => c.Nome)
                 .ToListAsync();
 
@@ -76,6 +81,19 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             //            .Include(p => p.Instituicao)
             //            .OrderBy(p => p.Nome)
             //    .ToListAsync();
+        }
+
+        public async Task<int> TotalCursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, string searchFilter)
+        {
+            searchFilter = searchFilter.GenerateSlug();
+
+            return await _context.Set<PessoaCurso>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
+                .Select(p => p.Curso)
+                    .Where(c => c.InstituicaoId == instituicaoId)
+                    .Where(p => p.NomePesquisa.Contains(searchFilter) && p.Ativo)
+                .CountAsync();
         }
 
         public async Task<bool> IsProfessorDoCurso(Guid cursoId, Guid pessoaId)

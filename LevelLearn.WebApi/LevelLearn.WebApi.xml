@@ -36,6 +36,18 @@
             <param name="cursoService">ICursoService</param>
             <param name="mapper">IMapper</param>
         </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCursos(System.Guid,System.String,System.Int32,System.Int32)">
+            <summary>
+            Retorna todos os cursos de um professor paginadas com filtro por nome
+            </summary>        
+            <param name="instituicaoId">Id instituição</param>
+            <param name="searchFilter">Termo de pesquisa</param>
+            <param name="pageNumber">Número da página</param>
+            <param name="pageSize">Quantidade de itens por página</param>
+            <returns>Lista cursos</returns>
+            <response code="200">Lista de cursos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCurso(System.Guid)">
             <summary>
             Retorna um curso
@@ -54,6 +66,30 @@
             <returns>Retorna o curso cadastrado</returns>
             <response code="201">Retorna curso cadastrado</response>
             <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.EditCurso(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarCursoVM)">
+            <summary>
+            Edição de curso
+            </summary>
+            <param name="id">Id curso</param>
+            <param name="cursoVM">Dados de edição do curso</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="403">Não é admin do curso</response>
+            <response code="404">Curso não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.DeleteCurso(System.Guid)">
+            <summary>
+            Remoção de curso
+            </summary>
+            <param name="id">Id curso</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="403">Não é admin do curso</response>
+            <response code="404">Curso não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">

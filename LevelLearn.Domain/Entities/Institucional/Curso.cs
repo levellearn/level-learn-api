@@ -47,6 +47,15 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         #region Methods
 
+        public void Atualizar(string nome, string sigla, string descricao)
+        {
+            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Sigla = sigla.RemoveExtraSpaces().ToUpper();
+            Descricao = descricao?.Trim();
+
+            NomePesquisa = Nome.GenerateSlug();
+        }
+
         public void AtribuirPessoa(PessoaCurso pessoa)
         {
             Pessoas.Add(pessoa);
@@ -98,7 +107,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
             Turmas.ToList()
                 .ForEach(c => c.Desativar());
-        }
+        }       
 
 
         #endregion Methods
