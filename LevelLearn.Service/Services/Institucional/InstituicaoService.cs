@@ -27,12 +27,12 @@ namespace LevelLearn.Service.Services.Institucional
         {
             _uow = uow;
             _sharedLocalizer = sharedLocalizer;
-            _validator = new InstituicaoValidator(_sharedLocalizer);
+            _validator = new InstituicaoValidator(_sharedLocalizer); // TODO: Factory Method
         }
 
         public async Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid instituicaoId, Guid pessoaId)
         {
-            var instituicao = await _uow.Instituicoes.GetAsync(instituicaoId);
+            Instituicao instituicao = await _uow.Instituicoes.InstituicaoCompleta(instituicaoId);
 
             if (instituicao == null)
                 return ResponseFactory<Instituicao>.NotFound(_sharedLocalizer.InstituicaoNaoEncontrada);

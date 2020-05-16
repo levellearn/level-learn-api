@@ -10,6 +10,8 @@ namespace LevelLearn.Domain.Entities.Usuarios
 {
     public class Usuario : IdentityUser
     {
+        #region Ctors
+
         private const string IMAGEM_URL_PADRAO = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/default-user.png?alt=media&token=5718efef-96f2-4933-802e-0aec94063608";
 
         protected Usuario() { }
@@ -29,6 +31,10 @@ namespace LevelLearn.Domain.Entities.Usuarios
             ResultadoValidacao = new ValidationResult();
         }
 
+        #endregion
+
+        #region Props
+
         public string Nome { get; set; } // Redundância pessoa
         public string NickName { get; set; }
         public string ImagemUrl { get; set; }
@@ -41,8 +47,9 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string ConfirmacaoSenha { get; set; }
         public ValidationResult ResultadoValidacao { get; set; }
 
-        // Métodos 
+        #endregion
 
+        #region Methods
         public bool EstaValido()
         {
             return this.ResultadoValidacao.IsValid;
@@ -68,8 +75,6 @@ namespace LevelLearn.Domain.Entities.Usuarios
         {
             this.PhoneNumberConfirmed = true;
         }
-
-        #region Metodos Foto Perfil
 
         /// <summary>
         /// Gera um nome para a imagem com base no ID usuário e um timestamp 
@@ -99,7 +104,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             this.ImagemNome = imagemNome;
 
             return nomeImagemAnterior;
-        }
+        } 
 
         #endregion
 

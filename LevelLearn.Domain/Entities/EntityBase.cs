@@ -14,6 +14,8 @@ namespace LevelLearn.Domain.Entities
             Ativo = true;
             DataCadastro = DateTime.Now; // TODO: DateTime.UtcNow?
             ResultadoValidacao = new ValidationResult();
+
+            AtribuirNomePesquisa();
         }
 
         #region Props
@@ -58,6 +60,12 @@ namespace LevelLearn.Domain.Entities
         {
             Ativo = false;
         }
+
+        /// <summary>
+        /// Método que deve ser implementado para atribuir o nome de pesquisa para a entidade
+        /// </summary>
+        public abstract void AtribuirNomePesquisa();
+
 
         public override bool Equals(object obj)
         {

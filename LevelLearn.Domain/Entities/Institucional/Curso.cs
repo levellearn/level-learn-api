@@ -25,7 +25,6 @@ namespace LevelLearn.Domain.Entities.Institucional
 
             Pessoas = new List<PessoaCurso>();
             Turmas = new List<Turma>();
-            NomePesquisa = Nome.GenerateSlug();
         }
 
         #endregion Ctors
@@ -53,7 +52,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
 
-            NomePesquisa = Nome.GenerateSlug();
+            AtribuirNomePesquisa();
         }
 
         public void AtribuirPessoa(PessoaCurso pessoa)
@@ -107,8 +106,12 @@ namespace LevelLearn.Domain.Entities.Institucional
 
             Turmas.ToList()
                 .ForEach(c => c.Desativar());
-        }       
+        }
 
+        public override void AtribuirNomePesquisa()
+        {
+            NomePesquisa = Nome.GenerateSlug();
+        }
 
         #endregion Methods
 

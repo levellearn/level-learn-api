@@ -18,7 +18,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public InstituicaoRepository(LevelLearnContext context)
             : base(context) { }
 
-        public override async Task<Instituicao> GetAsync(Guid id)
+        public async Task<Instituicao> InstituicaoCompleta(Guid id)
         {
             return await _context.Set<Instituicao>()
                 .Include(i => i.Cursos)

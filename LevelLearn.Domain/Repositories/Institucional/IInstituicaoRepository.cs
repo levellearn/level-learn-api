@@ -8,6 +8,13 @@ namespace LevelLearn.Domain.Repositories.Institucional
     public interface IInstituicaoRepository : IRepositoryBase<Instituicao>
     {
         /// <summary>
+        /// Retorna a instituição com todos os dados relacionados
+        /// </summary>
+        /// <param name="id">Id instituição</param>
+        /// <returns>Instituição</returns>
+        Task<Instituicao> InstituicaoCompleta(Guid id);
+
+        /// <summary>
         /// Verifica se é professor admin de uma determinada instituição
         /// </summary>
         /// <param name="instituicaoId">Id instituição</param>

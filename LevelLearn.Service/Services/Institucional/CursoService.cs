@@ -49,7 +49,7 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResponseAPI<Curso>> ObterCurso(Guid cursoId, Guid pessoaId)
         {
-            Curso curso = await _uow.Cursos.GetAsync(cursoId);
+            Curso curso = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (curso == null)
                 return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);
@@ -130,7 +130,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!isProfessorCurso)
                 return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.CursoNaoPermitido);
 
-            var cursoExistente = await _uow.Cursos.GetAsync(cursoId);
+            var cursoExistente = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (cursoExistente == null)
                 return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);

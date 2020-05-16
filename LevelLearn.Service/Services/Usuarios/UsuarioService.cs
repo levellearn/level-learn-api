@@ -9,6 +9,7 @@ using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Comum;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
+using LevelLearn.Service.Services.Comum;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -195,7 +196,7 @@ namespace LevelLearn.Service.Services.Usuarios
         public async Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
             const int TAMANHO_MAXIMO_BYTES = 5_000_000;
-            var diretorio = Comum.DiretoriosFirebase.ImagensPerfilUsuario;
+            DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
             var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
 
             Usuario user = await _userManager.FindByIdAsync(userId);

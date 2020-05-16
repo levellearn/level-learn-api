@@ -25,6 +25,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
             _sharedResource = sharedResource;
         }      
 
+
         public ValidationResult Validar(Pessoa instance)
         {
             // Pessoa

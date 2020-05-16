@@ -19,7 +19,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             : base(context)
         { }
 
-        public override async Task<Curso> GetAsync(Guid id)
+        public async Task<Curso> CursoCompleto(Guid id)
         {
             return await _context.Set<Curso>()
                 .AsNoTracking()
@@ -96,6 +96,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
+        // TODO: Trazer curso junto para melhorar desempenho e verficar se é nulo no service
         public async Task<bool> IsProfessorDoCurso(Guid cursoId, Guid pessoaId)
         {
             return await _context.Set<PessoaCurso>()

@@ -30,7 +30,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Instituicoes = new List<PessoaInstituicao>();
             Cursos = new List<PessoaCurso>();
             Turmas = new List<Turma>();
-            NomePesquisa = Nome.GenerateSlug();
         }
 
         #endregion Ctors
@@ -94,6 +93,11 @@ namespace LevelLearn.Domain.Entities.Pessoas
             {
                 Turmas.Add(turma);
             }
+        }
+
+        public override void AtribuirNomePesquisa()
+        {
+            NomePesquisa = Nome.GenerateSlug();
         }
 
         public override string ToString()

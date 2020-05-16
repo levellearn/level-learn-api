@@ -8,6 +8,13 @@ namespace LevelLearn.Domain.Repositories.Institucional
     public interface ICursoRepository : IRepositoryBase<Curso>
     {
         /// <summary>
+        /// Retorna o curso com todos os dados relacionados
+        /// </summary>
+        /// <param name="id">Id curso</param>
+        /// <returns>Curso</returns>
+        Task<Curso> CursoCompleto(Guid id);
+
+        /// <summary>
         /// Retorna os cursos de um professor, paginadas com filtro por nome
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>

@@ -22,8 +22,6 @@ namespace LevelLearn.Domain.Entities.Institucional
             CursoId = cursoId;
             ProfessorId = professorId;
             Alunos = new List<AlunoTurma>();
-
-            NomePesquisa = Nome.GenerateSlug();
         }
 
         #endregion Ctors
@@ -71,6 +69,11 @@ namespace LevelLearn.Domain.Entities.Institucional
             this.ResultadoValidacao = validator.Validate(this);
 
             return this.ResultadoValidacao.IsValid;
+        }
+
+        public override void AtribuirNomePesquisa()
+        {
+            NomePesquisa = Nome.GenerateSlug();
         }
 
         #endregion Methods

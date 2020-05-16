@@ -27,7 +27,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             // Pessoa
             var pessoaValidator = new PessoaValidator(_sharedResource);
-            var pessoaResultadoValidacao = pessoaValidator.Validar(instance);
+            ValidationResult pessoaResultadoValidacao = pessoaValidator.Validar(instance);
 
             // Aluno
             ValidarRA();

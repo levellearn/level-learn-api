@@ -31,17 +31,17 @@ namespace LevelLearn.Domain.Validators.Usuarios
             ValidarSenha();
             ValidarConfirmacaoSenha();
             ValidarImagem();
+            ValidarPessoaId();
 
             instance.ResultadoValidacao = this.Validate(instance);
 
             return instance.ResultadoValidacao;
         }
-
-        /// <summary>
-        /// Ex.: bill@GatesIII
-        /// </summary>
+        
         private void ValidarNickName()
         {
+            //  Ex.: bill@GatesIII
+
             var tamanhoMax = RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX;
             var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
 
@@ -89,6 +89,14 @@ namespace LevelLearn.Domain.Validators.Usuarios
                 .NotEmpty()
                     .WithMessage(_sharedResource.PessoaImagemObrigatoria);
         }
+
+        private void ValidarPessoaId()
+        {
+            RuleFor(p => p.PessoaId)
+                .NotEmpty()
+                    .WithMessage(_sharedResource.IdObrigatorio);
+        }
+
 
 
     }
