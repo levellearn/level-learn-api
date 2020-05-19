@@ -58,6 +58,7 @@ namespace LevelLearn.WebApi
 
             // Culture Localization
             services.AddLocalization();
+            //services.AddSingleton(new System.Resources.ResourceManager("CustomersAPI.Resources.Controllers.CustomersController", typeof(Startup).GetTypeInfo().Assembly));
             services.AddScoped<ISharedResource, SharedResource>();
 
             services.AddControllers(c =>
@@ -234,7 +235,7 @@ namespace LevelLearn.WebApi
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)
-        {           
+        {
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IEmailService, EmailService>();

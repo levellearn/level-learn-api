@@ -41,7 +41,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             usuario.EstaValido();
 
             var erros = usuario.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.NomePropriedade == nameof(Usuario.NickName));
+            bool valido = !erros.Exists(e => e.Propriedade == nameof(Usuario.NickName));
 
             Assert.IsTrue(valido, "Usuário deveria ter NickName válido");
         }
@@ -58,7 +58,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             _validator.Validar(usuario);
             usuario.EstaValido();
             var erros = usuario.DadosInvalidos().ToList();
-            bool valido = !erros.Exists(e => e.NomePropriedade == nameof(Usuario.NickName));
+            bool valido = !erros.Exists(e => e.Propriedade == nameof(Usuario.NickName));
 
             Assert.IsFalse(valido, "Usuário deveria ter NickName inválido");
         }

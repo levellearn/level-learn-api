@@ -73,7 +73,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.NomePropriedade == nameof(Pessoa.Nome));
+            var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
             Assert.IsTrue(condition, "Aluno deveria ter nome completo");
         }
@@ -91,7 +91,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
-            var condition = !erros.Exists(e => e.NomePropriedade == nameof(Pessoa.Nome));
+            var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
             Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
         }

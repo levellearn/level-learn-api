@@ -1,14 +1,22 @@
 ﻿namespace LevelLearn.Domain.Validators
 {
+    /// <summary>
+    /// Representa um dado inválido de uma entidade
+    /// </summary>
     public class DadoInvalido
     {
-        public DadoInvalido(string nomePropriedade, string mensagemErro)
+        /// <summary>
+        /// Cria um objeto para os dados inválidos de uma entidade
+        /// </summary>
+        /// <param name="propriedade">Nome da propriedade</param>
+        /// <param name="mensagemErro">Mensagem de erro da propriedade</param>
+        public DadoInvalido(string propriedade, string mensagemErro)
         {
-            NomePropriedade = nomePropriedade;
+            Propriedade = propriedade;
             MensagemErro = mensagemErro;
         }
 
-        public string NomePropriedade { get; private set; }
+        public string Propriedade { get; private set; }
         public string MensagemErro { get; private set; }
 
     }

@@ -290,6 +290,20 @@
             </summary>
             <param name="context">ExceptionContext</param>
         </member>
+        <member name="M:LevelLearn.WebApi.Resources.InstituicaoResource.BuildStringFromResource(System.String,System.Object[])">
+            <summary>
+            Builds up a string looking up a resource and doing the replacements.
+            </summary>
+            <param name="resourceStringName">Name of resource to use</param>
+            <param name="replacements">Strings to use for replacing in the resource string</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Resources.ResourceBase.BuildStringFromResource(System.String,System.Object[])">
+            <summary>
+            Builds up a string looking up a resource and doing the replacements.
+            </summary>
+            <param name="resourceStringName">Name of resource to use</param>
+            <param name="replacements">Strings to use for replacing in the resource string</param>
+        </member>
         <member name="M:LevelLearn.WebApi.Startup.ValidateToken(Microsoft.AspNetCore.Authentication.JwtBearer.TokenValidatedContext,Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
             <summary>
             Verifica se o token está armazando no BD de cache ou se já expirou
