@@ -10,11 +10,22 @@ Migrations
 	Add-Migration initial -Project LevelLearn.Infra.EFCore -Verbose
 	Update-Database -Project LevelLearn.Infra.EFCore -Verbose
 
+Globalization
+	https://www.youtube.com/watch?v=D9V6TqbtGYM
+	https://www.youtube.com/watch?v=IaNTZ1eHdRk
+
+Identity
+	https://code-maze.com/email-confirmation-aspnet-core-identity/
+
+Reponse Cache 
+
+
+
+
+
+
 Intituições
 	Etec Prof. Alfredo de Barros Santos	
 	O Centro Paula Souza (CPS) mantém 223 Escolas Técnicas Estaduais (Etecs), distribuídas por 165 municípios paulistas, e mais de duas centenas de classes descentralizadas – unidades que oferecem um ou mais cursos técnicos ou integrados sob a administração de uma Etec.
 	FATEC Guaratinguetá	
 	Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.
-
-Identity
-	https://code-maze.com/email-confirmation-aspnet-core-identity/

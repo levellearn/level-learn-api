@@ -6,7 +6,6 @@ using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;
 using LevelLearn.ViewModel.Institucional.Instituicao;
-using LevelLearn.WebApi.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +38,6 @@ namespace LevelLearn.WebApi.Controllers
         {
             _instituicaoService = instituicaoService;
             _mapper = mapper;
-            var resource = new InstituicaoResource();
-            string msg = resource.InstituicaoNaoEncontrada;
         }
 
         /// <summary>
@@ -99,8 +96,8 @@ namespace LevelLearn.WebApi.Controllers
             {
                 Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data),
                 Total = response.Total.Value,
-                PageNumber = response.PageNumber.Value,
-                PageSize = response.PageSize.Value
+                PageNumber = filterVM.PageNumber,
+                PageSize = filterVM.PageSize
             };
 
             return Ok(listVM);

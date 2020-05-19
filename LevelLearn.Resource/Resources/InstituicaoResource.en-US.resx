@@ -118,24 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InstituicaoDescricaoObrigatorio" xml:space="preserve">
-    <value>Descrição precisa estar preenchida</value>
+    <value>Description must be filled</value>
   </data>
   <data name="InstituicaoDescricaoTamanho" xml:space="preserve">
-    <value>Descrição pode ter no máximo {0} caracteres</value>
+    <value>Description can have a maximum of {0} characters</value>
+  </data>
+  <data name="InstituicaoIdObrigatorio" xml:space="preserve">
+    <value>ID must be filled</value>
   </data>
   <data name="InstituicaoJaExiste" xml:space="preserve">
-    <value>Instituição já existente</value>
+    <value>Institution already exists</value>
   </data>
   <data name="InstituicaoNaoEncontrada" xml:space="preserve">
-    <value>Instituição não encontrada</value>
+    <value>Institution does not exist</value>
   </data>
   <data name="InstituicaoNaoPermitida" xml:space="preserve">
-    <value>Você não é Administrador dessa instituição</value>
+    <value>You are not the Administrator of this institution</value>
   </data>
   <data name="InstituicaoNomeObrigatorio" xml:space="preserve">
-    <value>Nome precisa estar preenchido</value>
+    <value>Name must be filled</value>
   </data>
   <data name="InstituicaoNomeTamanho" xml:space="preserve">
-    <value>Nome precisa estar entre {0} e {1} caracteres</value>
+    <value>Name must be between {0} and {1} characters</value>
   </data>
 </root>

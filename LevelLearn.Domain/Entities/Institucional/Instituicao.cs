@@ -22,6 +22,8 @@ namespace LevelLearn.Domain.Entities.Institucional
             Descricao = descricao?.Trim();
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
+
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors
@@ -77,6 +79,9 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public override bool EstaValido()
         {
+            var validator = new InstituicaoValidator();
+            this.ResultadoValidacao = validator.Validate(this);
+
             return this.ResultadoValidacao.IsValid;
         }
 

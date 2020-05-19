@@ -25,6 +25,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 
             Pessoas = new List<PessoaCurso>();
             Turmas = new List<Turma>();
+
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors

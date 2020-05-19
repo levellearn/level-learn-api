@@ -61,17 +61,7 @@ namespace LevelLearn.Resource
         public string AlunoRAObrigatorio { get; }
         public string ProfessorCPFObrigatorio { get; }
 
-        #endregion
-
-        #region Instituicao
-        public string InstituicaoNomeObrigatorio { get; }
-        public string InstituicaoNomeTamanho(params object[] arguments);
-        public string InstituicaoDescricaoObrigatorio { get; }
-        public string InstituicaoDescricaoTamanho(params object[] arguments);
-        public string InstituicaoNaoEncontrada { get; }
-        public string InstituicaoNaoPermitida { get; }
-        public string InstituicaoJaExiste { get; }
-        #endregion
+        #endregion       
 
         #region Curso
         public string CursoNaoEncontrado { get; }
@@ -172,22 +162,6 @@ namespace LevelLearn.Resource
         public string PessoaCPFInvalido => GetValue(nameof(PessoaCPFInvalido));
         public string AlunoRAObrigatorio => GetValue(nameof(AlunoRAObrigatorio));
         public string ProfessorCPFObrigatorio => GetValue(nameof(ProfessorCPFObrigatorio));
-        #endregion
-
-        #region Instituicao
-        public string InstituicaoNaoEncontrada => GetValue(nameof(InstituicaoNaoEncontrada));
-        public string InstituicaoNaoPermitida => GetValue(nameof(InstituicaoNaoPermitida));
-        public string InstituicaoJaExiste => GetValue(nameof(InstituicaoJaExiste));
-        public string InstituicaoNomeObrigatorio => GetValue(nameof(InstituicaoNomeObrigatorio));
-        public string InstituicaoNomeTamanho(params object[] arguments)
-        {
-            return GetValue(nameof(InstituicaoNomeTamanho), arguments);
-        }
-        public string InstituicaoDescricaoObrigatorio => GetValue(nameof(InstituicaoDescricaoObrigatorio));
-        public string InstituicaoDescricaoTamanho(params object[] arguments)
-        {
-            return GetValue(nameof(InstituicaoDescricaoTamanho), arguments);
-        }
         #endregion
 
         #region Curso

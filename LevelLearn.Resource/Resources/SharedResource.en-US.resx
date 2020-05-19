@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AlunoRAObrigatorio" xml:space="preserve">
-    <value>RA needs to be filled</value>
+    <value>Student registration number must be filled</value>
   </data>
   <data name="AtualizadoSucesso" xml:space="preserve">
     <value>Updated successfully</value>
@@ -177,32 +177,11 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID must be filled</value>
   </data>
-  <data name="InstituicaoDescricaoObrigatorio" xml:space="preserve">
-    <value>Description must be filled</value>
-  </data>
-  <data name="InstituicaoDescricaoTamanho" xml:space="preserve">
-    <value>Description can have a maximum of {0} characters</value>
-  </data>
-  <data name="InstituicaoJaExiste" xml:space="preserve">
-    <value>Institution already exists</value>
-  </data>
-  <data name="InstituicaoNaoEncontrada" xml:space="preserve">
-    <value>Institution does not exist</value>
-  </data>
-  <data name="InstituicaoNaoPermitida" xml:space="preserve">
-    <value>You are not the Administrator of this institution</value>
-  </data>
-  <data name="InstituicaoNomeObrigatorio" xml:space="preserve">
-    <value>Name must be filled</value>
-  </data>
-  <data name="InstituicaoNomeTamanho" xml:space="preserve">
-    <value>Name must be between {0} and {1} characters</value>
-  </data>
   <data name="NaoEncontrado" xml:space="preserve">
     <value>Register not found</value>
   </data>
   <data name="PessoaCelularInvalido" xml:space="preserve">
-    <value>Cell is not valid</value>
+    <value>Cell phone is not valid</value>
   </data>
   <data name="PessoaCPFInvalido" xml:space="preserve">
     <value>CPF is not valid</value>

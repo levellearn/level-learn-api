@@ -22,6 +22,8 @@ namespace LevelLearn.Domain.Entities.Institucional
             CursoId = cursoId;
             ProfessorId = professorId;
             Alunos = new List<AlunoTurma>();
+
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors

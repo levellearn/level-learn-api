@@ -177,27 +177,6 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID precisa estar preenchido</value>
   </data>
-  <data name="InstituicaoDescricaoObrigatorio" xml:space="preserve">
-    <value>Descrição precisa estar preenchida</value>
-  </data>
-  <data name="InstituicaoDescricaoTamanho" xml:space="preserve">
-    <value>Descrição pode ter no máximo {0} caracteres</value>
-  </data>
-  <data name="InstituicaoJaExiste" xml:space="preserve">
-    <value>Instituição já existente</value>
-  </data>
-  <data name="InstituicaoNaoEncontrada" xml:space="preserve">
-    <value>Instituição não encontrada</value>
-  </data>
-  <data name="InstituicaoNaoPermitida" xml:space="preserve">
-    <value>Você não é Administrador dessa instituição</value>
-  </data>
-  <data name="InstituicaoNomeObrigatorio" xml:space="preserve">
-    <value>Nome precisa estar preenchido</value>
-  </data>
-  <data name="InstituicaoNomeTamanho" xml:space="preserve">
-    <value>Nome precisa estar entre {0} e {1} caracteres</value>
-  </data>
   <data name="NaoEncontrado" xml:space="preserve">
     <value>Registro não encontrado</value>
   </data>

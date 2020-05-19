@@ -14,8 +14,6 @@ namespace LevelLearn.Domain.Entities
             Ativo = true;
             DataCadastro = DateTime.Now; // TODO: DateTime.UtcNow?
             ResultadoValidacao = new ValidationResult();
-
-            AtribuirNomePesquisa();
         }
 
         #region Props
