@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Pessoas\" />
-    <Folder Include="Usuarios\" />
   </ItemGroup>
 
 </Project>

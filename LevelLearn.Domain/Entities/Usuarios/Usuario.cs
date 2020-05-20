@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.Usuarios;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,9 @@ namespace LevelLearn.Domain.Entities.Usuarios
         #region Methods
         public bool EstaValido()
         {
+            var validator = new UsuarioValidator();
+            this.ResultadoValidacao = validator.Validate(this);
+
             return this.ResultadoValidacao.IsValid;
         }
 
@@ -104,7 +108,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             this.ImagemNome = imagemNome;
 
             return nomeImagemAnterior;
-        } 
+        }
 
         #endregion
 

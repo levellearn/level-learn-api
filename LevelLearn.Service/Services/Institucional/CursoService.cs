@@ -20,14 +20,14 @@ namespace LevelLearn.Service.Services.Institucional
         #region Ctor
 
         private readonly IUnitOfWork _uow;
-        private readonly ISharedResource _sharedLocalizer;
+        private readonly ISharedResource _sharedResource;
         private readonly CursoResource _resource;
 
-        public CursoService(IUnitOfWork uow, ISharedResource sharedLocalizer)
+        public CursoService(IUnitOfWork uow, ISharedResource sharedResource)
             : base(uow.Cursos)
         {
             _uow = uow;
-            _sharedLocalizer = sharedLocalizer;
+            _sharedResource = sharedResource;
             _resource = new CursoResource();
         }
 
@@ -67,7 +67,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             // Validação objeto
             if (!curso.EstaValido())
-                return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedLocalizer.DadosInvalidos);
+                return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, pessoaId, curso.Id);
             curso.AtribuirPessoa(pessoaCurso);
@@ -79,9 +79,9 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             await _uow.Cursos.AddAsync(curso);
 
-            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedLocalizer.FalhaCadastrar);
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaCadastrar);
 
-            return ResponseFactory<Curso>.Created(curso, _sharedLocalizer.CadastradoSucesso);
+            return ResponseFactory<Curso>.Created(curso, _sharedResource.CadastradoSucesso);
         }
 
         public async Task<ResponseAPI<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId)
@@ -98,7 +98,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!cursoExistente.EstaValido())
             {
                 var dadosInvalidos = cursoExistente.DadosInvalidos();
-                return ResponseFactory<Curso>.BadRequest(dadosInvalidos, _sharedLocalizer.DadosInvalidos);
+                return ResponseFactory<Curso>.BadRequest(dadosInvalidos, _sharedResource.DadosInvalidos);
             }
 
             // Validação BD
@@ -113,9 +113,9 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Cursos.Update(cursoExistente);
 
-            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedLocalizer.FalhaAtualizar);
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaAtualizar);
 
-            return ResponseFactory<Curso>.NoContent(_sharedLocalizer.AtualizadoSucesso);
+            return ResponseFactory<Curso>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
         public async Task<ResponseAPI<Curso>> RemoverCurso(Guid cursoId, Guid pessoaId)
@@ -138,9 +138,9 @@ namespace LevelLearn.Service.Services.Institucional
             _uow.Cursos.Update(cursoExistente);
 
             if (!await _uow.CompleteAsync())
-                return ResponseFactory<Curso>.InternalServerError(_sharedLocalizer.FalhaDeletar);
+                return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
 
-            return ResponseFactory<Curso>.NoContent(_sharedLocalizer.DeletadoSucesso);
+            return ResponseFactory<Curso>.NoContent(_sharedResource.DeletadoSucesso);
         }
 
         private async Task<bool> CursoExisteNaInstituicao(Curso curso)

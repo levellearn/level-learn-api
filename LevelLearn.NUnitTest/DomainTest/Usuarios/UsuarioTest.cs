@@ -15,7 +15,6 @@ namespace LevelLearn.NUnitTest.Usuarios
     {
         // Fields
         private string _nome, _email, _nickName, _celular, _senha, _confirmacaoSenha;
-        private readonly IValidador<Usuario> _validator = new UsuarioValidator();
 
         [SetUp]
         public void Setup()
@@ -37,7 +36,6 @@ namespace LevelLearn.NUnitTest.Usuarios
             _nickName = userName;
             var usuario = CriarUsuario();
 
-            _validator.Validar(usuario);
             usuario.EstaValido();
 
             var erros = usuario.DadosInvalidos().ToList();
@@ -55,7 +53,6 @@ namespace LevelLearn.NUnitTest.Usuarios
             _nickName = userName;
             var usuario = CriarUsuario();
 
-            _validator.Validar(usuario);
             usuario.EstaValido();
             var erros = usuario.DadosInvalidos().ToList();
             bool valido = !erros.Exists(e => e.Propriedade == nameof(Usuario.NickName));
