@@ -1,4 +1,4 @@
-﻿namespace LevelLearn.Resource.Resources
+﻿namespace LevelLearn.Resource.Institucional
 {
     public class InstituicaoResource : ResourceBase
     {
@@ -7,7 +7,7 @@
         {  
         }       
 
-        public string InstituicaoIdObrigatorio => GetResource(nameof(InstituicaoIdObrigatorio));
+        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
         public string InstituicaoNaoEncontrada => GetResource(nameof(InstituicaoNaoEncontrada));
         public string InstituicaoNaoPermitida => GetResource(nameof(InstituicaoNaoPermitida));
         public string InstituicaoJaExiste => GetResource(nameof(InstituicaoJaExiste));

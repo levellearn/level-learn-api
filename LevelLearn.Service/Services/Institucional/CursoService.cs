@@ -2,9 +2,8 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.UnityOfWorks;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Resource;
+using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;
@@ -22,14 +21,14 @@ namespace LevelLearn.Service.Services.Institucional
 
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedLocalizer;
-        private readonly IValidador<Curso> _validator;
+        private readonly CursoResource _resource;
 
         public CursoService(IUnitOfWork uow, ISharedResource sharedLocalizer)
             : base(uow.Cursos)
         {
             _uow = uow;
             _sharedLocalizer = sharedLocalizer;
-            _validator = new CursoValidator(_sharedLocalizer);
+            _resource = new CursoResource();
         }
 
         #endregion
@@ -52,7 +51,7 @@ namespace LevelLearn.Service.Services.Institucional
             Curso curso = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (curso == null)
-                return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);
+                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
 
             return ResponseFactory<Curso>.Ok(curso);
         }
@@ -67,8 +66,6 @@ namespace LevelLearn.Service.Services.Institucional
             var curso = new Curso(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao, cursoVM.InstituicaoId);
 
             // Validação objeto
-            _validator.Validar(curso);
-
             if (!curso.EstaValido())
                 return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedLocalizer.DadosInvalidos);
 
@@ -77,7 +74,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             // Validação BD
             if (await CursoExisteNaInstituicao(curso))
-                return ResponseFactory<Curso>.BadRequest(_sharedLocalizer.CursoJaExiste);
+                return ResponseFactory<Curso>.BadRequest(_resource.CursoJaExiste);
 
             // Salva no BD
             await _uow.Cursos.AddAsync(curso);
@@ -92,13 +89,12 @@ namespace LevelLearn.Service.Services.Institucional
             Curso cursoExistente = await _uow.Cursos.GetAsync(cursoId);
 
             if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);
+                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
 
             // Modifica objeto
             cursoExistente.Atualizar(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao);
 
             // Validação objeto
-            _validator.Validar(cursoExistente);
             if (!cursoExistente.EstaValido())
             {
                 var dadosInvalidos = cursoExistente.DadosInvalidos();
@@ -108,11 +104,11 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação BD
             var isProfessorCurso = await _uow.Cursos.IsProfessorDoCurso(cursoId, pessoaId);
             if (!isProfessorCurso)
-                return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.CursoNaoPermitido);
+                return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
 
             // TODO: Essa validação é necessária? 
             if (await CursoExisteNaInstituicao(cursoExistente))
-                return ResponseFactory<Curso>.BadRequest(_sharedLocalizer.CursoJaExiste);
+                return ResponseFactory<Curso>.BadRequest(_resource.CursoJaExiste);
 
             // Salva no BD
             _uow.Cursos.Update(cursoExistente);
@@ -128,12 +124,12 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação BD
             var isProfessorCurso = await _uow.Cursos.IsProfessorDoCurso(cursoId, pessoaId);
             if (!isProfessorCurso)
-                return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.CursoNaoPermitido);
+                return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
 
             var cursoExistente = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_sharedLocalizer.CursoNaoEncontrado);
+                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
 
             // TODO: Remover ou desativar?
             //_uow.Cursos.Remove(cursoExistente);

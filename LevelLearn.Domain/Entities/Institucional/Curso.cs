@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +86,9 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public override bool EstaValido()
         {
+            var validator = new CursoValidator();
+            this.ResultadoValidacao = validator.Validate(this);
+
             return this.ResultadoValidacao.IsValid;
         }
 

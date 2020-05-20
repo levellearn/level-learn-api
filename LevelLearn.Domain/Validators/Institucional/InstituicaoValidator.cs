@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Resource.Resources;
+using LevelLearn.Resource.Institucional;
 
 namespace LevelLearn.Domain.Validators.Institucional
 {
@@ -21,7 +21,7 @@ namespace LevelLearn.Domain.Validators.Institucional
         {
             RuleFor(p => p.Id)
                 .NotEmpty()
-                    .WithMessage(_resource.InstituicaoIdObrigatorio);
+                    .WithMessage(_resource.IdObrigatorio);
         }
 
         private void ValidarNome()

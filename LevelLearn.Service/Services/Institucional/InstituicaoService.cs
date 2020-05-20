@@ -1,12 +1,9 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.Resource;
-using LevelLearn.Resource.Resources;
+using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;
@@ -24,7 +21,6 @@ namespace LevelLearn.Service.Services.Institucional
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedResource;
         private readonly InstituicaoResource _resource;
-        private readonly InstituicaoValidator _validator;
 
         public InstituicaoService(IUnitOfWork uow, ISharedResource sharedResource)
             : base(uow.Instituicoes)
@@ -32,7 +28,6 @@ namespace LevelLearn.Service.Services.Institucional
             _uow = uow;
             _sharedResource = sharedResource;
             _resource = new InstituicaoResource();
-            _validator = new InstituicaoValidator();
         }
 
         #endregion

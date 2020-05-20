@@ -1,44 +1,29 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Resource;
+using LevelLearn.Resource.Institucional;
 
 namespace LevelLearn.Domain.Validators.Institucional
 {
-    public class CursoValidator : AbstractValidator<Curso>, IValidador<Curso>
+    public class CursoValidator : AbstractValidator<Curso>
     {
-        #region Ctors
-        private readonly ISharedResource _sharedResource;
+        private readonly CursoResource _resource;
 
-        // Unit Test
         public CursoValidator()
         {
-            _sharedResource = new SharedResource();
-        }
+            _resource = new CursoResource();
 
-        public CursoValidator(ISharedResource sharedResource)
-        {
-            _sharedResource = sharedResource;
-        }
-        #endregion
-        
-        public ValidationResult Validar(Curso instance)
-        {
             ValidarCursoId();
             ValidarNome();
             ValidarSigla();
             ValidarDescricao();
             ValidarInstituicaoId();
-
-            instance.ResultadoValidacao = this.Validate(instance);
-
-            return instance.ResultadoValidacao;
         }
+
         private void ValidarCursoId()
         {
             RuleFor(p => p.Id)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.IdObrigatorio);
+                    .WithMessage(_resource.IdObrigatorio);
         }
 
         private void ValidarNome()
@@ -48,9 +33,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.CursoNomeObrigatorio)
+                    .WithMessage(_resource.CursoNomeObrigatorio)
                 .Length(tamanhoMin, tamanhoMax)
-                    .WithMessage(_sharedResource.CursoNomeTamanho(tamanhoMin, tamanhoMax));
+                    .WithMessage(_resource.CursoNomeTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarSigla()
@@ -60,9 +45,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Sigla)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.CursoSiglaObrigatorio)
+                    .WithMessage(_resource.CursoSiglaObrigatorio)
                 .Length(tamanhoMin, tamanhoMax)
-                .WithMessage(_sharedResource.CursoSiglaTamanho(tamanhoMin, tamanhoMax));
+                .WithMessage(_resource.CursoSiglaTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarDescricao()
@@ -71,16 +56,16 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Descricao)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.CursoDescricaoObrigatorio)
+                    .WithMessage(_resource.CursoDescricaoObrigatorio)
                 .MaximumLength(tamanhoMax)
-                    .WithMessage(_sharedResource.CursoDescricaoTamanho(tamanhoMax));
+                    .WithMessage(_resource.CursoDescricaoTamanho(tamanhoMax));
         }
 
         private void ValidarInstituicaoId()
         {
             RuleFor(p => p.InstituicaoId)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.IdObrigatorio);                
+                    .WithMessage(_resource.IdObrigatorio);
         }
 
     }

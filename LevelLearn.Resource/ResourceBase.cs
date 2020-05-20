@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Resources;
 
-namespace LevelLearn.Resource.Resources
+namespace LevelLearn.Resource
 {
     public abstract class ResourceBase
     {
