@@ -99,7 +99,6 @@ namespace LevelLearn.Service.Services.Institucional
             if (!isProfessorAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_resource.InstituicaoNaoPermitida);
 
-            // Verifica se está tentando atualizar uma instituição que já existe
             if (await InstituicaoExistente(instituicaoExistente))
                 return ResponseFactory<Instituicao>.BadRequest(_resource.InstituicaoJaExiste);
 
@@ -124,10 +123,7 @@ namespace LevelLearn.Service.Services.Institucional
 
             if (instituicaoExistente == null)
                 return ResponseFactory<Instituicao>.NotFound(_resource.InstituicaoNaoEncontrada);
-
-            // TODO: Remover ou desativar?
-            //_uow.Instituicoes.Remove(instituicaoExistente);
-
+          
             instituicaoExistente.Desativar();
             _uow.Instituicoes.Update(instituicaoExistente);
 

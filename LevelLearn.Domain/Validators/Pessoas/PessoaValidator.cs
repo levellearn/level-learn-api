@@ -13,7 +13,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         public PessoaValidator()
         {
-            _resource = new PessoaResource();
+            _resource = PessoaResource.ObterInstancia();
 
             ValidarNome();
             ValidarDataNascimento();

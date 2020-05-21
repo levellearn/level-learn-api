@@ -7,29 +7,29 @@
         {
         }
 
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
-        public string CursoNaoEncontrado => GetResource(nameof(CursoNaoEncontrado));
-        public string CursoNaoPermitido => GetResource(nameof(CursoNaoPermitido));
-        public string CursoJaExiste => GetResource(nameof(CursoJaExiste));
-        public string CursoNomeObrigatorio => GetResource(nameof(CursoNomeObrigatorio));
+        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
+        public string CursoNaoEncontrado => ObterResource(nameof(CursoNaoEncontrado));
+        public string CursoNaoPermitido => ObterResource(nameof(CursoNaoPermitido));
+        public string CursoJaExiste => ObterResource(nameof(CursoJaExiste));
+        public string CursoNomeObrigatorio => ObterResource(nameof(CursoNomeObrigatorio));
 
         public string CursoNomeTamanho(params object[] arguments)
         {
-            return GetResource(nameof(CursoNomeTamanho), arguments);
+            return ObterResource(nameof(CursoNomeTamanho), arguments);
         }
 
-        public string CursoDescricaoObrigatorio => GetResource(nameof(CursoDescricaoObrigatorio));
+        public string CursoDescricaoObrigatorio => ObterResource(nameof(CursoDescricaoObrigatorio));
 
         public string CursoDescricaoTamanho(params object[] arguments)
         {
-            return GetResource(nameof(CursoDescricaoTamanho), arguments);
+            return ObterResource(nameof(CursoDescricaoTamanho), arguments);
         }
 
-        public string CursoSiglaObrigatorio => GetResource(nameof(CursoSiglaObrigatorio));
+        public string CursoSiglaObrigatorio => ObterResource(nameof(CursoSiglaObrigatorio));
 
         public string CursoSiglaTamanho(params object[] arguments)
         {
-            return GetResource(nameof(CursoSiglaTamanho), arguments);
+            return ObterResource(nameof(CursoSiglaTamanho), arguments);
         }
 
     }

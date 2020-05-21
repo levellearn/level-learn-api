@@ -129,10 +129,7 @@ namespace LevelLearn.Service.Services.Institucional
             var cursoExistente = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
-
-            // TODO: Remover ou desativar?
-            //_uow.Cursos.Remove(cursoExistente);
+                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);           
 
             cursoExistente.Desativar();
             _uow.Cursos.Update(cursoExistente);

@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
@@ -32,6 +33,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
             builder.HasMany(p => p.Cursos);
 
             //builder.HasQueryFilter(p => p.Ativo);
+
 
             //builder.HasData(
             //    new Instituicao("Instituição Teste", "Descrição Teste")

@@ -17,7 +17,7 @@ namespace LevelLearn.Resource
         /// </summary>
         /// <param name="resourceName">Nome do recurso a ser usado</param>
         /// <param name="replacements">Valores a ser usados para substituir na mensagem do recurso</param>
-        protected string GetResource(string resourceName, params object[] replacements)
+        protected string ObterResource(string resourceName, params object[] replacements)
         {
             return string.Format(_resourceManager.GetString(resourceName), replacements);
         }

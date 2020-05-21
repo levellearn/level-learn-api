@@ -12,7 +12,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         public UsuarioValidator()
         {
-            _resource = new UsuarioResource();
+            _resource = UsuarioResource.ObterInstancia();
 
             ValidarNickName();
             ValidarSenha();
