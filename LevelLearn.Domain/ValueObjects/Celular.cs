@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.ValueObjects;
 using System;
 
 namespace LevelLearn.Domain.ValueObjects
@@ -17,6 +18,9 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override bool EstaValido()
         {
+            var validator = new CelularValidator();
+            this.ResultadoValidacao = validator.Validate(this);
+
             return ResultadoValidacao.IsValid;
         }
 

@@ -3,10 +3,8 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
-using LevelLearn.Resource.Institucional;
 using LevelLearn.Resource.Usuarios;
 using LevelLearn.Service.Interfaces.Comum;
 using LevelLearn.Service.Interfaces.Usuarios;
@@ -36,12 +34,12 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
         private readonly IArquivoService _arquivoService;
-        private readonly IValidador<Professor> _validatorProfessor;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly UserManager<Usuario> _userManager;
 
         private readonly ISharedResource _sharedResource;
         private readonly UsuarioResource _resource;
+        private readonly PessoaResource _pessoaResource;
 
         private readonly ILogger<UsuarioService> _log;
 
@@ -66,8 +64,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             _sharedResource = sharedResource;
             _resource = new UsuarioResource();
-
-            _validatorProfessor = new ProfessorValidator(_sharedResource);
+            _pessoaResource = new PessoaResource();
 
             _log = logger;
         }
@@ -86,8 +83,6 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criação e Validação PROFESSOR
             var professor = new Professor(usuarioVM.Nome, email, cpf, celular, usuarioVM.Genero, usuarioVM.DataNascimento);
-
-            _validatorProfessor.Validar(professor);
 
             if (!professor.EstaValido())
                 return ResponseFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
@@ -247,7 +242,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResponseFactory<UsuarioVM>.BadRequest(_resource.UsuarioEmailJaExiste);
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
-                return ResponseFactory<UsuarioVM>.BadRequest(_sharedResource.PessoaCPFJaExiste);
+                return ResponseFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);
 
             //if (await _uow.Pessoas.EntityExists(i => i.NickName == pessoa.NickName))
             //    return ResponseFactory<UsuarioVM>.BadRequest("Nickname já existente");
@@ -394,7 +389,7 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
-                _log.LogError(exception: ex, "RedimensionarImagem Error");                
+                _log.LogError(exception: ex, "RedimensionarImagem Error");
                 return inputStream; // Retorna a imagem original
             }
         }

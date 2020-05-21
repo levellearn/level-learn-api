@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlunoRAObrigatorio" xml:space="preserve">
-    <value>RA precisa estar preenchido</value>
-  </data>
   <data name="AtualizadoSucesso" xml:space="preserve">
     <value>Atualizado com sucesso</value>
   </data>
   <data name="CadastradoSucesso" xml:space="preserve">
     <value>Cadastrado com sucesso</value>
-  </data>
-  <data name="CPFJaExiste" xml:space="preserve">
-    <value>CPF já existente</value>
   </data>
   <data name="DadosInvalidos" xml:space="preserve">
     <value>Dados inválidos</value>
@@ -152,32 +146,5 @@
   </data>
   <data name="NaoEncontrado" xml:space="preserve">
     <value>Registro não encontrado</value>
-  </data>
-  <data name="PessoaCelularInvalido" xml:space="preserve">
-    <value>Celular não é válido</value>
-  </data>
-  <data name="PessoaCPFInvalido" xml:space="preserve">
-    <value>CPF não é válido</value>
-  </data>
-  <data name="PessoaDataNascimentoInvalida" xml:space="preserve">
-    <value>Data Nascimento precisa ser menor que hoje</value>
-  </data>
-  <data name="PessoaGeneroObrigatorio" xml:space="preserve">
-    <value>Gênero precisa ser informado</value>
-  </data>
-  <data name="PessoaNomeObrigatorio" xml:space="preserve">
-    <value>Nome precisa estar preenchido</value>
-  </data>
-  <data name="PessoaNomePrecisaSobrenome" xml:space="preserve">
-    <value>Nome precisa de um sobrenome</value>
-  </data>
-  <data name="PessoaNomeTamanho" xml:space="preserve">
-    <value>Nome precisa estar entre {0} e {1} caracteres</value>
-  </data>
-  <data name="PessoaTipoPessoaInvalido" xml:space="preserve">
-    <value>Tipo de pessoa precisa ser Admin, Professor ou Aluno</value>
-  </data>
-  <data name="ProfessorCPFObrigatorio" xml:space="preserve">
-    <value>CPF precisa estar preenchido</value>
   </data>
 </root>

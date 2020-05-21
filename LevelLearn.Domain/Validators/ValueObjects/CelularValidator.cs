@@ -1,31 +1,23 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
 using System.Text.RegularExpressions;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class CelularValidator : AbstractValidator<Celular>, IValidador<Celular>
+    public class CelularValidator : AbstractValidator<Celular>
     {
-        private readonly ISharedResource _sharedResource;
+        private readonly PessoaResource _resource;
 
-        public CelularValidator(ISharedResource sharedResource)
+        public CelularValidator()
         {
-            _sharedResource = sharedResource;
-        }
+            _resource = new PessoaResource();
 
-        public ValidationResult Validar(Celular instance)
-        {
             RuleFor(c => c.Numero)
                 .Must(c => ValidarNumero(c))
-                    .WithMessage(_sharedResource.PessoaCelularInvalido)
+                    .WithMessage(_resource.PessoaCelularInvalido)
                     .When(c => !string.IsNullOrWhiteSpace(c.Numero))
                 .OverridePropertyName("Celular");
-
-            instance.ResultadoValidacao = this.Validate(instance);
-
-            return instance.ResultadoValidacao;
         }
 
         private bool ValidarNumero(string numero)

@@ -1,22 +1,17 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.ValueObjects;
-using LevelLearn.Resource;
 using LevelLearn.Resource.Usuarios;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class EmailValidator : AbstractValidator<Email>, IValidador<Email>
+    public class EmailValidator : AbstractValidator<Email>
     {
         private readonly UsuarioResource _resource;
 
-        public EmailValidator(ISharedResource sharedResource)
+        public EmailValidator()
         {
             _resource = new UsuarioResource();
-        }
 
-        public ValidationResult Validar(Email instance)
-        {
             var tamanhoMax = RegraAtributo.Usuario.EMAIL_TAMANHO_MAX;
 
             RuleFor(e => e.Endereco)
@@ -27,10 +22,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
                 .EmailAddress()
                     .WithMessage(_resource.UsuarioEmailInvalido)
                 .OverridePropertyName("Email");
-
-            instance.ResultadoValidacao = this.Validate(instance);
-
-            return instance.ResultadoValidacao;
         }
+
     }
 }

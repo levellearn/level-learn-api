@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using System;
 
@@ -18,14 +19,18 @@ namespace LevelLearn.Domain.Entities.Pessoas
         }
 
         // Props
-
         public string RA { get; private set; }
 
         // Methods
-
         public override bool EstaValido()
         {
             base.EstaValido();
+
+            var alunoValidator = new AlunoValidator();
+            var alunoValidationResult = alunoValidator.Validate(this);
+
+            if (!alunoValidationResult.IsValid)
+                this.ResultadoValidacao.AddErrors(alunoValidationResult);
 
             return this.ResultadoValidacao.IsValid;
         }

@@ -1,4 +1,7 @@
-﻿namespace LevelLearn.Domain.ValueObjects
+﻿
+using LevelLearn.Domain.Validators.ValueObjects;
+
+namespace LevelLearn.Domain.ValueObjects
 {
     public class Email : ValueObject
     {
@@ -13,6 +16,9 @@
 
         public override bool EstaValido()
         {
+            var validator = new EmailValidator();
+            this.ResultadoValidacao = validator.Validate(this);
+
             return ResultadoValidacao.IsValid;
         }
 

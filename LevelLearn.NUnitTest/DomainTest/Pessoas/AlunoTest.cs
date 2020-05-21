@@ -1,7 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
@@ -17,7 +15,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _email, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
-        private readonly IValidador<Aluno> _validator = new AlunoValidator();
 
         [SetUp]
         public void Setup()
@@ -36,7 +33,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             var aluno = CriarAluno();
 
-            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
 
             Assert.IsTrue(valido, "Aluno deveria ser válido");
@@ -52,7 +48,6 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             var aluno = CriarAluno();
 
-            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
 
             Assert.IsFalse(valido, "Aluno deveria ser inválido");
@@ -70,7 +65,6 @@ namespace LevelLearn.NUnitTest.Pessoas
             _nome = nome;
             var aluno = CriarAluno();
 
-            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
@@ -88,21 +82,19 @@ namespace LevelLearn.NUnitTest.Pessoas
             _nome = nome;
             var aluno = CriarAluno();
 
-            _validator.Validar(aluno);
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
             Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
         }
-      
+
         [Test]
         public void Cadastrar_AlunoSemCPF_ReturnTrue()
         {
             _cpf = null;
             var aluno = CriarAluno();
 
-            _validator.Validar(aluno);
             bool valido = aluno.EstaValido();
 
             Assert.IsTrue(valido, "Aluno deveria ser válido");

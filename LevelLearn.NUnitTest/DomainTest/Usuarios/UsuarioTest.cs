@@ -1,8 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
@@ -31,7 +29,7 @@ namespace LevelLearn.NUnitTest.Usuarios
         [TestCase("billGates3")]
         [TestCase("shaq_O-Neal")]
         [TestCase("steven.jobs")]
-        public void Aluno_NicknameValido_ReturnTrue(string userName)
+        public void Usuario_NicknameValido_ReturnTrue(string userName)
         {
             _nickName = userName;
             var usuario = CriarUsuario();
@@ -48,7 +46,7 @@ namespace LevelLearn.NUnitTest.Usuarios
         [TestCase("bill@Gates3")]
         [TestCase("shaq$Neal")]
         [TestCase("#stevenjobs")]
-        public void Aluno_NicknameValido_ReturnFalse(string userName)
+        public void Usuario_NicknameValido_ReturnFalse(string userName)
         {
             _nickName = userName;
             var usuario = CriarUsuario();

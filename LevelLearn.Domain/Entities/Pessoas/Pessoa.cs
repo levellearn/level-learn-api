@@ -1,6 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Instituicoes = new List<PessoaInstituicao>();
             Cursos = new List<PessoaCurso>();
             Turmas = new List<Turma>();
+
+            AtribuirNomePesquisa(); //TODO: validar nome pesquisa
         }
 
         #endregion Ctors
@@ -53,7 +56,34 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public override bool EstaValido()
         {
+            var validator = new PessoaValidator();
+
+            this.ResultadoValidacao = validator.Validate(this);
+
+            // VOs
+            ValidarCPF();
+            ValidarEmail();
+            ValidarCelular();
+
             return this.ResultadoValidacao.IsValid;
+        }
+
+        protected void ValidarCPF()
+        {
+            if (Cpf.EstaValido()) return;
+            this.ResultadoValidacao.AddErrors(Cpf.ResultadoValidacao);
+        }
+
+        protected void ValidarEmail()
+        {
+            if (Email.EstaValido()) return;
+            this.ResultadoValidacao.AddErrors(Email.ResultadoValidacao);
+        }
+
+        protected void ValidarCelular()
+        {
+            if (Celular.EstaValido()) return;
+            this.ResultadoValidacao.AddErrors(Celular.ResultadoValidacao);
         }
 
         public void AtribuirInstituicao(PessoaInstituicao instituicao)

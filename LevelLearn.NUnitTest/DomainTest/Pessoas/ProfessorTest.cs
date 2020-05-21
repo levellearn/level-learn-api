@@ -1,7 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using NUnit.Framework;
 using System;
@@ -15,8 +13,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         private string _nome, _email, _cpf, _celular;
         private DateTime _dataNascimento;
         private Generos _genero;
-        private readonly IValidador<Professor> _validator = new ProfessorValidator();
-
 
         [SetUp]
         public void Setup()
@@ -34,7 +30,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         {
             var professor = CriarProfessor();
 
-            _validator.Validar(professor);
             bool valido = professor.EstaValido();
 
             Assert.IsTrue(valido, "Professor deveria ser válido");
@@ -50,7 +45,6 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             var professor = CriarProfessor();
 
-            _validator.Validar(professor);
             bool valido = professor.EstaValido();
 
             Assert.IsFalse(valido, "Professor deveria ser inválido");
@@ -65,7 +59,6 @@ namespace LevelLearn.NUnitTest.Pessoas
             _cpf = cpf;
             var professor = CriarProfessor();
 
-            _validator.Validar(professor);
             bool valido = professor.EstaValido();
 
             Assert.IsFalse(valido, "Professor deveria ser inválido");

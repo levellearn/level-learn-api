@@ -1,49 +1,25 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.Extensions;
 using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class AlunoValidator : AbstractValidator<Aluno>, IValidador<Aluno>
+    public class AlunoValidator : AbstractValidator<Aluno>
     {
-        #region Ctors
-        private readonly ISharedResource _sharedResource;
+        private readonly PessoaResource _resource;
 
-        // Unit Test
         public AlunoValidator()
         {
-            _sharedResource = new SharedResource();
-        }
+            _resource = new PessoaResource();
 
-        public AlunoValidator(ISharedResource sharedResource)
-        {
-            _sharedResource = sharedResource;
-        } 
-        #endregion
-
-        public ValidationResult Validar(Aluno instance)
-        {
-            // Pessoa
-            var pessoaValidator = new PessoaValidator(_sharedResource);
-            ValidationResult pessoaResultadoValidacao = pessoaValidator.Validar(instance);
-
-            // Aluno
             ValidarRA();
-            instance.ResultadoValidacao = this.Validate(instance);
-
-            if (!pessoaResultadoValidacao.IsValid)
-                instance.ResultadoValidacao.AddErrors(pessoaResultadoValidacao);
-
-            return instance.ResultadoValidacao;
         }
 
         private void ValidarRA()
         {
             RuleFor(p => p.RA)
                 .NotEmpty()
-                    .WithMessage(_sharedResource.AlunoRAObrigatorio);
+                    .WithMessage(_resource.AlunoRAObrigatorio);
         }
 
 

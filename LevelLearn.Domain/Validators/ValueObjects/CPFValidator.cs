@@ -1,32 +1,23 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
 
 namespace LevelLearn.Domain.Validators.ValueObjects
 {
-    public class CPFValidator : AbstractValidator<CPF>, IValidador<CPF>
+    public class CPFValidator : AbstractValidator<CPF>
     {
-        private readonly ISharedResource _sharedResource;
+        private readonly PessoaResource _resource;
 
-        public CPFValidator(ISharedResource sharedResource)
+        public CPFValidator()
         {
-            _sharedResource = sharedResource;
-        }
+            _resource = new PessoaResource();
 
-        public ValidationResult Validar(CPF instance)
-        {
             RuleFor(c => c.Numero)
                 .Must(c => ValidarNumero(c))
-                    .WithMessage(_sharedResource.PessoaCPFInvalido)
+                    .WithMessage(_resource.PessoaCPFInvalido)
                     .When(c => !string.IsNullOrWhiteSpace(c.Numero))
                 .OverridePropertyName("CPF");
-
-            instance.ResultadoValidacao = this.Validate(instance);
-
-            return instance.ResultadoValidacao;
         }
-
 
         private bool ValidarNumero(string numero)
         {

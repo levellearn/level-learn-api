@@ -7,10 +7,10 @@
         {
         }
 
+        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
         public string CursoNaoEncontrado => GetResource(nameof(CursoNaoEncontrado));
         public string CursoNaoPermitido => GetResource(nameof(CursoNaoPermitido));
         public string CursoJaExiste => GetResource(nameof(CursoJaExiste));
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
         public string CursoNomeObrigatorio => GetResource(nameof(CursoNomeObrigatorio));
 
         public string CursoNomeTamanho(params object[] arguments)

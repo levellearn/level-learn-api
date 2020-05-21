@@ -117,34 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AtualizadoSucesso" xml:space="preserve">
-    <value>Updated successfully</value>
-  </data>
-  <data name="CadastradoSucesso" xml:space="preserve">
-    <value>Registered successfully</value>
-  </data>
-  <data name="DadosInvalidos" xml:space="preserve">
-    <value>Invalid data</value>
-  </data>
-  <data name="DeletadoSucesso" xml:space="preserve">
-    <value>Deleted successfully</value>
-  </data>
-  <data name="ErroInternoServidor" xml:space="preserve">
-    <value>Oops, an error occurred in the system!</value>
-  </data>
-  <data name="FalhaAtualizar" xml:space="preserve">
-    <value>Failed to update</value>
-  </data>
-  <data name="FalhaCadastrar" xml:space="preserve">
-    <value>Failed to register</value>
-  </data>
-  <data name="FalhaDeletar" xml:space="preserve">
-    <value>Failed to delete</value>
+  <data name="AlunoRAObrigatorio" xml:space="preserve">
+    <value>RA precisa estar preenchido</value>
   </data>
   <data name="IdObrigatorio" xml:space="preserve">
-    <value>ID must be filled</value>
+    <value>ID precisa estar preenchido</value>
   </data>
-  <data name="NaoEncontrado" xml:space="preserve">
-    <value>Register not found</value>
+  <data name="PessoaCelularInvalido" xml:space="preserve">
+    <value>Celular não é válido</value>
+  </data>
+  <data name="PessoaCPFInvalido" xml:space="preserve">
+    <value>CPF não é válido</value>
+  </data>
+  <data name="PessoaCPFJaExiste" xml:space="preserve">
+    <value>CPF já existente</value>
+  </data>
+  <data name="PessoaDataNascimentoInvalida" xml:space="preserve">
+    <value>Data Nascimento precisa ser menor que hoje</value>
+  </data>
+  <data name="PessoaGeneroObrigatorio" xml:space="preserve">
+    <value>Gênero precisa ser informado</value>
+  </data>
+  <data name="PessoaNomeObrigatorio" xml:space="preserve">
+    <value>Nome precisa estar preenchido</value>
+  </data>
+  <data name="PessoaNomePrecisaSobrenome" xml:space="preserve">
+    <value>Nome precisa de um sobrenome</value>
+  </data>
+  <data name="PessoaNomeTamanho" xml:space="preserve">
+    <value>Nome precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="PessoaTipoPessoaInvalido" xml:space="preserve">
+    <value>Tipo de pessoa precisa ser Admin, Professor ou Aluno</value>
+  </data>
+  <data name="ProfessorCPFObrigatorio" xml:space="preserve">
+    <value>CPF precisa estar preenchido</value>
   </data>
 </root>
