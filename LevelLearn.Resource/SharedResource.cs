@@ -14,26 +14,26 @@ namespace LevelLearn.Resource
         }
 
 
-        public string GetResource(string resourceKey)
+        public string ObterResource(string resourceKey)
         {
             return _localizer?[resourceKey]?.Value ?? resourceKey;
         }
 
-        public string GetResource(string resourceKey, params object[] arguments)
+        public string ObterResource(string resourceKey, params object[] arguments)
         {
             return _localizer?[resourceKey, arguments]?.Value ?? resourceKey;
         }
 
-        public string ErroInternoServidor => GetResource(nameof(ErroInternoServidor));
-        public string CadastradoSucesso => GetResource(nameof(CadastradoSucesso));
-        public string AtualizadoSucesso => GetResource(nameof(AtualizadoSucesso));
-        public string DeletadoSucesso => GetResource(nameof(DeletadoSucesso));
-        public string DadosInvalidos => GetResource(nameof(DadosInvalidos));
-        public string NaoEncontrado => GetResource(nameof(NaoEncontrado));
-        public string FalhaCadastrar => GetResource(nameof(FalhaCadastrar));
-        public string FalhaAtualizar => GetResource(nameof(FalhaAtualizar));
-        public string FalhaDeletar => GetResource(nameof(FalhaDeletar));
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
+        public string ErroInternoServidor => ObterResource(nameof(ErroInternoServidor));
+        public string CadastradoSucesso => ObterResource(nameof(CadastradoSucesso));
+        public string AtualizadoSucesso => ObterResource(nameof(AtualizadoSucesso));
+        public string DeletadoSucesso => ObterResource(nameof(DeletadoSucesso));
+        public string DadosInvalidos => ObterResource(nameof(DadosInvalidos));
+        public string NaoEncontrado => ObterResource(nameof(NaoEncontrado));
+        public string FalhaCadastrar => ObterResource(nameof(FalhaCadastrar));
+        public string FalhaAtualizar => ObterResource(nameof(FalhaAtualizar));
+        public string FalhaDeletar => ObterResource(nameof(FalhaDeletar));
+        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
 
 
 

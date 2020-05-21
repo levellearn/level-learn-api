@@ -96,7 +96,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        // TODO: Trazer curso junto para melhorar desempenho e verficar se é nulo no service
+        // TODO: Arrumar nome
         public async Task<bool> IsProfessorDoCurso(Guid cursoId, Guid pessoaId)
         {
             return await _context.Set<PessoaCurso>()

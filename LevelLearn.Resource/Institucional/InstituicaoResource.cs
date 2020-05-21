@@ -7,22 +7,22 @@
         {  
         }       
 
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
-        public string InstituicaoNaoEncontrada => GetResource(nameof(InstituicaoNaoEncontrada));
-        public string InstituicaoNaoPermitida => GetResource(nameof(InstituicaoNaoPermitida));
-        public string InstituicaoJaExiste => GetResource(nameof(InstituicaoJaExiste));
-        public string InstituicaoNomeObrigatorio => GetResource(nameof(InstituicaoNomeObrigatorio));
+        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
+        public string InstituicaoNaoEncontrada => ObterResource(nameof(InstituicaoNaoEncontrada));
+        public string InstituicaoNaoPermitida => ObterResource(nameof(InstituicaoNaoPermitida));
+        public string InstituicaoJaExiste => ObterResource(nameof(InstituicaoJaExiste));
+        public string InstituicaoNomeObrigatorio => ObterResource(nameof(InstituicaoNomeObrigatorio));
 
         public string InstituicaoNomeTamanho(params object[] replacements)
         {
-            return GetResource(nameof(InstituicaoNomeTamanho), replacements);
+            return ObterResource(nameof(InstituicaoNomeTamanho), replacements);
         }
 
-        public string InstituicaoDescricaoObrigatorio => GetResource(nameof(InstituicaoDescricaoObrigatorio));
+        public string InstituicaoDescricaoObrigatorio => ObterResource(nameof(InstituicaoDescricaoObrigatorio));
 
         public string InstituicaoDescricaoTamanho(params object[] replacements)
         {
-            return GetResource(nameof(InstituicaoDescricaoTamanho), replacements);
+            return ObterResource(nameof(InstituicaoDescricaoTamanho), replacements);
         }
 
 

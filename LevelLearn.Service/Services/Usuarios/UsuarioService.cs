@@ -38,7 +38,7 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly UserManager<Usuario> _userManager;
 
         private readonly ISharedResource _sharedResource;
-        private readonly UsuarioResource _resource;
+        private readonly UsuarioResource _usuarioResource;
         private readonly PessoaResource _pessoaResource;
 
         private readonly ILogger<UsuarioService> _log;
@@ -63,9 +63,9 @@ namespace LevelLearn.Service.Services.Usuarios
             _arquivoService = arquivoService;
 
             _sharedResource = sharedResource;
-            _resource = new UsuarioResource();
-            _pessoaResource = new PessoaResource();
-
+            _usuarioResource = UsuarioResource.ObterInstancia();
+            _pessoaResource = PessoaResource.ObterInstancia();
+            
             _log = logger;
         }
 
@@ -145,7 +145,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(_usuarioLogado, roles)
             };
 
-            return ResponseFactory<UsuarioTokenVM>.Ok(responseVM, _resource.UsuarioLoginSucesso);
+            return ResponseFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioLoginSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> Logout(string jwtId)
@@ -153,7 +153,7 @@ namespace LevelLearn.Service.Services.Usuarios
             await _signInManager.SignOutAsync();
             await _tokenService.InvalidarTokenERefreshTokenCache(jwtId);
 
-            return ResponseFactory<UsuarioVM>.NoContent(_resource.UsuarioLogoutSucesso);
+            return ResponseFactory<UsuarioVM>.NoContent(_usuarioResource.UsuarioLogoutSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken)
@@ -171,7 +171,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var identityResult = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
 
             if (!identityResult.Succeeded)
-                return ResponseFactory<UsuarioTokenVM>.BadRequest(_resource.UsuarioEmailConfirmarFalha);
+                return ResponseFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailConfirmarFalha);
 
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -184,7 +184,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 Token = await _tokenService.GerarJWT(user, roles)
             };
 
-            return ResponseFactory<UsuarioTokenVM>.Ok(responseVM, _resource.UsuarioEmailConfirmarSucesso);
+            return ResponseFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);
         }
 
         public async Task<ResponseAPI<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
@@ -239,7 +239,7 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task<ResponseAPI<UsuarioVM>> ValidarCriarUsuarioBD(string email, string cpf)
         {
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == email))
-                return ResponseFactory<UsuarioVM>.BadRequest(_resource.UsuarioEmailJaExiste);
+                return ResponseFactory<UsuarioVM>.BadRequest(_usuarioResource.UsuarioEmailJaExiste);
 
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
                 return ResponseFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);
@@ -257,7 +257,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             if (string.IsNullOrWhiteSpace(senha))
             {
-                var dadoInvalido = new DadoInvalido("Senha", _resource.UsuarioSenhaObrigatoria);
+                var dadoInvalido = new DadoInvalido("Senha", _usuarioResource.UsuarioSenhaObrigatoria);
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
 
@@ -266,25 +266,25 @@ namespace LevelLearn.Service.Services.Usuarios
 
             if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
             {
-                var dadoInvalido = new DadoInvalido("Senha", _resource.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
+                var dadoInvalido = new DadoInvalido("Senha", _usuarioResource.UsuarioSenhaTamanho(senhaTamanhoMin, senhaTamanhoMax));
                 return ResponseFactory<UsuarioTokenVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
 
             // Sign in Identity            
             _usuarioLogado = await _userManager.FindByNameAsync(email.Endereco);
             if (_usuarioLogado == null)
-                return ResponseFactory<UsuarioTokenVM>.BadRequest(_resource.UsuarioLoginFalha);
+                return ResponseFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioLoginFalha);
 
             if (!_usuarioLogado.EmailConfirmed && await _userManager.CheckPasswordAsync(_usuarioLogado, senha))
-                return ResponseFactory<UsuarioTokenVM>.BadRequest(_resource.UsuarioEmailNaoConfirmado);
+                return ResponseFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailNaoConfirmado);
 
             var result = await _signInManager.CheckPasswordSignInAsync(_usuarioLogado, senha, lockoutOnFailure: true);
 
             if (result.IsLockedOut)
-                return ResponseFactory<UsuarioTokenVM>.BadRequest(_resource.UsuarioContaBloqueada);
+                return ResponseFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioContaBloqueada);
 
             if (!result.Succeeded)
-                return ResponseFactory<UsuarioTokenVM>.BadRequest(_resource.UsuarioLoginFalha);
+                return ResponseFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioLoginFalha);
 
             return ResponseFactory<UsuarioTokenVM>.NoContent();
         }

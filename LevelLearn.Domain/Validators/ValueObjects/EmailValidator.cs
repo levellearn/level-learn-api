@@ -10,7 +10,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
 
         public EmailValidator()
         {
-            _resource = new UsuarioResource();
+            _resource = UsuarioResource.ObterInstancia();
 
             var tamanhoMax = RegraAtributo.Usuario.EMAIL_TAMANHO_MAX;
 

@@ -2,26 +2,41 @@
 {
     public class PessoaResource : ResourceBase
     {
-        public PessoaResource() : base(typeof(PessoaResource))
+        private static PessoaResource _instancia;
+
+        private PessoaResource() : base(typeof(PessoaResource))
         { }
 
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
-        public string PessoaCPFJaExiste => GetResource(nameof(PessoaCPFJaExiste));
-        public string PessoaDataNascimentoInvalida => GetResource(nameof(PessoaDataNascimentoInvalida));
-        public string PessoaGeneroObrigatorio => GetResource(nameof(PessoaGeneroObrigatorio));
-        public string PessoaNomeObrigatorio => GetResource(nameof(PessoaNomeObrigatorio));
-        public string PessoaNomePrecisaSobrenome => GetResource(nameof(PessoaNomePrecisaSobrenome));
+        /// <summary>
+        /// Obtém uma instância única de PessoaResource (Singleton)
+        /// </summary>
+        /// <returns></returns>
+        public static PessoaResource ObterInstancia()
+        {
+            if (_instancia == null)
+                _instancia = new PessoaResource();
+
+            return _instancia;
+        }
+
+
+        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
+        public string PessoaCPFJaExiste => ObterResource(nameof(PessoaCPFJaExiste));
+        public string PessoaDataNascimentoInvalida => ObterResource(nameof(PessoaDataNascimentoInvalida));
+        public string PessoaGeneroObrigatorio => ObterResource(nameof(PessoaGeneroObrigatorio));
+        public string PessoaNomeObrigatorio => ObterResource(nameof(PessoaNomeObrigatorio));
+        public string PessoaNomePrecisaSobrenome => ObterResource(nameof(PessoaNomePrecisaSobrenome));
 
         public string PessoaNomeTamanho(params object[] arguments)
         {
-            return GetResource(nameof(PessoaNomeTamanho), arguments);
+            return ObterResource(nameof(PessoaNomeTamanho), arguments);
         }
 
-        public string PessoaTipoPessoaInvalido => GetResource(nameof(PessoaTipoPessoaInvalido));
-        public string PessoaCelularInvalido => GetResource(nameof(PessoaCelularInvalido));
-        public string PessoaCPFInvalido => GetResource(nameof(PessoaCPFInvalido));
-        public string AlunoRAObrigatorio => GetResource(nameof(AlunoRAObrigatorio));
-        public string ProfessorCPFObrigatorio => GetResource(nameof(ProfessorCPFObrigatorio));
+        public string PessoaTipoPessoaInvalido => ObterResource(nameof(PessoaTipoPessoaInvalido));
+        public string PessoaCelularInvalido => ObterResource(nameof(PessoaCelularInvalido));
+        public string PessoaCPFInvalido => ObterResource(nameof(PessoaCPFInvalido));
+        public string AlunoRAObrigatorio => ObterResource(nameof(AlunoRAObrigatorio));
+        public string ProfessorCPFObrigatorio => ObterResource(nameof(ProfessorCPFObrigatorio));
 
     }
 

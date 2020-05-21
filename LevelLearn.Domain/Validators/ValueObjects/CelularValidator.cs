@@ -11,7 +11,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
 
         public CelularValidator()
         {
-            _resource = new PessoaResource();
+            _resource = PessoaResource.ObterInstancia();
 
             RuleFor(c => c.Numero)
                 .Must(c => ValidarNumero(c))

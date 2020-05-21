@@ -1,49 +1,61 @@
-﻿using Microsoft.Extensions.Localization;
-
-namespace LevelLearn.Resource.Usuarios
+﻿namespace LevelLearn.Resource.Usuarios
 {
     public class UsuarioResource : ResourceBase
     {
-        public UsuarioResource() : base(typeof(UsuarioResource))
+        private static UsuarioResource _instancia;
+
+        private UsuarioResource() : base(typeof(UsuarioResource))
         {
         }
 
-        public string IdObrigatorio => GetResource(nameof(IdObrigatorio));
-        public string UsuarioLoginSucesso => GetResource(nameof(UsuarioLoginSucesso));
-        public string UsuarioLogoutSucesso => GetResource(nameof(UsuarioLogoutSucesso));
-        public string UsuarioEmailJaExiste => GetResource(nameof(UsuarioEmailJaExiste));
-        public string UsuarioContaBloqueada => GetResource(nameof(UsuarioContaBloqueada));
-        public string UsuarioEmailNaoConfirmado => GetResource(nameof(UsuarioEmailNaoConfirmado));
-        public string UsuarioEmailConfirmarFalha => GetResource(nameof(UsuarioEmailConfirmarFalha));
-        public string UsuarioEmailConfirmarSucesso => GetResource(nameof(UsuarioEmailConfirmarSucesso));
-        public string UsuarioLoginFalha => GetResource(nameof(UsuarioLoginFalha)); 
+        /// <summary>
+        /// Obtém uma instância única de UsuarioResource (Singleton)
+        /// </summary>
+        /// <returns></returns>
+        public static UsuarioResource ObterInstancia()
+        {
+            if (_instancia == null)
+                _instancia = new UsuarioResource();
 
-        public string UsuarioSenhaObrigatoria => GetResource(nameof(UsuarioSenhaObrigatoria)); 
+            return _instancia;
+        }
+
+        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
+        public string UsuarioLoginSucesso => ObterResource(nameof(UsuarioLoginSucesso));
+        public string UsuarioLogoutSucesso => ObterResource(nameof(UsuarioLogoutSucesso));
+        public string UsuarioEmailJaExiste => ObterResource(nameof(UsuarioEmailJaExiste));
+        public string UsuarioContaBloqueada => ObterResource(nameof(UsuarioContaBloqueada));
+        public string UsuarioEmailNaoConfirmado => ObterResource(nameof(UsuarioEmailNaoConfirmado));
+        public string UsuarioEmailConfirmarFalha => ObterResource(nameof(UsuarioEmailConfirmarFalha));
+        public string UsuarioEmailConfirmarSucesso => ObterResource(nameof(UsuarioEmailConfirmarSucesso));
+        public string UsuarioLoginFalha => ObterResource(nameof(UsuarioLoginFalha));
+
+        public string UsuarioSenhaObrigatoria => ObterResource(nameof(UsuarioSenhaObrigatoria));
         public string UsuarioSenhaTamanho(params object[] arguments)
         {
-            return GetResource(nameof(UsuarioSenhaTamanho), arguments);
+            return ObterResource(nameof(UsuarioSenhaTamanho), arguments);
         }
-        public string UsuarioConfirmacaoSenhaObrigatoria => GetResource(nameof(UsuarioConfirmacaoSenhaObrigatoria)); 
-        public string UsuarioConfirmacaoSenhaNaoConfere => GetResource(nameof(UsuarioConfirmacaoSenhaNaoConfere));
-        public string UsuarioSenhaRequerMaiusculo => GetResource(nameof(UsuarioSenhaRequerMaiusculo));
-        public string UsuarioSenhaRequerMinusculo => GetResource(nameof(UsuarioSenhaRequerMinusculo));
-        public string UsuarioSenhaRequerDigito => GetResource(nameof(UsuarioSenhaRequerDigito));
-        public string UsuarioSenhaRequerEspecial => GetResource(nameof(UsuarioSenhaRequerEspecial));
+        public string UsuarioConfirmacaoSenhaObrigatoria => ObterResource(nameof(UsuarioConfirmacaoSenhaObrigatoria));
+        public string UsuarioConfirmacaoSenhaNaoConfere => ObterResource(nameof(UsuarioConfirmacaoSenhaNaoConfere));
+        public string UsuarioSenhaRequerMaiusculo => ObterResource(nameof(UsuarioSenhaRequerMaiusculo));
+        public string UsuarioSenhaRequerMinusculo => ObterResource(nameof(UsuarioSenhaRequerMinusculo));
+        public string UsuarioSenhaRequerDigito => ObterResource(nameof(UsuarioSenhaRequerDigito));
+        public string UsuarioSenhaRequerEspecial => ObterResource(nameof(UsuarioSenhaRequerEspecial));
 
-        public string UsuarioEmailObrigatorio => GetResource(nameof(UsuarioEmailObrigatorio));
+        public string UsuarioEmailObrigatorio => ObterResource(nameof(UsuarioEmailObrigatorio));
         public string UsuarioEmailTamanhoMaximo(int argument)
         {
-           return GetResource(nameof(UsuarioEmailTamanhoMaximo), argument);
+            return ObterResource(nameof(UsuarioEmailTamanhoMaximo), argument);
         }
-        public string UsuarioEmailInvalido => GetResource(nameof(UsuarioEmailInvalido));
+        public string UsuarioEmailInvalido => ObterResource(nameof(UsuarioEmailInvalido));
 
 
-        public string UsuarioImagemObrigatoria => GetResource(nameof(UsuarioImagemObrigatoria));
-        public string UsuarioNickNameInvalido => GetResource(nameof(UsuarioNickNameInvalido));
-        public string UsuarioNickNameObrigatorio => GetResource(nameof(UsuarioNickNameObrigatorio));
+        public string UsuarioImagemObrigatoria => ObterResource(nameof(UsuarioImagemObrigatoria));
+        public string UsuarioNickNameInvalido => ObterResource(nameof(UsuarioNickNameInvalido));
+        public string UsuarioNickNameObrigatorio => ObterResource(nameof(UsuarioNickNameObrigatorio));
         public string UsuarioNickNameTamanhoMaximo(int argument)
         {
-            return GetResource(nameof(UsuarioNickNameTamanhoMaximo), argument);
+            return ObterResource(nameof(UsuarioNickNameTamanhoMaximo), argument);
         }
 
 
