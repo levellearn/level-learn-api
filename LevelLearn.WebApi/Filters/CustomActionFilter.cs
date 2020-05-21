@@ -48,9 +48,7 @@ namespace LevelLearn.WebApi.Filters
         /// <param name="context">ActionExecutedContext</param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            ObjectResult response = context.Result as ObjectResult;
-
-            if (response == null || IsSuccessStatusCode(response.StatusCode.Value))
+            if (!(context.Result is ObjectResult response) || IsSuccessStatusCode(response.StatusCode.Value))
                 return;
 
             // CRIAÇÃO DO LOG DO RESPONSE EM CASO DE AÇÃO MALSUCEDIDA
