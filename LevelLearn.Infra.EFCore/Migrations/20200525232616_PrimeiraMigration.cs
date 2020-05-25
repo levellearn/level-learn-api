@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LevelLearn.Infra.EFCore.Migrations
 {
-    public partial class Initial : Migration
+    public partial class PrimeiraMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 195, DateTimeKind.Utc).AddTicks(4841)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false)
                 },
@@ -44,7 +44,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 215, DateTimeKind.Utc).AddTicks(5533)),
                     Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
                     Email = table.Column<string>(type: "varchar(190)", nullable: true),
                     CPF = table.Column<string>(type: "varchar(11)", nullable: true),
@@ -88,7 +88,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 202, DateTimeKind.Utc).AddTicks(9399)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Sigla = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
@@ -148,7 +148,8 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Perfil = table.Column<int>(nullable: false),
                     PessoaId = table.Column<Guid>(nullable: false),
-                    InstituicaoId = table.Column<Guid>(nullable: false)
+                    InstituicaoId = table.Column<Guid>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 249, DateTimeKind.Utc).AddTicks(3610))
                 },
                 constraints: table =>
                 {
@@ -174,7 +175,8 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Perfil = table.Column<int>(nullable: false),
                     PessoaId = table.Column<Guid>(nullable: false),
-                    CursoId = table.Column<Guid>(nullable: false)
+                    CursoId = table.Column<Guid>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 251, DateTimeKind.Utc).AddTicks(1821))
                 },
                 constraints: table =>
                 {
@@ -200,7 +202,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 210, DateTimeKind.Utc).AddTicks(4536)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
                     Meta = table.Column<double>(nullable: false),
@@ -322,7 +324,8 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 columns: table => new
                 {
                     AlunoId = table.Column<Guid>(nullable: false),
-                    TurmaId = table.Column<Guid>(nullable: false)
+                    TurmaId = table.Column<Guid>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: true, defaultValue: new DateTime(2020, 5, 25, 23, 26, 16, 252, DateTimeKind.Utc).AddTicks(9422))
                 },
                 constraints: table =>
                 {

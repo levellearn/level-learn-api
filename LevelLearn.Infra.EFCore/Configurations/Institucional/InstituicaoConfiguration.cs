@@ -2,14 +2,14 @@
 using LevelLearn.Domain.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class InstituicaoConfiguration : IEntityTypeConfiguration<Instituicao>
+    public class InstituicaoConfiguration : EntityBaseConfiguration<Instituicao>
     {
-        public void Configure(EntityTypeBuilder<Instituicao> builder)
+        public override void Configure(EntityTypeBuilder<Instituicao> builder)
         {
+            base.Configure(builder);
             builder.ToTable("Instituicoes");
 
             builder.HasKey(p => p.Id);

@@ -1,6 +1,7 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
@@ -14,6 +15,10 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 
             builder.Property(p => p.Perfil)
                 .IsRequired();
+
+            builder.Property(p => p.DataCadastro)
+                 .IsRequired(false)
+                 .HasDefaultValue(DateTime.UtcNow);
 
             // Relacionamentos
             builder.HasOne(p => p.Pessoa)

@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class CursoConfiguration : IEntityTypeConfiguration<Curso>
+    public class CursoConfiguration : EntityBaseConfiguration<Curso>
     {
-        public void Configure(EntityTypeBuilder<Curso> builder)
+        public override void Configure(EntityTypeBuilder<Curso> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("Cursos");
 
             builder.HasKey(p => p.Id);

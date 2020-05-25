@@ -12,7 +12,7 @@ namespace LevelLearn.Domain.Entities
         {
             Id = Guid.NewGuid();
             Ativo = true;
-            //DataCadastro = DateTime.Now; // TODO: DateTime.UtcNow?
+            DataCadastro = DateTime.UtcNow;
             ResultadoValidacao = new ValidationResult();
         }
 
@@ -21,7 +21,7 @@ namespace LevelLearn.Domain.Entities
         public Guid Id { get; private set; }
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
-        public DateTime DataCadastro { get; private set; }
+        public DateTime? DataCadastro { get; private set; }
         public ValidationResult ResultadoValidacao { get; set; }
 
         #endregion

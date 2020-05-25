@@ -12,6 +12,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             //Id = Guid.NewGuid();
             AlunoId = alunoId;
             TurmaId = turmaId;
+            DataCadastro = DateTime.UtcNow;
         }
 
         //public Guid Id { get; private set; }
@@ -21,6 +22,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public Guid TurmaId { get; private set; }
         public virtual Turma Turma { get; private set; }
+        public DateTime? DataCadastro { get; private set; }
 
     }
 }

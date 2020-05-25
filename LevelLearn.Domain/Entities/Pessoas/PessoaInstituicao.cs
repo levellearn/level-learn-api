@@ -14,6 +14,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Perfil = perfil;
             PessoaId = pessoaId;
             InstituicaoId = instituicaoId;
+            DataCadastro = DateTime.UtcNow;
         }
 
         public Guid Id { get; set; }
@@ -23,6 +24,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public virtual Pessoa Pessoa { get; set; }
 
         public Guid InstituicaoId { get; set; }
+        public DateTime? DataCadastro { get; private set; }
         public virtual Instituicao Instituicao { get; set; }
 
     }

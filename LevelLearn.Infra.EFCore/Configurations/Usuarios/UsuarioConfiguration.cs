@@ -1,5 +1,4 @@
-﻿using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.Entities.Usuarios;
+﻿using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

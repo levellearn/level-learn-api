@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class TurmaConfiguration : IEntityTypeConfiguration<Turma>
+    public class TurmaConfiguration : EntityBaseConfiguration<Turma>
     {
-        public void Configure(EntityTypeBuilder<Turma> builder)
+        public override void Configure(EntityTypeBuilder<Turma> builder)
         {
+            base.Configure(builder);
             builder.ToTable("Turmas");
 
             builder.HasKey(p => p.Id);

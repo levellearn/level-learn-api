@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Configurations\Jogo\" />
+    <Compile Remove="Configurations\Jogo\**" />
+    <EmbeddedResource Remove="Configurations\Jogo\**" />
+    <None Remove="Configurations\Jogo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Repositories\Jogo\" />
   </ItemGroup>
 

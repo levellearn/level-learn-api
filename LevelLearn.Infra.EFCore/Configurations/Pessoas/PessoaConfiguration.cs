@@ -5,16 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
-    public class PessoaConfiguration : IEntityTypeConfiguration<Pessoa>
+    public class PessoaConfiguration : EntityBaseConfiguration<Pessoa>
     {
-        public void Configure(EntityTypeBuilder<Pessoa> builder)
+        public override void Configure(EntityTypeBuilder<Pessoa> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("Pessoas");
-
-            builder.HasKey(c => c.Id);
-
-            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
-            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
 
             builder.Property(p => p.Nome)
                .IsRequired()
