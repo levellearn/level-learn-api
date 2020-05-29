@@ -104,7 +104,7 @@
             <param name="instituicaoService">IInstituicaoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoesAdmin(System.String,System.Int32,System.Int32)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(System.String,System.Int32,System.Int32)">
             <summary>
             Retorna todas as instituições paginadas com filtro nome
             </summary>        
@@ -115,18 +115,16 @@
             <response code="200">Lista de instituições</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicoes(System.String,System.Int32,System.Int32)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoes(LevelLearn.ViewModel.PaginationFilterVM)">
             <summary>
-            Retorna todas as instituições de um professor paginadas com filtro por nome
+            Retorna todas as instituições de um professor paginadas e filtro
             </summary>        
-            <param name="searchFilter">Termo de pesquisa</param>
-            <param name="pageNumber">Número da página</param>
-            <param name="pageSize">Quantidade de itens por página</param>
+            <param name="filterVM">Armazena os filtros de consulta</param>
             <returns>Lista instituições</returns>
             <response code="200">Lista de instituições</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.GetInstituicao(System.Guid)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicao(System.Guid)">
             <summary>
             Retorna uma instituição
             </summary>
@@ -136,7 +134,7 @@
             <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.CreateInstituicao(LevelLearn.ViewModel.Institucional.Instituicao.CadastrarInstituicaoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.CriarInstituicao(LevelLearn.ViewModel.Institucional.Instituicao.CadastrarInstituicaoVM)">
             <summary>
             Cadastro de instituição
             </summary>
@@ -146,7 +144,7 @@
             <response code="400">Dados inválidos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.EditInstituicao(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarInstituicaoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.EditarInstituicao(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarInstituicaoVM)">
             <summary>
             Edição de instituição
             </summary>
@@ -159,9 +157,9 @@
             <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.DeleteInstituicao(System.Guid)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.DesativarInstituicao(System.Guid)">
             <summary>
-            Remoção de instituição
+            Desativação de instituição
             </summary>
             <param name="id">Id instituição</param>
             <returns></returns>

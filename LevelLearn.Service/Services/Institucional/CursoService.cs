@@ -102,7 +102,7 @@ namespace LevelLearn.Service.Services.Institucional
             }
 
             // Validação BD
-            var isProfessorCurso = await _uow.Cursos.IsProfessorDoCurso(cursoId, pessoaId);
+            var isProfessorCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!isProfessorCurso)
                 return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
 
@@ -122,7 +122,7 @@ namespace LevelLearn.Service.Services.Institucional
         {
             // TODO: Professor admin da Instituicao ou professor do curso?
             // Validação BD
-            var isProfessorCurso = await _uow.Cursos.IsProfessorDoCurso(cursoId, pessoaId);
+            var isProfessorCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!isProfessorCurso)
                 return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
 

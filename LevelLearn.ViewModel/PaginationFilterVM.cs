@@ -9,16 +9,20 @@ namespace LevelLearn.ViewModel
     {
         public PaginationFilterVM()
         {
-            SearchFilter = string.Empty;
             PageNumber = 1;
             PageSize = 100;
+            IsActive = true;
+            AscendingSort = true;
         }
 
-        public PaginationFilterVM(string searchFilter, int pageNumber, int pageSize)
+        public PaginationFilterVM(string searchFilter, int pageNumber, int pageSize, string sort, bool ascendingSort, bool isActive = true)
         {
             SearchFilter = searchFilter;
             PageNumber = pageNumber <= 0 ? 1 : pageNumber;
             PageSize = pageSize <= 0 ? 1 : pageSize;
+            SortBy = sort;
+            AscendingSort = ascendingSort;
+            IsActive = isActive;
         }
 
         /// <summary>
@@ -37,5 +41,21 @@ namespace LevelLearn.ViewModel
         /// </summary>
         [Range(1, 100, ErrorMessage = "Intervalo inválido da quantidade de itens por página")]
         public int PageSize { get; set; }
+
+        /// <summary>
+        /// Nome do campo para ordenação
+        /// </summary>
+        public string SortBy { get; set; }
+
+        /// <summary>
+        /// Tipo de ordenação
+        /// </summary>
+        public bool AscendingSort { get; set; }
+
+        /// <summary>
+        /// Entidade ativa
+        /// </summary>
+        public bool IsActive { get; set; }
+
     }
 }

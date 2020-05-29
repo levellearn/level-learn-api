@@ -14,6 +14,6 @@ namespace LevelLearn.Service.Interfaces.Institucional
         Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, PaginationFilterVM filterVM);
         Task<ResponseAPI<Instituicao>> CadastrarInstituicao(CadastrarInstituicaoVM instituicaoVM, Guid pessoaId);
         Task<ResponseAPI<Instituicao>> EditarInstituicao(Guid instituicaoId, EditarInstituicaoVM instituicaoVM, Guid pessoaId);
-        Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid instituicaoId, Guid pessoaId);
+        Task<ResponseAPI<Instituicao>> DesativarInstituicao(Guid instituicaoId, Guid pessoaId);
     }
 }

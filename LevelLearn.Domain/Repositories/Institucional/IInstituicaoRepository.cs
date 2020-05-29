@@ -20,7 +20,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="instituicaoId">Id instituição</param>
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns></returns>
-        Task<bool> IsProfessorAdmin(Guid instituicaoId, Guid pessoaId);
+        Task<bool> ProfessorAdmin(Guid instituicaoId, Guid pessoaId);
 
         /// <summary>
         /// Retorna todas as instituições de um professor admin
@@ -33,11 +33,14 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// Retorna as instituições de um professor paginadas com filtro
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
-        /// <param name="searchFilter">Termo de pesquisa</param>
-        /// <param name="pageNumber">Número da página</param>
-        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <param name="termoPesquisa">Termo de pesquisa</param>
+        /// <param name="numeroPagina">Número da página</param>
+        /// <param name="tamanhoPorPagina">Quantidade de itens por página</param>
+        /// <param name="ordernarPor">Nome do campo para ordenação</param>
+        /// <param name="ordenacaoAscendente">Tipo de ordenação</param>
+        /// <param name="ativo">Entidade ativa</param>
         /// <returns>Lista de instituições</returns>
-        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize);
+        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string termoPesquisa, int numeroPagina, int tamanhoPorPagina, string ordernarPor, bool ordenacaoAscendente, bool ativo);
 
         /// <summary>
         /// Retorna o total de instituições de um professor para a paginação

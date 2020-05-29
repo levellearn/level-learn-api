@@ -99,7 +99,7 @@ namespace LevelLearn.WebApi
             // Swagger documentação API
             ConfigureSwagger(services);
 
-            //Log Seq
+            // Log Seq
             ConfigureLogSeq(services);
         }
 

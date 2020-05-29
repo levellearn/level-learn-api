@@ -44,14 +44,17 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, PaginationFilterVM filterVM)
         {
-            string searchFilter = filterVM.SearchFilter;
-            int pageNumber = filterVM.PageNumber;
-            int pageSize = filterVM.PageSize;
+            string termoPesquisa = filterVM.SearchFilter;
+            int numeroPagina = filterVM.PageNumber;
+            int tamanhoPorPagina = filterVM.PageSize;
+            string ordernarPor = filterVM.SortBy;
+            bool ordenacaoAscendente = filterVM.AscendingSort;
+            bool ativo = filterVM.IsActive;
 
-            List<Instituicao> instituicoes =
-                await _uow.Instituicoes.InstituicoesProfessor(pessoaId, searchFilter, pageNumber, pageSize);
+            List<Instituicao> instituicoes = await _uow.Instituicoes.InstituicoesProfessor(
+                pessoaId, termoPesquisa, numeroPagina, tamanhoPorPagina, ordernarPor, ordenacaoAscendente, ativo);
 
-            int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, searchFilter);
+            int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, termoPesquisa);
 
             return ResponseFactory<IEnumerable<Instituicao>>.Ok(instituicoes, total);
         }
@@ -94,7 +97,7 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseFactory<Instituicao>.BadRequest(instituicaoExistente.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
-            var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(instituicaoId, pessoaId);
+            var isProfessorAdmin = await _uow.Instituicoes.ProfessorAdmin(instituicaoId, pessoaId);
 
             if (!isProfessorAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_resource.InstituicaoNaoPermitida);
@@ -111,19 +114,19 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
-        public async Task<ResponseAPI<Instituicao>> RemoverInstituicao(Guid instituicaoId, Guid pessoaId)
+        public async Task<ResponseAPI<Instituicao>> DesativarInstituicao(Guid instituicaoId, Guid pessoaId)
         {
             // Validação BD
-            var isAdmin = await _uow.Instituicoes.IsProfessorAdmin(instituicaoId, pessoaId);
+            bool profAdmin = await _uow.Instituicoes.ProfessorAdmin(instituicaoId, pessoaId);
 
-            if (!isAdmin)
+            if (!profAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_resource.InstituicaoNaoPermitida);
 
             var instituicaoExistente = await _uow.Instituicoes.GetAsync(instituicaoId);
 
             if (instituicaoExistente == null)
                 return ResponseFactory<Instituicao>.NotFound(_resource.InstituicaoNaoEncontrada);
-          
+
             instituicaoExistente.Desativar();
             _uow.Instituicoes.Update(instituicaoExistente);
 

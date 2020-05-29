@@ -57,7 +57,8 @@ namespace LevelLearn.WebApi.Controllers
             [FromQuery]int pageNumber,
             [FromQuery]int pageSize)
         {
-            var filterVM = new PaginationFilterVM(searchFilter, pageNumber, pageSize);
+            //var filterVM = new PaginationFilterVM(searchFilter, pageNumber, pageSize);
+            var filterVM = new PaginationFilterVM();
 
             ResponseAPI<IEnumerable<Curso>> response =
                 await _cursoService.ObterCursosProfessor(instituicaoId, User.GetPessoaId(), filterVM);

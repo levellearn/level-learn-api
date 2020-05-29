@@ -52,7 +52,7 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
         [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetInstituicoesAdmin(
+        public async Task<ActionResult> ObterInstituicoesAdmin(
             [FromQuery]string searchFilter,
             [FromQuery][Range(1, int.MaxValue)]int pageNumber,
             [FromQuery][Range(1, 200)]int pageSize)
@@ -72,23 +72,16 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retorna todas as instituições de um professor paginadas com filtro por nome
+        /// Retorna todas as instituições de um professor paginadas e filtro
         /// </summary>        
-        /// <param name="searchFilter">Termo de pesquisa</param>
-        /// <param name="pageNumber">Número da página</param>
-        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <param name="filterVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpGet("v1/[controller]", Name = "GetInstituicoes")]
+        [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
         [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetInstituicoes(
-            [FromQuery]string searchFilter,
-            [FromQuery][Range(1, int.MaxValue)]int pageNumber,
-            [FromQuery][Range(1, 100)]int pageSize)
+        public async Task<ActionResult> ObterInstituicoes([FromBody]PaginationFilterVM filterVM)
         {
-            var filterVM = new PaginationFilterVM(searchFilter, pageNumber, pageSize);
-
             ResponseAPI<IEnumerable<Instituicao>> response =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filterVM);
 
@@ -97,7 +90,9 @@ namespace LevelLearn.WebApi.Controllers
                 Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data),
                 Total = response.Total.Value,
                 PageNumber = filterVM.PageNumber,
-                PageSize = filterVM.PageSize
+                PageSize = filterVM.PageSize,
+                SortBy = filterVM.SortBy,
+                AscendingSort = filterVM.AscendingSort
             };
 
             return Ok(listVM);
@@ -114,7 +109,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoDetalheVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetInstituicao(Guid id)
+        public async Task<ActionResult> ObterInstituicao(Guid id)
         {
             ResponseAPI<Instituicao> response = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
 
@@ -134,7 +129,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
+        public async Task<ActionResult> CriarInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
             ResponseAPI<Instituicao> response = await _instituicaoService.CadastrarInstituicao(instituicaoVM, User.GetPessoaId());
 
@@ -142,7 +137,7 @@ namespace LevelLearn.WebApi.Controllers
 
             var responseVM = _mapper.Map<InstituicaoVM>(response.Data);
 
-            return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
+            return CreatedAtAction(nameof(ObterInstituicao), new { id = responseVM.Id }, responseVM);
         }
 
         /// <summary>
@@ -161,7 +156,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> EditInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
+        public async Task<ActionResult> EditarInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
             var response = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
 
@@ -171,7 +166,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Remoção de instituição
+        /// Desativação de instituição
         /// </summary>
         /// <param name="id">Id instituição</param>
         /// <returns></returns>
@@ -183,9 +178,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteInstituicao(Guid id)
+        public async Task<ActionResult> DesativarInstituicao(Guid id)
         {
-            var response = await _instituicaoService.RemoverInstituicao(id, User.GetPessoaId());
+            var response = await _instituicaoService.DesativarInstituicao(id, User.GetPessoaId());
 
             if (response.Failure) return StatusCode(response.StatusCode, response);
 

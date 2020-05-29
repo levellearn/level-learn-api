@@ -96,8 +96,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        // TODO: Arrumar nome
-        public async Task<bool> IsProfessorDoCurso(Guid cursoId, Guid pessoaId)
+        public async Task<bool> ProfessorDoCurso(Guid cursoId, Guid pessoaId)
         {
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
