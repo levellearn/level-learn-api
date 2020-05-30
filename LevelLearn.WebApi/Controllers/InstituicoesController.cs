@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LevelLearn.Domain.Entities.Comum;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
@@ -82,8 +83,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterInstituicoes([FromBody]PaginationFilterVM filterVM)
         {
-            ResponseAPI<IEnumerable<Instituicao>> response =
-                await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filterVM);
+            var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
+
+            var response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
             var listVM = new InstituicaoListaVM
             {

@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Comum;
+using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.UnityOfWorks;
@@ -42,19 +43,11 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Instituicao>.Ok(instituicao);
         }
 
-        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, PaginationFilterVM filterVM)
+        public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            string termoPesquisa = filterVM.SearchFilter;
-            int numeroPagina = filterVM.PageNumber;
-            int tamanhoPorPagina = filterVM.PageSize;
-            string ordernarPor = filterVM.SortBy;
-            bool ordenacaoAscendente = filterVM.AscendingSort;
-            bool ativo = filterVM.IsActive;
+            List<Instituicao> instituicoes = await _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
 
-            List<Instituicao> instituicoes = await _uow.Instituicoes.InstituicoesProfessor(
-                pessoaId, termoPesquisa, numeroPagina, tamanhoPorPagina, ordernarPor, ordenacaoAscendente, ativo);
-
-            int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, termoPesquisa);
+            int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
             return ResponseFactory<IEnumerable<Instituicao>>.Ok(instituicoes, total);
         }

@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Comum;
+using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
@@ -38,9 +39,9 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .ToListAsync();
         }
 
-        public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string termoPesquisa, int numeroPagina, int tamanhoPorPagina, string ordernarPor, bool ordenacaoAscendente = true, bool ativo = true)
+        public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtro)
         {
-            string termoPesquisaSanitizado = termoPesquisa.GenerateSlug();
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
 
             IQueryable<Instituicao> query = _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
@@ -49,16 +50,16 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                             p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
-                                p.Ativo == ativo)
-                    .Skip((numeroPagina - 1) * tamanhoPorPagina)
-                    .Take(tamanhoPorPagina);
+                                p.Ativo == filtro.Ativo)
+                    .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                    .Take(filtro.TamanhoPorPagina);
 
-            query = QueryableExtension.OrderBy(query, ordernarPor, ordenacaoAscendente);            
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);            
 
             return await query.ToListAsync();
         }
 
-        public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter)
+        public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter, bool ativo = true)
         {
             searchFilter = searchFilter.GenerateSlug();
 
@@ -69,7 +70,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                        p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(searchFilter) &&
-                                p.Ativo)
+                                p.Ativo == ativo)
                 .CountAsync();
         }
 

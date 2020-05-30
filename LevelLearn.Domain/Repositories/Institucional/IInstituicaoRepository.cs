@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Comum;
+using LevelLearn.Domain.Entities.Institucional;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,22 +34,18 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// Retorna as instituições de um professor paginadas com filtro
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
-        /// <param name="termoPesquisa">Termo de pesquisa</param>
-        /// <param name="numeroPagina">Número da página</param>
-        /// <param name="tamanhoPorPagina">Quantidade de itens por página</param>
-        /// <param name="ordernarPor">Nome do campo para ordenação</param>
-        /// <param name="ordenacaoAscendente">Tipo de ordenação</param>
-        /// <param name="ativo">Entidade ativa</param>
+        /// <param name="filtroPaginacao">Filtros da paginação</param>       
         /// <returns>Lista de instituições</returns>
-        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, string termoPesquisa, int numeroPagina, int tamanhoPorPagina, string ordernarPor, bool ordenacaoAscendente, bool ativo);
+        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao);
 
         /// <summary>
         /// Retorna o total de instituições de um professor para a paginação
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
         /// <param name="searchFilter">Termo de pesquisa</param>
+        /// <param name="ativo">Entidade ativa</param>
         /// <returns>Total de instituições/returns>
-        Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter);
+        Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter, bool ativo = true);
 
         /// <summary>
         /// Retorna todas as instituições de um aluno
