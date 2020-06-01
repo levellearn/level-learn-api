@@ -29,7 +29,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
             var mensagem = "";
 
-            var filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
+            string filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
 
             using (var reader = new StreamReader(filePath))
             {

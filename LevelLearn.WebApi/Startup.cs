@@ -292,7 +292,8 @@ namespace LevelLearn.WebApi
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser().Build());
+                    .RequireAuthenticatedUser()
+                    .Build());
             });
 
         }

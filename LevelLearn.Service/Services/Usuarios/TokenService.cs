@@ -29,11 +29,11 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<TokenVM> GerarJWT(Usuario user, IList<string> roles)
         {
-            var jti = Guid.NewGuid().ToString();
-            var claims = CriarClaimsJWT(user, roles, jti);
-            var key = Encoding.ASCII.GetBytes(_appSettings.JWTSettings.ChavePrivada);
-            var dataCriacao = DateTime.UtcNow;
-            var dataExpiracao = DateTime.UtcNow.AddSeconds(_appSettings.JWTSettings.ExpiracaoSegundos);
+            string jti = Guid.NewGuid().ToString();
+            ICollection<Claim> claims = CriarClaimsJWT(user, roles, jti);
+            byte[] key = Encoding.ASCII.GetBytes(_appSettings.JWTSettings.ChavePrivada);
+            DateTime dataCriacao = DateTime.UtcNow;
+            DateTime dataExpiracao = DateTime.UtcNow.AddSeconds(_appSettings.JWTSettings.ExpiracaoSegundos);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -50,8 +50,8 @@ namespace LevelLearn.Service.Services.Usuarios
             };
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(securityToken);
-            var refreshToken = GerarRefreshToken();
+            string token = tokenHandler.WriteToken(securityToken);
+            string refreshToken = GerarRefreshToken();
 
             await SalvarTokenCache(jti, refreshToken);
             await SalvarRefreshTokenCache(refreshToken, user.UserName);
@@ -95,16 +95,16 @@ namespace LevelLearn.Service.Services.Usuarios
         }
 
         /// <summary>
-        /// Salva o token como "chave" e o refreshToken como "valor"
+        /// Salva o JWT ID como "chave" e o refreshToken como "valor"
         /// </summary>
         /// <param name="jti">JWT ID</param>
-        /// <param name="refreshToken"></param>
+        /// <param name="refreshToken">RefreshToken</param>
         /// <returns></returns>
         private async Task SalvarTokenCache(string jti, string refreshToken)
         {
-            var expiracaoSegundos = _appSettings.JWTSettings.ExpiracaoSegundos;
-            var tempoToleranciaSegundos = _appSettings.JWTSettings.TempoToleranciaSegundos;
-            var expiracaoToken = TimeSpan.FromSeconds(expiracaoSegundos + tempoToleranciaSegundos);
+            int expiracaoSegundos = _appSettings.JWTSettings.ExpiracaoSegundos;
+            int tempoToleranciaSegundos = _appSettings.JWTSettings.TempoToleranciaSegundos;
+            TimeSpan expiracaoToken = TimeSpan.FromSeconds(expiracaoSegundos + tempoToleranciaSegundos);
 
             var opcoesCache = new DistributedCacheEntryOptions()
             {
@@ -117,12 +117,12 @@ namespace LevelLearn.Service.Services.Usuarios
         /// <summary>
         /// Salva o Refresh Token como "chave" e o RefreshTokenData como "valor"
         /// </summary>
-        /// <param name="refreshToken"></param>
-        /// <param name="userName"></param>
+        /// <param name="refreshToken">Refresh Token</param>
+        /// <param name="userName">Username/Email</param>
         /// <returns></returns>
         private async Task SalvarRefreshTokenCache(string refreshToken, string userName)
         {
-            var expiracaoRefreshToken = TimeSpan.FromSeconds(_appSettings.JWTSettings.RefreshTokenExpiracaoSegundos);
+            TimeSpan expiracaoRefreshToken = TimeSpan.FromSeconds(_appSettings.JWTSettings.RefreshTokenExpiracaoSegundos);
 
             var refreshTokenData = new RefreshTokenData(refreshToken, userName);
             string refreshTokenDataSerializado = JsonConvert.SerializeObject(refreshTokenData);
