@@ -6,7 +6,7 @@ namespace LevelLearn.Service.Response
     public class ResponseAPI<T> where T : class
     {
         public ResponseAPI(string message, int statusCode, bool success = false, T data = null,
-            ICollection<DadoInvalido> errors = null, int? pageNumber = null, int? pageSize = null, int? total = null)
+            ICollection<DadoInvalido> errors = null, int? total = null)
         {
             Message = message;
             StatusCode = statusCode;
@@ -14,8 +14,6 @@ namespace LevelLearn.Service.Response
             Failure = !success;
             Data = data;
             Errors = errors;
-            PageNumber = pageNumber;
-            PageSize = pageSize;
             Total = total;
         }
 
@@ -24,9 +22,7 @@ namespace LevelLearn.Service.Response
         public bool Success { get; private set; }
         public bool Failure { get; private set; }
         public T Data { get; private set; }
-        public ICollection<DadoInvalido> Errors { get; private set; }
-        public int? PageNumber { get; private set; }
-        public int? PageSize { get; private set; }
+        public ICollection<DadoInvalido> Errors { get; private set; }    
         public int? Total { get; private set; }
 
     }

@@ -2,6 +2,7 @@
 
 namespace LevelLearn.ViewModel
 {
+    //TODO: Corrigir nome "PaginationFilterVM"?
     /// <summary>
     /// Classe utilizada para armezenar filtros de consulta
     /// </summary>
@@ -13,17 +14,7 @@ namespace LevelLearn.ViewModel
             PageSize = 100;
             IsActive = true;
             AscendingSort = true;
-        }
-
-        public PaginationFilterVM(string searchFilter, int pageNumber, int pageSize, string sort, bool ascendingSort, bool isActive = true)
-        {
-            SearchFilter = searchFilter;
-            PageNumber = pageNumber <= 0 ? 1 : pageNumber;
-            PageSize = pageSize <= 0 ? 1 : pageSize;
-            SortBy = sort;
-            AscendingSort = ascendingSort;
-            IsActive = isActive;
-        }
+        }       
 
         /// <summary>
         /// Termo pesquisa

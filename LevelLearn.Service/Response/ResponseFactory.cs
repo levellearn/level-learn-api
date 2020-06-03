@@ -7,15 +7,13 @@ namespace LevelLearn.Service.Response
 
     public static class ResponseFactory<T> where T : class
     {
-        public static ResponseAPI<T> Ok(T data, int? total = null, int? pageNumber = null, int? pageSize = null)
+        public static ResponseAPI<T> Ok(T data, int? total = null)
         {
             return new ResponseAPI<T>(
                 message: null,
                 (int)HttpStatusCode.OK,
                 success: true,
                 data,
-                pageNumber: pageNumber,
-                pageSize: pageSize,
                 total: total
             );
         }

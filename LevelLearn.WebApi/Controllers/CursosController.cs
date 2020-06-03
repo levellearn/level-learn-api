@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LevelLearn.Domain.Entities.Comum;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
@@ -18,12 +19,9 @@ namespace LevelLearn.WebApi.Controllers
 {
     /// <summary>
     /// Cursos Controller
-    /// </summary>
-    [ApiController]
-    [Route("api/")]
-    [Produces("application/json")]
+    /// </summary>    
     [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
-    public class CursosController : ControllerBase
+    public class CursosController : MyBaseController
     {
         private readonly ICursoService _cursoService;
         private readonly IMapper _mapper;
@@ -33,7 +31,7 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="cursoService">ICursoService</param>
         /// <param name="mapper">IMapper</param>
-        public CursosController(ICursoService cursoService, IMapper mapper)
+        public CursosController(ICursoService cursoService, IMapper mapper) : base(mapper)
         {
             _cursoService = cursoService;
             _mapper = mapper;
@@ -43,35 +41,23 @@ namespace LevelLearn.WebApi.Controllers
         /// Retorna todos os cursos de um professor paginadas com filtro por nome
         /// </summary>        
         /// <param name="instituicaoId">Id instituição</param>
-        /// <param name="searchFilter">Termo de pesquisa</param>
-        /// <param name="pageNumber">Número da página</param>
-        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <param name="filterVM">Armazena os filtros de consulta</param>
         /// <returns>Lista cursos</returns>
         /// <response code="200">Lista de cursos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/intituicao/{instituicaoId:guid}")]
-        [ProducesResponseType(typeof(CursoListaVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetCursos(
-            [FromRoute]Guid instituicaoId,
-            [FromQuery]string searchFilter,
-            [FromQuery]int pageNumber,
-            [FromQuery]int pageSize)
+        [ProducesResponseType(typeof(PaginatedListVM<CursoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetCursos([FromRoute]Guid instituicaoId, [FromBody]PaginationFilterVM filterVM)
         {
-            //var filterVM = new PaginationFilterVM(searchFilter, pageNumber, pageSize);
-            var filterVM = new PaginationFilterVM();
+            // TODO: Ajustar filtro
+            var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
 
             ResponseAPI<IEnumerable<Curso>> response =
-                await _cursoService.ObterCursosProfessor(instituicaoId, User.GetPessoaId(), filterVM);
+                await _cursoService.ObterCursosProfessor(instituicaoId, User.GetPessoaId(), filterVM);           
 
-            var listVM = new CursoListaVM
-            {
-                Data = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Data),
-                Total = response.Total.Value,
-                PageNumber = filterVM.PageNumber,
-                PageSize = filterVM.PageSize
-            };
+            var listaVM = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Data);
 
-            return Ok(listVM);
+            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filterVM));
         }
 
         /// <summary>

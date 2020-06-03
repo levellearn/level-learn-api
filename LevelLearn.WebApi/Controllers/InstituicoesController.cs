@@ -20,12 +20,9 @@ namespace LevelLearn.WebApi.Controllers
 
     /// <summary>
     /// Instituicoes Controller
-    /// </summary>
-    [ApiController]
-    [Route("api/")]
-    [Produces("application/json")]
+    /// </summary>   
     [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
-    public class InstituicoesController : ControllerBase
+    public class InstituicoesController : MyBaseController
     {
         private readonly IInstituicaoService _instituicaoService;
         private readonly IMapper _mapper;
@@ -36,6 +33,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="instituicaoService">IInstituicaoService</param>
         /// <param name="mapper">IMapper</param>
         public InstituicoesController(IInstituicaoService instituicaoService, IMapper mapper)
+            : base(mapper)
         {
             _instituicaoService = instituicaoService;
             _mapper = mapper;
@@ -44,32 +42,21 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Retorna todas as instituições paginadas com filtro nome
         /// </summary>        
-        /// <param name="searchFilter">Termo de pesquisa</param>
-        /// <param name="pageNumber">Número da página</param>
-        /// <param name="pageSize">Quantidade de itens por página</param>
+        /// <param name="filterVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
-        [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoesAdmin(
-            [FromQuery]string searchFilter,
-            [FromQuery][Range(1, int.MaxValue)]int pageNumber,
-            [FromQuery][Range(1, 200)]int pageSize)
+        [ProducesResponseType(typeof(PaginatedListVM<InstituicaoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]PaginationFilterVM filterVM)
         {
-            var instituicoes = await _instituicaoService.GetWithPagination(searchFilter, pageNumber, pageSize);
-            var count = await _instituicaoService.CountWithPagination(searchFilter);
+            var instituicoes = await _instituicaoService.GetWithPagination(filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
+            int count = await _instituicaoService.CountWithPagination(filterVM.SearchFilter);
 
-            var listVM = new InstituicaoListaVM
-            {
-                Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
-                Total = count,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
+            var listaVM = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes);
 
-            return Ok(listVM);
+            return Ok(CriarListaPaginada(listaVM, count, filterVM));
         }
 
         /// <summary>
@@ -80,24 +67,17 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
-        [ProducesResponseType(typeof(InstituicaoListaVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedListVM<InstituicaoVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterInstituicoes([FromBody]PaginationFilterVM filterVM)
         {
             var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
 
-            var response = await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
+            ResponseAPI<IEnumerable<Instituicao>> response = 
+                await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
-            var listVM = new InstituicaoListaVM
-            {
-                Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data),
-                Total = response.Total.Value,
-                PageNumber = filterVM.PageNumber,
-                PageSize = filterVM.PageSize,
-                SortBy = filterVM.SortBy,
-                AscendingSort = filterVM.AscendingSort
-            };
+            var listaVM = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data);
 
-            return Ok(listVM);
+            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filterVM));
         }
 
         /// <summary>

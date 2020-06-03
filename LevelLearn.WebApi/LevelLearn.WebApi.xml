@@ -37,7 +37,7 @@
         <member name="T:LevelLearn.WebApi.Controllers.CursosController">
             <summary>
             Cursos Controller
-            </summary>
+            </summary>    
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.#ctor(LevelLearn.Service.Interfaces.Institucional.ICursoService,AutoMapper.IMapper)">
             <summary>
@@ -46,14 +46,12 @@
             <param name="cursoService">ICursoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCursos(System.Guid,System.String,System.Int32,System.Int32)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCursos(System.Guid,LevelLearn.ViewModel.PaginationFilterVM)">
             <summary>
             Retorna todos os cursos de um professor paginadas com filtro por nome
             </summary>        
             <param name="instituicaoId">Id instituição</param>
-            <param name="searchFilter">Termo de pesquisa</param>
-            <param name="pageNumber">Número da página</param>
-            <param name="pageSize">Quantidade de itens por página</param>
+            <param name="filterVM">Armazena os filtros de consulta</param>
             <returns>Lista cursos</returns>
             <response code="200">Lista de cursos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
@@ -105,7 +103,7 @@
         <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">
             <summary>
             Instituicoes Controller
-            </summary>
+            </summary>   
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.#ctor(LevelLearn.Service.Interfaces.Institucional.IInstituicaoService,AutoMapper.IMapper)">
             <summary>
@@ -114,13 +112,11 @@
             <param name="instituicaoService">IInstituicaoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(System.String,System.Int32,System.Int32)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(LevelLearn.ViewModel.PaginationFilterVM)">
             <summary>
             Retorna todas as instituições paginadas com filtro nome
             </summary>        
-            <param name="searchFilter">Termo de pesquisa</param>
-            <param name="pageNumber">Número da página</param>
-            <param name="pageSize">Quantidade de itens por página</param>
+            <param name="filterVM">Armazena os filtros de consulta</param>
             <returns>Lista instituições</returns>
             <response code="200">Lista de instituições</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
@@ -177,6 +173,27 @@
             <response code="403">Não é admin da instituição</response>
             <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.MyBaseController">
+            <summary>
+            Base Controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.#ctor(AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.CriarListaPaginada``1(System.Collections.Generic.IEnumerable{``0},System.Int32,LevelLearn.ViewModel.PaginationFilterVM)">
+            <summary>
+            Cria a lista paginada
+            </summary>
+            <typeparam name="T">Tipo da lista</typeparam>
+            <param name="listaVM">Lista View Model</param>
+            <param name="total">Total da entidade no banco</param>
+            <param name="filterVM">Filtro de pesquisa</param>
+            <returns></returns>
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.UsuariosController">
             <summary>
