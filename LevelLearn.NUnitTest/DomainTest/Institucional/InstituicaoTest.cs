@@ -1,8 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.Domain.Validators;
-using LevelLearn.Domain.Validators.Institucional;
 using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 
@@ -18,9 +16,7 @@ namespace LevelLearn.NUnitTest.Institucional
         public void Setup()
         {
             _nome = "FATEC Guaratinguetá";
-            _descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de " +
-                "Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas " +
-                "Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            _descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
         }
 
         [Test]
@@ -68,9 +64,7 @@ namespace LevelLearn.NUnitTest.Institucional
         public static Instituicao CriarInstituicaoPadrao()
         {
             var nome = "FATEC Guaratinguetá";
-            var descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de " +
-                "Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas " +
-                "Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            var descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
 
             var instituicao = new Instituicao(nome, descricao);
 

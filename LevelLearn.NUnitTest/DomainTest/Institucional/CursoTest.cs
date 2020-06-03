@@ -17,12 +17,7 @@ namespace LevelLearn.NUnitTest.Institucional
         {
             _nome = "Análise e Desenvolvimento de Sistemas";
             _sigla = "ADS";
-            _descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, " +
-                "implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, " +
-                "com ferramentas computacionais, equipamentos de informática e metodologia de projetos na " +
-                "produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias " +
-                "de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança " +
-                "de programas computacionais são fundamentais à atuação desse profissional.";
+            _descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, com ferramentas computacionais, equipamentos de informática e metodologia de projetos na produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança de programas computacionais são fundamentais à atuação desse profissional.";
         }
 
         [Test]
@@ -75,12 +70,7 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var nome = "Análise e Desenvolvimento de Sistemas";
             var sigla = "ADS";
-            var descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, " +
-                "implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, " +
-                "com ferramentas computacionais, equipamentos de informática e metodologia de projetos na " +
-                "produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias " +
-                "de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança " +
-                "de programas computacionais são fundamentais à atuação desse profissional.";
+            var descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, com ferramentas computacionais, equipamentos de informática e metodologia de projetos na produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança de programas computacionais são fundamentais à atuação desse profissional.";
 
             var curso = new Curso(nome, sigla, descricao, instituicao.Id);
 

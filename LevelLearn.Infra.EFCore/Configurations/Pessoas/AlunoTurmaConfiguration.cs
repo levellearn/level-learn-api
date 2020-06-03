@@ -11,7 +11,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
         {
             builder.ToTable("AlunoTurmas");
 
-            //builder.HasKey(p => p.Id);
             builder.HasKey(p => new { p.AlunoId, p.TurmaId }); // Chave composta
 
             builder.Property(p => p.DataCadastro)

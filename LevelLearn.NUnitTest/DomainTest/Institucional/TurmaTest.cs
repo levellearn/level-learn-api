@@ -18,9 +18,7 @@ namespace LevelLearn.NUnitTest.Institucional
         public void Setup()
         {
             _nome = "6ª Turma ADS - 1º Semestre - ALGORITMOS";
-            _descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso" +
-                " de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de " +
-                "algoritmos e programas de computador.";
+            _descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de algoritmos e programas de computador.";
             _nomeDisciplina = "Algoritmos";
         }
 
@@ -69,9 +67,7 @@ namespace LevelLearn.NUnitTest.Institucional
             var curso = CursoTest.CriarCursoPadrao();
 
             var nome = "6ª Turma ADS - 1º Semestre - ALGORITMOS";
-            var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso" +
-                " de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de " +
-                "algoritmos e programas de computador.";
+            var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de algoritmos e programas de computador.";
             var nomeDisciplina = "ALGORITMOS";
 
             var professor = curso.Pessoas.First(p => p.Perfil == TiposPessoa.Professor).Pessoa;
