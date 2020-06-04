@@ -38,7 +38,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retorna todos os cursos de um professor paginadas com filtro por nome
+        /// Retorna todos os cursos de uma instituição de um professor paginadas com filtro
         /// </summary>        
         /// <param name="instituicaoId">Id instituição</param>
         /// <param name="filterVM">Armazena os filtros de consulta</param>
@@ -47,13 +47,12 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/intituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(PaginatedListVM<CursoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetCursos([FromRoute]Guid instituicaoId, [FromBody]PaginationFilterVM filterVM)
+        public async Task<ActionResult> ObterCursos([FromRoute]Guid instituicaoId, [FromBody]PaginationFilterVM filterVM)
         {
-            // TODO: Ajustar filtro
             var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
 
             ResponseAPI<IEnumerable<Curso>> response =
-                await _cursoService.ObterCursosProfessor(instituicaoId, User.GetPessoaId(), filterVM);           
+                await _cursoService.CursosInstituicaoProfessor(instituicaoId, User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Data);
 
@@ -71,7 +70,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(CursoDetalheVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetCurso(Guid id)
+        public async Task<ActionResult> ObterCurso(Guid id)
         {
             ResponseAPI<Curso> response = await _cursoService.ObterCurso(id, User.GetPessoaId());
 
@@ -91,7 +90,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(CursoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateCurso([FromBody] CadastrarCursoVM cursoVM)
+        public async Task<ActionResult> CriarCurso([FromBody] CadastrarCursoVM cursoVM)
         {
             ResponseAPI<Curso> response = await _cursoService.CadastrarCurso(cursoVM, User.GetPessoaId());
 
@@ -99,7 +98,7 @@ namespace LevelLearn.WebApi.Controllers
 
             var responseVM = _mapper.Map<CursoVM>(response.Data);
 
-            return CreatedAtAction(nameof(GetCurso), new { id = responseVM.Id }, responseVM);
+            return CreatedAtAction(nameof(ObterCurso), new { id = responseVM.Id }, responseVM);
         }
 
         /// <summary>
@@ -118,7 +117,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> EditCurso(Guid id, [FromBody] EditarCursoVM cursoVM)
+        public async Task<ActionResult> EditarCurso(Guid id, [FromBody] EditarCursoVM cursoVM)
         {
             var response = await _cursoService.EditarCurso(id, cursoVM, User.GetPessoaId());
 
@@ -140,9 +139,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteCurso(Guid id)
+        public async Task<ActionResult> DesativarCurso(Guid id)
         {
-            var response = await _cursoService.RemoverCurso(id, User.GetPessoaId());
+            var response = await _cursoService.DesativarCurso(id, User.GetPessoaId());
 
             if (response.Failure) return StatusCode(response.StatusCode, response);
 

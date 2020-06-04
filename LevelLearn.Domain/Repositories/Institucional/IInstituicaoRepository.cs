@@ -42,10 +42,10 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// Retorna o total de instituições de um professor para a paginação
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
-        /// <param name="searchFilter">Termo de pesquisa</param>
+        /// <param name="filtroPesquisa">Termo de pesquisa</param>
         /// <param name="ativo">Entidade ativa</param>
         /// <returns>Total de instituições/returns>
-        Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter, bool ativo = true);
+        Task<int> TotalInstituicoesProfessor(Guid pessoaId, string filtroPesquisa, bool ativo = true);
 
         /// <summary>
         /// Retorna todas as instituições de um aluno

@@ -46,9 +46,9 @@
             <param name="cursoService">ICursoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCursos(System.Guid,LevelLearn.ViewModel.PaginationFilterVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCursos(System.Guid,LevelLearn.ViewModel.PaginationFilterVM)">
             <summary>
-            Retorna todos os cursos de um professor paginadas com filtro por nome
+            Retorna todos os cursos de uma instituição de um professor paginadas com filtro
             </summary>        
             <param name="instituicaoId">Id instituição</param>
             <param name="filterVM">Armazena os filtros de consulta</param>
@@ -56,7 +56,7 @@
             <response code="200">Lista de cursos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.GetCurso(System.Guid)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCurso(System.Guid)">
             <summary>
             Retorna um curso
             </summary>
@@ -66,7 +66,7 @@
             <response code="404">Curso não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.CreateCurso(LevelLearn.ViewModel.Institucional.Curso.CadastrarCursoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.CriarCurso(LevelLearn.ViewModel.Institucional.Curso.CadastrarCursoVM)">
             <summary>
             Cadastro de curso
             </summary>
@@ -76,7 +76,7 @@
             <response code="400">Dados inválidos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.EditCurso(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarCursoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.EditarCurso(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarCursoVM)">
             <summary>
             Edição de curso
             </summary>
@@ -89,7 +89,7 @@
             <response code="404">Curso não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.DeleteCurso(System.Guid)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.DesativarCurso(System.Guid)">
             <summary>
             Remoção de curso
             </summary>

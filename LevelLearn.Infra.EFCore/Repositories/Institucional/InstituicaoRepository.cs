@@ -59,9 +59,9 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await query.ToListAsync();
         }
 
-        public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string searchFilter, bool ativo = true)
+        public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string filtroPesquisa, bool ativo = true)
         {
-            searchFilter = searchFilter.GenerateSlug();
+            string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
 
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
@@ -69,7 +69,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .Where(p => p.Perfil == PerfisInstituicao.Professor ||
                        p.Perfil == PerfisInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
-                    .Where(p => p.NomePesquisa.Contains(searchFilter) &&
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
                                 p.Ativo == ativo)
                 .CountAsync();
         }

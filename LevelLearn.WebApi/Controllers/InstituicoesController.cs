@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -72,7 +71,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
 
-            ResponseAPI<IEnumerable<Instituicao>> response = 
+            ResponseAPI<IEnumerable<Instituicao>> response =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data);

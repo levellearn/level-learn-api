@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Comum;
+using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.UnityOfWorks;
@@ -6,7 +7,6 @@ using LevelLearn.Resource;
 using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
-using LevelLearn.ViewModel;
 using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
@@ -21,27 +21,23 @@ namespace LevelLearn.Service.Services.Institucional
 
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedResource;
-        private readonly CursoResource _resource;
+        private readonly CursoResource _cursoResource;
 
         public CursoService(IUnitOfWork uow, ISharedResource sharedResource)
             : base(uow.Cursos)
         {
             _uow = uow;
             _sharedResource = sharedResource;
-            _resource = new CursoResource();
+            _cursoResource = new CursoResource();
         }
 
         #endregion
 
-        public async Task<ResponseAPI<IEnumerable<Curso>>> ObterCursosProfessor(Guid instituicaoId, Guid pessoaId, PaginationFilterVM filterVM)
+        public async Task<ResponseAPI<IEnumerable<Curso>>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            string searchFilter = filterVM.SearchFilter;
-            int pageNumber = filterVM.PageNumber;
-            int pageSize = filterVM.PageSize;
+            var cursos = await _uow.Cursos.CursosInstituicaoProfessor(instituicaoId, pessoaId, filtroPaginacao);
 
-            var cursos = await _uow.Cursos.CursosInstituicaoProfessor(instituicaoId, pessoaId, searchFilter, pageNumber, pageSize);
-
-            var total = await _uow.Cursos.TotalCursosInstituicaoProfessor(instituicaoId, pessoaId, searchFilter);
+            var total = await _uow.Cursos.TotalCursosInstituicaoProfessor(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
             return ResponseFactory<IEnumerable<Curso>>.Ok(cursos, total);
         }
@@ -51,7 +47,7 @@ namespace LevelLearn.Service.Services.Institucional
             Curso curso = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (curso == null)
-                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
+                return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
             return ResponseFactory<Curso>.Ok(curso);
         }
@@ -69,12 +65,15 @@ namespace LevelLearn.Service.Services.Institucional
             if (!curso.EstaValido())
                 return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
+            if(!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
+                return ResponseFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
+
             var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, pessoaId, curso.Id);
             curso.AtribuirPessoa(pessoaCurso);
 
             // Validação BD
             if (await CursoExisteNaInstituicao(curso))
-                return ResponseFactory<Curso>.BadRequest(_resource.CursoJaExiste);
+                return ResponseFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
 
             // Salva no BD
             await _uow.Cursos.AddAsync(curso);
@@ -89,7 +88,7 @@ namespace LevelLearn.Service.Services.Institucional
             Curso cursoExistente = await _uow.Cursos.GetAsync(cursoId);
 
             if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);
+                return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
             // Modifica objeto
             cursoExistente.Atualizar(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao);
@@ -104,11 +103,11 @@ namespace LevelLearn.Service.Services.Institucional
             // Validação BD
             var isProfessorCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!isProfessorCurso)
-                return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
+                return ResponseFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
             // TODO: Essa validação é necessária? 
             if (await CursoExisteNaInstituicao(cursoExistente))
-                return ResponseFactory<Curso>.BadRequest(_resource.CursoJaExiste);
+                return ResponseFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
 
             // Salva no BD
             _uow.Cursos.Update(cursoExistente);
@@ -118,24 +117,25 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Curso>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
-        public async Task<ResponseAPI<Curso>> RemoverCurso(Guid cursoId, Guid pessoaId)
+        public async Task<ResponseAPI<Curso>> DesativarCurso(Guid cursoId, Guid pessoaId)
         {
             // TODO: Professor admin da Instituicao ou professor do curso?
             // Validação BD
-            var isProfessorCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
-            if (!isProfessorCurso)
-                return ResponseFactory<Curso>.Forbidden(_resource.CursoNaoPermitido);
+            bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
+            if (!professorDoCurso)
+                return ResponseFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
             var cursoExistente = await _uow.Cursos.CursoCompleto(cursoId);
 
             if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_resource.CursoNaoEncontrado);           
+                return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
             cursoExistente.Desativar();
+
+            // Salva no BD
             _uow.Cursos.Update(cursoExistente);
 
-            if (!await _uow.CompleteAsync())
-                return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
+            if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
 
             return ResponseFactory<Curso>.NoContent(_sharedResource.DeletadoSucesso);
         }

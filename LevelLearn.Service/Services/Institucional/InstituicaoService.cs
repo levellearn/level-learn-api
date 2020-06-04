@@ -7,7 +7,6 @@ using LevelLearn.Resource;
 using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
-using LevelLearn.ViewModel;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
 using System.Collections.Generic;
