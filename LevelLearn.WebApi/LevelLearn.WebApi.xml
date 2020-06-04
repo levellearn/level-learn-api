@@ -174,6 +174,17 @@
             <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.AlternarAtivacaoInstituicao(System.Guid)">
+            <summary>
+            Alternar Ativação de instituição
+            </summary>
+            <param name="id">Id instituição</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="403">Não é admin da instituição</response>
+            <response code="404">Instituição não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.MyBaseController">
             <summary>
             Base Controller

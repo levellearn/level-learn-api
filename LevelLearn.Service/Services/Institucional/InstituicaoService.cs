@@ -123,9 +123,33 @@ namespace LevelLearn.Service.Services.Institucional
             _uow.Instituicoes.Update(instituicaoExistente);
 
             if (!await _uow.CompleteAsync())
-                return ResponseFactory<Instituicao>.InternalServerError(_sharedResource.FalhaDeletar);
+                return ResponseFactory<Instituicao>.InternalServerError(_sharedResource.FalhaAtualizar);
 
-            return ResponseFactory<Instituicao>.NoContent(_sharedResource.DeletadoSucesso);
+            return ResponseFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
+        }
+
+        public async Task<ResponseAPI<Instituicao>> AlternarAtivacao(Guid instituicaoId, Guid pessoaId)
+        {
+            // Validação BD
+            Instituicao instituicao = await _uow.Instituicoes.GetAsync(instituicaoId);
+
+            if (instituicao == null) return ResponseFactory<Instituicao>.NotFound(_resource.InstituicaoNaoEncontrada);
+
+            bool profAdmin = await _uow.Instituicoes.ProfessorAdmin(instituicaoId, pessoaId);
+            if (!profAdmin) return ResponseFactory<Instituicao>.Forbidden(_resource.InstituicaoNaoPermitida);
+
+            if (instituicao.Ativo)
+                instituicao.Desativar();
+            else
+                instituicao.Ativar();
+
+            // Salva no BD
+            _uow.Instituicoes.Update(instituicao);
+
+            if (!await _uow.CompleteAsync())
+                return ResponseFactory<Instituicao>.InternalServerError(_sharedResource.FalhaAtualizar);
+
+            return ResponseFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
         private async Task<bool> InstituicaoExistente(Instituicao instituicao)
