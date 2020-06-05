@@ -55,8 +55,8 @@ namespace LevelLearn.Service.Services.Institucional
         public async Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId)
         {
             // TODO: Somente pode criar cursos um professor Admin?
-            //var isProfessorAdmin = await _uow.Instituicoes.IsProfessorAdmin(cursoVM.InstituicaoId, new Guid(pessoaId));
-            //if (!isProfessorAdmin)
+            //bool professorAdmin = await _uow.Instituicoes.ProfessorAdmin(cursoVM.InstituicaoId, pessoaId);
+            //if (!professorAdmin)
             //   return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
 
             var curso = new Curso(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao, cursoVM.InstituicaoId);
@@ -85,32 +85,29 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResponseAPI<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId)
         {
-            Curso cursoExistente = await _uow.Cursos.GetAsync(cursoId);
+            Curso curso = await _uow.Cursos.GetAsync(cursoId);
 
-            if (cursoExistente == null)
+            if (curso == null)
                 return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
             // Modifica objeto
-            cursoExistente.Atualizar(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao);
+            curso.Atualizar(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao);
 
             // Validação objeto
-            if (!cursoExistente.EstaValido())
-            {
-                var dadosInvalidos = cursoExistente.DadosInvalidos();
-                return ResponseFactory<Curso>.BadRequest(dadosInvalidos, _sharedResource.DadosInvalidos);
-            }
+            if (!curso.EstaValido())
+                return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
-            var isProfessorCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
-            if (!isProfessorCurso)
+            bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
+            if (!professorDoCurso)
                 return ResponseFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
             // TODO: Essa validação é necessária? 
-            if (await CursoExisteNaInstituicao(cursoExistente))
+            if (await CursoExisteNaInstituicao(curso))
                 return ResponseFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
 
             // Salva no BD
-            _uow.Cursos.Update(cursoExistente);
+            _uow.Cursos.Update(curso);
 
             if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaAtualizar);
 

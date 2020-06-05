@@ -19,8 +19,6 @@
             return _instancia;
         }
 
-
-        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
         public string PessoaCPFJaExiste => ObterResource(nameof(PessoaCPFJaExiste));
         public string PessoaDataNascimentoInvalida => ObterResource(nameof(PessoaDataNascimentoInvalida));
         public string PessoaGeneroObrigatorio => ObterResource(nameof(PessoaGeneroObrigatorio));
@@ -31,13 +29,13 @@
         {
             return ObterResource(nameof(PessoaNomeTamanho), arguments);
         }
-
+        
         public string PessoaTipoPessoaInvalido => ObterResource(nameof(PessoaTipoPessoaInvalido));
         public string PessoaCelularInvalido => ObterResource(nameof(PessoaCelularInvalido));
         public string PessoaCPFInvalido => ObterResource(nameof(PessoaCPFInvalido));
         public string AlunoRAObrigatorio => ObterResource(nameof(AlunoRAObrigatorio));
         public string ProfessorCPFObrigatorio => ObterResource(nameof(ProfessorCPFObrigatorio));
-
+       
     }
 
 }

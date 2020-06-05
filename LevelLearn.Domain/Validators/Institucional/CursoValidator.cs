@@ -17,13 +17,14 @@ namespace LevelLearn.Domain.Validators.Institucional
             ValidarSigla();
             ValidarDescricao();
             ValidarInstituicaoId();
+            ValidarNomePesquisa();
         }
 
         private void ValidarCursoId()
         {
             RuleFor(p => p.Id)
                 .NotEmpty()
-                    .WithMessage(_resource.IdObrigatorio);
+                    .WithMessage(_resource.IdObrigatorio());
         }
 
         private void ValidarNome()
@@ -65,7 +66,14 @@ namespace LevelLearn.Domain.Validators.Institucional
         {
             RuleFor(p => p.InstituicaoId)
                 .NotEmpty()
-                    .WithMessage(_resource.IdObrigatorio);
+                    .WithMessage(_resource.IdObrigatorio());
+        }
+
+        private void ValidarNomePesquisa()
+        {
+            RuleFor(p => p.NomePesquisa)
+                .NotEmpty()
+                    .WithMessage(_resource.NomePesquisaObrigatorio());
         }
 
     }

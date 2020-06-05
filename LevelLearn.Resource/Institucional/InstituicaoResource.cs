@@ -2,12 +2,10 @@
 {
     public class InstituicaoResource : ResourceBase
     {
-        public InstituicaoResource() 
-            : base(typeof(InstituicaoResource))
-        {  
-        }       
+        public InstituicaoResource() : base(typeof(InstituicaoResource))
+        {
+        }
 
-        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
         public string InstituicaoNaoEncontrada => ObterResource(nameof(InstituicaoNaoEncontrada));
         public string InstituicaoNaoPermitida => ObterResource(nameof(InstituicaoNaoPermitida));
         public string InstituicaoJaExiste => ObterResource(nameof(InstituicaoJaExiste));

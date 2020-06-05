@@ -24,7 +24,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _cpf = "881.192.990-35";
             _genero = Generos.Masculino;
             _celular = "(12)98845-7832";
-            _ra = "f1310513";
+            _ra = "f1310435";
             _dataNascimento = DateTime.Parse("26/10/1993");
         }
 
@@ -113,7 +113,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var cpf = "881.192.990-35";
             var genero = Generos.Masculino;
             var celular = "(12)98845-7832";
-            var ra = "f1310513";
+            var ra = "f1310435";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
             return new Aluno(nome, new Email(email), new CPF(cpf), new Celular(celular), ra,

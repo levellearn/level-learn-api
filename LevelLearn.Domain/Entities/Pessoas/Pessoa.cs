@@ -32,7 +32,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Cursos = new List<PessoaCurso>();
             Turmas = new List<Turma>();
 
-            AtribuirNomePesquisa(); //TODO: validar nome pesquisa
+            AtribuirNomePesquisa(); 
         }
 
         #endregion Ctors

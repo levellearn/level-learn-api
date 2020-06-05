@@ -4,9 +4,7 @@ namespace LevelLearn.Resource
 {
     public class SharedResource : ISharedResource
     {
-        private readonly IStringLocalizer _localizer;
-
-        public SharedResource() { }
+        private readonly IStringLocalizer _localizer;        
 
         public SharedResource(IStringLocalizer<SharedResource> localizer)
         {

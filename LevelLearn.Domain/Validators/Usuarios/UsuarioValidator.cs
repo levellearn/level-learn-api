@@ -77,7 +77,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             RuleFor(p => p.PessoaId)
                 .NotEmpty()
-                    .WithMessage(_resource.IdObrigatorio);
+                    .WithMessage(_resource.IdObrigatorio());
         }
 
 

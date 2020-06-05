@@ -2,12 +2,10 @@
 {
     public class CursoResource : ResourceBase
     {
-        public CursoResource()
-                    : base(typeof(CursoResource))
+        public CursoResource() : base(typeof(CursoResource))
         {
         }
 
-        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
         public string CursoNaoEncontrado => ObterResource(nameof(CursoNaoEncontrado));
         public string CursoNaoPermitido => ObterResource(nameof(CursoNaoPermitido));
         public string CursoJaExiste => ObterResource(nameof(CursoJaExiste));

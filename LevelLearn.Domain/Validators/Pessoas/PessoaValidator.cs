@@ -15,12 +15,20 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             _resource = PessoaResource.ObterInstancia();
 
+            ValidarId();
             ValidarNome();
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
+            ValidarNomePesquisa();
         }
 
+        private void ValidarId()
+        {
+            RuleFor(p => p.Id)
+                .NotEmpty()
+                    .WithMessage(_resource.IdObrigatorio());
+        }
 
         private void ValidarNome()
         {
@@ -47,7 +55,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         private void ValidarDataNascimento()
         {
-            var dataAtual = DateTime.Now.Date;
+            DateTime dataAtual = DateTime.Now.Date;
 
             RuleFor(c => c.DataNascimento)
                 .LessThan(dataAtual)
@@ -68,6 +76,14 @@ namespace LevelLearn.Domain.Validators.Usuarios
                 .Must(c => c != TiposPessoa.Nenhum)
                     .WithMessage(_resource.PessoaTipoPessoaInvalido);
         }
+
+        private void ValidarNomePesquisa()
+        {
+            RuleFor(p => p.NomePesquisa)
+                .NotEmpty()
+                    .WithMessage(_resource.NomePesquisaObrigatorio());                
+        }
+
 
     }
 }

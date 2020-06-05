@@ -20,7 +20,6 @@
             return _instancia;
         }
 
-        public string IdObrigatorio => ObterResource(nameof(IdObrigatorio));
         public string UsuarioLoginSucesso => ObterResource(nameof(UsuarioLoginSucesso));
         public string UsuarioLogoutSucesso => ObterResource(nameof(UsuarioLogoutSucesso));
         public string UsuarioEmailJaExiste => ObterResource(nameof(UsuarioEmailJaExiste));

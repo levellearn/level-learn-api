@@ -89,9 +89,9 @@
             <response code="404">Curso não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.DesativarCurso(System.Guid)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.AlternarAtivacaoCurso(System.Guid)">
             <summary>
-            Remoção de curso
+            Alternar ativação do curso
             </summary>
             <param name="id">Id curso</param>
             <returns></returns>
@@ -163,20 +163,9 @@
             <response code="404">Instituição não encontrada</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.DesativarInstituicao(System.Guid)">
-            <summary>
-            Desativação de instituição
-            </summary>
-            <param name="id">Id instituição</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="403">Não é admin da instituição</response>
-            <response code="404">Instituição não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
-        </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.AlternarAtivacaoInstituicao(System.Guid)">
             <summary>
-            Alternar Ativação de instituição
+            Alternar ativação da instituição
             </summary>
             <param name="id">Id instituição</param>
             <returns></returns>

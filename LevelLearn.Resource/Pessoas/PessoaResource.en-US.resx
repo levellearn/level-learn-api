@@ -123,6 +123,9 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID must be filled</value>
   </data>
+  <data name="NomePesquisaObrigatorio" xml:space="preserve">
+    <value>Search Name must be filled</value>
+  </data>
   <data name="PessoaCelularInvalido" xml:space="preserve">
     <value>Cell phone is not valid</value>
   </data>

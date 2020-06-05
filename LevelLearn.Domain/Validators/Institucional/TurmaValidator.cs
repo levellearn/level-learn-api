@@ -5,19 +5,23 @@ namespace LevelLearn.Domain.Validators.Institucional
 {
     public class TurmaValidator : AbstractValidator<Turma>
     {
+        // TODO: Implementar
+        //private readonly TurmaResource _resource;
+
         public TurmaValidator()
         {
             //ValidarTurmaId();
             ValidarNome();
             ValidarNomeDisciplina();
             ValidarDescricao();
+            //ValidarNomePesquisa();
         }
 
         //private void ValidarTurmaId()
         //{
         //    RuleFor(p => p.Id)
         //        .NotEmpty()
-        //            .WithMessage(_sharedResource.IdObrigatorio);
+        //            .WithMessage(_resource.IdObrigatorio());
         //}
 
         private void ValidarNome()
@@ -54,6 +58,13 @@ namespace LevelLearn.Domain.Validators.Institucional
                 .MaximumLength(tamanhoMax)
                     .WithMessage($"Descrição pode ter no máximo {tamanhoMax} caracteres");
         }
+
+        //private void ValidarNomePesquisa()
+        //{
+        //    RuleFor(p => p.NomePesquisa)
+        //        .NotEmpty()
+        //            .WithMessage(_resource.NomePesquisaObrigatorio());
+        //}
 
 
     }

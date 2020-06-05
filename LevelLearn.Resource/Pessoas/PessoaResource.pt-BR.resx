@@ -123,6 +123,9 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID precisa estar preenchido</value>
   </data>
+  <data name="NomePesquisaObrigatorio" xml:space="preserve">
+    <value>Nome Pesquisa precisa estar preenchido</value>
+  </data>
   <data name="PessoaCelularInvalido" xml:space="preserve">
     <value>Celular não é válido</value>
   </data>
