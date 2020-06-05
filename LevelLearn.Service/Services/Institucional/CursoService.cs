@@ -65,7 +65,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!curso.EstaValido())
                 return ResponseFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            if(!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
+            if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
                 return ResponseFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
 
             var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, pessoaId, curso.Id);
@@ -117,23 +117,24 @@ namespace LevelLearn.Service.Services.Institucional
             return ResponseFactory<Curso>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
-        public async Task<ResponseAPI<Curso>> DesativarCurso(Guid cursoId, Guid pessoaId)
+        public async Task<ResponseAPI<Curso>> AlternarAtivacaoCurso(Guid cursoId, Guid pessoaId)
         {
-            // TODO: Professor admin da Instituicao ou professor do curso?
             // Validação BD
+            Curso curso = await _uow.Cursos.CursoCompleto(cursoId);
+
+            if (curso == null)
+                return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
+
+            // TODO: Professor admin da Instituicao ou professor do curso?
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!professorDoCurso)
                 return ResponseFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
-            var cursoExistente = await _uow.Cursos.CursoCompleto(cursoId);
-
-            if (cursoExistente == null)
-                return ResponseFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
-
-            cursoExistente.Desativar();
+            if (curso.Ativo) curso.Desativar();
+            else curso.Ativar();
 
             // Salva no BD
-            _uow.Cursos.Update(cursoExistente);
+            _uow.Cursos.Update(curso);
 
             if (!await _uow.CompleteAsync()) return ResponseFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
 

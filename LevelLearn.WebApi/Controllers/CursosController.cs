@@ -127,7 +127,7 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
-        /// Remoção de curso
+        /// Alternar ativação do curso
         /// </summary>
         /// <param name="id">Id curso</param>
         /// <returns></returns>
@@ -135,13 +135,13 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin do curso</response>
         /// <response code="404">Curso não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpDelete("v1/[controller]/{id:guid}")]
+        [HttpDelete("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DesativarCurso(Guid id)
+        public async Task<ActionResult> AlternarAtivacaoCurso(Guid id)
         {
-            var response = await _cursoService.DesativarCurso(id, User.GetPessoaId());
+            var response = await _cursoService.AlternarAtivacaoCurso(id, User.GetPessoaId());
 
             if (response.Failure) return StatusCode(response.StatusCode, response);
 

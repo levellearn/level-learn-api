@@ -1,5 +1,3 @@
-Criar rotas ativar
-
 Log
 	http://localhost:5341
 	Fazer própria imagem

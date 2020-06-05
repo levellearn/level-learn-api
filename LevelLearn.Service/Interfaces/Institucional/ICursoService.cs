@@ -15,6 +15,6 @@ namespace LevelLearn.Service.Interfaces.Institucional
         Task<ResponseAPI<Curso>> ObterCurso(Guid cursoId, Guid pessoaId);
         Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId);
         Task<ResponseAPI<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId);
-        Task<ResponseAPI<Curso>> DesativarCurso(Guid cursoId, Guid pessoaId);
+        Task<ResponseAPI<Curso>> AlternarAtivacaoCurso(Guid cursoId, Guid pessoaId);
     }
 }

@@ -145,31 +145,9 @@ namespace LevelLearn.WebApi.Controllers
 
             return NoContent();
         }
-
+       
         /// <summary>
-        /// Desativação de instituição
-        /// </summary>
-        /// <param name="id">Id instituição</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="403">Não é admin da instituição</response>
-        /// <response code="404">Instituição não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpDelete("v1/[controller]/{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DesativarInstituicao(Guid id)
-        {
-            var response = await _instituicaoService.DesativarInstituicao(id, User.GetPessoaId());
-
-            if (response.Failure) return StatusCode(response.StatusCode, response);
-
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Alternar Ativação de instituição
+        /// Alternar ativação da instituição
         /// </summary>
         /// <param name="id">Id instituição</param>
         /// <returns></returns>
