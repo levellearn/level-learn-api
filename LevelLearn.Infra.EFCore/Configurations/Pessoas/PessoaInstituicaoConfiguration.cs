@@ -17,7 +17,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .IsRequired();
 
             builder.Property(p => p.DataCadastro)
-                 .IsRequired(false)
                  .HasDefaultValue(DateTime.UtcNow);
 
             // Relacionamentos

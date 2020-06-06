@@ -19,7 +19,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public Guid TurmaId { get; private set; }
         public virtual Turma Turma { get; private set; }
-        public DateTime? DataCadastro { get; private set; }
+        public DateTime DataCadastro { get; private set; }
 
     }
 }

@@ -14,7 +14,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
             builder.HasKey(p => new { p.AlunoId, p.TurmaId }); // Chave composta
 
             builder.Property(p => p.DataCadastro)
-                .IsRequired(false)
                 .HasDefaultValue(DateTime.UtcNow);
 
             // Relacionamentos

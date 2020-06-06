@@ -21,7 +21,7 @@ namespace LevelLearn.Domain.Entities
         public Guid Id { get; private set; }
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
-        public DateTime? DataCadastro { get; private set; }
+        public DateTime DataCadastro { get; private set; }
         public ValidationResult ResultadoValidacao { get; set; }
 
         #endregion

@@ -142,7 +142,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
                 $" Gênero: {Genero.ToString()} " +
                 $" Tipo Pessoa: {TipoPessoa.ToString()} " +
                 $" Data Nascimento: {dataNascimento.ToString("dd/MM/yyyy")}" +
-                $" Data Cadastro: {DataCadastro.Value.ToString("dd/MM/yyyy")}" +
+                $" Data Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}" +
                 $" Ativo: { (Ativo ? "Sim" : "Não") }";
         }
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LevelLearn.Infra.EFCore.Migrations
 {
     [DbContext(typeof(LevelLearnContext))]
-    [Migration("20200525232616_PrimeiraMigration")]
+    [Migration("20200606183616_PrimeiraMigration")]
     partial class PrimeiraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,10 +30,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 202, DateTimeKind.Utc).AddTicks(9399));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 386, DateTimeKind.Utc).AddTicks(1728));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -75,10 +75,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 195, DateTimeKind.Utc).AddTicks(4841));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 375, DateTimeKind.Utc).AddTicks(4298));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -113,10 +113,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<Guid>("CursoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 210, DateTimeKind.Utc).AddTicks(4536));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 392, DateTimeKind.Utc).AddTicks(6675));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -167,10 +167,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<Guid>("TurmaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 252, DateTimeKind.Utc).AddTicks(9422));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 470, DateTimeKind.Utc).AddTicks(9033));
 
                     b.HasKey("AlunoId", "TurmaId");
 
@@ -188,10 +188,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 215, DateTimeKind.Utc).AddTicks(5533));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 402, DateTimeKind.Utc).AddTicks(2965));
 
                     b.Property<DateTime?>("DataNascimento")
                         .HasColumnType("datetime2");
@@ -233,10 +233,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     b.Property<Guid>("CursoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 251, DateTimeKind.Utc).AddTicks(1821));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 466, DateTimeKind.Utc).AddTicks(174));
 
                     b.Property<int>("Perfil")
                         .HasColumnType("int");
@@ -259,10 +259,10 @@ namespace LevelLearn.Infra.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2020, 5, 25, 23, 26, 16, 249, DateTimeKind.Utc).AddTicks(3610));
+                        .HasDefaultValue(new DateTime(2020, 6, 6, 18, 36, 16, 461, DateTimeKind.Utc).AddTicks(1981));
 
                     b.Property<Guid>("InstituicaoId")
                         .HasColumnType("uniqueidentifier");

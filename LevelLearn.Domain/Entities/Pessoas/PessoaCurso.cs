@@ -25,7 +25,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public Guid CursoId { get; set; }
         public virtual Curso Curso { get; set; }
-        public DateTime? DataCadastro { get; private set; }
+        public DateTime DataCadastro { get; private set; }
 
 
     }
