@@ -54,7 +54,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                     .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
                     .Take(filtro.TamanhoPorPagina);
 
-            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);            
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
 
             return await query.ToListAsync();
         }

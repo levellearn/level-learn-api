@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories
 {
-    public interface IRepositoryBase<TEntity> where TEntity : EntityBase
+    public interface IRepositoryBase<TEntity> where TEntity : Entity
     {
         TEntity Get(Guid id);
         Task<TEntity> GetAsync(Guid id);

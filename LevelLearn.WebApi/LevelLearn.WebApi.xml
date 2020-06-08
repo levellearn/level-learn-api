@@ -46,12 +46,12 @@
             <param name="cursoService">ICursoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCursos(System.Guid,LevelLearn.ViewModel.PaginationFilterVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCursos(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Retorna todos os cursos de uma instituição de um professor paginadas com filtro
             </summary>        
             <param name="instituicaoId">Id instituição</param>
-            <param name="filterVM">Armazena os filtros de consulta</param>
+            <param name="filtroVM">Armazena os filtros de consulta</param>
             <returns>Lista cursos</returns>
             <response code="200">Lista de cursos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
@@ -112,7 +112,7 @@
             <param name="instituicaoService">IInstituicaoService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(LevelLearn.ViewModel.PaginationFilterVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Retorna todas as instituições paginadas com filtro nome
             </summary>        
@@ -121,7 +121,7 @@
             <response code="200">Lista de instituições</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoes(LevelLearn.ViewModel.PaginationFilterVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoes(LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Retorna todas as instituições de um professor paginadas e filtro
             </summary>        
@@ -185,7 +185,7 @@
             </summary>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.CriarListaPaginada``1(System.Collections.Generic.IEnumerable{``0},System.Int32,LevelLearn.ViewModel.PaginationFilterVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.CriarListaPaginada``1(System.Collections.Generic.IEnumerable{``0},System.Int32,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Cria a lista paginada
             </summary>

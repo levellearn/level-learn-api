@@ -19,9 +19,9 @@ Identity
 
 Reponse Cache 
 
-
-
-
+*Arrumar validators
+*Descrição não é obrigatório
+*Criar pasta Utils domain
 
 
 Intituições

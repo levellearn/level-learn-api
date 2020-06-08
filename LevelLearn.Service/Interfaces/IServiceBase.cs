@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces
 {
-    public interface IServiceBase<TEntity> where TEntity : EntityBase
+    public interface IServiceBase<TEntity> where TEntity : Entity
     {
         Task<TEntity> GetAsync(Guid id);
 

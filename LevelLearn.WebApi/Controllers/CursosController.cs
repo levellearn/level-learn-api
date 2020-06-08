@@ -41,22 +41,22 @@ namespace LevelLearn.WebApi.Controllers
         /// Retorna todos os cursos de uma instituição de um professor paginadas com filtro
         /// </summary>        
         /// <param name="instituicaoId">Id instituição</param>
-        /// <param name="filterVM">Armazena os filtros de consulta</param>
+        /// <param name="filtroVM">Armazena os filtros de consulta</param>
         /// <returns>Lista cursos</returns>
         /// <response code="200">Lista de cursos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/intituicao/{instituicaoId:guid}")]
-        [ProducesResponseType(typeof(PaginatedListVM<CursoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterCursos([FromRoute]Guid instituicaoId, [FromBody]PaginationFilterVM filterVM)
+        [ProducesResponseType(typeof(ListaPaginadaVM<CursoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterCursos([FromRoute]Guid instituicaoId, [FromBody]FiltroPaginacaoVM filtroVM)
         {
-            var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
+            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
             ResponseAPI<IEnumerable<Curso>> response =
                 await _cursoService.CursosInstituicaoProfessor(instituicaoId, User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Data);
 
-            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filterVM));
+            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filtroVM));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace LevelLearn.WebApi.Controllers
 
             if (response.Failure) return StatusCode(response.StatusCode, response);
 
-            var responseVM = _mapper.Map<CursoVM>(response.Data);
+            CursoVM responseVM = _mapper.Map<CursoVM>(response.Data);
 
             return CreatedAtAction(nameof(ObterCurso), new { id = responseVM.Id }, responseVM);
         }

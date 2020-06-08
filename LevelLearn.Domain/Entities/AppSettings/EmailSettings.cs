@@ -7,7 +7,7 @@
         public int Porta { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public bool Enviar { get; set; }
+        public bool EnvioHabilitado { get; set; }
     }
 
 

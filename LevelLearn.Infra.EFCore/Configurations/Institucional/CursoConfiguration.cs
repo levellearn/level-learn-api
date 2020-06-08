@@ -12,12 +12,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
             base.Configure(builder);
 
             builder.ToTable("Cursos");
-
-            builder.HasKey(p => p.Id);
-
-            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
-            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
-
+           
             builder.Property(p => p.Nome)
                 .IsRequired()
                 .HasMaxLength(RegraAtributo.Curso.NOME_TAMANHO_MAX)
@@ -27,7 +22,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
                 .IsRequired()
                 .HasMaxLength(RegraAtributo.Curso.SIGLA_TAMANHO_MAX)
                 .HasColumnType($"varchar({RegraAtributo.Curso.SIGLA_TAMANHO_MAX})");
-
 
             builder.Property(p => p.Descricao)
                 .IsRequired()

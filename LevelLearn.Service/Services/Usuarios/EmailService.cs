@@ -43,7 +43,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task EnviarEmailAsync(string email, string assunto, string mensagem)
         {
-            if (!_appSettings.EmailSettings.Enviar) return;
+            if (!_appSettings.EmailSettings.EnvioHabilitado) return;
 
             var mail = new MailMessage()
             {

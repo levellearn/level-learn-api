@@ -1,22 +1,31 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class InstituicaoConfiguration : EntityBaseConfiguration<Instituicao>
+    public class InstituicaoConfiguration : LevelLearnTypeConfiguration<Instituicao>
     {
-        public override void Configure(EntityTypeBuilder<Instituicao> builder)
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Instituicao> builder)
         {
-            base.Configure(builder);
             builder.ToTable("Instituicoes");
+        }
 
-            builder.HasKey(p => p.Id);
+        public override void ConfigurarChavePrimaria(EntityTypeBuilder<Instituicao> builder)
+        {
+            builder.HasKey(c => c.Id);
+        }
 
+        public override void ConfigurarIndices(EntityTypeBuilder<Instituicao> builder)
+        {
             builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
             builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
+        }
 
+        public override void ConfigurarCampos(EntityTypeBuilder<Instituicao> builder)
+        {
             builder.Property(p => p.Nome)
                 .IsRequired()
                 .HasMaxLength(RegraAtributo.Instituicao.NOME_TAMANHO_MAX)
@@ -27,18 +36,19 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
                .HasMaxLength(RegraAtributo.Instituicao.DESCRICAO_TAMANHO_MAX)
                .HasColumnType($"varchar({RegraAtributo.Instituicao.DESCRICAO_TAMANHO_MAX})");
 
-
-            // Relacionamentos
-            builder.HasMany(p => p.Pessoas);
-            builder.HasMany(p => p.Cursos);
-
             //builder.HasQueryFilter(p => p.Ativo);
-
 
             //builder.HasData(
             //    new Instituicao("Instituição Teste", "Descrição Teste")
             //);
-
         }
+
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Instituicao> builder)
+        {
+            builder.HasMany(p => p.Pessoas);
+            builder.HasMany(p => p.Cursos);
+        }
+
+
     }
 }

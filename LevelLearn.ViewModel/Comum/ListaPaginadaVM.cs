@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace LevelLearn.ViewModel
 {
-    public class PaginatedListVM<T> where T : class
+    public class ListaPaginadaVM<T> where T : class
     {
-        public PaginatedListVM(IEnumerable<T> data, int pageNumber, int pageSize, int total,
+        public ListaPaginadaVM(IEnumerable<T> data, int pageNumber, int pageSize, int total,
             string searchFilter, string sortBy, bool ascendingSort, bool isActive)
         {
             Data = data;
@@ -18,8 +19,8 @@ namespace LevelLearn.ViewModel
             IsActive = isActive;
         }
 
+        //[JsonProperty()]
         public IEnumerable<T> Data { get; set; }
-
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int Total { get; set; }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repository
 {
-    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
+    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : Entity
     {
         protected readonly DbContext _context;
 

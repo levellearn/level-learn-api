@@ -34,8 +34,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
                 .HasColumnType($"varchar({RegraAtributo.Pessoa.CELULAR_TAMANHO})")
-                .IsRequired(false);           
-                 
+                .IsRequired(false);         
 
             builder.Property(p => p.DataNascimento)
                .IsRequired(false);           
@@ -47,6 +46,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
               .IsRequired();
 
             // Relacionamentos
+
             builder.HasMany(p => p.Instituicoes);
             builder.HasMany(p => p.Cursos);
             builder.HasMany(p => p.Turmas);

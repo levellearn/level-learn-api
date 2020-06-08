@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services
 {
-    public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : EntityBase
+    public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : Entity
     {
         protected readonly IRepositoryBase<TEntity> _repository;
 

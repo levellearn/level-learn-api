@@ -47,8 +47,8 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
-        [ProducesResponseType(typeof(PaginatedListVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]PaginationFilterVM filterVM)
+        [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]FiltroPaginacaoVM filterVM)
         {
             var instituicoes = await _instituicaoService.GetWithPagination(filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
             int count = await _instituicaoService.CountWithPagination(filterVM.SearchFilter);
@@ -66,10 +66,10 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
-        [ProducesResponseType(typeof(PaginatedListVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoes([FromBody]PaginationFilterVM filterVM)
+        [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filterVM)
         {
-            var filtroPaginacao = _mapper.Map<PaginationFilterVM, FiltroPaginacao>(filterVM);
+            var filtroPaginacao = _mapper.Map<FiltroPaginacaoVM, FiltroPaginacao>(filterVM);
 
             ResponseAPI<IEnumerable<Instituicao>> response =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);

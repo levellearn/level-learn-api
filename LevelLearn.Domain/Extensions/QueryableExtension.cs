@@ -1,5 +1,4 @@
-﻿using LevelLearn.Domain.Entities;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,15 +8,13 @@ namespace LevelLearn.Domain.Extensions
     public static class QueryableExtension
     {
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string columnName, bool isAscending = true)
-            where T : EntityBase
+            where T : class
         {
-            if (String.IsNullOrEmpty(columnName))
-                return source.OrderBy(p => p.NomePesquisa);
+            if (string.IsNullOrWhiteSpace(columnName)) return source;
 
             PropertyInfo propertyInfo = typeof(T).GetProperty(columnName);
 
-            if (propertyInfo == null)
-                return source.OrderBy(p => p.NomePesquisa);
+            if (propertyInfo == null) return source;
 
             ParameterExpression parameter = Expression.Parameter(source.ElementType, "");
 

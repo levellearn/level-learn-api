@@ -8,8 +8,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
     {
         public void Configure(EntityTypeBuilder<Professor> builder)
         {
-
-
+           
         }
 
     }

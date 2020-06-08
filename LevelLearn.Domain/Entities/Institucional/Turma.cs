@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
-    public class Turma : EntityBase
+    public class Turma : Entity
     {
         #region Ctors
         protected Turma() {

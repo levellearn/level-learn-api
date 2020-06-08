@@ -5,7 +5,7 @@ using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations
 {
-    public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : EntityBase
+    public abstract class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : Entity
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {

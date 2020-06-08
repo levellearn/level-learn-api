@@ -2,13 +2,13 @@
 
 namespace LevelLearn.ViewModel
 {
-    //TODO: Corrigir nome "PaginationFilterVM"?
+    //TODO: Corrigir nome "PaginationFilterVM"? JsonProperty
     /// <summary>
     /// Classe utilizada para armezenar filtros de consulta
     /// </summary>
-    public class PaginationFilterVM
+    public class FiltroPaginacaoVM
     {
-        public PaginationFilterVM()
+        public FiltroPaginacaoVM()
         {
             PageNumber = 1;
             PageSize = 100;

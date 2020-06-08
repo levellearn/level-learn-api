@@ -22,8 +22,8 @@ namespace LevelLearn.Service.Response
         public bool Success { get; private set; }
         public bool Failure { get; private set; }
         public T Data { get; private set; }
-        public ICollection<DadoInvalido> Errors { get; private set; }    
         public int? Total { get; private set; }
+        public ICollection<DadoInvalido> Errors { get; private set; }    
 
     }
 

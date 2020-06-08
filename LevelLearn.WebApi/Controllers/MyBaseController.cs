@@ -2,6 +2,7 @@
 using LevelLearn.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 namespace LevelLearn.WebApi.Controllers
 {
@@ -11,7 +12,8 @@ namespace LevelLearn.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("api/")]
-    [Produces("application/json")]
+    [Produces(MediaTypeNames.Application.Json)]
+    //[Consumes(MediaTypeNames.Application.Json)]
     public abstract class MyBaseController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -33,12 +35,13 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="total">Total da entidade no banco</param>
         /// <param name="filterVM">Filtro de pesquisa</param>
         /// <returns></returns>
-        protected PaginatedListVM<T> CriarListaPaginada<T>(
-            IEnumerable<T> listaVM, int total, PaginationFilterVM filterVM) where T : class
+        protected ListaPaginadaVM<T> CriarListaPaginada<T>(IEnumerable<T> listaVM, int total, FiltroPaginacaoVM filterVM)
+            where T : class
         {
-            return new PaginatedListVM<T>(
-                listaVM, filterVM.PageNumber, filterVM.PageSize, total,
+            var listaPaginadaVM = new ListaPaginadaVM<T>(listaVM, filterVM.PageNumber, filterVM.PageSize, total,
                 filterVM.SearchFilter, filterVM.SortBy, filterVM.AscendingSort, filterVM.IsActive);
+
+            return listaPaginadaVM;
         }
 
     }

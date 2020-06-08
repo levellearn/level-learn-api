@@ -19,7 +19,7 @@ namespace LevelLearn.WebApi.AutoMapper
 
         private void ComumMap()
         {
-            CreateMap<PaginationFilterVM, FiltroPaginacao>()
+            CreateMap<FiltroPaginacaoVM, FiltroPaginacao>()
                 .ConstructUsing(p =>
                     new FiltroPaginacao(p.SearchFilter, p.PageNumber, p.PageSize, p.SortBy, p.AscendingSort, p.IsActive)
                 );

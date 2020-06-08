@@ -16,7 +16,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
             builder.Property(p => p.Perfil)
                 .IsRequired();
 
-
             builder.Property(p => p.DataCadastro)
                 .HasDefaultValue(DateTime.UtcNow);
 

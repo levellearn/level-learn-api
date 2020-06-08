@@ -6,11 +6,10 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities
 {
-    public abstract class EntityBase
+    public abstract class EntityBase<TKey> where TKey : IEquatable<TKey>
     {
         protected EntityBase()
         {
-            Id = Guid.NewGuid();
             Ativo = true;
             DataCadastro = DateTime.UtcNow;
             ResultadoValidacao = new ValidationResult();
@@ -18,11 +17,11 @@ namespace LevelLearn.Domain.Entities
 
         #region Props
 
-        public Guid Id { get; private set; }
+        public TKey Id { get; protected set; }
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
         public DateTime DataCadastro { get; private set; }
-        public ValidationResult ResultadoValidacao { get; set; }
+        public ValidationResult ResultadoValidacao { get; protected set; }
 
         #endregion
 
@@ -67,7 +66,7 @@ namespace LevelLearn.Domain.Entities
 
         public override bool Equals(object obj)
         {
-            var compareTo = obj as EntityBase;
+            var compareTo = obj as Entity;
 
             if (ReferenceEquals(this, compareTo)) return true;
             if (compareTo is null) return false;
@@ -75,7 +74,7 @@ namespace LevelLearn.Domain.Entities
             return this.Id.Equals(compareTo.Id);
         }
 
-        public static bool operator ==(EntityBase a, EntityBase b)
+        public static bool operator ==(EntityBase<TKey> a, EntityBase<TKey> b)
         {
             if (a is null && b is null)
                 return true;
@@ -86,7 +85,7 @@ namespace LevelLearn.Domain.Entities
             return a.Equals(b);
         }
 
-        public static bool operator !=(EntityBase a, EntityBase b)
+        public static bool operator !=(EntityBase<TKey> a, EntityBase<TKey> b)
         {
             return !(a == b);
         }
