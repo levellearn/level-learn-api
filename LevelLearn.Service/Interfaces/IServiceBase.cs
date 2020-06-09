@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces
 {
-    public interface IServiceBase<TEntity> where TEntity : Entity
+    public interface IServiceBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
-        Task<TEntity> GetAsync(Guid id);
+        Task<TEntity> GetAsync(TKey id);
 
         Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue);
 

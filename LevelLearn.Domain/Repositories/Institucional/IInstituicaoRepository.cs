@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories.Institucional
 {
-    public interface IInstituicaoRepository : IRepositoryBase<Instituicao>
+    public interface IInstituicaoRepository : IRepositoryBase<Instituicao, Guid>
     {
         /// <summary>
         /// Retorna a instituição com todos os dados relacionados
@@ -28,7 +28,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// </summary>
         /// <param name="pessoaId"></param>
         /// <returns>Lista de instituições</returns>
-        Task<List<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId);
+        Task<IEnumerable<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId);
 
         /// <summary>
         /// Retorna as instituições de um professor paginadas com filtro
@@ -36,7 +36,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <param name="filtroPaginacao">Filtros da paginação</param>       
         /// <returns>Lista de instituições</returns>
-        Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao);
+        Task<IEnumerable<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao);
 
         /// <summary>
         /// Retorna o total de instituições de um professor para a paginação
@@ -52,7 +52,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns>Lista de instituições</returns>
-        Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId);
+        Task<IEnumerable<Instituicao>> InstituicoesAluno(Guid pessoaId);
 
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories.Institucional
 {
-    public interface ICursoRepository : IRepositoryBase<Curso>
+    public interface ICursoRepository : IRepositoryBase<Curso, Guid>
     {
         /// <summary>
         /// Retorna o curso com todos os dados relacionados
@@ -23,7 +23,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pageNumber">Número da página</param>
         /// <param name="pageSize">Quantidade de itens por página</param>
         /// <returns>Lista de cursos</returns>
-        Task<List<Curso>> CursosProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize);
+        Task<IEnumerable<Curso>> CursosProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize);
 
         /// <summary>
         /// Retorna o total de cursos de um professor para a paginação
@@ -40,7 +40,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <param name="filtroPaginacao">Filtros da paginação</param>
         /// <returns>Lista de cursos</returns>
-        Task<List<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
+        Task<IEnumerable<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
 
         /// <summary>
         /// Retorna o total cursos de uma instituição de um professor para a paginação

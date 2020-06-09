@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 {
-    public class InstituicaoRepository : RepositoryBase<Instituicao>, IInstituicaoRepository
+    public class InstituicaoRepository : RepositoryBase<Instituicao, Guid>, IInstituicaoRepository
     {
         public InstituicaoRepository(LevelLearnContext context)
             : base(context) { }
@@ -29,7 +29,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<List<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId)
+        public async Task<IEnumerable<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
                 .Where(p => p.PessoaId == pessoaId &&
@@ -39,7 +39,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .ToListAsync();
         }
 
-        public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtro)
+        public async Task<IEnumerable<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
 
@@ -74,7 +74,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        public async Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId)
+        public async Task<IEnumerable<Instituicao>> InstituicoesAluno(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
                 .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Aluno)

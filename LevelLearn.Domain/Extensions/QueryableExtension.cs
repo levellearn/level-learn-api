@@ -29,5 +29,6 @@ namespace LevelLearn.Domain.Extensions
 
             return source.Provider.CreateQuery<T>(methodCallExpression);
         }
+
     }
 }

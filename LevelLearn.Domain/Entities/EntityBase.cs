@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities
 {
+    /// <summary>
+    /// Entidade base para todas as entidades do domínio
+    /// </summary>
+    /// <typeparam name="TKey">O tipo usado como ID</typeparam>
     public abstract class EntityBase<TKey> where TKey : IEquatable<TKey>
     {
         protected EntityBase()

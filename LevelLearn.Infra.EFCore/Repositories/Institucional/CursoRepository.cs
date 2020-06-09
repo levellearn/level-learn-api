@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 {
-    public class CursoRepository : RepositoryBase<Curso>, ICursoRepository
+    public class CursoRepository : RepositoryBase<Curso, Guid>, ICursoRepository
     {
         public CursoRepository(LevelLearnContext context)
             : base(context)
@@ -31,7 +31,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Curso>> CursosProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Curso>> CursosProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize)
         {
             searchFilter = searchFilter.GenerateSlug();
 
@@ -58,7 +58,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        public async Task<List<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtro)
+        public async Task<IEnumerable<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
 

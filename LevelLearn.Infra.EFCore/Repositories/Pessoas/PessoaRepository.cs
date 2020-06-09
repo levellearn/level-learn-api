@@ -3,12 +3,13 @@ using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
 {
-    public class PessoaRepository : RepositoryBase<Pessoa>, IPessoaRepository
+    public class PessoaRepository : RepositoryBase<Pessoa, Guid>, IPessoaRepository
     {
         public PessoaRepository(LevelLearnContext context)
             : base(context)

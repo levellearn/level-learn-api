@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
 {
-    public class InstituicaoService : ServiceBase<Instituicao>, IInstituicaoService
+    public class InstituicaoService : ServiceBase<Instituicao, Guid>, IInstituicaoService
     {
         #region Ctor
 
@@ -44,7 +44,7 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            List<Instituicao> instituicoes = await _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
+            var instituicoes = await _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
 
             int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
@@ -89,9 +89,9 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseFactory<Instituicao>.BadRequest(instituicaoExistente.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
-            var isProfessorAdmin = await _uow.Instituicoes.ProfessorAdmin(instituicaoId, pessoaId);
+            bool professorAdmin = await _uow.Instituicoes.ProfessorAdmin(instituicaoId, pessoaId);
 
-            if (!isProfessorAdmin)
+            if (!professorAdmin)
                 return ResponseFactory<Instituicao>.Forbidden(_resource.InstituicaoNaoPermitida);
 
             if (await InstituicaoExistente(instituicaoExistente))
@@ -131,7 +131,7 @@ namespace LevelLearn.Service.Services.Institucional
         private async Task<bool> InstituicaoExistente(Instituicao instituicao)
         {
             // Verifica se está tentando atualizar para uma instituição que já existe
-
+            // TODO: Refatorar -> nome - sigla - cidade-uf
             bool instituicaoExiste = await _uow.Instituicoes.EntityExists(i =>
                 i.NomePesquisa == instituicao.NomePesquisa &&
                 i.Id != instituicao.Id);

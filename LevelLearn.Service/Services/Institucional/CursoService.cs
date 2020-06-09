@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
 {
-    public class CursoService : ServiceBase<Curso>, ICursoService
+    public class CursoService : ServiceBase<Curso, Guid>, ICursoService
     {
         #region Ctor
 

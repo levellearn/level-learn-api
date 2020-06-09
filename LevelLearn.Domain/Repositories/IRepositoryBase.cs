@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Domain.Repositories
 {
-    public interface IRepositoryBase<TEntity> where TEntity : Entity
+    public interface IRepositoryBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
-        TEntity Get(Guid id);
-        Task<TEntity> GetAsync(Guid id);
+        TEntity Get(TKey id);
+        Task<TEntity> GetAsync(TKey id);
 
         IEnumerable<TEntity> GetAll(int skip = 0, int limit = int.MaxValue);
         Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue);
@@ -39,6 +41,7 @@ namespace LevelLearn.Domain.Repositories
         /// <param name="pageSize">Quantidade de itens por página</param>
         /// <returns></returns>
         Task<IEnumerable<TEntity>> GetWithPagination(string searchFilter, int pageNumber, int pageSize);
+
         /// <summary>
         /// Retorna o total para a paginação
         /// </summary>

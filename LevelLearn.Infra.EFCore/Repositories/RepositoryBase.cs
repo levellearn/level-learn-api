@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories;
-using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repository
 {
-    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : Entity
+    public abstract class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
         protected readonly DbContext _context;
 
@@ -22,7 +23,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Sync
 
-        public virtual TEntity Get(Guid id)
+        public virtual TEntity Get(TKey id)
         {
             return _context.Set<TEntity>().Find(id);
         }
@@ -77,7 +78,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Async
 
-        public virtual async Task<TEntity> GetAsync(Guid id)
+        public virtual async Task<TEntity> GetAsync(TKey id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -131,7 +132,7 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
-        
+
         public async Task<int> CountWithPagination(string searchFilter)
         {
             searchFilter = searchFilter.GenerateSlug();
@@ -164,6 +165,7 @@ namespace LevelLearn.Infra.EFCore.Repository
             var numberEntriesSaved = await _context.SaveChangesAsync();
             return numberEntriesSaved > 0 ? true : false;
         }
+
 
     }
 }

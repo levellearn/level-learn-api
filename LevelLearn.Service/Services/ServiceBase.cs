@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services
 {
-    public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : Entity
+    public abstract class ServiceBase<TEntity, TKey> : IServiceBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
-        protected readonly IRepositoryBase<TEntity> _repository;
+        protected readonly IRepositoryBase<TEntity, TKey> _repository;
 
-        public ServiceBase(IRepositoryBase<TEntity> repository)
+        public ServiceBase(IRepositoryBase<TEntity, TKey> repository)
         {
             _repository = repository;
         }
@@ -54,7 +56,7 @@ namespace LevelLearn.Service.Services
             return await _repository.GetAllAsync(skip, limit);
         }
 
-        public async Task<TEntity> GetAsync(Guid id)
+        public async Task<TEntity> GetAsync(TKey id)
         {
             return await _repository.GetAsync(id);
         }

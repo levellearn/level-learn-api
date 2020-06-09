@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces.Institucional
 {
-    public interface IInstituicaoService : IServiceBase<Instituicao>, IDisposable
+    public interface IInstituicaoService : IServiceBase<Instituicao, Guid>, IDisposable
     {
         Task<ResponseAPI<Instituicao>> ObterInstituicao(Guid instituicaoId, Guid pessoaId);
         Task<ResponseAPI<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao);
