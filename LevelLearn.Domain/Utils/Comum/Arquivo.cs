@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace LevelLearn.Domain.Entities.Comum
+namespace LevelLearn.Domain.Utils.Comum
 {
     public class Arquivo
     {

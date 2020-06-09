@@ -1,9 +1,9 @@
-﻿using LevelLearn.Domain.Entities.Comum;
-using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories.Institucional;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
 using Microsoft.EntityFrameworkCore;

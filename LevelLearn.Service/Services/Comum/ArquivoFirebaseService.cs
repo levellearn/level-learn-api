@@ -1,6 +1,6 @@
 ﻿using Firebase.Auth;
 using Firebase.Storage;
-using LevelLearn.Domain.Entities.AppSettings;
+using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Service.Interfaces.Comum;
 using Microsoft.Extensions.Options;
 using System.IO;

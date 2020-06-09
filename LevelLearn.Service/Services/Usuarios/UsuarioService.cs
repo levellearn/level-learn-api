@@ -65,7 +65,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _sharedResource = sharedResource;
             _usuarioResource = UsuarioResource.ObterInstancia();
             _pessoaResource = PessoaResource.ObterInstancia();
-            
+
             _log = logger;
         }
 
@@ -193,10 +193,10 @@ namespace LevelLearn.Service.Services.Usuarios
             DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
             var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
 
-            Usuario user = await _userManager.FindByIdAsync(userId);
+            Usuario usuario = await _userManager.FindByIdAsync(userId);
 
             // Validações BD
-            if (user == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
+            if (usuario == null) return ResponseFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
             // Validações Arquivo
             if (arquivo == null || arquivo.Length <= 0 || arquivo.Length > TAMANHO_MAXIMO_BYTES)
@@ -208,26 +208,26 @@ namespace LevelLearn.Service.Services.Usuarios
             Stream imagemRedimensionada = RedimensionarImagem(arquivo);
 
             // Upload Firebase Storage
-            var nomeArquivo = user.GerarNomeFotoPerfil();
+            string nomeArquivo = usuario.GerarNomeFotoPerfil();
 
-            var imagemUrl = await _arquivoService.SalvarArquivo(imagemRedimensionada, diretorio, nomeArquivo);
+            string imagemUrl = await _arquivoService.SalvarArquivo(imagemRedimensionada, diretorio, nomeArquivo);
 
-            var nomeImagemAnterior = user.AlterarFotoPerfil(imagemUrl, nomeArquivo);
+            string nomeImagemAnterior = usuario.AlterarFotoPerfil(imagemUrl, nomeArquivo);
 
             _ = _arquivoService.DeletarArquivo(diretorio, nomeImagemAnterior);
 
             // Atualizando USUÁRIO BD
-            var identityResult = await _userManager.UpdateAsync(user);
+            IdentityResult identityResult = await _userManager.UpdateAsync(usuario);
 
             if (!identityResult.Succeeded)
                 return ResponseFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
             var responseVM = new UsuarioVM()
             {
-                Id = user.Id,
-                Nome = user.Nome,
-                NickName = user.NickName,
-                ImagemUrl = user.ImagemUrl
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                NickName = usuario.NickName,
+                ImagemUrl = usuario.ImagemUrl
             };
 
             return ResponseFactory<UsuarioVM>.Ok(responseVM, _sharedResource.AtualizadoSucesso);

@@ -25,7 +25,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
             UserName = Email;
             NormalizedUserName = NormalizedEmail;
             ImagemUrl = IMAGEM_URL_PADRAO;
-            NickName = nickName?.Trim() ?? string.Empty; // TODO: Username único?
+            NickName = nickName?.Trim() ?? string.Empty;
             PhoneNumber = celular;
             PessoaId = pessoaId;
 

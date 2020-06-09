@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
-using LevelLearn.Domain.Entities.AppSettings;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Repositories.Institucional;
+using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Domain.Validators;
 using LevelLearn.Infra.EFCore.Contexts;
+using LevelLearn.Infra.EFCore.Repositories.Institucional;
+using LevelLearn.Infra.EFCore.Repositories.Pessoas;
 using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Comum;
@@ -102,7 +106,6 @@ namespace LevelLearn.WebApi
             // Log Seq
             ConfigureLogSeq(services);
         }
-
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
@@ -228,9 +231,9 @@ namespace LevelLearn.WebApi
 
         private void ConfigureRepositories(IServiceCollection services)
         {
-            services.AddScoped<Domain.Repositories.Institucional.IInstituicaoRepository, Infra.EFCore.Repositories.Institucional.InstituicaoRepository>();
-            services.AddScoped<Domain.Repositories.Institucional.ICursoRepository, Infra.EFCore.Repositories.Institucional.CursoRepository>();
-            services.AddScoped<Domain.Repositories.Pessoas.IPessoaRepository, Infra.EFCore.Repositories.Pessoas.PessoaRepository>();
+            services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
+            services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<IPessoaRepository, PessoaRepository>();
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Usuarios;
-using LevelLearn.Resource;
 using LevelLearn.Resource.Usuarios;
 using System.Text.RegularExpressions;
 

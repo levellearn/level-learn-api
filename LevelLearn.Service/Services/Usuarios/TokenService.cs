@@ -1,5 +1,5 @@
-﻿using LevelLearn.Domain.Entities.AppSettings;
-using LevelLearn.Domain.Entities.Usuarios;
+﻿using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.Extensions.Caching.Distributed;

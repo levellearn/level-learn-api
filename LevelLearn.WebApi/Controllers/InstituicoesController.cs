@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using LevelLearn.Domain.Entities.Comum;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;
@@ -53,7 +53,7 @@ namespace LevelLearn.WebApi.Controllers
             var instituicoes = await _instituicaoService.GetWithPagination(filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
             int count = await _instituicaoService.CountWithPagination(filterVM.SearchFilter);
 
-            var listaVM = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes);
+            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(instituicoes);
 
             return Ok(CriarListaPaginada(listaVM, count, filterVM));
         }
@@ -69,7 +69,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filterVM)
         {
-            var filtroPaginacao = _mapper.Map<FiltroPaginacaoVM, FiltroPaginacao>(filterVM);
+            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filterVM);
 
             ResponseAPI<IEnumerable<Instituicao>> response =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
@@ -145,7 +145,7 @@ namespace LevelLearn.WebApi.Controllers
 
             return NoContent();
         }
-       
+
         /// <summary>
         /// Alternar ativação da instituição
         /// </summary>

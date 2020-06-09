@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using LevelLearn.Domain.Entities.Comum;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;

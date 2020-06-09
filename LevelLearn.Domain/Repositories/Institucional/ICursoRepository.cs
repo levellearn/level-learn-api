@@ -1,5 +1,5 @@
-﻿using LevelLearn.Domain.Entities.Comum;
-using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Utils.Comum;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

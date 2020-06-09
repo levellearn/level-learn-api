@@ -1,8 +1,8 @@
-﻿using LevelLearn.Domain.Entities.Comum;
-using LevelLearn.Domain.Entities.Institucional;
+﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.UnityOfWorks;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Resource;
 using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;

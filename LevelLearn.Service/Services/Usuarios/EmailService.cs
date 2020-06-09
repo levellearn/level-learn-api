@@ -1,4 +1,4 @@
-﻿using LevelLearn.Domain.Entities.AppSettings;
+﻿using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;

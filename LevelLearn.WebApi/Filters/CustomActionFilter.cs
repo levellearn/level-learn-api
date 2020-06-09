@@ -1,4 +1,4 @@
-﻿using LevelLearn.Domain.Entities.Comum;
+﻿using LevelLearn.Domain.Utils.Comum;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

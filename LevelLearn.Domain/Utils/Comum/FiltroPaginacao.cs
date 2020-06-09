@@ -1,4 +1,4 @@
-﻿namespace LevelLearn.Domain.Entities.Comum
+﻿namespace LevelLearn.Domain.Utils.Comum
 {
     public class FiltroPaginacao
     {

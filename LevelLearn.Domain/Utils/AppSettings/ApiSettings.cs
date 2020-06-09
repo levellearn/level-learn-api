@@ -1,4 +1,4 @@
-﻿namespace LevelLearn.Domain.Entities.AppSettings
+﻿namespace LevelLearn.Domain.Utils.AppSettings
 {
     public class ApiSettings
     {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LevelLearn.Domain.Entities.Comum;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.ViewModel;
 
 namespace LevelLearn.WebApi.AutoMapper

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Resources;
 
 namespace LevelLearn.Resource
@@ -29,8 +30,17 @@ namespace LevelLearn.Resource
         /// <param name="replacements">Valores a ser usados para substituir na mensagem do recurso</param>
         protected string ObterResource(string resourceName, params object[] replacements)
         {
-            return string.Format(_resourceManager.GetString(resourceName), replacements);
+            try
+            {
+                return string.Format(_resourceManager.GetString(resourceName), replacements);
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex.Message);
+                return resourceName;
+            }
         }
+
     }
 
 }
