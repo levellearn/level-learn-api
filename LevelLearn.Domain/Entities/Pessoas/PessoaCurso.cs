@@ -15,15 +15,15 @@ namespace LevelLearn.Domain.Entities.Pessoas
             CursoId = cursoId;
             DataCadastro = DateTime.UtcNow;
         }
-
-        public TiposPessoa Perfil { get; set; }
-        public DateTime DataCadastro { get; private set; }
-
+        
         public Guid PessoaId { get; set; }
         public virtual Pessoa Pessoa { get; set; }
 
         public Guid CursoId { get; set; }
         public virtual Curso Curso { get; set; }
+
+        public TiposPessoa Perfil { get; set; }
+        public DateTime DataCadastro { get; private set; }
 
 
     }

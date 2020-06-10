@@ -7,6 +7,8 @@ namespace LevelLearn.Domain.Enums
         [Description("Pública")]
         Publica,
         [Description("Privada")]
-        Privada
+        Privada,
+        [Description("Outros")]
+        Outros
     }
 }

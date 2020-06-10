@@ -13,14 +13,14 @@ namespace LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration
         public void Configure(EntityTypeBuilder<TEntity> builder)
         {
             ConfigurarNomeTabela(builder);
-            ConfigurarCampos(builder);
             ConfigurarChavePrimaria(builder);
+            ConfigurarCampos(builder);
             ConfigurarRelacionamentos(builder);
         }
 
         public abstract void ConfigurarNomeTabela(EntityTypeBuilder<TEntity> builder);
-        public abstract void ConfigurarCampos(EntityTypeBuilder<TEntity> builder);
         public abstract void ConfigurarChavePrimaria(EntityTypeBuilder<TEntity> builder);
+        public abstract void ConfigurarCampos(EntityTypeBuilder<TEntity> builder);
         public abstract void ConfigurarRelacionamentos(EntityTypeBuilder<TEntity> builder);
 
     }

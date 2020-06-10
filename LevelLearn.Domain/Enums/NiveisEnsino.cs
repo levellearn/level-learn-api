@@ -1,8 +1,14 @@
-﻿namespace LevelLearn.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace LevelLearn.Domain.Enums
 {
     public enum NiveisEnsino
     {
+        [Description("Ensino Básico")]
         EnsinoBasico,
-        Superior
+        [Description("Superior")]
+        Superior,
+        [Description("Outros")]
+        Outros
     }
 }

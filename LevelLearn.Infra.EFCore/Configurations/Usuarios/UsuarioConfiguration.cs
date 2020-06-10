@@ -10,6 +10,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.Ignore(p => p.Senha);
+
             builder.Ignore(p => p.ConfirmacaoSenha);
 
             builder.Property(p => p.ImagemUrl)
@@ -20,8 +21,9 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
               .HasMaxLength(RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX)
               .HasColumnType($"varchar({RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX})");
 
-            // Relacionamentos
-            builder.HasOne(p => p.Pessoa).WithOne();
+            builder.HasOne(p => p.Pessoa)
+                .WithOne();
         }
+
     }
 }

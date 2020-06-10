@@ -6,6 +6,18 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities
 {
+
+    /// <summary>
+    /// Entidade padrão tendo o ID como um Guid
+    /// </summary>
+    public abstract class EntityBase : EntityBase<Guid>
+    {
+        protected EntityBase()
+        {
+            Id = Guid.NewGuid();
+        }
+    }
+
     /// <summary>
     /// Entidade base para todas as entidades do domínio
     /// </summary>
@@ -70,7 +82,7 @@ namespace LevelLearn.Domain.Entities
 
         public override bool Equals(object obj)
         {
-            var compareTo = obj as Entity;
+            var compareTo = obj as EntityBase<TKey>;
 
             if (ReferenceEquals(this, compareTo)) return true;
             if (compareTo is null) return false;

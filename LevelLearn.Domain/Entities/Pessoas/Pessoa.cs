@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities.Pessoas
 {
-    public abstract class Pessoa : Entity
+    public abstract class Pessoa : EntityBase
     {
         #region Ctors
 

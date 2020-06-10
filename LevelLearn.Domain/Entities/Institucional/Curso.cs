@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
-    public class Curso : Entity
+    public class Curso : EntityBase
     {
         #region Ctors
 
