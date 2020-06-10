@@ -19,7 +19,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public Curso(string nome, string sigla, string descricao, Guid instituicaoId)
         {
-            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Nome = nome.RemoveExtraSpaces();
             Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
             InstituicaoId = instituicaoId;

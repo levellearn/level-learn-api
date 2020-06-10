@@ -3,25 +3,15 @@ using LevelLearn.Domain.Validators;
 using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class InstituicaoConfiguration : LevelLearnTypeConfiguration<Instituicao>
+    public class InstituicaoConfiguration : EntityBaseConfiguration<Instituicao, Guid>
     {
         public override void ConfigurarNomeTabela(EntityTypeBuilder<Instituicao> builder)
         {
             builder.ToTable("Instituicoes");
-        }
-
-        public override void ConfigurarChavePrimaria(EntityTypeBuilder<Instituicao> builder)
-        {
-            builder.HasKey(c => c.Id);
-        }
-
-        public override void ConfigurarIndices(EntityTypeBuilder<Instituicao> builder)
-        {
-            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
-            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
         }
 
         public override void ConfigurarCampos(EntityTypeBuilder<Instituicao> builder)

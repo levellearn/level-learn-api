@@ -21,6 +21,7 @@ Reponse Cache
 
 *Arrumar validators
 *Descrição não é obrigatório
+*Struct enum
 
 Intituições
 	Etec Prof. Alfredo de Barros Santos	

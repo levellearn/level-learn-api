@@ -11,15 +11,17 @@ namespace LevelLearn.Domain.Entities.Institucional
     {
         #region Ctors
 
-        protected Instituicao() {
+        protected Instituicao()
+        {
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
         }
 
         public Instituicao(string nome, string descricao)
         {
-            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
+            //Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
 
@@ -31,7 +33,18 @@ namespace LevelLearn.Domain.Entities.Institucional
         #region Props
 
         public string Nome { get; private set; }
+        public string Sigla { get; private set; }
         public string Descricao { get; private set; }
+        public string CNPJ { get; private set; }
+        public string Municipio { get; private set; }
+        public string UF { get; private set; }
+        public string OrganizacaoAcademica { get; private set; }
+        public string Rede { get; private set; }
+        public string CategoriaAdministrativa { get; private set; }
+        public string NivelEnsino { get; private set; }
+        public string CEP { get; private set; }
+        public string Endereco { get; private set; }
+        public string Numero { get; private set; }
 
         public virtual ICollection<Curso> Cursos { get; private set; }
         public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }
@@ -93,7 +106,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             base.Ativar();
 
             Cursos.ToList()
-                .ForEach(c => c.Ativar());            
+                .ForEach(c => c.Ativar());
         }
 
         /// <summary>
@@ -104,7 +117,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             base.Desativar();
 
             Cursos.ToList()
-                .ForEach(c => c.Desativar());            
+                .ForEach(c => c.Desativar());
         }
 
         public override void AtribuirNomePesquisa()

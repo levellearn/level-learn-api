@@ -1,18 +1,21 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class CursoConfiguration : EntityBaseConfiguration<Curso>
+    public class CursoConfiguration : EntityBaseConfiguration<Curso, Guid>
     {
-        public override void Configure(EntityTypeBuilder<Curso> builder)
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Curso> builder)
         {
-            base.Configure(builder);
-
             builder.ToTable("Cursos");
-           
+        }
+
+        public override void ConfigurarCampos(EntityTypeBuilder<Curso> builder)
+        {
             builder.Property(p => p.Nome)
                 .IsRequired()
                 .HasMaxLength(RegraAtributo.Curso.NOME_TAMANHO_MAX)
@@ -27,9 +30,11 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
                 .IsRequired()
                 .HasMaxLength(RegraAtributo.Curso.DESCRICAO_TAMANHO_MAX)
                 .HasColumnType($"varchar({RegraAtributo.Curso.DESCRICAO_TAMANHO_MAX})");
+        }
 
-            // Relacionamentos
 
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Curso> builder)
+        {
             builder.HasOne(p => p.Instituicao)
                 .WithMany(p => p.Cursos);
 
@@ -37,5 +42,6 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 
             builder.HasMany(p => p.Pessoas);
         }
+
     }
 }

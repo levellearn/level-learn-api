@@ -1,22 +1,26 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
-    public class PessoaConfiguration : EntityBaseConfiguration<Pessoa>
+    public class PessoaConfiguration : EntityBaseConfiguration<Pessoa, Guid>
     {
-        public override void Configure(EntityTypeBuilder<Pessoa> builder)
+
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Pessoa> builder)
         {
-            base.Configure(builder);
-
             builder.ToTable("Pessoas");
+        }
 
+        public override void ConfigurarCampos(EntityTypeBuilder<Pessoa> builder)
+        {
             builder.Property(p => p.Nome)
-               .IsRequired()
-               .HasMaxLength(RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-               .HasColumnType($"varchar({RegraAtributo.Pessoa.NOME_TAMANHO_MAX})");
+              .IsRequired()
+              .HasMaxLength(RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
+              .HasColumnType($"varchar({RegraAtributo.Pessoa.NOME_TAMANHO_MAX})");
 
             builder.OwnsOne(c => c.Cpf)
                 .Property(e => e.Numero)
@@ -34,26 +38,25 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
                 .HasColumnType($"varchar({RegraAtributo.Pessoa.CELULAR_TAMANHO})")
-                .IsRequired(false);         
+                .IsRequired(false);
 
             builder.Property(p => p.DataNascimento)
-               .IsRequired(false);           
+               .IsRequired(false);
 
             builder.Property(p => p.TipoPessoa)
               .IsRequired();
 
             builder.Property(p => p.Genero)
               .IsRequired();
+        }
 
-            // Relacionamentos
-
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Pessoa> builder)
+        {
             builder.HasMany(p => p.Instituicoes);
             builder.HasMany(p => p.Cursos);
             builder.HasMany(p => p.Turmas);
-            //builder.HasMany(p => p.Turmas)
-            //    .WithOne(t => t.Professor)
-            //    .HasForeignKey(t => t.ProfessorId);
-
         }
+
+
     }
 }
