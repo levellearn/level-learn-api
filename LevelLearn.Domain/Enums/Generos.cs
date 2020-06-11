@@ -4,12 +4,15 @@ namespace LevelLearn.Domain.Enums
 {
     public enum Generos
     {
-        [Description("Nenhum")]
-        Nenhum = 0,
+        [Description("Vazio")]
+        Vazio = 0,
+
         [Description("Masculino")]
         Masculino,
+
         [Description("Feminino")]
         Feminino,
+
         [Description("Outros")]
         Outros
     }

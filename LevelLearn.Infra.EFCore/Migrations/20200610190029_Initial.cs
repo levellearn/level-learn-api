@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LevelLearn.Infra.EFCore.Migrations
 {
-    public partial class PrimeiraMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,9 +28,18 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 235, DateTimeKind.Utc).AddTicks(8699)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false)
+                    Sigla = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
+                    Cnpj = table.Column<string>(nullable: true),
+                    OrganizacaoAcademica = table.Column<int>(nullable: false),
+                    Rede = table.Column<int>(nullable: false),
+                    CategoriaAdministrativa = table.Column<int>(nullable: false),
+                    NivelEnsino = table.Column<int>(nullable: false),
+                    Cep = table.Column<string>(nullable: true),
+                    Municipio = table.Column<string>(nullable: true),
+                    UF = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +53,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 807, DateTimeKind.Utc).AddTicks(2457)),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 287, DateTimeKind.Utc).AddTicks(5179)),
                     Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
                     Email = table.Column<string>(type: "varchar(190)", nullable: true),
                     CPF = table.Column<string>(type: "varchar(11)", nullable: true),
@@ -88,7 +97,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 796, DateTimeKind.Utc).AddTicks(19)),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 242, DateTimeKind.Utc).AddTicks(6447)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Sigla = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
@@ -145,15 +154,14 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 name: "PessoaInstituicoes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Perfil = table.Column<int>(nullable: false),
                     PessoaId = table.Column<Guid>(nullable: false),
                     InstituicaoId = table.Column<Guid>(nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 843, DateTimeKind.Utc).AddTicks(4199))
+                    Perfil = table.Column<int>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 290, DateTimeKind.Utc).AddTicks(6397))
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PessoaInstituicoes", x => x.Id);
+                    table.PrimaryKey("PK_PessoaInstituicoes", x => new { x.PessoaId, x.InstituicaoId });
                     table.ForeignKey(
                         name: "FK_PessoaInstituicoes_Instituicoes_InstituicaoId",
                         column: x => x.InstituicaoId,
@@ -172,15 +180,14 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 name: "PessoaCursos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Perfil = table.Column<int>(nullable: false),
                     PessoaId = table.Column<Guid>(nullable: false),
                     CursoId = table.Column<Guid>(nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 845, DateTimeKind.Utc).AddTicks(2640))
+                    Perfil = table.Column<int>(nullable: false),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 293, DateTimeKind.Utc).AddTicks(4110))
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PessoaCursos", x => x.Id);
+                    table.PrimaryKey("PK_PessoaCursos", x => new { x.PessoaId, x.CursoId });
                     table.ForeignKey(
                         name: "FK_PessoaCursos_Cursos_CursoId",
                         column: x => x.CursoId,
@@ -202,7 +209,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false),
                     NomePesquisa = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 802, DateTimeKind.Utc).AddTicks(8532)),
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 247, DateTimeKind.Utc).AddTicks(7732)),
                     Nome = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "varchar(2000)", maxLength: 2000, nullable: false),
                     Meta = table.Column<double>(nullable: false),
@@ -325,7 +332,7 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 {
                     AlunoId = table.Column<Guid>(nullable: false),
                     TurmaId = table.Column<Guid>(nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 8, 19, 46, 30, 847, DateTimeKind.Utc).AddTicks(1671))
+                    DataCadastro = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(2020, 6, 10, 19, 0, 29, 295, DateTimeKind.Utc).AddTicks(8419))
                 },
                 constraints: table =>
                 {
@@ -415,19 +422,9 @@ namespace LevelLearn.Infra.EFCore.Migrations
                 column: "CursoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PessoaCursos_PessoaId",
-                table: "PessoaCursos",
-                column: "PessoaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PessoaInstituicoes_InstituicaoId",
                 table: "PessoaInstituicoes",
                 column: "InstituicaoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PessoaInstituicoes_PessoaId",
-                table: "PessoaInstituicoes",
-                column: "PessoaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pessoas_NomePesquisa",

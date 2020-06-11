@@ -4,6 +4,8 @@ namespace LevelLearn.Domain.Enums
 {
     public enum OrganizacoesAcademica
     {
+        [Description("Outros")]
+        Outros = 0,
         [Description("Centro Universitário")]
         CentroUniversitario,
         [Description("Faculdade")]
@@ -11,9 +13,6 @@ namespace LevelLearn.Domain.Enums
         [Description("Universidade")]
         Universidade,
         [Description("Instituto Federal de Educação Ciência e Tecnologia")]
-        InstitutoFederalDeEducacaoCienciaETecnologia,
-        [Description("Outros")]
-        Outros
-
+        InstitutoFederalDeEducacaoCienciaETecnologia
     }
 }

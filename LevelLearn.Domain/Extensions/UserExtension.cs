@@ -24,7 +24,7 @@ namespace LevelLearn.Domain.Extensions
             if (principal == null)
                 throw new ArgumentNullException(nameof(principal));
 
-            string pessoaId =  principal.FindFirst(ApplicationClaims.PESSOA_ID)?.Value;
+            string pessoaId = principal.FindFirst(ApplicationClaims.PESSOA_ID)?.Value;
             return new Guid(pessoaId);
         }
 

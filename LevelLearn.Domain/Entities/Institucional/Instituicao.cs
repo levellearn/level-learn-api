@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators;
 using LevelLearn.Domain.Validators.Institucional;
@@ -21,10 +22,32 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
-            //Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
 
+            AtribuirNomePesquisa();
+        }
+
+        public Instituicao(string nome, string sigla, string descricao, string cnpj, OrganizacoesAcademica organizacaoAcademica, RedesIntituicao rede, CategoriaAdministrativa categoriaAdministrativa, NiveisEnsino nivelEnsino, string cep, string municipio, string uf)
+        {
+            Nome = nome.RemoveExtraSpaces();
+            Descricao = descricao?.Trim();
+            Sigla = sigla.RemoveExtraSpaces().ToUpper();
+            Cnpj = cnpj;
+
+            OrganizacaoAcademica = organizacaoAcademica;
+            Rede = rede;
+            CategoriaAdministrativa = categoriaAdministrativa;
+            NivelEnsino = nivelEnsino;
+
+            Cep = cep;
+            Municipio = municipio.RemoveExtraSpaces();
+            UF = uf.RemoveExtraSpaces().ToUpper();
+            //Endereco = endereco;
+            //Numero = numero;
+
+            Cursos = new List<Curso>();
+            Pessoas = new List<PessoaInstituicao>();
             AtribuirNomePesquisa();
         }
 
@@ -35,16 +58,16 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Nome { get; private set; }
         public string Sigla { get; private set; }
         public string Descricao { get; private set; }
-        public string CNPJ { get; private set; }
+        public string Cnpj { get; private set; }
+        public OrganizacoesAcademica OrganizacaoAcademica { get; private set; }
+        public RedesIntituicao Rede { get; private set; }
+        public CategoriaAdministrativa CategoriaAdministrativa { get; private set; }
+        public NiveisEnsino NivelEnsino { get; private set; }
+        public string Cep { get; private set; }
         public string Municipio { get; private set; }
         public string UF { get; private set; }
-        public string OrganizacaoAcademica { get; private set; }
-        public string Rede { get; private set; }
-        public string CategoriaAdministrativa { get; private set; }
-        public string NivelEnsino { get; private set; }
-        public string CEP { get; private set; }
-        public string Endereco { get; private set; }
-        public string Numero { get; private set; }
+        //public string Endereco { get; private set; }
+        //public string Numero { get; private set; }
 
         public virtual ICollection<Curso> Cursos { get; private set; }
         public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }

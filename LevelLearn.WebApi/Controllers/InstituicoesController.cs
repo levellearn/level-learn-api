@@ -41,42 +41,42 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Retorna todas as instituições paginadas com filtro nome
         /// </summary>        
-        /// <param name="filterVM">Armazena os filtros de consulta</param>
+        /// <param name="filtroVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]FiltroPaginacaoVM filterVM)
+        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]FiltroPaginacaoVM filtroVM)
         {
-            var instituicoes = await _instituicaoService.GetWithPagination(filterVM.SearchFilter, filterVM.PageNumber, filterVM.PageSize);
-            int count = await _instituicaoService.CountWithPagination(filterVM.SearchFilter);
+            var instituicoes = await _instituicaoService.GetWithPagination(filtroVM.SearchFilter, filtroVM.PageNumber, filtroVM.PageSize);
+            int count = await _instituicaoService.CountWithPagination(filtroVM.SearchFilter);
 
             var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(instituicoes);
 
-            return Ok(CriarListaPaginada(listaVM, count, filterVM));
+            return Ok(CriarListaPaginada(listaVM, count, filtroVM));
         }
 
         /// <summary>
         /// Retorna todas as instituições de um professor paginadas e filtro
         /// </summary>        
-        /// <param name="filterVM">Armazena os filtros de consulta</param>
+        /// <param name="filtroPaginacaoVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filterVM)
+        public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filtroPaginacaoVM)
         {
-            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filterVM);
+            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroPaginacaoVM);
 
             ResponseAPI<IEnumerable<Instituicao>> response =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
-            var listaVM = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(response.Data);
+            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(response.Data);
 
-            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filterVM));
+            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filtroPaginacaoVM));
         }
 
         /// <summary>

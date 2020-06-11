@@ -66,14 +66,14 @@ namespace LevelLearn.Domain.Validators.Usuarios
         private void ValidarGenero()
         {
             RuleFor(p => p.Genero)
-                .Must(c => c != Generos.Nenhum)
+                .Must(c => c != Generos.Vazio)
                     .WithMessage(_resource.PessoaGeneroObrigatorio);
         }
 
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
-                .Must(c => c != TiposPessoa.Nenhum)
+                .Must(c => c != TiposPessoa.Vazio)
                     .WithMessage(_resource.PessoaTipoPessoaInvalido);
         }
 

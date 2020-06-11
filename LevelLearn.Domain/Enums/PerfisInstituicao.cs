@@ -4,8 +4,8 @@ namespace LevelLearn.Domain.Enums
 {
     public enum PerfisInstituicao
     {
-        [Description("Nenhum")]
-        Nenhum = 0,
+        [Description("Vazio")]
+        Vazio = 0,
         [Description("Professor Admin")]
         ProfessorAdmin = 1,
         [Description("Professor")]
