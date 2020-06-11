@@ -37,7 +37,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == TipoPessoa.Professor)
                 .Select(p => p.Curso)
                     .Where(p => p.NomePesquisa.Contains(searchFilter) && p.Ativo)
                     .Skip((pageNumber - 1) * pageSize)
@@ -52,7 +52,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == TipoPessoa.Professor)
                 .Select(p => p.Curso)
                     .Where(p => p.NomePesquisa.Contains(searchFilter) && p.Ativo)
                 .CountAsync();
@@ -64,7 +64,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             IQueryable<Curso> query = _context.Set<PessoaCurso>()
                 .AsNoTracking()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == TipoPessoa.Professor)
                 .Select(p => p.Curso)
                     .Where(c => c.InstituicaoId == instituicaoId &&
                                 c.NomePesquisa.Contains(termoPesquisaSanitizado) &&
@@ -93,7 +93,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == TiposPessoa.Professor)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == TipoPessoa.Professor)
                 .Select(p => p.Curso)
                     .Where(c => c.InstituicaoId == instituicaoId &&
                         c.NomePesquisa.Contains(termoPesquisaSanitizado) &&
@@ -106,7 +106,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
                 .Where(p => p.CursoId == cursoId &&
-                            p.Perfil == TiposPessoa.Professor &&
+                            p.Perfil == TipoPessoa.Professor &&
                             p.PessoaId == pessoaId)
                 .AnyAsync();
 

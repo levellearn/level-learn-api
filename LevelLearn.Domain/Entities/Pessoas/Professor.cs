@@ -10,10 +10,10 @@ namespace LevelLearn.Domain.Entities.Pessoas
     {
         protected Professor() { }
 
-        public Professor(string nome, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
+        public Professor(string nome, Email email, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
             : base(nome, email, cpf, celular, genero, dataNascimento)
         {
-            TipoPessoa = TiposPessoa.Professor;
+            TipoPessoa = TipoPessoa.Professor;
         }
 
         public override bool EstaValido()

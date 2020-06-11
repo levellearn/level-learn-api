@@ -52,8 +52,8 @@ namespace LevelLearn.NUnitTest.Institucional
             var aluno = AlunoTest.CriarAlunoPadrao();
             var professor = ProfessorTest.CriarProfessorPadrao();
 
-            var professorAdminInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, professor.Id, instituicao.Id);
-            var alunoInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id);
+            var professorAdminInstituicao = new PessoaInstituicao(PerfilInstituicao.ProfessorAdmin, professor.Id, instituicao.Id);
+            var alunoInstituicao = new PessoaInstituicao(PerfilInstituicao.Aluno, aluno.Id, instituicao.Id);
 
             instituicao.AtribuirPessoa(professorAdminInstituicao);
             instituicao.AtribuirPessoa(alunoInstituicao);
@@ -71,12 +71,12 @@ namespace LevelLearn.NUnitTest.Institucional
             var aluno = AlunoTest.CriarAlunoPadrao();
             var professor = ProfessorTest.CriarProfessorPadrao();
 
-            var professorAdminInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, professor.Id, instituicao.Id)
+            var professorAdminInstituicao = new PessoaInstituicao(PerfilInstituicao.ProfessorAdmin, professor.Id, instituicao.Id)
             {
                 Pessoa = professor,
                 Instituicao = instituicao
             };
-            var alunoInstituicao = new PessoaInstituicao(PerfisInstituicao.Aluno, aluno.Id, instituicao.Id)
+            var alunoInstituicao = new PessoaInstituicao(PerfilInstituicao.Aluno, aluno.Id, instituicao.Id)
             {
                 Pessoa = aluno,
                 Instituicao = instituicao

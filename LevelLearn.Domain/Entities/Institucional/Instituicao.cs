@@ -28,7 +28,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             AtribuirNomePesquisa();
         }
 
-        public Instituicao(string nome, string sigla, string descricao, string cnpj, OrganizacoesAcademica organizacaoAcademica, RedesIntituicao rede, CategoriaAdministrativa categoriaAdministrativa, NiveisEnsino nivelEnsino, string cep, string municipio, string uf)
+        public Instituicao(string nome, string sigla, string descricao, string cnpj, OrganizacaoAcademica organizacaoAcademica, RedeIntituicao rede, CategoriaAdministrativa categoriaAdministrativa, NivelEnsino nivelEnsino, string cep, string municipio, string uf)
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
@@ -59,10 +59,10 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Sigla { get; private set; }
         public string Descricao { get; private set; }
         public string Cnpj { get; private set; }
-        public OrganizacoesAcademica OrganizacaoAcademica { get; private set; }
-        public RedesIntituicao Rede { get; private set; }
+        public OrganizacaoAcademica OrganizacaoAcademica { get; private set; }
+        public RedeIntituicao Rede { get; private set; }
         public CategoriaAdministrativa CategoriaAdministrativa { get; private set; }
-        public NiveisEnsino NivelEnsino { get; private set; }
+        public NivelEnsino NivelEnsino { get; private set; }
         public string Cep { get; private set; }
         public string Municipio { get; private set; }
         public string UF { get; private set; }

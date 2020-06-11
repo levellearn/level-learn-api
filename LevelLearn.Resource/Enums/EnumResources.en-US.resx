@@ -117,13 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Generos_Feminino" xml:space="preserve">
+  <data name="CategoriaAdministrativa_Estadual" xml:space="preserve">
+    <value>Estadual</value>
+  </data>
+  <data name="CategoriaAdministrativa_Federal" xml:space="preserve">
+    <value>Federal</value>
+  </data>
+  <data name="CategoriaAdministrativa_Municipal" xml:space="preserve">
+    <value>Municipal</value>
+  </data>
+  <data name="CategoriaAdministrativa_Outros" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="CategoriaAdministrativa_Privada" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="GeneroPessoa_Feminino" xml:space="preserve">
     <value>Female</value>
   </data>
-  <data name="Generos_Masculino" xml:space="preserve">
+  <data name="GeneroPessoa_Masculino" xml:space="preserve">
     <value>Male</value>
   </data>
-  <data name="Generos_Outros" xml:space="preserve">
+  <data name="GeneroPessoa_Outros" xml:space="preserve">
     <value>Others</value>
+  </data>
+  <data name="NivelEnsino_EnsinoBasico" xml:space="preserve">
+    <value>Basic education</value>
+  </data>
+  <data name="NivelEnsino_Outros" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="NivelEnsino_Superior" xml:space="preserve">
+    <value>Higher education</value>
+  </data>
+  <data name="OrganizacaoAcademica_CentroUniversitario" xml:space="preserve">
+    <value>University center</value>
+  </data>
+  <data name="OrganizacaoAcademica_Faculdade" xml:space="preserve">
+    <value>College</value>
+  </data>
+  <data name="OrganizacaoAcademica_InstitutoFederalDeEducacaoCienciaETecnologia" xml:space="preserve">
+    <value>Federal Institute of Education Science and Technology</value>
+  </data>
+  <data name="OrganizacaoAcademica_Outros" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="OrganizacaoAcademica_Universidade" xml:space="preserve">
+    <value>University</value>
+  </data>
+  <data name="RedeIntituicao_Outros" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="RedeIntituicao_Privada" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="RedeIntituicao_Publica" xml:space="preserve">
+    <value>Public</value>
+  </data>
+  <data name="StatusResposta_Corrigida" xml:space="preserve">
+    <value>Evaluated</value>
+  </data>
+  <data name="StatusResposta_Pedente" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="StatusResposta_Respondida" xml:space="preserve">
+    <value>Answered</value>
+  </data>
+  <data name="TipoPresenca_Atrasado" xml:space="preserve">
+    <value>Late</value>
+  </data>
+  <data name="TipoPresenca_Faltou" xml:space="preserve">
+    <value>Missed</value>
+  </data>
+  <data name="TipoPresenca_Presente" xml:space="preserve">
+    <value>Present</value>
   </data>
 </root>

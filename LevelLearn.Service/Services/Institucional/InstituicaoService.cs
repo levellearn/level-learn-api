@@ -64,7 +64,7 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResponseFactory<Instituicao>.BadRequest(_resource.InstituicaoJaExiste);
 
             // Salva no BD
-            var pessoaInstituicao = new PessoaInstituicao(PerfisInstituicao.ProfessorAdmin, pessoaId, instituicao.Id);
+            var pessoaInstituicao = new PessoaInstituicao(PerfilInstituicao.ProfessorAdmin, pessoaId, instituicao.Id);
             instituicao.AtribuirPessoa(pessoaInstituicao);
 
             await _uow.Instituicoes.AddAsync(instituicao);

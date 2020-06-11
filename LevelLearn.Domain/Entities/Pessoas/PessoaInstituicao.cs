@@ -8,7 +8,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
     {
         protected PessoaInstituicao() { }
 
-        public PessoaInstituicao(PerfisInstituicao perfil, Guid pessoaId, Guid instituicaoId)
+        public PessoaInstituicao(PerfilInstituicao perfil, Guid pessoaId, Guid instituicaoId)
         {
             Perfil = perfil;
             PessoaId = pessoaId;
@@ -22,7 +22,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Guid InstituicaoId { get; set; }
         public virtual Instituicao Instituicao { get; set; }
 
-        public PerfisInstituicao Perfil { get; set; }
+        public PerfilInstituicao Perfil { get; set; }
         public DateTime DataCadastro { get; private set; }
 
     }

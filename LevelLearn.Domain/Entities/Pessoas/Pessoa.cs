@@ -19,7 +19,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Turmas = new List<Turma>();
         }
 
-        public Pessoa(string nome, Email email, CPF cpf, Celular celular, Generos genero, DateTime? dataNascimento)
+        public Pessoa(string nome, Email email, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
             Email = email;
@@ -42,8 +42,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public Email Email { get; protected set; }
         public CPF Cpf { get; protected set; }
         public Celular Celular { get; protected set; }
-        public Generos Genero { get; protected set; }
-        public TiposPessoa TipoPessoa { get; protected set; }
+        public GeneroPessoa Genero { get; protected set; }
+        public TipoPessoa TipoPessoa { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
 
         public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }

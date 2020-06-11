@@ -12,7 +12,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         // Fields
         private string _nome, _email, _cpf, _celular;
         private DateTime _dataNascimento;
-        private Generos _genero;
+        private GeneroPessoa _genero;
 
         [SetUp]
         public void Setup()
@@ -20,7 +20,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _nome = "Leandro Guarino";
             _email = "le.guarino@mail.com";
             _cpf = "881.192.990-35";
-            _genero = Generos.Masculino;
+            _genero = GeneroPessoa.Masculino;
             _celular = "(12)98845-8974";
             _dataNascimento = DateTime.Parse("30/12/1988");
         }
@@ -76,7 +76,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var nome = "Leandro Guarino";
             var email = "le.guarino@mail.com";
             var cpf = "881.192.990-35";
-            var genero = Generos.Masculino;
+            var genero = GeneroPessoa.Masculino;
             var celular = "(12)98845-8974";
             var dataNascimento = DateTime.Parse("30/12/1988");
 

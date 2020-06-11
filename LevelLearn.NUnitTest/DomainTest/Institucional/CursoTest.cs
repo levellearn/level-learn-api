@@ -51,10 +51,10 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var curso = new Curso(_nome, _sigla, _descricao, instituicao.Id);
 
-            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.ProfessorAdmin).Pessoa;
-            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.Aluno).Pessoa;
-            var professorCurso = new PessoaCurso(TiposPessoa.Professor, professor.Id, curso.Id);
-            var alunoCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
+            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.ProfessorAdmin).Pessoa;
+            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.Aluno).Pessoa;
+            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id);
+            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id);
 
             curso.AtribuirPessoa(professorCurso);
             curso.AtribuirPessoa(alunoCurso);
@@ -74,10 +74,10 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var curso = new Curso(nome, sigla, descricao, instituicao.Id);
 
-            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.ProfessorAdmin).Pessoa;
-            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfisInstituicao.Aluno).Pessoa;
-            var professorCurso = new PessoaCurso(TiposPessoa.Professor, professor.Id, curso.Id);
-            var alunoCurso = new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id);
+            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.ProfessorAdmin).Pessoa;
+            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.Aluno).Pessoa;
+            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id);
+            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id);
 
             curso.AtribuirPessoa(professorCurso);
             curso.AtribuirPessoa(alunoCurso);

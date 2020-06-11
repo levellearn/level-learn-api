@@ -61,7 +61,7 @@ namespace LevelLearn.NUnitTest.Usuarios
         private Usuario CriarUsuario()
         {
             var pessoa = new Professor(_nome, new Email(_email), new CPF("226.547.010-42"),
-               new Celular(_celular), Generos.Masculino, DateTime.Parse("1993-10-26"));
+               new Celular(_celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
             var user = new Usuario(_nome, _nickName, _email, _celular, pessoa.Id);
             user.AtribuirSenha(_senha, _confirmacaoSenha);
@@ -81,7 +81,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             var confirmacaoSenha = "Gamificando@123";
 
             var pessoa = new Professor(nome, new Email(email), new CPF("226.547.010-42"),
-               new Celular(celular), Generos.Masculino, DateTime.Parse("1993-10-26"));
+               new Celular(celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
             var user = new Usuario(nome, nickName, email, celular, pessoa.Id);
             user.AtribuirSenha(senha, confirmacaoSenha);

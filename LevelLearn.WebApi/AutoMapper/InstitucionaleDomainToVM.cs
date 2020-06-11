@@ -27,9 +27,9 @@ namespace LevelLearn.WebApi.AutoMapper
 
             CreateMap<Pessoa, PessoaVM>();
 
-            CreateMap<PerfisInstituicao, PerfisInstituicaoVM>();
-            CreateMap<Generos, GenerosVM>();
-            CreateMap<TiposPessoa, TiposPessoaVM>();
+            CreateMap<PerfilInstituicao, PerfisInstituicaoVM>();
+            CreateMap<GeneroPessoa, GenerosVM>();
+            CreateMap<TipoPessoa, TiposPessoaVM>();
 
             CreateMap<PessoaInstituicao, PessoaInstituicaoVM>();
             CreateMap<PessoaCurso, PessoaCursoVM>();

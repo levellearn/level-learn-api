@@ -2,11 +2,11 @@
 
 namespace LevelLearn.Domain.Enums
 {
-    public enum TiposPessoa
+    public enum TipoPessoa
     {
         [Description("Vazio")]
         Vazio = 0,
-        [Description("Admin sistema")]
+        [Description("Admin Sistema")]
         Admin = 1,
         [Description("Professor")]
         Professor = 2,

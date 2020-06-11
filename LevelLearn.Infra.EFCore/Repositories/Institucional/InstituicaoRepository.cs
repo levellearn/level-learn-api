@@ -33,7 +33,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         {
             return await _context.Set<PessoaInstituicao>()
                 .Where(p => p.PessoaId == pessoaId &&
-                            p.Perfil == PerfisInstituicao.ProfessorAdmin)
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
@@ -46,8 +46,8 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             IQueryable<Instituicao> query = _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId)
-                .Where(p => p.Perfil == PerfisInstituicao.Professor ||
-                            p.Perfil == PerfisInstituicao.ProfessorAdmin)
+                .Where(p => p.Perfil == PerfilInstituicao.Professor ||
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
                                 p.Ativo == filtro.Ativo)
@@ -66,8 +66,8 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId)
-                .Where(p => p.Perfil == PerfisInstituicao.Professor ||
-                       p.Perfil == PerfisInstituicao.ProfessorAdmin)
+                .Where(p => p.Perfil == PerfilInstituicao.Professor ||
+                       p.Perfil == PerfilInstituicao.ProfessorAdmin)
                 .Select(p => p.Instituicao)
                     .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
                                 p.Ativo == ativo)
@@ -77,7 +77,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public async Task<IEnumerable<Instituicao>> InstituicoesAluno(Guid pessoaId)
         {
             return await _context.Set<PessoaInstituicao>()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Aluno)
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfilInstituicao.Aluno)
                 .Select(p => p.Instituicao)
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
@@ -89,7 +89,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId &&
                             p.InstituicaoId == instituicaoId &&
-                            p.Perfil == PerfisInstituicao.ProfessorAdmin)
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
                 .AnyAsync();
         }
 

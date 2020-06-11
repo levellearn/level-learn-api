@@ -19,17 +19,15 @@ namespace LevelLearn.WebApi.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
-        private readonly ILogger<UsuariosController> _log;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="usuarioService">IUsuarioService</param>
         /// <param name="logger">ILogger</param>
-        public UsuariosController(IUsuarioService usuarioService, ILogger<UsuariosController> logger)
+        public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            _log = logger;
         }
 
         /// <summary>
@@ -144,10 +142,9 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>It Works</returns>
         /// <response code="200">Ok</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("up")]
+        [HttpGet("up")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Up()
         {
             return Ok("It Works");

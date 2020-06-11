@@ -54,7 +54,7 @@ namespace LevelLearn.NUnitTest.Institucional
             var aluno = AlunoTest.CriarAlunoPadrao();
             var professor = ProfessorTest.CriarProfessorPadrao();
 
-            curso.AtribuirPessoa(new PessoaCurso(TiposPessoa.Aluno, aluno.Id, curso.Id));
+            curso.AtribuirPessoa(new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id));
 
             var turma = new Turma(_nome, _descricao, _nomeDisciplina, curso.Id, professor.Id);
             turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
@@ -70,11 +70,11 @@ namespace LevelLearn.NUnitTest.Institucional
             var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de algoritmos e programas de computador.";
             var nomeDisciplina = "ALGORITMOS";
 
-            var professor = curso.Pessoas.First(p => p.Perfil == TiposPessoa.Professor).Pessoa;
+            var professor = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Professor).Pessoa;
 
             var turma = new Turma(nome, descricao, nomeDisciplina, curso.Id, professor.Id);
 
-            var aluno = curso.Pessoas.First(p => p.Perfil == TiposPessoa.Aluno).Pessoa;
+            var aluno = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Aluno).Pessoa;
 
             turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
 

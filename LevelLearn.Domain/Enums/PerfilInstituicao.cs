@@ -2,7 +2,7 @@
 
 namespace LevelLearn.Domain.Enums
 {
-    public enum PerfisInstituicao
+    public enum PerfilInstituicao
     {
         [Description("Vazio")]
         Vazio = 0,

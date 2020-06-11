@@ -12,7 +12,7 @@ namespace LevelLearn.ViewModel.Usuarios
         public string ConfirmacaoSenha { get; set; }
         public string Cpf { get; set; }
         public string Celular { get; set; }
-        public Generos Genero { get; set; }
+        public GeneroPessoa Genero { get; set; }
         public DateTime? DataNascimento { get; set; }
     }
 }

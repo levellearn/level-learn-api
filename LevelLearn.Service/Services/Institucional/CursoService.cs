@@ -68,7 +68,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
                 return ResponseFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
 
-            var pessoaCurso = new PessoaCurso(TiposPessoa.Professor, pessoaId, curso.Id);
+            var pessoaCurso = new PessoaCurso(TipoPessoa.Professor, pessoaId, curso.Id);
             curso.AtribuirPessoa(pessoaCurso);
 
             // Validação BD

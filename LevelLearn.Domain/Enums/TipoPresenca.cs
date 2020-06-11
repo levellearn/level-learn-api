@@ -2,7 +2,7 @@
 
 namespace LevelLearn.Domain.Enums
 {
-    public enum TiposPresenca
+    public enum TipoPresenca
     {
         [Description("Presente")]
         Presente = 1,
