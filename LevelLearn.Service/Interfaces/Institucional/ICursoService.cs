@@ -11,10 +11,10 @@ namespace LevelLearn.Service.Interfaces.Institucional
 {
     public interface ICursoService : IServiceBase<Curso, Guid>, IDisposable
     {
-        Task<ResponseAPI<IEnumerable<Curso>>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
-        Task<ResponseAPI<Curso>> ObterCurso(Guid cursoId, Guid pessoaId);
-        Task<ResponseAPI<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId);
-        Task<ResponseAPI<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId);
-        Task<ResponseAPI<Curso>> AlternarAtivacaoCurso(Guid cursoId, Guid pessoaId);
+        Task<ResultadoService<IEnumerable<Curso>>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
+        Task<ResultadoService<Curso>> ObterCurso(Guid cursoId, Guid pessoaId);
+        Task<ResultadoService<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId);
+        Task<ResultadoService<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId);
+        Task<ResultadoService<Curso>> AlternarAtivacaoCurso(Guid cursoId, Guid pessoaId);
     }
 }

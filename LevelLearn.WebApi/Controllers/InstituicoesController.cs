@@ -50,8 +50,8 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]FiltroPaginacaoVM filtroVM)
         {
-            var instituicoes = await _instituicaoService.GetWithPagination(filtroVM.SearchFilter, filtroVM.PageNumber, filtroVM.PageSize);
-            int count = await _instituicaoService.CountWithPagination(filtroVM.SearchFilter);
+            var instituicoes = await _instituicaoService.GetWithPagination(filtroVM.FiltroPesquisa, filtroVM.NumeroPagina, filtroVM.TamanhoPorPagina);
+            int count = await _instituicaoService.CountWithPagination(filtroVM.FiltroPesquisa);
 
             var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(instituicoes);
 
@@ -71,12 +71,12 @@ namespace LevelLearn.WebApi.Controllers
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroPaginacaoVM);
 
-            ResponseAPI<IEnumerable<Instituicao>> response =
+            ResultadoService<IEnumerable<Instituicao>> resultado =
                 await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
-            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(response.Data);
+            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(resultado.Dados);
 
-            return Ok(CriarListaPaginada(listaVM, response.Total.Value, filtroPaginacaoVM));
+            return Ok(CriarListaPaginada(listaVM, resultado.Total.Value, filtroPaginacaoVM));
         }
 
         /// <summary>
@@ -92,11 +92,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterInstituicao(Guid id)
         {
-            ResponseAPI<Instituicao> response = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
+            ResultadoService<Instituicao> resultado = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return Ok(_mapper.Map<InstituicaoDetalheVM>(response.Data));
+            return Ok(_mapper.Map<InstituicaoDetalheVM>(resultado.Dados));
         }
 
         /// <summary>
@@ -112,13 +112,15 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CriarInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
-            ResponseAPI<Instituicao> response = await _instituicaoService.CadastrarInstituicao(instituicaoVM, User.GetPessoaId());
+            var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            ResultadoService<Instituicao> resultado = await _instituicaoService.CadastrarInstituicao(instituicao, User.GetPessoaId());
 
-            var responseVM = _mapper.Map<InstituicaoVM>(response.Data);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return CreatedAtAction(nameof(ObterInstituicao), new { id = responseVM.Id }, responseVM);
+            var respostaVM = _mapper.Map<InstituicaoVM>(resultado.Dados);
+
+            return CreatedAtAction(nameof(ObterInstituicao), new { id = respostaVM.Id }, respostaVM);
         }
 
         /// <summary>
@@ -139,9 +141,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditarInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
-            var response = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
+            var resultado = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }
@@ -161,9 +163,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> AlternarAtivacaoInstituicao(Guid id)
         {
-            var response = await _instituicaoService.AlternarAtivacao(id, User.GetPessoaId());
+            var resultado = await _instituicaoService.AlternarAtivacao(id, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }

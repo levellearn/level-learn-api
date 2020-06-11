@@ -2,7 +2,7 @@
 
 namespace LevelLearn.Domain.Enums
 {
-    public enum RedeIntituicao
+    public enum Rede
     {
         [Description("Outros")]
         Outros = 0,

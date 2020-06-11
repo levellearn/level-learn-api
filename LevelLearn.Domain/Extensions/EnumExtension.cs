@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Resource.Enums;
 using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -35,7 +34,7 @@ namespace LevelLearn.Domain.Extensions
                 Debug.Write(ex.Message);
                 return enumValue.ToString();
             }
-           
+
         }
 
     }

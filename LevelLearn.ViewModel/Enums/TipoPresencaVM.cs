@@ -1,6 +1,6 @@
 ﻿namespace LevelLearn.ViewModel.Enums
 {
-    public enum TiposPresencaVM
+    public enum TipoPresencaVM
     {
         Presente = 1,
         Atrasado = 2,

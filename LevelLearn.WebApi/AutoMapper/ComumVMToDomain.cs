@@ -21,7 +21,7 @@ namespace LevelLearn.WebApi.AutoMapper
         {
             CreateMap<FiltroPaginacaoVM, FiltroPaginacao>()
                 .ConstructUsing(p =>
-                    new FiltroPaginacao(p.SearchFilter, p.PageNumber, p.PageSize, p.SortBy, p.AscendingSort, p.IsActive)
+                    new FiltroPaginacao(p.FiltroPesquisa, p.NumeroPagina, p.TamanhoPorPagina, p.OrdenarPor, p.OrdenacaoAscendente, p.Ativo)
                 );
         }
 

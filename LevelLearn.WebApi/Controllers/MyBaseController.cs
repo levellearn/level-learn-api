@@ -38,8 +38,8 @@ namespace LevelLearn.WebApi.Controllers
         protected ListaPaginadaVM<T> CriarListaPaginada<T>(IEnumerable<T> listaVM, int total, FiltroPaginacaoVM filterVM)
             where T : class
         {
-            var listaPaginadaVM = new ListaPaginadaVM<T>(listaVM, filterVM.PageNumber, filterVM.PageSize, total,
-                filterVM.SearchFilter, filterVM.SortBy, filterVM.AscendingSort, filterVM.IsActive);
+            var listaPaginadaVM = new ListaPaginadaVM<T>(listaVM, filterVM.NumeroPagina, filterVM.TamanhoPorPagina, total,
+                filterVM.FiltroPesquisa, filterVM.OrdenarPor, filterVM.OrdenacaoAscendente, filterVM.Ativo);
 
             return listaPaginadaVM;
         }

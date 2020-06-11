@@ -51,10 +51,10 @@ namespace LevelLearn.WebApi.Controllers
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
-            ResponseAPI<IEnumerable<Curso>> response =
+            ResultadoService<IEnumerable<Curso>> response =
                 await _cursoService.CursosInstituicaoProfessor(instituicaoId, User.GetPessoaId(), filtroPaginacao);
 
-            var listaVM = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Data);
+            var listaVM = _mapper.Map<IEnumerable<Curso>, IEnumerable<CursoVM>>(response.Dados);
 
             return Ok(CriarListaPaginada(listaVM, response.Total.Value, filtroVM));
         }
@@ -72,11 +72,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterCurso(Guid id)
         {
-            ResponseAPI<Curso> response = await _cursoService.ObterCurso(id, User.GetPessoaId());
+            ResultadoService<Curso> response = await _cursoService.ObterCurso(id, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
-            return Ok(_mapper.Map<CursoDetalheVM>(response.Data));
+            return Ok(_mapper.Map<CursoDetalheVM>(response.Dados));
         }
 
         /// <summary>
@@ -92,11 +92,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CriarCurso([FromBody] CadastrarCursoVM cursoVM)
         {
-            ResponseAPI<Curso> response = await _cursoService.CadastrarCurso(cursoVM, User.GetPessoaId());
+            ResultadoService<Curso> response = await _cursoService.CadastrarCurso(cursoVM, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
-            CursoVM responseVM = _mapper.Map<CursoVM>(response.Data);
+            CursoVM responseVM = _mapper.Map<CursoVM>(response.Dados);
 
             return CreatedAtAction(nameof(ObterCurso), new { id = responseVM.Id }, responseVM);
         }
@@ -121,7 +121,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var response = await _cursoService.EditarCurso(id, cursoVM, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }
@@ -143,7 +143,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var response = await _cursoService.AlternarAtivacaoCurso(id, User.GetPessoaId());
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }

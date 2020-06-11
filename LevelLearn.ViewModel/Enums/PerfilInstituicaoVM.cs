@@ -1,9 +1,9 @@
 ﻿namespace LevelLearn.ViewModel.Enums
 {
-    public enum TiposPessoaVM
+    public enum PerfilInstituicaoVM
     {
         Nenhum = 0,
-        Admin = 1, // Admin sistema
+        ProfessorAdmin = 1,
         Professor = 2,
         Aluno = 3
     }

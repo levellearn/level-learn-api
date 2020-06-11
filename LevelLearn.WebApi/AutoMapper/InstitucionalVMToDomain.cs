@@ -19,20 +19,12 @@ namespace LevelLearn.WebApi.AutoMapper
 
         private void InstituicaoMap()
         {
-            CreateMap<InstituicaoDetalheVM, Instituicao>()
-                .ConstructUsing(c =>
-                    new Instituicao(c.Nome, c.Descricao)
-                );
-
             CreateMap<CadastrarInstituicaoVM, Instituicao>()
                 .ConstructUsing(c =>
-                    new Instituicao(c.Nome, c.Descricao)
+                    new Instituicao(c.Nome, c.Sigla, c.Descricao, c.Cnpj, c.OrganizacaoAcademica, c.Rede,
+                        c.CategoriaAdministrativa, c.NivelEnsino, c.Cep, c.Municipio, c.UF)
                 );
-
-            CreateMap<EditarInstituicaoVM, Instituicao>()
-               .ConstructUsing(c =>
-                   new Instituicao(c.Nome, c.Descricao)
-               );
+            
         }
     }
 }

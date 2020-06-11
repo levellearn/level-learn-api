@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CategoriaAdministrativa_Estadual" xml:space="preserve">
-    <value>Estadual</value>
+    <value>State</value>
   </data>
   <data name="CategoriaAdministrativa_Federal" xml:space="preserve">
     <value>Federal</value>
@@ -165,13 +165,13 @@
   <data name="OrganizacaoAcademica_Universidade" xml:space="preserve">
     <value>University</value>
   </data>
-  <data name="RedeIntituicao_Outros" xml:space="preserve">
+  <data name="Rede_Outros" xml:space="preserve">
     <value>Others</value>
   </data>
-  <data name="RedeIntituicao_Privada" xml:space="preserve">
+  <data name="Rede_Privada" xml:space="preserve">
     <value>Private</value>
   </data>
-  <data name="RedeIntituicao_Publica" xml:space="preserve">
+  <data name="Rede_Publica" xml:space="preserve">
     <value>Public</value>
   </data>
   <data name="StatusResposta_Corrigida" xml:space="preserve">

@@ -10,8 +10,8 @@ namespace LevelLearn.ViewModel.Pessoas
         public string Email { get; set; }
         public string Cpf { get; set; }
         public string Celular { get; set; }
-        public GenerosVM Genero { get; set; }
-        public TiposPessoaVM TipoPessoa { get; set; }
+        public GeneroPessoaVM Genero { get; set; }
+        public TipoPessoaVM TipoPessoa { get; set; }
         public DateTime? DataNascimento { get; set; }        
     }
 }

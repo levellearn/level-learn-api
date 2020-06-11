@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
-using LevelLearn.Domain.Validators;
 using LevelLearn.Domain.Validators.Institucional;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +27,9 @@ namespace LevelLearn.Domain.Entities.Institucional
             AtribuirNomePesquisa();
         }
 
-        public Instituicao(string nome, string sigla, string descricao, string cnpj, OrganizacaoAcademica organizacaoAcademica, RedeIntituicao rede, CategoriaAdministrativa categoriaAdministrativa, NivelEnsino nivelEnsino, string cep, string municipio, string uf)
+        public Instituicao(string nome, string sigla, string descricao, string cnpj,
+            OrganizacaoAcademica organizacaoAcademica, Rede rede, CategoriaAdministrativa categoriaAdministrativa,
+            NivelEnsino nivelEnsino, string cep, string municipio, string uf)
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
@@ -43,8 +44,6 @@ namespace LevelLearn.Domain.Entities.Institucional
             Cep = cep;
             Municipio = municipio.RemoveExtraSpaces();
             UF = uf.RemoveExtraSpaces().ToUpper();
-            //Endereco = endereco;
-            //Numero = numero;
 
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
@@ -60,14 +59,12 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Descricao { get; private set; }
         public string Cnpj { get; private set; }
         public OrganizacaoAcademica OrganizacaoAcademica { get; private set; }
-        public RedeIntituicao Rede { get; private set; }
+        public Rede Rede { get; private set; }
         public CategoriaAdministrativa CategoriaAdministrativa { get; private set; }
         public NivelEnsino NivelEnsino { get; private set; }
         public string Cep { get; private set; }
         public string Municipio { get; private set; }
         public string UF { get; private set; }
-        //public string Endereco { get; private set; }
-        //public string Numero { get; private set; }
 
         public virtual ICollection<Curso> Cursos { get; private set; }
         public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }

@@ -44,9 +44,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
-            ResponseAPI<UsuarioVM> response = await _usuarioService.RegistrarUsuario(usuarioVM);
+            ResultadoService<UsuarioVM> response = await _usuarioService.RegistrarUsuario(usuarioVM);
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }
@@ -65,11 +65,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
         {
-            ResponseAPI<UsuarioTokenVM> response = await _usuarioService.LogarUsuario(usuarioVM);
+            ResultadoService<UsuarioTokenVM> response = await _usuarioService.LogarUsuario(usuarioVM);
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
 
-            return Ok(response.Data);
+            return Ok(response.Dados);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var response = await _usuarioService.Logout(User.GetJWTokenId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
 
             return NoContent();
         }
@@ -107,11 +107,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ConfirmarEmail([FromQuery]string userId, [FromQuery]string confirmationToken)
         {
-            ResponseAPI<UsuarioTokenVM> response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
+            ResultadoService<UsuarioTokenVM> response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
-            return Ok(response.Data);
+            return Ok(response.Dados);
         }
 
         /// <summary>
@@ -129,11 +129,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AlterarFotoPerfil([FromForm] IFormFile arquivo)
         {
-            ResponseAPI<UsuarioVM> response = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
+            ResultadoService<UsuarioVM> response = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
 
-            if (response.Failure) return StatusCode(response.StatusCode, response);
+            if (response.Falhou) return StatusCode(response.StatusCode, response);
 
-            return Ok(response.Data);
+            return Ok(response.Dados);
         }
 
         /// <summary>

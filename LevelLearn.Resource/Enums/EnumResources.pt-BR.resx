@@ -165,13 +165,13 @@
   <data name="OrganizacaoAcademica_Universidade" xml:space="preserve">
     <value>Universidade</value>
   </data>
-  <data name="RedeIntituicao_Outros" xml:space="preserve">
+  <data name="Rede_Outros" xml:space="preserve">
     <value>Outros</value>
   </data>
-  <data name="RedeIntituicao_Privada" xml:space="preserve">
+  <data name="Rede_Privada" xml:space="preserve">
     <value>Privada</value>
   </data>
-  <data name="RedeIntituicao_Publica" xml:space="preserve">
+  <data name="Rede_Publica" xml:space="preserve">
     <value>Pública</value>
   </data>
   <data name="StatusResposta_Corrigida" xml:space="preserve">

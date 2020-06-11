@@ -200,7 +200,7 @@
             UsuariosController
             </summary>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Controllers.UsuariosController})">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService)">
             <summary>
             Ctor
             </summary>
