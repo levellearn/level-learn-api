@@ -54,10 +54,10 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId)
         {
-            // TODO: Somente pode criar cursos um professor Admin?
-            //bool professorAdmin = await _uow.Instituicoes.ProfessorAdmin(cursoVM.InstituicaoId, pessoaId);
-            //if (!professorAdmin)
-            //   return ResponseFactory<Curso>.Forbidden(_sharedLocalizer.InstituicaoNaoPermitida);
+            // Validação BD
+            bool professorDaInstituicao = await _uow.Instituicoes.PertenceInstituicao(cursoVM.InstituicaoId, pessoaId);
+            if (!professorDaInstituicao)
+               return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
             var curso = new Curso(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao, cursoVM.InstituicaoId);
 
@@ -65,13 +65,12 @@ namespace LevelLearn.Service.Services.Institucional
             if (!curso.EstaValido())
                 return ResultadoServiceFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
+            curso.AtribuirPessoa(new PessoaCurso(TipoPessoa.Professor, pessoaId, curso.Id));
+
+            // Validação BD
             if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
                 return ResultadoServiceFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
 
-            var pessoaCurso = new PessoaCurso(TipoPessoa.Professor, pessoaId, curso.Id);
-            curso.AtribuirPessoa(pessoaCurso);
-
-            // Validação BD
             if (await CursoExisteNaInstituicao(curso))
                 return ResultadoServiceFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
 
@@ -85,8 +84,8 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<Curso>> EditarCurso(Guid cursoId, EditarCursoVM cursoVM, Guid pessoaId)
         {
+            // Validação BD
             Curso curso = await _uow.Cursos.GetAsync(cursoId);
-
             if (curso == null)
                 return ResultadoServiceFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
@@ -102,7 +101,6 @@ namespace LevelLearn.Service.Services.Institucional
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
-            // TODO: Essa validação é necessária? 
             if (await CursoExisteNaInstituicao(curso))
                 return ResultadoServiceFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
 
@@ -122,7 +120,6 @@ namespace LevelLearn.Service.Services.Institucional
             if (curso == null)
                 return ResultadoServiceFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
-            // TODO: Professor admin da Instituicao ou professor do curso?
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
@@ -138,10 +135,13 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Curso>.NoContent(_sharedResource.DeletadoSucesso);
         }
 
+        /// <summary>
+        /// Verifica se está tentando atualizar para um curso que já existe
+        /// </summary>
+        /// <param name="curso">Curso a ser verificado</param>
+        /// <returns></returns>
         private async Task<bool> CursoExisteNaInstituicao(Curso curso)
         {
-            // Verifica se está tentando atualizar para um curso que já existe
-
             bool cursoExiste = await _uow.Cursos.EntityExists(c =>
                 c.NomePesquisa == curso.NomePesquisa &&
                 c.Id != curso.Id &&

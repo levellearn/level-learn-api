@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Utils.Comum;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,14 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns></returns>
         Task<bool> ProfessorAdmin(Guid instituicaoId, Guid pessoaId);
+
+        /// <summary>
+        /// Verifica se a pessoa é de uma determinada instituição
+        /// </summary>
+        /// <param name="instituicaoId">Id instituição</param>
+        /// <param name="pessoaId">Id pessoa</param>
+        /// <returns></returns>
+        Task<bool> PertenceInstituicao(Guid instituicaoId, Guid pessoaId);
 
         /// <summary>
         /// Retorna todas as instituições de um professor admin
@@ -53,6 +62,6 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns>Lista de instituições</returns>
         Task<IEnumerable<Instituicao>> InstituicoesAluno(Guid pessoaId);
-
+        
     }
 }

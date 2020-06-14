@@ -129,7 +129,6 @@ namespace LevelLearn.Service.Services.Institucional
 
         private async Task<bool> InstituicaoExistente(Instituicao instituicao)
         {
-            // TODO: Refatorar -> nome - sigla - cidade-uf
             // Verifica se está tentando atualizar para uma instituição que já existe
             bool instituicaoExiste = await _uow.Instituicoes.EntityExists(i =>
                 i.NomePesquisa == instituicao.NomePesquisa &&

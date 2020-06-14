@@ -142,7 +142,8 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public override void AtribuirNomePesquisa()
         {
-            NomePesquisa = Nome.GenerateSlug();
+            string nomePesquisa = string.Concat(Nome, Sigla, Municipio, UF);
+            NomePesquisa = nomePesquisa.GenerateSlug();
         }
 
         #endregion Methods

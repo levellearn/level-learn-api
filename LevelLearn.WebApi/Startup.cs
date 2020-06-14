@@ -115,8 +115,8 @@ namespace LevelLearn.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            // Criação de estruturas, usuários e permissões Identity
-            new IdentityInitializer(context, userManager, roleManager).Initialize();
+            // Criação de estruturas banco, usuários e permissões Identity
+            new DatabaseSeed(context, userManager, roleManager, env).Initialize();
 
             #region Culture Localization
 

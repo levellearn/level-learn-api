@@ -93,5 +93,14 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .AnyAsync();
         }
 
+        public Task<bool> PertenceInstituicao(Guid instituicaoId, Guid pessoaId)
+        {
+            return _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId &&
+                            p.InstituicaoId == instituicaoId)
+                .AnyAsync();
+        }
+
     }
 }

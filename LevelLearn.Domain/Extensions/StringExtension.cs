@@ -13,16 +13,15 @@ namespace LevelLearn.Domain.Extensions
         /// Generates a slug for passed string
         /// </summary>
         /// <param name="text"></param>
-        /// <returns>clean slug string (ex. TeSte Teste => testeteste)</returns>
+        /// <returns>clean slug string (ex. TeSte@  Teste => testeteste)</returns>
         public static string GenerateSlug(this string text)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
 
-            string result = text.RemoveAccent().ToLower(); // remove invalid chars and lowercase          
+            string result = text.RemoveAccent().ToLower(); // remove accent and lowercase          
             result = Regex.Replace(result, @"[^a-z0-9\s]", string.Empty); // remove special chars  
-            result = Regex.Replace(result, @"\s+", string.Empty).Trim();  // convert multiple spaces into empty 
-            //result = Regex.Replace(result, @"\s", "-");  
-            
+            result = Regex.Replace(result, @"\s+", string.Empty).Trim();  // convert multiple spaces into empty and trim
+            //result = Regex.Replace(result, @"\s", "-");  // convert space to hyphen 
             return result;
         }
 
