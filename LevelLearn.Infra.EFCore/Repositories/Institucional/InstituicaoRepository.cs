@@ -21,10 +21,11 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
         public async Task<Instituicao> InstituicaoCompleta(Guid id)
         {
+            // TODO: Revisar
             return await _context.Set<Instituicao>()
                 .Include(i => i.Cursos)
-                .Include(i => i.Pessoas)
-                    .ThenInclude(p => p.Pessoa)
+                //.Include(i => i.Pessoas)
+                //    .ThenInclude(p => p.Pessoa)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == id);
         }

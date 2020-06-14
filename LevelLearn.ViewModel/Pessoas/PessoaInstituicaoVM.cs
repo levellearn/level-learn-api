@@ -1,10 +1,10 @@
-﻿using LevelLearn.ViewModel.Enums;
+﻿using LevelLearn.Domain.Enums;
 
 namespace LevelLearn.ViewModel.Pessoas
 {
     public class PessoaInstituicaoVM
     {
-        public PerfilInstituicaoVM Perfil { get; set; }
-        public PessoaVM Pessoa { get; set; } // TODO: Rever
+        public PerfilInstituicao Perfil { get; set; }
+        public PessoaVM Pessoa { get; set; } // TODO: Revisar
     }
 }

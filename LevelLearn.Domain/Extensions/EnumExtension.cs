@@ -32,7 +32,7 @@ namespace LevelLearn.Domain.Extensions
             catch (Exception ex)
             {
                 Debug.Write(ex.Message);
-                return enumValue.ToString();
+                return GetDescription(enumValue);
             }
 
         }

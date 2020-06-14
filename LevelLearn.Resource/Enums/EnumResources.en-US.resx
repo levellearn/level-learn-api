@@ -165,6 +165,15 @@
   <data name="OrganizacaoAcademica_Universidade" xml:space="preserve">
     <value>University</value>
   </data>
+  <data name="PerfilInstituicao_Aluno" xml:space="preserve">
+    <value>Student</value>
+  </data>
+  <data name="PerfilInstituicao_Professor" xml:space="preserve">
+    <value>Professor</value>
+  </data>
+  <data name="PerfilInstituicao_ProfessorAdmin" xml:space="preserve">
+    <value>Professor Administrator</value>
+  </data>
   <data name="Rede_Outros" xml:space="preserve">
     <value>Others</value>
   </data>
@@ -182,6 +191,15 @@
   </data>
   <data name="StatusResposta_Respondida" xml:space="preserve">
     <value>Answered</value>
+  </data>
+  <data name="TipoPessoa_Admin" xml:space="preserve">
+    <value>System Administrator</value>
+  </data>
+  <data name="TipoPessoa_Aluno" xml:space="preserve">
+    <value>Student</value>
+  </data>
+  <data name="TipoPessoa_Professor" xml:space="preserve">
+    <value>Professor</value>
   </data>
   <data name="TipoPresenca_Atrasado" xml:space="preserve">
     <value>Late</value>

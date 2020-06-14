@@ -13,10 +13,10 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         public string Descricao { get; set; }
         public string Sigla { get; set; }
         public string Cnpj { get; set; }
-        public OrganizacaoAcademica OrganizacaoAcademica { get; set; }
-        public Rede Rede { get; set; }
-        public CategoriaAdministrativa CategoriaAdministrativa { get; set; }
-        public NivelEnsino NivelEnsino { get; set; }
+        public string OrganizacaoAcademica { get; set; }
+        public string Rede { get; set; }
+        public string CategoriaAdministrativa { get; set; }
+        public string NivelEnsino { get; set; }
         public string Cep { get; set; }
         public string Municipio { get; set; }
         public string UF { get; set; }
@@ -24,6 +24,6 @@ namespace LevelLearn.ViewModel.Institucional.Instituicao
         public DateTime DataCadastro { get; set; }
 
         public ICollection<CursoVM> Cursos { get; set; }
-        public ICollection<PessoaInstituicaoVM> Pessoas { get; set; }
+        //public ICollection<PessoaInstituicaoVM> Pessoas { get; set; }
     }
 }

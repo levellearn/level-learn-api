@@ -6,7 +6,7 @@ namespace LevelLearn.Domain.Enums
     {
         [Description("Vazio")]
         Vazio = 0,
-        [Description("Professor Admin")]
+        [Description("Professor Administrador")]
         ProfessorAdmin = 1,
         [Description("Professor")]
         Professor = 2,
