@@ -31,15 +31,18 @@ namespace LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration
 
         public void ConfigurarCamposBase(EntityTypeBuilder<TEntity> builder)
         {
-            builder.HasIndex(c => c.NomePesquisa)
+            builder.HasIndex(p => p.NomePesquisa)
                 .IsUnique(false);
 
-            builder.Property(c => c.NomePesquisa)
+            builder.Property(p => p.NomePesquisa)
                 .HasColumnType("varchar(250)")
                 .IsRequired();
 
             builder.Property(p => p.DataCadastro)
                 .HasDefaultValue(DateTime.UtcNow);
+
+            builder.HasIndex(p => p.Ativo)
+               .IsUnique(false);
 
             builder.Property(p => p.Ativo)
                 .IsRequired();

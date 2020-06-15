@@ -205,7 +205,6 @@
             Ctor
             </summary>
             <param name="usuarioService">IUsuarioService</param>
-            <param name="logger">ILogger</param>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarUsuario(LevelLearn.ViewModel.Usuarios.RegistrarUsuarioVM)">
             <summary>

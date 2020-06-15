@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Resource;
 using System;
 using System.Text.RegularExpressions;
@@ -32,8 +33,8 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         private void ValidarNome()
         {
-            var tamanhoMin = RegraAtributo.Pessoa.NOME_TAMANHO_MIN;
-            var tamanhoMax = RegraAtributo.Pessoa.NOME_TAMANHO_MAX;
+            var tamanhoMin = RegraPessoa.NOME_TAMANHO_MIN;
+            var tamanhoMax = RegraPessoa.NOME_TAMANHO_MAX;
 
             RuleFor(p => p.Nome)
                 .NotEmpty()
@@ -81,7 +82,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             RuleFor(p => p.NomePesquisa)
                 .NotEmpty()
-                    .WithMessage(_resource.NomePesquisaObrigatorio());                
+                    .WithMessage(_resource.NomePesquisaObrigatorio());
         }
 
 

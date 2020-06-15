@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 
 namespace LevelLearn.WebApi.AutoMapper
@@ -15,6 +16,7 @@ namespace LevelLearn.WebApi.AutoMapper
         public InstitucionalVMToDomain()
         {
             InstituicaoMap();
+            CursoMap();
         }
 
         private void InstituicaoMap()
@@ -23,8 +25,16 @@ namespace LevelLearn.WebApi.AutoMapper
                 .ConstructUsing(c =>
                     new Instituicao(c.Nome, c.Sigla, c.Descricao, c.Cnpj, c.OrganizacaoAcademica, c.Rede,
                         c.CategoriaAdministrativa, c.NivelEnsino, c.Cep, c.Municipio, c.UF)
-                );
-            
+                );            
         }
+
+        private void CursoMap()
+        {
+            CreateMap<CadastrarCursoVM, Curso>()
+                .ConstructUsing(c =>
+                    new Curso(c.Nome, c.Sigla, c.Descricao, c.InstituicaoId)
+                );
+        }
+
     }
 }

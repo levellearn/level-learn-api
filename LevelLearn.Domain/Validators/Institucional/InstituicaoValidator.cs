@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Resource.Institucional;
 
 namespace LevelLearn.Domain.Validators.Institucional
@@ -27,8 +28,8 @@ namespace LevelLearn.Domain.Validators.Institucional
 
         private void ValidarNome()
         {
-            var tamanhoMin = RegraAtributo.Instituicao.NOME_TAMANHO_MIN;
-            var tamanhoMax = RegraAtributo.Instituicao.NOME_TAMANHO_MAX;
+            var tamanhoMin = RegraInsituicao.NOME_TAMANHO_MIN;
+            var tamanhoMax = RegraInsituicao.NOME_TAMANHO_MAX;
 
             RuleFor(p => p.Nome)
             .NotEmpty()
@@ -39,11 +40,10 @@ namespace LevelLearn.Domain.Validators.Institucional
 
         private void ValidarDescricao()
         {
-            var tamanhoMax = RegraAtributo.Instituicao.DESCRICAO_TAMANHO_MAX;
+            var tamanhoMax = RegraInsituicao.DESCRICAO_TAMANHO_MAX;
 
             RuleFor(p => p.Descricao)
-                .NotEmpty()
-                    .WithMessage(_resource.InstituicaoDescricaoObrigatorio)
+                //.NotEmpty().WithMessage(_resource.InstituicaoDescricaoObrigatorio)
                 .MaximumLength(tamanhoMax)
                     .WithMessage(_resource.InstituicaoDescricaoTamanho(tamanhoMax));
         }

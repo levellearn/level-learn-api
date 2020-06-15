@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
 using LevelLearn.Resource.Usuarios;
@@ -78,7 +79,7 @@ namespace LevelLearn.Service.Services.Usuarios
             var cpf = new CPF(usuarioVM.Cpf);
 
             // Validações BD
-            var respostaValidacao = await ValidarCriarUsuarioBD(email.Endereco, cpf.Numero);
+            ResultadoService<UsuarioVM> respostaValidacao = await ValidarCriarUsuarioBD(email.Endereco, cpf.Numero);
             if (respostaValidacao.Falhou) return respostaValidacao;
 
             // Criação e Validação PROFESSOR
@@ -88,23 +89,23 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Criação e Validação USER
-            var user = new Usuario(professor.Nome, usuarioVM.NickName, email.Endereco, celular.Numero, professor.Id);
-            user.AtribuirSenha(usuarioVM.Senha, usuarioVM.ConfirmacaoSenha);
+            var usuario = new Usuario(professor.Nome, usuarioVM.NickName, email.Endereco, celular.Numero, professor.Id);
+            usuario.AtribuirSenha(usuarioVM.Senha, usuarioVM.ConfirmacaoSenha);
 
-            if (!user.EstaValido())
-                return ResultadoServiceFactory<UsuarioVM>.BadRequest(user.DadosInvalidos(), _sharedResource.DadosInvalidos);
+            if (!usuario.EstaValido())
+                return ResultadoServiceFactory<UsuarioVM>.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Criando PROFESSOR BD
             await _uow.Pessoas.AddAsync(professor);
             if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
-            // Criando USER Identity
+            // Criando USUÁRIO Identity
             var role = ApplicationRoles.PROFESSOR;
-            var resultadoIdentity = await CriarUsuarioIdentity(user, role, professor);
+            ResultadoService<UsuarioVM> resultadoIdentity = await CriarUsuarioIdentity(usuario, role, professor);
             if (resultadoIdentity.Falhou) return resultadoIdentity;
 
-            // Enviar EMAIL de confirmação
-            _ = EnviarEmail(professor, user, role);
+            // EMAIL de confirmação
+            _ = EnviarEmail(professor, usuario, role);
 
             return ResultadoServiceFactory<UsuarioVM>.NoContent(_sharedResource.CadastradoSucesso);
         }
@@ -240,12 +241,9 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == email))
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(_usuarioResource.UsuarioEmailJaExiste);
-
+            // TODO: Revisar
             if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
-                return ResultadoServiceFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);
-
-            //if (await _uow.Pessoas.EntityExists(i => i.NickName == pessoa.NickName))
-            //    return ResponseFactory<UsuarioVM>.BadRequest("Nickname já existente");
+                return ResultadoServiceFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);            
 
             return ResultadoServiceFactory<UsuarioVM>.NoContent();
         }
@@ -255,14 +253,15 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!email.EstaValido())
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
+            // Validações Senha
             if (string.IsNullOrWhiteSpace(senha))
             {
                 var dadoInvalido = new DadoInvalido("Senha", _usuarioResource.UsuarioSenhaObrigatoria);
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(dadoInvalido, _sharedResource.DadosInvalidos);
             }
 
-            var senhaTamanhoMin = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
-            var senhaTamanhoMax = RegraAtributo.Usuario.SENHA_TAMANHO_MAX;
+            var senhaTamanhoMin = RegraUsuario.SENHA_TAMANHO_MIN;
+            var senhaTamanhoMax = RegraUsuario.SENHA_TAMANHO_MAX;
 
             if (senha.Length < senhaTamanhoMin || senha.Length > senhaTamanhoMax)
             {

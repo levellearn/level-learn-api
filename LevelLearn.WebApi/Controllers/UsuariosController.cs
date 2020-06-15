@@ -24,7 +24,6 @@ namespace LevelLearn.WebApi.Controllers
         /// Ctor
         /// </summary>
         /// <param name="usuarioService">IUsuarioService</param>
-        /// <param name="logger">ILogger</param>
         public UsuariosController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
@@ -44,9 +43,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
         {
-            ResultadoService<UsuarioVM> response = await _usuarioService.RegistrarUsuario(usuarioVM);
+            ResultadoService<UsuarioVM> resultado = await _usuarioService.RegistrarUsuario(usuarioVM);
 
-            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
+            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }
@@ -65,11 +64,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
         {
-            ResultadoService<UsuarioTokenVM> response = await _usuarioService.LogarUsuario(usuarioVM);
+            ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.LogarUsuario(usuarioVM);
 
-            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
+            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
-            return Ok(response.Dados);
+            return Ok(resultado.Dados);
         }
 
         /// <summary>
@@ -83,9 +82,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
-            var response = await _usuarioService.Logout(User.GetJWTokenId());
+            var resultado = await _usuarioService.Logout(User.GetJWTokenId());
 
-            if (!response.Sucesso) return StatusCode(response.StatusCode, response);
+            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }
@@ -107,11 +106,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ConfirmarEmail([FromQuery]string userId, [FromQuery]string confirmationToken)
         {
-            ResultadoService<UsuarioTokenVM> response = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
+            ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
 
-            if (response.Falhou) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return Ok(response.Dados);
+            return Ok(resultado.Dados);
         }
 
         /// <summary>
@@ -129,11 +128,11 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AlterarFotoPerfil([FromForm] IFormFile arquivo)
         {
-            ResultadoService<UsuarioVM> response = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
+            ResultadoService<UsuarioVM> resultado = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
 
-            if (response.Falhou) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return Ok(response.Dados);
+            return Ok(resultado.Dados);
         }
 
         /// <summary>

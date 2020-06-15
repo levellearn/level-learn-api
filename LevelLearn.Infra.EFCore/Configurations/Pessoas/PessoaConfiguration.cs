@@ -1,5 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,25 +19,25 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
         {
             builder.Property(p => p.Nome)
               .IsRequired()
-              .HasMaxLength(RegraAtributo.Pessoa.NOME_TAMANHO_MAX)
-              .HasColumnType($"varchar({RegraAtributo.Pessoa.NOME_TAMANHO_MAX})");
+              .HasMaxLength(RegraPessoa.NOME_TAMANHO_MAX)
+              .HasColumnType($"varchar({RegraPessoa.NOME_TAMANHO_MAX})");
 
             builder.OwnsOne(c => c.Cpf)
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
-                .HasColumnType($"varchar({RegraAtributo.Pessoa.CPF_TAMANHO})")
+                .HasColumnType($"varchar({RegraPessoa.CPF_TAMANHO})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Email)
                 .Property(e => e.Endereco)
                 .HasColumnName("Email")
-                .HasColumnType($"varchar({RegraAtributo.Usuario.EMAIL_TAMANHO_MAX})")
+                .HasColumnType($"varchar({RegraUsuario.EMAIL_TAMANHO_MAX})")
                 .IsRequired(false);
 
             builder.OwnsOne(c => c.Celular)
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
-                .HasColumnType($"varchar({RegraAtributo.Pessoa.CELULAR_TAMANHO})")
+                .HasColumnType($"varchar({RegraPessoa.CELULAR_TAMANHO})")
                 .IsRequired(false);
 
             builder.Property(p => p.DataNascimento)

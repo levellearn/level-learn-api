@@ -1,5 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,19 +18,15 @@ namespace LevelLearn.Infra.EFCore.Configurations.Institucional
         {
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasMaxLength(RegraAtributo.Instituicao.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({RegraAtributo.Instituicao.NOME_TAMANHO_MAX})");
+                .HasMaxLength(RegraInsituicao.NOME_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraInsituicao.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.Descricao)
-               .IsRequired()
-               .HasMaxLength(RegraAtributo.Instituicao.DESCRICAO_TAMANHO_MAX)
-               .HasColumnType($"varchar({RegraAtributo.Instituicao.DESCRICAO_TAMANHO_MAX})");
+               .IsRequired(false)
+               .HasMaxLength(RegraInsituicao.DESCRICAO_TAMANHO_MAX)
+               .HasColumnType($"varchar({RegraInsituicao.DESCRICAO_TAMANHO_MAX})");
 
-            //builder.HasQueryFilter(p => p.Ativo);
-
-            //builder.HasData(
-            //    new Instituicao("Instituição Teste", "Descrição Teste")
-            //);
+            //builder.HasQueryFilter(p => p.Ativo);            
         }
 
         public override void ConfigurarRelacionamentos(EntityTypeBuilder<Instituicao> builder)

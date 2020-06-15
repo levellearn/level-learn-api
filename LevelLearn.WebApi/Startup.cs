@@ -4,7 +4,7 @@ using LevelLearn.Domain.Repositories.Institucional;
 using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.AppSettings;
-using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repositories.Institucional;
 using LevelLearn.Infra.EFCore.Repositories.Pessoas;
@@ -192,11 +192,11 @@ namespace LevelLearn.WebApi
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = RegraAtributo.Usuario.SENHA_REQUER_DIGITO;
-                options.Password.RequiredLength = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
-                options.Password.RequireNonAlphanumeric = RegraAtributo.Usuario.SENHA_REQUER_ESPECIAL;
-                options.Password.RequireUppercase = RegraAtributo.Usuario.SENHA_REQUER_MAIUSCULO;
-                options.Password.RequireLowercase = RegraAtributo.Usuario.SENHA_REQUER_MINUSCULO;
+                options.Password.RequireDigit = RegraUsuario.SENHA_REQUER_DIGITO;
+                options.Password.RequiredLength = RegraUsuario.SENHA_TAMANHO_MIN;
+                options.Password.RequireNonAlphanumeric = RegraUsuario.SENHA_REQUER_ESPECIAL;
+                options.Password.RequireUppercase = RegraUsuario.SENHA_REQUER_MAIUSCULO;
+                options.Password.RequireLowercase = RegraUsuario.SENHA_REQUER_MINUSCULO;
 
                 // Lockout settings
                 options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;

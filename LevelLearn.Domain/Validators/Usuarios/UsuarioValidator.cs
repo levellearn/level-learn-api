@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using LevelLearn.Resource.Usuarios;
 using System.Text.RegularExpressions;
 
@@ -24,7 +25,7 @@ namespace LevelLearn.Domain.Validators.Usuarios
         {
             //  Ex.: bill@GatesIII
 
-            var tamanhoMax = RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX;
+            var tamanhoMax = RegraUsuario.NICKNAME_TAMANHO_MAX;
             var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
 
             RuleFor(p => p.NickName)
@@ -38,21 +39,21 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         private void ValidarSenha()
         {
-            var tamanhoMin = RegraAtributo.Usuario.SENHA_TAMANHO_MIN;
-            var tamanhoMax = RegraAtributo.Usuario.SENHA_TAMANHO_MAX;
+            var tamanhoMin = RegraUsuario.SENHA_TAMANHO_MIN;
+            var tamanhoMax = RegraUsuario.SENHA_TAMANHO_MAX;
 
             RuleFor(p => p.Senha)
                 .NotEmpty()
                     .WithMessage(_resource.UsuarioSenhaObrigatoria)
                 .Length(tamanhoMin, tamanhoMax)
                     .WithMessage(_resource.UsuarioSenhaTamanho(tamanhoMin, tamanhoMax))
-                .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraAtributo.Usuario.SENHA_REQUER_MAIUSCULO == false)
+                .Must(p => Regex.IsMatch(p, "[A-Z]") || RegraUsuario.SENHA_REQUER_MAIUSCULO == false)
                     .WithMessage(_resource.UsuarioSenhaRequerMaiusculo)
-                .Must(p => Regex.IsMatch(p, "[a-z]") || RegraAtributo.Usuario.SENHA_REQUER_MINUSCULO == false)
+                .Must(p => Regex.IsMatch(p, "[a-z]") || RegraUsuario.SENHA_REQUER_MINUSCULO == false)
                     .WithMessage(_resource.UsuarioSenhaRequerMinusculo)
-                .Must(p => Regex.IsMatch(p, "[0-9]") || RegraAtributo.Usuario.SENHA_REQUER_DIGITO == false)
+                .Must(p => Regex.IsMatch(p, "[0-9]") || RegraUsuario.SENHA_REQUER_DIGITO == false)
                     .WithMessage(_resource.UsuarioSenhaRequerDigito)
-                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraAtributo.Usuario.SENHA_REQUER_ESPECIAL == false)
+                .Must(p => Regex.IsMatch(p, "[^a-zA-Z0-9]") || RegraUsuario.SENHA_REQUER_ESPECIAL == false)
                     .WithMessage(_resource.UsuarioSenhaRequerEspecial);
         }
 

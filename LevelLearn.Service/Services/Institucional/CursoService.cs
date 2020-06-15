@@ -7,7 +7,6 @@ using LevelLearn.Resource;
 using LevelLearn.Resource.Institucional;
 using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Response;
-using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
 using System.Collections.Generic;
@@ -52,15 +51,8 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Curso>.Ok(curso);
         }
 
-        public async Task<ResultadoService<Curso>> CadastrarCurso(CadastrarCursoVM cursoVM, Guid pessoaId)
+        public async Task<ResultadoService<Curso>> CadastrarCurso(Curso curso, Guid pessoaId)
         {
-            // Validação BD
-            bool professorDaInstituicao = await _uow.Instituicoes.PertenceInstituicao(cursoVM.InstituicaoId, pessoaId);
-            if (!professorDaInstituicao)
-               return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
-
-            var curso = new Curso(cursoVM.Nome, cursoVM.Sigla, cursoVM.Descricao, cursoVM.InstituicaoId);
-
             // Validação objeto
             if (!curso.EstaValido())
                 return ResultadoServiceFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
@@ -68,6 +60,10 @@ namespace LevelLearn.Service.Services.Institucional
             curso.AtribuirPessoa(new PessoaCurso(TipoPessoa.Professor, pessoaId, curso.Id));
 
             // Validação BD
+            bool professorDaInstituicao = await _uow.Instituicoes.PertenceInstituicao(curso.InstituicaoId, pessoaId);
+            if (!professorDaInstituicao)
+                return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
+
             if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
                 return ResultadoServiceFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
 

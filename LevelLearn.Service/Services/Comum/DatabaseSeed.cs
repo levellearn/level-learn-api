@@ -103,6 +103,26 @@ namespace LevelLearn.Service.Services.Comum
 
             _context.Add(instituicao);
             _context.SaveChanges();
+
+            CriarCurso(instituicao, pessoa);
+        }
+
+        private void CriarCurso(Instituicao instituicao, Pessoa pessoa)
+        {
+            if (!_env.IsDevelopment()) return;
+
+            var descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, com ferramentas computacionais, equipamentos de informática e metodologia de projetos na produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança de programas computacionais são fundamentais à atuação desse profissional.";
+
+            var curso = new Curso("Análise e Desenvolvimento de Sistemas", "ADS", descricao, instituicao.Id);
+
+            if (_context.Cursos.Any(i => i.NomePesquisa == curso.NomePesquisa))
+                return;
+
+            var pessoaCurso = new PessoaCurso(TipoPessoa.Professor, pessoa.Id, curso.Id);
+            curso.AtribuirPessoa(pessoaCurso);
+
+            _context.Add(curso);
+            _context.SaveChanges();
         }
 
     }

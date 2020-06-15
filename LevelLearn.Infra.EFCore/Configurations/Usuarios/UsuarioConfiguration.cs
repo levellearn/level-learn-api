@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,8 +19,8 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 
             builder.Property(p => p.NickName)
               .IsRequired()
-              .HasMaxLength(RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX)
-              .HasColumnType($"varchar({RegraAtributo.Usuario.NICKNAME_TAMANHO_MAX})");
+              .HasMaxLength(RegraUsuario.NICKNAME_TAMANHO_MAX)
+              .HasColumnType($"varchar({RegraUsuario.NICKNAME_TAMANHO_MAX})");
 
             builder.HasOne(p => p.Pessoa)
                 .WithOne();
