@@ -10,7 +10,6 @@ namespace LevelLearn.Domain.Entities.Institucional
     public class Curso : EntityBase
     {
         #region Ctors
-
         protected Curso()
         {
             Pessoas = new List<PessoaCurso>();
@@ -114,9 +113,12 @@ namespace LevelLearn.Domain.Entities.Institucional
                 .ForEach(c => c.Desativar());
         }
 
+        /// <summary>
+        /// Gerado a partir do nome e da sigla
+        /// </summary>
         public override void AtribuirNomePesquisa()
         {
-            NomePesquisa = Nome.GenerateSlug();
+            NomePesquisa = string.Concat(Nome, Sigla).GenerateSlug();
         }
 
         #endregion Methods

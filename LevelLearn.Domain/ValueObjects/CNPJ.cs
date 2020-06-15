@@ -4,20 +4,20 @@ using System;
 
 namespace LevelLearn.Domain.ValueObjects
 {
-    public class Celular : ValueObject
+    public class CNPJ : ValueObject
     {
-        protected Celular() { }
+        protected CNPJ() { }
 
-        public Celular(string numero)
+        public CNPJ(string numero)
         {
-            Numero = numero.GetNumbers();
+            this.Numero = numero.GetNumbers();
         }
 
         public string Numero { get; private set; }
 
         public override bool EstaValido()
         {
-            var validator = new CelularValidator();
+            var validator = new CNPJValidator();
             this.ResultadoValidacao = validator.Validate(this);
 
             return ResultadoValidacao.IsValid;
@@ -27,7 +27,7 @@ namespace LevelLearn.Domain.ValueObjects
         {
             int.TryParse(Numero, out int numeroConvertido);
 
-            return numeroConvertido.ToString("+##(##)#####-####");
+            return numeroConvertido.ToString("##\\.###\\.###/####-##").PadLeft(18, '0');
         }
 
     }

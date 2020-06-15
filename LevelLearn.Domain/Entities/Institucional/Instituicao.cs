@@ -10,7 +10,6 @@ namespace LevelLearn.Domain.Entities.Institucional
     public class Instituicao : EntityBase
     {
         #region Ctors
-
         protected Instituicao()
         {
             Cursos = new List<Curso>();
@@ -34,14 +33,15 @@ namespace LevelLearn.Domain.Entities.Institucional
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
             Sigla = sigla.RemoveExtraSpaces().ToUpper();
-            Cnpj = cnpj;
+            Cnpj = cnpj?.Trim();
 
             OrganizacaoAcademica = organizacaoAcademica;
             Rede = rede;
             CategoriaAdministrativa = categoriaAdministrativa;
             NivelEnsino = nivelEnsino;
 
-            Cep = cep;
+            Cep = cep?.Trim(); //Convert.ToInt64(cep).ToString("##\\.###-###").PadLeft(10, '0');
+
             Municipio = municipio.RemoveExtraSpaces();
             UF = uf.RemoveExtraSpaces().ToUpper();
 
@@ -140,10 +140,12 @@ namespace LevelLearn.Domain.Entities.Institucional
                 .ForEach(c => c.Desativar());
         }
 
+        /// <summary>
+        /// Gerado a partir do nome, sigla, município e uf
+        /// </summary>
         public override void AtribuirNomePesquisa()
         {
-            string nomePesquisa = string.Concat(Nome, Sigla, Municipio, UF);
-            NomePesquisa = nomePesquisa.GenerateSlug();
+            NomePesquisa = string.Concat(Nome, Sigla, Municipio, UF).GenerateSlug();
         }
 
         #endregion Methods

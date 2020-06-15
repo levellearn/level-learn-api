@@ -68,5 +68,6 @@ namespace LevelLearn.WebApi.AutoMapper
                     opt => opt.MapFrom(src => EnumExtension.GetDescriptionLocalized(src.CategoriaAdministrativa))
                 );
         }
+
     }
 }

@@ -21,7 +21,6 @@ Reponse Cache
 
 *Arrumar validators
 *Descrição não é obrigatório
-*Struct enum
 https://stackoverflow.com/questions/17380900/enum-localization
 
 Intituições
