@@ -63,7 +63,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
             return numero.EndsWith(digito);
         }
 
-        public bool IsInBlackList(string number)
+        private bool IsInBlackList(string number)
         {
             if (number.Equals("00000000000") ||
                     number.Equals("11111111111") ||
