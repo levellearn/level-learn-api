@@ -15,10 +15,10 @@ namespace LevelLearn.Domain.Entities.Pessoas
         }
 
         public Guid AlunoId { get; private set; }
-        public virtual Pessoa Aluno { get; private set; }
+        public virtual Pessoa Aluno { get; set; }
 
         public Guid TurmaId { get; private set; }
-        public virtual Turma Turma { get; private set; }
+        public virtual Turma Turma { get; set; }
 
         public DateTime DataCadastro { get; private set; }
 

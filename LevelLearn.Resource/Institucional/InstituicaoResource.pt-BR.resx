@@ -120,6 +120,15 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID precisa estar preenchido</value>
   </data>
+  <data name="InstituicaoCEPObrigatorio" xml:space="preserve">
+    <value>CEP precisa estar preenchido</value>
+  </data>
+  <data name="InstituicaoCEPTamanhoMaximo" xml:space="preserve">
+    <value>CEP pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="InstituicaoCNPJInvalido" xml:space="preserve">
+    <value>CNPJ não é válido</value>
+  </data>
   <data name="InstituicaoDescricaoObrigatorio" xml:space="preserve">
     <value>Descrição precisa estar preenchida</value>
   </data>
@@ -128,6 +137,12 @@
   </data>
   <data name="InstituicaoJaExiste" xml:space="preserve">
     <value>Instituição já existente</value>
+  </data>
+  <data name="InstituicaoMunicipioObrigatorio" xml:space="preserve">
+    <value>Município precisa estar preenchido</value>
+  </data>
+  <data name="InstituicaoMunicipioTamanho" xml:space="preserve">
+    <value>Município precisa estar entre {0} e {1} caracteres</value>
   </data>
   <data name="InstituicaoNaoEncontrada" xml:space="preserve">
     <value>Instituição não encontrada</value>
@@ -140,5 +155,17 @@
   </data>
   <data name="InstituicaoNomeTamanho" xml:space="preserve">
     <value>Nome precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="InstituicaoSiglaObrigatorio" xml:space="preserve">
+    <value>Sigla precisa estar preenchida</value>
+  </data>
+  <data name="InstituicaoSiglaTamanho" xml:space="preserve">
+    <value>Sigla precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="InstituicaoUFObrigatorio" xml:space="preserve">
+    <value>UF precisa estar preenchida</value>
+  </data>
+  <data name="InstituicaoUFTamanhoMaximo" xml:space="preserve">
+    <value>UF pode ter no máximo {0} caracteres</value>
   </data>
 </root>

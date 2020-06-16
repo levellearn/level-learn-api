@@ -4,6 +4,8 @@ namespace LevelLearn.Domain.Enums
 {
     public enum CategoriaAdministrativa
     {
+        [Description("Outros")]
+        Outros,
         [Description("Privada")]
         Privada,
         [Description("Federal")]
@@ -11,8 +13,6 @@ namespace LevelLearn.Domain.Enums
         [Description("Estadual")]
         Estadual,
         [Description("Municipal")]
-        Municipal,
-        [Description("Outros")]
-        Outros
+        Municipal
     }
 }

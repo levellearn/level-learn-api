@@ -117,34 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CursoDescricaoObrigatorio" xml:space="preserve">
-    <value>Descrição precisa estar preenchida</value>
-  </data>
-  <data name="CursoDescricaoTamanho" xml:space="preserve">
-    <value>Descrição pode ter no máximo {0} caracteres</value>
-  </data>
-  <data name="CursoJaExiste" xml:space="preserve">
-    <value>Curso já existente</value>
-  </data>
-  <data name="CursoNaoEncontrado" xml:space="preserve">
-    <value>Curso não encontrado</value>
-  </data>
-  <data name="CursoNaoPermitido" xml:space="preserve">
-    <value>Você não é Administrador desse curso</value>
-  </data>
-  <data name="CursoNomeObrigatorio" xml:space="preserve">
-    <value>Nome precisa estar preenchido</value>
-  </data>
-  <data name="CursoNomeTamanho" xml:space="preserve">
-    <value>Nome precisa estar entre {0} e {1} caracteres</value>
-  </data>
-  <data name="CursoSiglaObrigatorio" xml:space="preserve">
-    <value>Sigla precisa estar preenchida</value>
-  </data>
-  <data name="CursoSiglaTamanho" xml:space="preserve">
-    <value>Sigla precisa estar entre {0} e {1} caracteres</value>
-  </data>
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID precisa estar preenchido</value>
+  </data>
+  <data name="TurmaDescricaoObrigatoria" xml:space="preserve">
+    <value>Descrição precisa estar preenchida</value>
+  </data>
+  <data name="TurmaDescricaoTamanhoMaximo" xml:space="preserve">
+    <value>Descrição pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="TurmaJaExiste" xml:space="preserve">
+    <value>Turma já existente</value>
+  </data>
+  <data name="TurmaNaoEncontrada" xml:space="preserve">
+    <value>Turma não encontrada</value>
+  </data>
+  <data name="TurmaNaoPermitida" xml:space="preserve">
+    <value>Você não é Administrador dessa turma</value>
+  </data>
+  <data name="TurmaNomeDisciplinaObrigatorio" xml:space="preserve">
+    <value>Nome da disciplina precisa estar preenchida</value>
+  </data>
+  <data name="TurmaNomeDisciplinaTamanho" xml:space="preserve">
+    <value>Nome da disciplina precisa estar entre {0} e {1} caracteres</value>
+  </data>
+  <data name="TurmaNomeObrigatorio" xml:space="preserve">
+    <value>Nome precisa estar preenchido</value>
+  </data>
+  <data name="TurmaNomeTamanho" xml:space="preserve">
+    <value>Nome precisa estar entre {0} e {1} caracteres</value>
   </data>
 </root>

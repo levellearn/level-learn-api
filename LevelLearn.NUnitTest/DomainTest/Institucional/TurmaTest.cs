@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
-using LevelLearn.NUnitTest.Pessoas;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -11,7 +10,6 @@ namespace LevelLearn.NUnitTest.Institucional
     [TestFixture]
     public class TurmaTest
     {
-        // Fields
         private string _nome, _descricao, _nomeDisciplina;
 
         [SetUp]
@@ -32,32 +30,25 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("", "Descrição de teste")] // nome inválido
-        [TestCase("Tu", "Descrição de teste")] // nome inválido
-        [TestCase("Turma XYZ", "")] // descrição inválida
-        public void Cadastrar_TurmaValida_ReturnFalse(string nome, string descricao)
+        [TestCase("", "Descrição de teste", "Algoritmos")] // nome inválido
+        [TestCase("Tu", "Descrição de teste", "Algoritmos")] // nome inválido
+        [TestCase("Turma XYZ", "", "Algoritmos")] // descrição inválida
+        [TestCase("Turma XYZ", "Descrição de teste", "Al")] // nome disciplina inválida
+        public void Cadastrar_TurmaValida_ReturnFalse(string nome, string descricao, string nomeDisciplina)
         {
             _nome = nome;
+            _nomeDisciplina = nomeDisciplina;
             _descricao = descricao;
 
             var turma = CriarTurma();
             bool valido = turma.EstaValido();
+
             Assert.IsFalse(valido, "Turma deveria ser inválida");
         }
 
         private Turma CriarTurma()
         {
-            var instituicao = InstituicaoTest.CriarInstituicaoPadrao();
-
-            var curso = CursoTest.CriarCursoPadrao();
-
-            var aluno = AlunoTest.CriarAlunoPadrao();
-            var professor = ProfessorTest.CriarProfessorPadrao();
-
-            curso.AtribuirPessoa(new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id));
-
-            var turma = new Turma(_nome, _descricao, _nomeDisciplina, curso.Id, professor.Id);
-            turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
+            var turma = new Turma(_nome, _descricao, _nomeDisciplina, Guid.NewGuid(), Guid.NewGuid());
 
             return turma;
         }
@@ -70,13 +61,12 @@ namespace LevelLearn.NUnitTest.Institucional
             var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de algoritmos e programas de computador.";
             var nomeDisciplina = "ALGORITMOS";
 
-            var professor = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Professor).Pessoa;
+            Pessoa professor = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Professor).Pessoa;
+            Pessoa aluno = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Aluno).Pessoa;
 
             var turma = new Turma(nome, descricao, nomeDisciplina, curso.Id, professor.Id);
-
-            var aluno = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Aluno).Pessoa;
-
-            turma.AtribuirAluno(new AlunoTurma(aluno.Id, turma.Id));
+            var alunoTurma = new AlunoTurma(aluno.Id, turma.Id) { Aluno = aluno, Turma = turma };
+            turma.AtribuirAluno(alunoTurma);
 
             return turma;
         }

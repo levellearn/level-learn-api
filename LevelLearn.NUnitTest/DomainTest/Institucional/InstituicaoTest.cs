@@ -9,14 +9,26 @@ namespace LevelLearn.NUnitTest.Institucional
     [TestFixture]
     public class InstituicaoTest
     {
-        // Fields
-        private string _nome, _descricao;
+        private string _nome, _descricao, _sigla, _cnpj, _cep, _municipio, _uf;
+        private OrganizacaoAcademica _organizacaoAcademica;
+        private Rede _rede;
+        private CategoriaAdministrativa _categoriaAdministrativa;
+        private NivelEnsino _nivelEnsino;
 
         [SetUp]
         public void Setup()
         {
             _nome = "FATEC Guaratinguetá";
             _descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            _sigla = "FATEC GT";
+            _cnpj = "62823257000109";
+            _cep = "12517010";
+            _municipio = "GUARATINGUETA";
+            _uf = "SP";
+            _organizacaoAcademica = OrganizacaoAcademica.Faculdade;
+            _rede = Rede.Publica;
+            _categoriaAdministrativa = CategoriaAdministrativa.Estadual;
+            _nivelEnsino = NivelEnsino.Superior;
         }
 
         [Test]
@@ -30,8 +42,6 @@ namespace LevelLearn.NUnitTest.Institucional
         }
 
         [Test]
-        [TestCase("UniFatea", "")] // descrição inválida
-        [TestCase("Un", "")] // nome e descrição inválida
         [TestCase("", "Descrição de teste")] // nome inválido
         public void Cadastrar_InstituicaoValida_ReturnFalse(string nome, string descricao)
         {
@@ -47,16 +57,7 @@ namespace LevelLearn.NUnitTest.Institucional
 
         private Instituicao CriarInstituicao()
         {
-            var instituicao = new Instituicao(_nome, _descricao);
-
-            var aluno = AlunoTest.CriarAlunoPadrao();
-            var professor = ProfessorTest.CriarProfessorPadrao();
-
-            var professorAdminInstituicao = new PessoaInstituicao(PerfilInstituicao.ProfessorAdmin, professor.Id, instituicao.Id);
-            var alunoInstituicao = new PessoaInstituicao(PerfilInstituicao.Aluno, aluno.Id, instituicao.Id);
-
-            instituicao.AtribuirPessoa(professorAdminInstituicao);
-            instituicao.AtribuirPessoa(alunoInstituicao);
+            var instituicao = new Instituicao(_nome, _sigla, _descricao, _cnpj, _organizacaoAcademica, _rede, _categoriaAdministrativa, _nivelEnsino, _cep, _municipio, _uf);
 
             return instituicao;
         }
@@ -65,8 +66,17 @@ namespace LevelLearn.NUnitTest.Institucional
         {
             var nome = "FATEC Guaratinguetá";
             var descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            var sigla = "FATEC GT";
+            var cnpj = "62823257000109";
+            var cep = "12517010";
+            var municipio = "GUARATINGUETA";
+            var uf = "SP";
+            var organizacaoAcademica = OrganizacaoAcademica.Faculdade;
+            var rede = Rede.Publica;
+            var categoriaAdministrativa = CategoriaAdministrativa.Estadual;
+            var nivelEnsino = NivelEnsino.Superior;
 
-            var instituicao = new Instituicao(nome, descricao);
+            var instituicao = new Instituicao(nome, sigla, descricao, cnpj, organizacaoAcademica, rede, categoriaAdministrativa, nivelEnsino, cep, municipio, uf);
 
             var aluno = AlunoTest.CriarAlunoPadrao();
             var professor = ProfessorTest.CriarProfessorPadrao();
@@ -84,7 +94,6 @@ namespace LevelLearn.NUnitTest.Institucional
 
             instituicao.AtribuirPessoa(professorAdminInstituicao);
             instituicao.AtribuirPessoa(alunoInstituicao);
-
 
             return instituicao;
         }

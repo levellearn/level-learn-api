@@ -22,14 +22,11 @@
         public string PessoaCPFJaExiste => ObterResource(nameof(PessoaCPFJaExiste));
         public string PessoaDataNascimentoInvalida => ObterResource(nameof(PessoaDataNascimentoInvalida));
         public string PessoaGeneroObrigatorio => ObterResource(nameof(PessoaGeneroObrigatorio));
+
         public string PessoaNomeObrigatorio => ObterResource(nameof(PessoaNomeObrigatorio));
         public string PessoaNomePrecisaSobrenome => ObterResource(nameof(PessoaNomePrecisaSobrenome));
+        public string PessoaNomeTamanho(params object[] arguments) => ObterResource(nameof(PessoaNomeTamanho), arguments);
 
-        public string PessoaNomeTamanho(params object[] arguments)
-        {
-            return ObterResource(nameof(PessoaNomeTamanho), arguments);
-        }
-        
         public string PessoaTipoPessoaInvalido => ObterResource(nameof(PessoaTipoPessoaInvalido));
         public string PessoaCelularInvalido => ObterResource(nameof(PessoaCelularInvalido));
         public string PessoaCPFInvalido => ObterResource(nameof(PessoaCPFInvalido));

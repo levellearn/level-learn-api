@@ -15,17 +15,7 @@ namespace LevelLearn.Domain.Entities.Institucional
             Cursos = new List<Curso>();
             Pessoas = new List<PessoaInstituicao>();
         }
-
-        public Instituicao(string nome, string descricao)
-        {
-            Nome = nome.RemoveExtraSpaces();
-            Descricao = descricao?.Trim();
-            Cursos = new List<Curso>();
-            Pessoas = new List<PessoaInstituicao>();
-
-            AtribuirNomePesquisa();
-        }
-
+     
         public Instituicao(string nome, string sigla, string descricao, string cnpj,
             OrganizacaoAcademica organizacaoAcademica, Rede rede, CategoriaAdministrativa categoriaAdministrativa,
             NivelEnsino nivelEnsino, string cep, string municipio, string uf)

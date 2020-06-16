@@ -73,9 +73,12 @@ namespace LevelLearn.Domain.Entities.Institucional
             return this.ResultadoValidacao.IsValid;
         }
 
+        /// <summary>
+        /// Gerado a partir do nome e nome da disciplina
+        /// </summary>
         public override void AtribuirNomePesquisa()
         {
-            NomePesquisa = Nome.GenerateSlug();
+            NomePesquisa = string.Concat(Nome, NomeDisciplina).GenerateSlug();
         }
 
         #endregion Methods

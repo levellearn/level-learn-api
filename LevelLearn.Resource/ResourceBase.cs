@@ -13,15 +13,8 @@ namespace LevelLearn.Resource
             _resourceManager = new ResourceManager(type);
         }
 
-        public string IdObrigatorio()
-        {
-            return ObterResource(nameof(IdObrigatorio));
-        }
-
-        public string NomePesquisaObrigatorio()
-        {
-            return ObterResource(nameof(NomePesquisaObrigatorio));
-        }
+        public string IdObrigatorio() => ObterResource(nameof(IdObrigatorio));
+        public string NomePesquisaObrigatorio() => ObterResource(nameof(NomePesquisaObrigatorio));
 
         /// <summary>
         /// Obtém um recurso e faz as substituições nas mensagens

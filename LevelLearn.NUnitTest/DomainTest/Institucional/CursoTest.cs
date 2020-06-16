@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace LevelLearn.NUnitTest.Institucional
@@ -9,7 +10,6 @@ namespace LevelLearn.NUnitTest.Institucional
     [TestFixture]
     public class CursoTest
     {
-        // Fields
         private string _nome, _sigla, _descricao;
 
         [SetUp]
@@ -47,20 +47,8 @@ namespace LevelLearn.NUnitTest.Institucional
 
         private Curso CriarCurso()
         {
-            var instituicao = InstituicaoTest.CriarInstituicaoPadrao();
-
-            var curso = new Curso(_nome, _sigla, _descricao, instituicao.Id);
-
-            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.ProfessorAdmin).Pessoa;
-            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.Aluno).Pessoa;
-            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id);
-            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id);
-
-            curso.AtribuirPessoa(professorCurso);
-            curso.AtribuirPessoa(alunoCurso);
-
-            instituicao.AtribuirCurso(curso);
-
+            var curso = new Curso(_nome, _sigla, _descricao, Guid.NewGuid());
+         
             return curso;
         }
 
@@ -76,8 +64,17 @@ namespace LevelLearn.NUnitTest.Institucional
 
             var professor = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.ProfessorAdmin).Pessoa;
             var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.Aluno).Pessoa;
-            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id);
-            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id);
+
+            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id)
+            {
+                Pessoa = professor,
+                Curso = curso
+            };             
+            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id)
+            {
+                Pessoa = professor,
+                Curso = curso
+            };
 
             curso.AtribuirPessoa(professorCurso);
             curso.AtribuirPessoa(alunoCurso);

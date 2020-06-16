@@ -1,29 +1,30 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Validators.RegrasAtributos;
+using LevelLearn.Resource.Institucional;
 
 namespace LevelLearn.Domain.Validators.Institucional
 {
     public class TurmaValidator : AbstractValidator<Turma>
     {
-        // TODO: Implementar
-        //private readonly TurmaResource _resource;
+        private readonly TurmaResource _resource = new TurmaResource();
 
         public TurmaValidator()
         {
-            //ValidarTurmaId();
+            ValidarTurmaId();
             ValidarNome();
             ValidarNomeDisciplina();
             ValidarDescricao();
-            //ValidarNomePesquisa();
+            ValidarNomePesquisa();
+            ValidarProfessorId();
+            ValidarCursoId();
         }
 
-        //private void ValidarTurmaId()
-        //{
-        //    RuleFor(p => p.Id)
-        //        .NotEmpty()
-        //            .WithMessage(_resource.IdObrigatorio());
-        //}
+        private void ValidarTurmaId()
+        {
+            RuleFor(p => p.Id)
+                .NotEmpty().WithMessage(_resource.IdObrigatorio());
+        }
 
         private void ValidarNome()
         {
@@ -32,9 +33,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Nome)
                 .NotEmpty()
-                    .WithMessage("Nome precisa estar preenchido")
+                    .WithMessage(_resource.TurmaNomeObrigatorio)
                 .Length(tamanhoMin, tamanhoMax)
-                    .WithMessage($"Nome precisa estar entre {tamanhoMin} e {tamanhoMax} caracteres");
+                    .WithMessage(_resource.TurmaNomeTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarNomeDisciplina()
@@ -44,9 +45,9 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.NomeDisciplina)
                 .NotEmpty()
-                    .WithMessage("Nome da disciplina precisa estar preenchido")
+                    .WithMessage(_resource.TurmaNomeDisciplinaObrigatorio)
                 .Length(tamanhoMin, tamanhoMax)
-                    .WithMessage($"Nome da disciplina precisa estar entre {tamanhoMin} e {tamanhoMax} caracteres");
+                    .WithMessage(_resource.TurmaNomeDisciplinaTamanho(tamanhoMin, tamanhoMax));
         }
 
         private void ValidarDescricao()
@@ -55,18 +56,28 @@ namespace LevelLearn.Domain.Validators.Institucional
 
             RuleFor(p => p.Descricao)
                 .NotEmpty()
-                    .WithMessage("Descrição precisa estar preenchida")
+                    .WithMessage(_resource.TurmaDescricaoObrigatoria)
                 .MaximumLength(tamanhoMax)
-                    .WithMessage($"Descrição pode ter no máximo {tamanhoMax} caracteres");
+                    .WithMessage(_resource.TurmaDescricaoTamanhoMaximo(tamanhoMax));
         }
 
-        //private void ValidarNomePesquisa()
-        //{
-        //    RuleFor(p => p.NomePesquisa)
-        //        .NotEmpty()
-        //            .WithMessage(_resource.NomePesquisaObrigatorio());
-        //}
+        private void ValidarNomePesquisa()
+        {
+            RuleFor(p => p.NomePesquisa)
+                .NotEmpty().WithMessage(_resource.NomePesquisaObrigatorio());
+        }
 
+        private void ValidarCursoId()
+        {
+            RuleFor(p => p.CursoId)
+                .NotEmpty().WithMessage(_resource.IdObrigatorio());
+        }
+
+        private void ValidarProfessorId()
+        {
+            RuleFor(p => p.ProfessorId)
+                .NotEmpty().WithMessage(_resource.IdObrigatorio());
+        }
 
     }
 }

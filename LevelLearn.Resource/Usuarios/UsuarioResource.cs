@@ -30,10 +30,7 @@
         public string UsuarioLoginFalha => ObterResource(nameof(UsuarioLoginFalha));
 
         public string UsuarioSenhaObrigatoria => ObterResource(nameof(UsuarioSenhaObrigatoria));
-        public string UsuarioSenhaTamanho(params object[] arguments)
-        {
-            return ObterResource(nameof(UsuarioSenhaTamanho), arguments);
-        }
+        public string UsuarioSenhaTamanho(params object[] arguments) => ObterResource(nameof(UsuarioSenhaTamanho), arguments);
         public string UsuarioConfirmacaoSenhaObrigatoria => ObterResource(nameof(UsuarioConfirmacaoSenhaObrigatoria));
         public string UsuarioConfirmacaoSenhaNaoConfere => ObterResource(nameof(UsuarioConfirmacaoSenhaNaoConfere));
         public string UsuarioSenhaRequerMaiusculo => ObterResource(nameof(UsuarioSenhaRequerMaiusculo));
@@ -42,20 +39,13 @@
         public string UsuarioSenhaRequerEspecial => ObterResource(nameof(UsuarioSenhaRequerEspecial));
 
         public string UsuarioEmailObrigatorio => ObterResource(nameof(UsuarioEmailObrigatorio));
-        public string UsuarioEmailTamanhoMaximo(int argument)
-        {
-            return ObterResource(nameof(UsuarioEmailTamanhoMaximo), argument);
-        }
+        public string UsuarioEmailTamanhoMaximo(int argument) => ObterResource(nameof(UsuarioEmailTamanhoMaximo), argument);
         public string UsuarioEmailInvalido => ObterResource(nameof(UsuarioEmailInvalido));
-
 
         public string UsuarioImagemObrigatoria => ObterResource(nameof(UsuarioImagemObrigatoria));
         public string UsuarioNickNameInvalido => ObterResource(nameof(UsuarioNickNameInvalido));
         public string UsuarioNickNameObrigatorio => ObterResource(nameof(UsuarioNickNameObrigatorio));
-        public string UsuarioNickNameTamanhoMaximo(int argument)
-        {
-            return ObterResource(nameof(UsuarioNickNameTamanhoMaximo), argument);
-        }
+        public string UsuarioNickNameTamanhoMaximo(int argument) => ObterResource(nameof(UsuarioNickNameTamanhoMaximo), argument);
 
 
     }
