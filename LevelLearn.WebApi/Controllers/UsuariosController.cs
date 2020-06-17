@@ -126,6 +126,7 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AlterarFotoPerfil([FromForm] IFormFile arquivo)
         {
             ResultadoService<UsuarioVM> resultado = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
