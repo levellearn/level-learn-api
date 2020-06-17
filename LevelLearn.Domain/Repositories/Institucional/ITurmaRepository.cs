@@ -9,6 +9,25 @@ namespace LevelLearn.Domain.Repositories.Institucional
     public interface ITurmaRepository : IRepositoryBase<Turma, Guid>
     {
         /// <summary>
+        /// Retorna as turmas de um curso de um professor paginadas com filtro
+        /// </summary>
+        /// <param name="cursoId">Id curso</param>
+        /// <param name="pessoaId">Id pessoa</param>
+        /// <param name="filtroPaginacao">Filtros da paginação</param>       
+        /// <returns>Lista de turmas</returns>
+        Task<IEnumerable<Turma>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
+        
+        /// <summary>
+        /// Retorna o total de turmas de um curso de um professor para a paginação
+        /// </summary>
+        /// <param name="cursoId">Id curso</param>
+        /// <param name="pessoaId">Id pessoa</param>
+        /// <param name="filtroPesquisa">Termo de pesquisa</param>
+        /// <param name="ativo">Entidade ativa</param>
+        /// <returns>Total de turmas</returns>
+        Task<int> TotalTurmasCursoProfessor(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true);
+
+        /// <summary>
         /// Retorna as turmas de um professor paginadas com filtro
         /// </summary>
         /// <param name="pessoaId">Id pessoa</param>
@@ -39,7 +58,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <param name="filtroPesquisa">Termo de pesquisa</param>
         /// <param name="ativo">Entidade ativa</param>
-        /// <returns>Total de turmas/returns>
+        /// <returns>Total de turmas</returns>
         Task<int> TotalTurmasAluno(Guid pessoaId, string filtroPesquisa, bool ativo = true);
         
         /// <summary>
@@ -58,5 +77,6 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <returns></returns>
         Task<bool> AlunoPertenceTurma(Guid turmaId, Guid pessoaId);
 
-    }
+    }       
+
 }

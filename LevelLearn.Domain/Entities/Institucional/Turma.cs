@@ -81,6 +81,15 @@ namespace LevelLearn.Domain.Entities.Institucional
             NomePesquisa = string.Concat(Nome, NomeDisciplina).GenerateSlug();
         }
 
+        public void Atualizar(string nome, string descricao, string nomeDisciplina)
+        {
+            Nome = nome.RemoveExtraSpaces();
+            Descricao = descricao?.Trim();
+            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();            
+
+            AtribuirNomePesquisa();
+        }
+
         #endregion Methods
 
 

@@ -34,6 +34,16 @@
             Ctor
             </summary>
         </member>
+        <member name="T:LevelLearn.WebApi.AutoMapper.PessoaDomainToVM">
+            <summary>
+            Pessoa Domain To VM
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.AutoMapper.PessoaDomainToVM.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.CursosController">
             <summary>
             Cursos Controller

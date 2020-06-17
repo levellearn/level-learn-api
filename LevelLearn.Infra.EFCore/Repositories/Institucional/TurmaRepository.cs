@@ -17,6 +17,36 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public TurmaRepository(DbContext context)
             : base(context) { }
 
+        public async Task<IEnumerable<Turma>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtro)
+        {
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
+            IQueryable<Turma> query = _context.Set<Turma>()
+                .AsNoTracking()
+                .Where(p => p.ProfessorId == pessoaId && p.CursoId == cursoId)
+                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == filtro.Ativo)
+                .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                .Take(filtro.TamanhoPorPagina);
+
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<int> TotalTurmasCursoProfessor(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
+        {
+            string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
+
+            return await _context.Set<Turma>()
+                .AsNoTracking()
+                .Where(p => p.ProfessorId == pessoaId && 
+                            p.CursoId == cursoId &&
+                            p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == ativo)
+                .CountAsync();
+        }
+
         public async Task<IEnumerable<Turma>> TurmasProfessor(Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();

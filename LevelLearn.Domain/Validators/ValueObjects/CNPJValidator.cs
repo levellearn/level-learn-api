@@ -5,7 +5,6 @@ namespace LevelLearn.Domain.Validators.ValueObjects
 {
     public class CNPJValidator : AbstractValidator<CNPJ>
     {
-        // TODO: Add resource?
         public CNPJValidator()
         {
             RuleFor(c => c.Numero)

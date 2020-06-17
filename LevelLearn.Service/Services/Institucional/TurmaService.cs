@@ -33,17 +33,30 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<Turma>> ObterTurma(Guid turmaId, Guid pessoaId)
         {
-            throw new NotImplementedException();
+            Turma turma = await _uow.Turmas.GetAsync(turmaId);
+
+            if (turma == null)
+                return ResultadoServiceFactory<Turma>.NotFound(_turmaResource.TurmaNaoEncontrada);
+
+            return ResultadoServiceFactory<Turma>.Ok(turma);
         }
 
         public async Task<ResultadoService<IEnumerable<Turma>>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            throw new NotImplementedException();
+            var turmas = await _uow.Turmas.TurmasCursoProfessor(cursoId, pessoaId, filtroPaginacao);
+
+            var total = await _uow.Turmas.TotalTurmasCursoProfessor(cursoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+
+            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(turmas, total);
         }
 
-        public async Task<ResultadoService<IEnumerable<Turma>>> TurmasCursoAluno(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
+        public async Task<ResultadoService<IEnumerable<Turma>>> TurmasAluno(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            throw new NotImplementedException();
+            var turmas = await _uow.Turmas.TurmasAluno(pessoaId, filtroPaginacao);
+
+            var total = await _uow.Turmas.TotalTurmasAluno(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+
+            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(turmas, total);
         }
 
         public async Task<ResultadoService<Turma>> CadastrarTurma(Turma turma, Guid pessoaId)
@@ -53,12 +66,12 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResultadoServiceFactory<Turma>.BadRequest(turma.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
+            if (!await _uow.Cursos.EntityExists(i => i.Id == turma.CursoId))
+                return ResultadoServiceFactory<Turma>.BadRequest(_sharedResource.NaoEncontrado);
+
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(turma.CursoId, pessoaId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Turma>.Forbidden(_turmaResource.TurmaNaoPermitida);
-
-            if (!await _uow.Cursos.EntityExists(i => i.Id == turma.CursoId))
-                return ResultadoServiceFactory<Turma>.BadRequest(_sharedResource.NaoEncontrado);
 
             if (await TurmaExisteNoCurso(turma))
                 return ResultadoServiceFactory<Turma>.BadRequest(_turmaResource.TurmaJaExiste);
@@ -73,12 +86,55 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<Turma>> EditarTurma(Guid turmaId, EditarTurmaVM turmaVM, Guid pessoaId)
         {
-            throw new NotImplementedException();
+            // Validação BD
+            Turma turma = await _uow.Turmas.GetAsync(turmaId);
+            if (turma == null)
+                return ResultadoServiceFactory<Turma>.NotFound(_turmaResource.TurmaNaoEncontrada);
+
+            // Modifica objeto
+            turma.Atualizar(turmaVM.Nome, turmaVM.Descricao, turmaVM.NomeDisciplina);
+
+            // Validação objeto
+            if (!turma.EstaValido())
+                return ResultadoServiceFactory<Turma>.BadRequest(turma.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            bool professorDaTurma = turma.ProfessorId == pessoaId;
+            if (!professorDaTurma)
+                return ResultadoServiceFactory<Turma>.Forbidden(_turmaResource.TurmaNaoPermitida);
+
+            // Validação BD
+            if (await TurmaExisteNoCurso(turma))
+                return ResultadoServiceFactory<Turma>.BadRequest(_turmaResource.TurmaJaExiste);
+
+            // Salva no BD
+            _uow.Turmas.Update(turma);
+
+            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaAtualizar);
+
+            return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
         public async Task<ResultadoService<Turma>> AlternarAtivacaoTurma(Guid turmaId, Guid pessoaId)
         {
-            throw new NotImplementedException();
+            // Validação BD
+            Turma turma = await _uow.Turmas.GetAsync(turmaId);
+
+            if (turma == null)
+                return ResultadoServiceFactory<Turma>.NotFound(_turmaResource.TurmaNaoEncontrada);
+
+            bool professorDaTurma = turma.ProfessorId == pessoaId;
+            if (!professorDaTurma)
+                return ResultadoServiceFactory<Turma>.Forbidden(_turmaResource.TurmaNaoPermitida);
+
+            if (turma.Ativo) turma.Desativar();
+            else turma.Ativar();
+
+            // Salva no BD
+            _uow.Turmas.Update(turma);
+
+            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaDeletar);
+
+            return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.DeletadoSucesso);
         }
 
         public void Dispose()

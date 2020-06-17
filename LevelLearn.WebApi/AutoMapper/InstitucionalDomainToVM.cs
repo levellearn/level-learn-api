@@ -4,6 +4,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Instituicao;
+using LevelLearn.ViewModel.Institucional.Turma;
 using LevelLearn.ViewModel.Pessoas;
 
 namespace LevelLearn.WebApi.AutoMapper
@@ -19,15 +20,8 @@ namespace LevelLearn.WebApi.AutoMapper
         public InstitucionalDomainToVM()
         {
             InstituicaoMap();
-
-            // TODO: EnumExtension.GetDescriptionLocalized
-            CreateMap<Curso, CursoVM>();
-            CreateMap<Curso, CursoDetalheVM>();
-
-            CreateMap<Pessoa, PessoaVM>();
-
-            CreateMap<PessoaInstituicao, PessoaInstituicaoVM>();
-            CreateMap<PessoaCurso, PessoaCursoVM>();
+            CursoMap();
+            TurmaMap();          
         }
 
         private void InstituicaoMap()
@@ -68,6 +62,19 @@ namespace LevelLearn.WebApi.AutoMapper
                     opt => opt.MapFrom(src => EnumExtension.GetDescriptionLocalized(src.CategoriaAdministrativa))
                 );
         }
+
+        private void CursoMap()
+        {
+            CreateMap<Curso, CursoVM>();
+            CreateMap<Curso, CursoDetalheVM>();
+        }
+
+        private void TurmaMap()
+        {
+            CreateMap<Turma, TurmaVM>();
+            CreateMap<Turma, TurmaDetalheVM>();
+        }
+
 
     }
 }

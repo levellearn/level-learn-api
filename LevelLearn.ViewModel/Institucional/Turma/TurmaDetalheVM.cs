@@ -1,4 +1,5 @@
 ﻿using LevelLearn.ViewModel.Institucional.Curso;
+using LevelLearn.ViewModel.Pessoas;
 using System;
 
 namespace LevelLearn.ViewModel.Institucional.Turma
@@ -16,5 +17,6 @@ namespace LevelLearn.ViewModel.Institucional.Turma
         public CursoVM Curso { get; set; }
 
         public Guid ProfessorId { get; set; }
+        public ProfessorVM Professor { get; set; }
     }
 }

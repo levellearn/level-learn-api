@@ -60,12 +60,12 @@ namespace LevelLearn.Service.Services.Institucional
             curso.AtribuirPessoa(new PessoaCurso(TipoPessoa.Professor, pessoaId, curso.Id));
 
             // Validação BD
+            if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
+                return ResultadoServiceFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
+
             bool professorDaInstituicao = await _uow.Instituicoes.PertenceInstituicao(curso.InstituicaoId, pessoaId);
             if (!professorDaInstituicao)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
-
-            if (!await _uow.Instituicoes.EntityExists(i => i.Id == curso.InstituicaoId))
-                return ResultadoServiceFactory<Curso>.BadRequest(_sharedResource.NaoEncontrado);
 
             if (await CursoExisteNaInstituicao(curso))
                 return ResultadoServiceFactory<Curso>.BadRequest(_cursoResource.CursoJaExiste);
@@ -93,6 +93,7 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResultadoServiceFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
+            // TODO: Refatorar para pegar do objeto
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
@@ -116,6 +117,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (curso == null)
                 return ResultadoServiceFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
+            // TODO: Refatorar para pegar do objeto
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);

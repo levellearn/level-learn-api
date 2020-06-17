@@ -17,6 +17,7 @@ namespace LevelLearn.WebApi.AutoMapper
         {
             InstituicaoMap();
             CursoMap();
+            TurmaoMap();
         }
 
         private void InstituicaoMap()
@@ -35,6 +36,16 @@ namespace LevelLearn.WebApi.AutoMapper
                     new Curso(c.Nome, c.Sigla, c.Descricao, c.InstituicaoId)
                 );
         }
+
+        private void TurmaoMap()
+        {
+            CreateMap<CadastrarTurmaVM, Turma>()
+                .ConstructUsing(c =>
+                    new Turma(c.Nome, c.Descricao, c.NomeDisciplina, c.CursoId, c.ProfessorId)
+                );
+        }
+
+
 
     }
 }

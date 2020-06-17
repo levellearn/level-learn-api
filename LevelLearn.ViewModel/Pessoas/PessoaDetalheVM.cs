@@ -1,5 +1,4 @@
-﻿using LevelLearn.Domain.Enums;
-using System;
+﻿using System;
 
 namespace LevelLearn.ViewModel.Pessoas
 {
@@ -10,8 +9,8 @@ namespace LevelLearn.ViewModel.Pessoas
         public string Email { get; set; }
         public string Cpf { get; set; }
         public string Celular { get; set; }
-        public GeneroPessoa Genero { get; set; }
-        public TipoPessoa TipoPessoa { get; set; }
+        public string Genero { get; set; }
+        public string TipoPessoa { get; set; }
         public DateTime? DataNascimento { get; set; }
 
         //public ICollection<PessoaInstituicao> Instituicoes { get; set; }
