@@ -9,6 +9,7 @@ namespace LevelLearn.Domain.UnityOfWorks
     {
         IInstituicaoRepository Instituicoes { get; }
         ICursoRepository Cursos { get; }
+        ITurmaRepository Turmas { get; }
         IPessoaRepository Pessoas { get; }
 
         bool Complete();

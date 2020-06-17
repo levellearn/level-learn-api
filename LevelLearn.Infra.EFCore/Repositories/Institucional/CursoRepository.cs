@@ -46,15 +46,15 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .ToListAsync();
         }
 
-        public async Task<int> TotalCursosProfessor(Guid pessoaId, string searchFilter)
+        public async Task<int> TotalCursosProfessor(Guid pessoaId, string filtroPesquisa)
         {
-            searchFilter = searchFilter.GenerateSlug();
+            filtroPesquisa = filtroPesquisa.GenerateSlug();
 
             return await _context.Set<PessoaCurso>()
                 .AsNoTracking()
                 .Where(p => p.PessoaId == pessoaId && p.Perfil == TipoPessoa.Professor)
                 .Select(p => p.Curso)
-                    .Where(p => p.NomePesquisa.Contains(searchFilter) && p.Ativo)
+                    .Where(p => p.NomePesquisa.Contains(filtroPesquisa) && p.Ativo)
                 .CountAsync();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LevelLearn.Domain.Entities;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,7 +11,8 @@ namespace LevelLearn.Domain.Extensions
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string columnName, bool isAscending = true)
             where T : class
         {
-            if (string.IsNullOrWhiteSpace(columnName)) return source;
+            if (string.IsNullOrWhiteSpace(columnName))
+                columnName = nameof(EntityBase.NomePesquisa);
 
             PropertyInfo propertyInfo = typeof(T).GetProperty(columnName);
 

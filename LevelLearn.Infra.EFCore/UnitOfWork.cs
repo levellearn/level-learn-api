@@ -14,20 +14,22 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             LevelLearnContext context,
             IInstituicaoRepository instituicaoRepository,
             ICursoRepository cursoRepository,
-            IPessoaRepository pessoaRepository
+            IPessoaRepository pessoaRepository,
+            ITurmaRepository turmaRepository
             )
         {
             _context = context;
             Instituicoes = instituicaoRepository;
             Cursos = cursoRepository;
             Pessoas = pessoaRepository;
+            Turmas = turmaRepository;
         }
 
         //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
-
         public IInstituicaoRepository Instituicoes { get; }
         public IPessoaRepository Pessoas { get; }
         public ICursoRepository Cursos { get; }
+        public ITurmaRepository Turmas { get; }
 
         public bool Complete()
         {
@@ -43,5 +45,6 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
         {
             _context.Dispose();
         }
+
     }
 }
