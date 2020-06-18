@@ -233,6 +233,7 @@ namespace LevelLearn.WebApi
         {
             services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
             services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<ITurmaRepository, TurmaRepository>();
             services.AddScoped<IPessoaRepository, PessoaRepository>();
         }
 
@@ -245,6 +246,7 @@ namespace LevelLearn.WebApi
 
             services.AddTransient<IInstituicaoService, InstituicaoService>();
             services.AddTransient<ICursoService, CursoService>();
+            services.AddTransient<ITurmaService, TurmaService>();
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)

@@ -8,7 +8,6 @@ using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Turma;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional

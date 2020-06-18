@@ -205,6 +205,72 @@
             <param name="filterVM">Filtro de pesquisa</param>
             <returns></returns>
         </member>
+        <member name="T:LevelLearn.WebApi.Controllers.TurmasController">
+            <summary>
+            Turmas Controller
+            </summary>    
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.#ctor(LevelLearn.Service.Interfaces.Institucional.ITurmaService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="turmaService">ITurmaService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmas(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as turmas de um curso de um professor paginadas com filtro
+            </summary>        
+            <param name="cursoId">Id curso</param>
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista turmas</returns>
+            <response code="200">Lista de turmas</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurma(System.Guid)">
+            <summary>
+            Retorna um turma
+            </summary>
+            <param name="id">Id Turma</param>
+            <returns>Turma</returns>
+            <response code="200">Retorna um turma</response>
+            <response code="404">Turma não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.CriarTurma(LevelLearn.ViewModel.Institucional.Curso.CadastrarTurmaVM)">
+            <summary>
+            Cadastro de turma
+            </summary>
+            <param name="turmaVM">Dados de cadastro da turma</param>
+            <returns>Retorna a turma cadastrada</returns>
+            <response code="201">Retorna turma cadastrada</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.EditarTurma(System.Guid,LevelLearn.ViewModel.Institucional.Turma.EditarTurmaVM)">
+            <summary>
+            Edição de turma
+            </summary>
+            <param name="id">Id turma</param>
+            <param name="turmaVM">Dados de edição da turma</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="403">Não é admin da turma</response>
+            <response code="404">Turma não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.AlternarAtivacaoTurma(System.Guid)">
+            <summary>
+            Alternar ativação da turma
+            </summary>
+            <param name="id">Id turma</param>
+            <returns></returns>
+            <response code="204">Sem Conteúdo</response>
+            <response code="403">Não é admin da turma</response>
+            <response code="404">Turma não encontrada</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.UsuariosController">
             <summary>
             UsuariosController
