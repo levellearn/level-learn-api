@@ -169,6 +169,7 @@ namespace LevelLearn.WebApi
 
         private static void ConfigureGZipCompression(IServiceCollection services)
         {
+            // TODO: Revisar
             services.Configure<GzipCompressionProviderOptions>(options =>
             {
                 options.Level = CompressionLevel.Fastest;

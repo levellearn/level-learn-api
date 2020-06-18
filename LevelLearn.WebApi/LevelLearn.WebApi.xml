@@ -217,11 +217,20 @@
             <param name="turmaService">ITurmaService</param>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmas(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmasCursoProfessor(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Retorna todas as turmas de um curso de um professor paginadas com filtro
             </summary>        
             <param name="cursoId">Id curso</param>
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista turmas</returns>
+            <response code="200">Lista de turmas</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmasAluno(LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as turmas de um aluno paginadas com filtro
+            </summary>        
             <param name="filtroVM">Armazena os filtros de consulta</param>
             <returns>Lista turmas</returns>
             <response code="200">Lista de turmas</response>

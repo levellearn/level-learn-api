@@ -137,7 +137,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin do curso</response>
         /// <response code="404">Curso não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpDelete("v1/[controller]/{id:guid}/alternar-ativacao")]
+        [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

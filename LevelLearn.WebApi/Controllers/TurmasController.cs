@@ -45,14 +45,36 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Lista turmas</returns>
         /// <response code="200">Lista de turmas</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpGet("v1/[controller]/curso/{cursoId:guid}")]
+        [HttpGet("v1/[controller]/curso/{cursoId:guid}/professor")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterTurmas([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterTurmasCursoProfessor([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
             ResultadoService<IEnumerable<Turma>> resultado =
                 await _turmaService.TurmasCursoProfessor(cursoId, User.GetPessoaId(), filtroPaginacao);
+
+            var listaVM = _mapper.Map<IEnumerable<TurmaVM>>(resultado.Dados);
+
+            return Ok(CriarListaPaginada(listaVM, resultado.Total.Value, filtroVM));
+        }
+
+        /// <summary>
+        /// Retorna todas as turmas de um aluno paginadas com filtro
+        /// </summary>        
+        /// <param name="filtroVM">Armazena os filtros de consulta</param>
+        /// <returns>Lista turmas</returns>
+        /// <response code="200">Lista de turmas</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ALUNO)]
+        [HttpGet("v1/[controller]/curso/{cursoId:guid}/aluno")]
+        [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterTurmasAluno([FromBody] FiltroPaginacaoVM filtroVM)
+        {
+            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
+
+            ResultadoService<IEnumerable<Turma>> resultado = 
+                await _turmaService.TurmasAluno(User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<TurmaVM>>(resultado.Dados);
 
@@ -142,7 +164,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin da turma</response>
         /// <response code="404">Turma não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpDelete("v1/[controller]/{id:guid}/alternar-ativacao")]
+        [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories.Institucional;
 using LevelLearn.Domain.Utils.Comum;
+using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +15,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 {
     public class TurmaRepository : RepositoryBase<Turma, Guid>, ITurmaRepository
     {
-        public TurmaRepository(DbContext context)
+        public TurmaRepository(LevelLearnContext context)
             : base(context) { }
 
         public async Task<IEnumerable<Turma>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtro)
