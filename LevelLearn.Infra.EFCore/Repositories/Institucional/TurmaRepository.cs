@@ -83,6 +83,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             IQueryable<Turma> query = _context.Set<AlunoTurma>()
                 .AsNoTracking()
+                .Include(a => a.Turma).ThenInclude(t => t.Curso)
                 .Where(p => p.AlunoId == pessoaId)
                 .Select(p => p.Turma)
                     .Where(t => t.NomePesquisa.Contains(termoPesquisaSanitizado) &&

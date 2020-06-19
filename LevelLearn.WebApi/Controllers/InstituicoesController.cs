@@ -20,7 +20,6 @@ namespace LevelLearn.WebApi.Controllers
     /// <summary>
     /// Instituicoes Controller
     /// </summary>   
-    [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
     public class InstituicoesController : MyBaseController
     {
         private readonly IInstituicaoService _instituicaoService;
@@ -65,6 +64,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Lista instituições</returns>
         /// <response code="200">Lista de instituições</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filtroPaginacaoVM)
@@ -87,6 +87,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Retorna uma instituição</response>
         /// <response code="404">Instituição não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoDetalheVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,6 +108,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="201">Retorna instituição cadastrada</response>
         /// <response code="400">Dados inválidos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -134,6 +136,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin da instituição</response>
         /// <response code="404">Instituição não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -157,6 +160,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin da instituição</response>
         /// <response code="404">Instituição não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
