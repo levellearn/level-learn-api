@@ -15,24 +15,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
             : base(context)
         { }
 
-        //public List<Pessoa> SelectAlunosCurso(int cursoId)
-        //{
-        //    return _context.Set<PessoaCurso>()
-        //                    .Where(p => p.Perfil == TipoPessoaEnum.Aluno)
-        //                    .Where(p => p.CursoId == cursoId)
-        //                    .Select(p => p.Pessoa)
-        //                    .ToList();
-        //}
-
-        //public List<Pessoa> SelectAlunosInstituicao(int instituicaoId)
-        //{
-        //    return _context.Set<PessoaInstituicao>()
-        //                    .Where(p => p.Perfil == PerfilInstituicaoEnum.Aluno)
-        //                    .Where(p => p.InstituicaoId == instituicaoId)
-        //                    .Select(p => p.Pessoa)
-        //                    .ToList();
-        //}
-
         //public List<Pessoa> SelectProfessoresInstituicao(int instituicaoId)
         //{
         //    return _context.Set<PessoaInstituicao>()
