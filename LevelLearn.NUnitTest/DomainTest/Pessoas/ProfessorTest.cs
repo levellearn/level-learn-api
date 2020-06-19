@@ -21,7 +21,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _email = "le.guarino@mail.com";
             _cpf = "881.192.990-35";
             _genero = GeneroPessoa.Masculino;
-            _celular = "(12)98845-8974";
+            _celular = "55(12)98845-8974";
             _dataNascimento = DateTime.Parse("30/12/1988");
         }
 

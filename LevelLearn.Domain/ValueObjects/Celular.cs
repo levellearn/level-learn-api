@@ -18,7 +18,7 @@ namespace LevelLearn.Domain.ValueObjects
         public override bool EstaValido()
         {
             var validator = new CelularValidator();
-            this.ResultadoValidacao = validator.Validate(this);
+            ResultadoValidacao = validator.Validate(this);
 
             return ResultadoValidacao.IsValid;
         }

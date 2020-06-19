@@ -23,7 +23,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             _email = "felipe.ayres@mail.com";
             _cpf = "881.192.990-35";
             _genero = GeneroPessoa.Masculino;
-            _celular = "(12)98845-7832";
+            _celular = "55(12)98845-7832";
             _ra = "f1310435";
             _dataNascimento = DateTime.Parse("26/10/1993");
         }
@@ -60,6 +60,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         [TestCase("Steven P. Jobs")]
         [TestCase("Joseph Louis Gay-Lussac")]
         [TestCase("Francisco O' Lourenço")]
+        [TestCase("Ma Long Np")]
         public void Aluno_NomeCompleto_ReturnTrue(string nome)
         {
             _nome = nome;
@@ -73,9 +74,9 @@ namespace LevelLearn.NUnitTest.Pessoas
         }
 
         [Test]
-        [TestCase("Fe lipe")]
+        [TestCase("F lipe")]
         [TestCase("Felipe A")]
-        [TestCase("F. Ayres")]
+        [TestCase("F Ayres")]
         [TestCase("Felipe")]
         public void Aluno_NomeCompleto_ReturnFalse(string nome)
         {
@@ -86,7 +87,7 @@ namespace LevelLearn.NUnitTest.Pessoas
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
-            Assert.IsFalse(condition, "Aluno deveria ter nome imcompleto");
+            Assert.IsFalse(condition, "Aluno deveria ter nome incompleto");
         }
 
         [Test]
