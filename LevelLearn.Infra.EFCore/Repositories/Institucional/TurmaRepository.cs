@@ -18,7 +18,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public TurmaRepository(LevelLearnContext context)
             : base(context) { }
 
-        public async Task<IEnumerable<Turma>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtro)
+        public async Task<IEnumerable<Turma>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
 
@@ -35,7 +35,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await query.ToListAsync();
         }
 
-        public async Task<int> TotalTurmasCursoProfessor(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
+        public async Task<int> TotalTurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
         {
             string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
 

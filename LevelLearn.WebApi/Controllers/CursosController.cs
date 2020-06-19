@@ -47,16 +47,16 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/intituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<CursoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterCursos([FromRoute]Guid instituicaoId, [FromBody]FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterCursosProfessorPorInstituicao([FromRoute]Guid instituicaoId, [FromBody]FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
             ResultadoService<IEnumerable<Curso>> resultado =
-                await _cursoService.CursosInstituicaoProfessor(instituicaoId, User.GetPessoaId(), filtroPaginacao);
+                await _cursoService.CursosProfessorPorInstituicao(instituicaoId, User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<CursoVM>>(resultado.Dados);
 
-            return Ok(CriarListaPaginada(listaVM, resultado.Total.Value, filtroVM));
+            return Ok(CriarListaPaginada(listaVM, resultado.Total, filtroVM));
         }
 
         /// <summary>

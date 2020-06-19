@@ -134,21 +134,7 @@ namespace LevelLearn.WebApi.Controllers
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return Ok(resultado.Dados);
-        }
-
-        /// <summary>
-        /// Verificar API
-        /// </summary>
-        /// <returns>It Works</returns>
-        /// <response code="200">Ok</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpGet("up")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Up()
-        {
-            return Ok("It Works");
-        }
+        }       
 
 
 

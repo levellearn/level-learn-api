@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Mime;
@@ -28,6 +30,20 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
+        /// Verificar API
+        /// </summary>
+        /// <returns>It Works</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpGet("up")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Up()
+        {
+            return Ok("API funcionando");
+        }
+
+        /// <summary>
         /// Cria a lista paginada
         /// </summary>
         /// <typeparam name="T">Tipo da lista</typeparam>
@@ -35,11 +51,10 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="total">Total da entidade no banco</param>
         /// <param name="filterVM">Filtro de pesquisa</param>
         /// <returns></returns>
-        protected ListaPaginadaVM<T> CriarListaPaginada<T>(IEnumerable<T> listaVM, int total, FiltroPaginacaoVM filterVM)
+        protected ListaPaginadaVM<T> CriarListaPaginada<T>(IEnumerable<T> listaVM, int? total, FiltroPaginacaoVM filterVM)
             where T : class
         {
-            var listaPaginadaVM = new ListaPaginadaVM<T>(listaVM, filterVM.NumeroPagina, filterVM.TamanhoPorPagina, total,
-                filterVM.FiltroPesquisa, filterVM.OrdenarPor, filterVM.OrdenacaoAscendente, filterVM.Ativo);
+            var listaPaginadaVM = new ListaPaginadaVM<T>(listaVM, total, filterVM);
 
             return listaPaginadaVM;
         }

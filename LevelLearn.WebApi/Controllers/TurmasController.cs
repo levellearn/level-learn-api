@@ -47,16 +47,16 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [HttpGet("v1/[controller]/curso/{cursoId:guid}/professor")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterTurmasCursoProfessor([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterTurmasProfessorPorCurso([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
             ResultadoService<IEnumerable<Turma>> resultado =
-                await _turmaService.TurmasCursoProfessor(cursoId, User.GetPessoaId(), filtroPaginacao);
+                await _turmaService.TurmasProfessorPorCurso(cursoId, User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<TurmaVM>>(resultado.Dados);
 
-            return Ok(CriarListaPaginada(listaVM, resultado.Total.Value, filtroVM));
+            return Ok(CriarListaPaginada(listaVM, resultado.Total, filtroVM));
         }
 
         /// <summary>
@@ -67,13 +67,13 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Lista de turmas</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ALUNO)]
-        [HttpGet("v1/[controller]/curso/{cursoId:guid}/aluno")]
+        [HttpGet("v1/[controller]/aluno")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterTurmasAluno([FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
-            ResultadoService<IEnumerable<Turma>> resultado = 
+            ResultadoService<IEnumerable<Turma>> resultado =
                 await _turmaService.TurmasAluno(User.GetPessoaId(), filtroPaginacao);
 
             var listaVM = _mapper.Map<IEnumerable<TurmaVM>>(resultado.Dados);

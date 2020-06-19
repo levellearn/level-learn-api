@@ -15,7 +15,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <param name="filtroPaginacao">Filtros da paginação</param>       
         /// <returns>Lista de turmas</returns>
-        Task<IEnumerable<Turma>> TurmasCursoProfessor(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
+        Task<IEnumerable<Turma>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
         
         /// <summary>
         /// Retorna o total de turmas de um curso de um professor para a paginação
@@ -25,7 +25,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="filtroPesquisa">Termo de pesquisa</param>
         /// <param name="ativo">Entidade ativa</param>
         /// <returns>Total de turmas</returns>
-        Task<int> TotalTurmasCursoProfessor(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true);
+        Task<int> TotalTurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, string filtroPesquisa, bool ativo = true);
 
         /// <summary>
         /// Retorna as turmas de um professor paginadas com filtro

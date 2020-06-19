@@ -58,7 +58,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
-        public async Task<IEnumerable<Curso>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtro)
+        public async Task<IEnumerable<Curso>> CursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
 
@@ -87,7 +87,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .ToListAsync();*/
         }
 
-        public async Task<int> TotalCursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
+        public async Task<int> TotalCursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
         {
             string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
 

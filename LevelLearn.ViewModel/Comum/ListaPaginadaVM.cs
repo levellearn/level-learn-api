@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace LevelLearn.ViewModel
 {
     public class ListaPaginadaVM<T> where T : class
     {
-        public ListaPaginadaVM(IEnumerable<T> data, int pageNumber, int pageSize, int total,
-            string searchFilter, string sortBy, bool ascendingSort, bool isActive)
+        public ListaPaginadaVM(IEnumerable<T> dados, int? total, FiltroPaginacaoVM filterVM)
         {
-            Dados = data;
-            NumeroPagina = pageNumber;
-            TamanhoPorPagina = pageSize;
-            Total = total;
-            FiltroPesquisa = searchFilter;
-            OrdenarPor = sortBy;
-            OrdenacaoAscendente = ascendingSort;
-            Ativo = isActive;
+            Dados = dados;
+            NumeroPagina = filterVM.NumeroPagina;
+            TamanhoPorPagina = filterVM.TamanhoPorPagina;
+            Total = total.Value;
+            FiltroPesquisa = filterVM.FiltroPesquisa;
+            OrdenarPor = filterVM.OrdenarPor;
+            OrdenacaoAscendente = filterVM.OrdenacaoAscendente;
+            Ativo = filterVM.Ativo;
         }
-
+       
         [JsonPropertyName("data")]
         public IEnumerable<T> Dados { get; set; }
 

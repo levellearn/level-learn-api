@@ -20,6 +20,7 @@ Identity
 Reponse Cache 
 
 Revisar Rotas
+	https://medium.com/@wssilva.willian/design-de-api-rest-9807a5b16c9f
 
 
 https://stackoverflow.com/questions/17380900/enum-localization

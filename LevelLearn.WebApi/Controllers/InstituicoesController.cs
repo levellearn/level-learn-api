@@ -76,7 +76,7 @@ namespace LevelLearn.WebApi.Controllers
 
             var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(resultado.Dados);
 
-            return Ok(CriarListaPaginada(listaVM, resultado.Total.Value, filtroPaginacaoVM));
+            return Ok(CriarListaPaginada(listaVM, resultado.Total, filtroPaginacaoVM));
         }
 
         /// <summary>

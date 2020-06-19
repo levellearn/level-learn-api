@@ -32,11 +32,11 @@ namespace LevelLearn.Service.Services.Institucional
 
         #endregion
 
-        public async Task<ResultadoService<IEnumerable<Curso>>> CursosInstituicaoProfessor(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
+        public async Task<ResultadoService<IEnumerable<Curso>>> CursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var cursos = await _uow.Cursos.CursosInstituicaoProfessor(instituicaoId, pessoaId, filtroPaginacao);
+            var cursos = await _uow.Cursos.CursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao);
 
-            var total = await _uow.Cursos.TotalCursosInstituicaoProfessor(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            int total = await _uow.Cursos.TotalCursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
             return ResultadoServiceFactory<IEnumerable<Curso>>.Ok(cursos, total);
         }

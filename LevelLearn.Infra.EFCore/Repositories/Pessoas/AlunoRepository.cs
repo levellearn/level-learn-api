@@ -20,19 +20,19 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
         public async Task<IEnumerable<Aluno>> ObterAlunosPorCurso(Guid cursoId)
         {
             return await _context.Set<PessoaCurso>()
-                            .AsNoTracking()
-                            .Where(p => p.Perfil == TipoPessoa.Aluno && p.CursoId == cursoId)
-                            .Select(p => p.Pessoa as Aluno)
-                            .ToListAsync();
+                .AsNoTracking()
+                .Where(p => p.Perfil == TipoPessoa.Aluno && p.CursoId == cursoId)
+                .Select(p => p.Pessoa as Aluno)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Aluno>> ObterAlunosPorInstituicao(Guid instituicaoId)
         {
             return await _context.Set<PessoaInstituicao>()
-                            .AsNoTracking()
-                            .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
-                            .Select(p => p.Pessoa as Aluno)
-                            .ToListAsync();
+                .AsNoTracking()
+                .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
+                .Select(p => p.Pessoa as Aluno)
+                .ToListAsync();
         }
 
     }
