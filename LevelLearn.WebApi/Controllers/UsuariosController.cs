@@ -8,7 +8,6 @@ using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -51,7 +50,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             var professor = _mapper.Map<Professor>(usuarioVM);
             var usuario = _mapper.Map<Usuario>(usuarioVM);
-            
+
             ResultadoService<UsuarioVM> resultado = await _usuarioService.RegistrarProfessor(professor, usuario);
 
             if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
@@ -113,7 +112,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> ConfirmarEmail([FromQuery]string userId, [FromQuery]string confirmationToken)
+        public async Task<ActionResult> ConfirmarEmail([FromQuery] string userId, [FromQuery] string confirmationToken)
         {
             ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.ConfirmarEmail(userId, confirmationToken);
 
@@ -143,7 +142,7 @@ namespace LevelLearn.WebApi.Controllers
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return Ok(resultado.Dados);
-        }       
+        }
 
 
 

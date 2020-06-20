@@ -1,4 +1,5 @@
-﻿using LevelLearn.Domain.Utils.AppSettings;
+﻿using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
@@ -21,20 +22,19 @@ namespace LevelLearn.Service.Services.Usuarios
             _env = env;
         }
 
-        public async Task EnviarEmailCadastroProfessor(string email, string nome, string userId, string tokenEncoded)
+        public async Task EnviarEmailCadastro(string email, string nome, string userId, string tokenEncoded, TipoPessoa tipoPessoa)
         {
-            var rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
-            var linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
+            string rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
+            string linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
 
-            var assunto = $"Cadastro de Professor no sistema {_appSettings.EmailSettings.DisplayName}";
-            var mensagem = "";
+            string assunto = $"Cadastro de {tipoPessoa} no sistema {_appSettings.EmailSettings.DisplayName}";
+            string mensagem = "";
 
             string filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
 
             using (var reader = new StreamReader(filePath))
-            {
                 mensagem = await reader.ReadToEndAsync();
-            }
+
             mensagem = mensagem.Replace("{nome}", nome);
             mensagem = mensagem.Replace("{linkConfirmacao}", linkConfirmacao);
 

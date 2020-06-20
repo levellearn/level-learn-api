@@ -1,5 +1,6 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Validators;
@@ -75,52 +76,85 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResultadoService<UsuarioVM>> RegistrarProfessor(Professor professor, Usuario usuario)
         {
-            // Validações BD
-            ResultadoService<UsuarioVM> respostaValidacao = await ValidarCriarUsuarioBD(professor.Email.Endereco, professor.Cpf.Numero);
-            if (respostaValidacao.Falhou) return respostaValidacao;
-
-            // Validação PROFESSOR
+            // Validação professor
             if (!professor.EstaValido())
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            // Validação Usuário
+            // Validação usuário
             usuario.AtribuirPessoaId(professor.Id);
 
             if (!usuario.EstaValido())
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            // Criando PROFESSOR BD
+            // Validações BD
+            ResultadoService<UsuarioVM> resultadoValidacao = await ValidarCriarUsuarioBD(professor);
+            if (resultadoValidacao.Falhou) return resultadoValidacao;
+
+            // Criando professor BD
             await _uow.Pessoas.AddAsync(professor);
             if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
-            // Criando USUÁRIO Identity
+            // Criando usuário Identity
             string role = ApplicationRoles.PROFESSOR;
             ResultadoService<UsuarioVM> resultadoIdentity = await CriarUsuarioIdentity(usuario, role, professor);
             if (resultadoIdentity.Falhou) return resultadoIdentity;
 
-            // EMAIL de confirmação
-            _ = EnviarEmail(professor, usuario, role);
+            // Email de confirmação
+            _ = EnviarEmailCadastro(professor, usuario, role);
 
             return ResultadoServiceFactory<UsuarioVM>.NoContent(_sharedResource.CadastradoSucesso);
         }
 
-        public async Task<ResultadoService<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM usuarioVM)
+        public async Task<ResultadoService<UsuarioVM>> RegistrarAluno(Aluno aluno, Usuario usuario)
         {
-            var email = new Email(usuarioVM.Email);
+            // Validação aluno
+            if (!aluno.EstaValido())
+                return ResultadoServiceFactory<UsuarioVM>.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            // Validação usuário
+            usuario.AtribuirPessoaId(aluno.Id);
+
+            if (!usuario.EstaValido())
+                return ResultadoServiceFactory<UsuarioVM>.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            // Validações BD
+            ResultadoService<UsuarioVM> resultadoValidacao = await ValidarCriarUsuarioBD(aluno);
+            if (resultadoValidacao.Falhou) return resultadoValidacao;
+
+            // Criando aluno BD
+            await _uow.Pessoas.AddAsync(aluno);
+            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
+
+            // Criando usuário Identity
+            string role = ApplicationRoles.PROFESSOR;
+            ResultadoService<UsuarioVM> resultadoIdentity = await CriarUsuarioIdentity(usuario, role, aluno);
+            if (resultadoIdentity.Falhou) return resultadoIdentity;
+
+            // Email de confirmação
+            _ = EnviarEmailCadastro(aluno, usuario, role);
+
+            return ResultadoServiceFactory<UsuarioVM>.NoContent(_sharedResource.CadastradoSucesso);
+        }
+
+        public async Task<ResultadoService<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM loginUsuarioVM)
+        {
+            var email = new Email(loginUsuarioVM.Email);
 
             // Validações
-            switch (usuarioVM.TipoAutenticacao)
+            switch (loginUsuarioVM.TipoAutenticacao)
             {
                 case TipoAutenticacao.Senha:
                     {
-                        var respostaValidacao = await ValidarCredenciaisUsuario(email, usuarioVM.Senha);
-                        if (respostaValidacao.Falhou) return respostaValidacao;
+                        var resultadoValidacao = await ValidarUsuarioSenha(email, loginUsuarioVM.Senha);
+
+                        if (resultadoValidacao.Falhou) return resultadoValidacao;
                         break;
                     }
                 case TipoAutenticacao.Refresh_Token:
                     {
-                        var respostaValidacao = await ValidarRefreshToken(email, usuarioVM.RefreshToken);
-                        if (respostaValidacao.Falhou) return respostaValidacao;
+                        var resultadoValidacao = await ValidarRefreshToken(email, loginUsuarioVM.RefreshToken);
+
+                        if (resultadoValidacao.Falhou) return resultadoValidacao;
                         break;
                     }
                 default:
@@ -157,26 +191,26 @@ namespace LevelLearn.Service.Services.Usuarios
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmationToken))
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_sharedResource.DadosInvalidos);
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return ResultadoServiceFactory<UsuarioTokenVM>.NotFound(_sharedResource.NaoEncontrado);
+            Usuario usuario = await _userManager.FindByIdAsync(userId);
+            if (usuario == null) return ResultadoServiceFactory<UsuarioTokenVM>.NotFound(_sharedResource.NaoEncontrado);
 
-            var tokenDecoded = confirmationToken.DecodeBase64ToText();
+            string tokenDecoded = confirmationToken.DecodeBase64ToText();
 
-            // Verificando confirmação EMAIL Identity
-            var identityResult = await _userManager.ConfirmEmailAsync(user, tokenDecoded);
+            // Verificando confirmação Email Identity
+            IdentityResult identityResult = await _userManager.ConfirmEmailAsync(usuario, tokenDecoded);
 
             if (!identityResult.Succeeded)
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailConfirmarFalha);
 
-            var roles = await _userManager.GetRolesAsync(user);
+            IList<string> roles = await _userManager.GetRolesAsync(usuario);
 
             var responseVM = new UsuarioTokenVM()
             {
-                Id = user.Id,
-                Nome = user.Nome,
-                NickName = user.NickName,
-                ImagemUrl = user.ImagemUrl,
-                Token = await _tokenService.GerarJWT(user, roles)
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                NickName = usuario.NickName,
+                ImagemUrl = usuario.ImagemUrl,
+                Token = await _tokenService.GerarJWT(usuario, roles)
             };
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);
@@ -184,16 +218,16 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResultadoService<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
-            const int TAMANHO_MAXIMO_BYTES = 5_000_000; // 5mb
-            DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
-            var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
-
             Usuario usuario = await _userManager.FindByIdAsync(userId);
 
             // Validações BD
             if (usuario == null) return ResultadoServiceFactory<UsuarioVM>.NotFound(_sharedResource.NaoEncontrado);
 
             // Validações Arquivo
+            const int TAMANHO_MAXIMO_BYTES = 5_000_000; // 5mb
+            DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
+            var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
+
             if (arquivo == null || arquivo.Length <= 0 || arquivo.Length > TAMANHO_MAXIMO_BYTES)
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(_sharedResource.DadosInvalidos);
 
@@ -231,18 +265,21 @@ namespace LevelLearn.Service.Services.Usuarios
 
         #region Privates Methods
 
-        private async Task<ResultadoService<UsuarioVM>> ValidarCriarUsuarioBD(string email, string cpf)
+        private async Task<ResultadoService<UsuarioVM>> ValidarCriarUsuarioBD(Pessoa pessoa)
         {
-            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == email))
+            if (pessoa.TipoPessoa == TipoPessoa.Professor)
+            {
+                if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == pessoa.Cpf.Numero))
+                    return ResultadoServiceFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);
+            }
+
+            if (await _uow.Pessoas.EntityExists(i => i.Email.Endereco == pessoa.Email.Endereco))
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(_usuarioResource.UsuarioEmailJaExiste);
-            // TODO: Revisar
-            if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
-                return ResultadoServiceFactory<UsuarioVM>.BadRequest(_pessoaResource.PessoaCPFJaExiste);            
 
             return ResultadoServiceFactory<UsuarioVM>.NoContent();
         }
 
-        private async Task<ResultadoService<UsuarioTokenVM>> ValidarCredenciaisUsuario(Email email, string senha)
+        private async Task<ResultadoService<UsuarioTokenVM>> ValidarUsuarioSenha(Email email, string senha)
         {
             if (!email.EstaValido())
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
@@ -300,8 +337,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             var refreshTokenData = JsonConvert.DeserializeObject<RefreshTokenData>(tokenArmazenadoCache);
 
-            var credenciaisValidas = (email.Endereco == refreshTokenData.Email
-                                        && refreshToken == refreshTokenData.RefreshToken);
+            bool credenciaisValidas = (email.Endereco == refreshTokenData.Email && refreshToken == refreshTokenData.RefreshToken);
 
             if (!credenciaisValidas)
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest("Refresh Token inválido");
@@ -312,19 +348,19 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory<UsuarioTokenVM>.NoContent();
         }
 
-        private async Task<ResultadoService<UsuarioVM>> CriarUsuarioIdentity(Usuario user, string role, Pessoa pessoa)
+        private async Task<ResultadoService<UsuarioVM>> CriarUsuarioIdentity(Usuario usuario, string role, Pessoa pessoa)
         {
             try
             {
-                var identityResult = await _userManager.CreateAsync(user, user.Senha);
+                var identityResult = await _userManager.CreateAsync(usuario, usuario.Senha);
                 if (!identityResult.Succeeded)
                 {
                     await RemoverPessoa(pessoa);
                     return ResultadoServiceFactory<UsuarioVM>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
                 }
 
-                await _userManager.AddToRoleAsync(user, role);
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _userManager.AddToRoleAsync(usuario, role);
+                await _signInManager.SignInAsync(usuario, isPersistent: false);
 
                 return ResultadoServiceFactory<UsuarioVM>.NoContent();
             }
@@ -332,25 +368,27 @@ namespace LevelLearn.Service.Services.Usuarios
             {
                 _log.LogError(exception: ex, "Criar Usuario Identity Erro");
 
-                await RemoverUsuario(user, role);
+                await RemoverUsuario(usuario, role);
                 await RemoverPessoa(pessoa);
                 return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
         }
 
-        private async Task<ResultadoService<UsuarioVM>> EnviarEmail(Professor professor, Usuario user, string role)
+        private async Task<ResultadoService<UsuarioVM>> EnviarEmailCadastro(Pessoa pessoa, Usuario usuario, string role)
         {
-            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var tokenEncoded = confirmationToken.EncodeTextToBase64();
+            string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
+            string tokenEncoded = confirmationToken.EncodeTextToBase64();
 
             try
             {
-                await _emailService.EnviarEmailCadastroProfessor(user.Email, professor.Nome, user.Id, tokenEncoded);
+                await _emailService.EnviarEmailCadastro(usuario.Email, pessoa.Nome, usuario.Id, tokenEncoded, pessoa.TipoPessoa);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await RemoverUsuario(user, role);
-                await RemoverPessoa(professor);
+                _log.LogError(exception: ex, "Erro Enviar Email");
+
+                await RemoverUsuario(usuario, role);
+                await RemoverPessoa(pessoa);
                 return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
 
@@ -388,10 +426,10 @@ namespace LevelLearn.Service.Services.Usuarios
             }
         }
 
-        private async Task RemoverUsuario(Usuario user, string role)
+        private async Task RemoverUsuario(Usuario usuario, string role)
         {
-            await _userManager.RemoveFromRoleAsync(user, role);
-            await _userManager.DeleteAsync(user);
+            await _userManager.RemoveFromRoleAsync(usuario, role);
+            await _userManager.DeleteAsync(usuario);
         }
 
         private async Task RemoverPessoa(Pessoa pessoa)

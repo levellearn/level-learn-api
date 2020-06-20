@@ -11,7 +11,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
     public interface IUsuarioService : IDisposable
     {
         Task<ResultadoService<UsuarioVM>> RegistrarProfessor(Professor professor, Usuario usuario);
-        Task<ResultadoService<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM usuarioVM);
+        Task<ResultadoService<UsuarioTokenVM>> LogarUsuario(LoginUsuarioVM loginUsuarioVM);
         Task<ResultadoService<UsuarioVM>> Logout(string jwtId);
         Task<ResultadoService<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken);
         Task<ResultadoService<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo);
