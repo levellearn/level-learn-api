@@ -63,8 +63,8 @@ namespace LevelLearn.NUnitTest.Usuarios
             var pessoa = new Professor(_nome, new Email(_email), new CPF("226.547.010-42"),
                new Celular(_celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
-            var user = new Usuario(_nome, _nickName, _email, _celular, pessoa.Id);
-            user.AtribuirSenha(_senha, _confirmacaoSenha);
+            var user = new Usuario(_nome, _nickName, _email, _celular, _senha, _confirmacaoSenha);
+            user.AtribuirPessoaId(pessoa.Id);
             user.ConfirmarEmail();
             user.ConfirmarCelular();
 
@@ -83,8 +83,8 @@ namespace LevelLearn.NUnitTest.Usuarios
             var pessoa = new Professor(nome, new Email(email), new CPF("226.547.010-42"),
                new Celular(celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
-            var user = new Usuario(nome, nickName, email, celular, pessoa.Id);
-            user.AtribuirSenha(senha, confirmacaoSenha);
+            var user = new Usuario(nome, nickName, email, celular, senha, confirmacaoSenha);
+            user.AtribuirPessoaId(pessoa.Id);
             user.ConfirmarEmail();
             user.ConfirmarCelular();
 

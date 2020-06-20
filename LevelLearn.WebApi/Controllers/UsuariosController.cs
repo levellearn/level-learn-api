@@ -1,4 +1,7 @@
-﻿using LevelLearn.Domain.Extensions;
+﻿using AutoMapper;
+using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
@@ -19,31 +22,37 @@ namespace LevelLearn.WebApi.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="usuarioService">IUsuarioService</param>
-        public UsuariosController(IUsuarioService usuarioService)
+        /// <param name="mapper">IMapper</param>
+        public UsuariosController(IUsuarioService usuarioService, IMapper mapper)
         {
             _usuarioService = usuarioService;
+            _mapper = mapper;
         }
 
         /// <summary>
-        /// Registro de usuário
+        /// Registro de usuário professor
         /// </summary>
-        /// <param name="usuarioVM">Dados de cadastro do usuário</param>
+        /// <param name="usuarioVM">Dados de cadastro do usuário professor</param>
         /// <returns>Sem conteúdo</returns>
         /// <response code="204">Sem conteúdo</response>
         /// <response code="400">Dados inválidos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/registrar-usuario")]
+        [HttpPost("v1/[controller]/registrar-professor")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
+        public async Task<ActionResult> RegistrarProfessor(RegistrarProfessorVM usuarioVM)
         {
-            ResultadoService<UsuarioVM> resultado = await _usuarioService.RegistrarUsuario(usuarioVM);
+            var professor = _mapper.Map<Professor>(usuarioVM);
+            var usuario = _mapper.Map<Usuario>(usuarioVM);
+            
+            ResultadoService<UsuarioVM> resultado = await _usuarioService.RegistrarProfessor(professor, usuario);
 
             if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
@@ -122,7 +131,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="400">Dados inválidos</response>
         /// <response code="404">usuário não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/alterar-foto-perfil")]
+        [HttpPost("v1/[controller]/alterar-foto-perfil")] // TODO: Patch
         [Authorize]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

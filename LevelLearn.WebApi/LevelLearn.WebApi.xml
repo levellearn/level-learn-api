@@ -44,6 +44,26 @@
             Ctor
             </summary>
         </member>
+        <member name="T:LevelLearn.WebApi.AutoMapper.PessoaVMToDomain">
+            <summary>
+            Pessoa VM To Domain
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.AutoMapper.PessoaVMToDomain.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="T:LevelLearn.WebApi.AutoMapper.UsuarioVMToDomain">
+            <summary>
+            Usuário VM To Domain
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.AutoMapper.UsuarioVMToDomain.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.CursosController">
             <summary>
             Cursos Controller
@@ -299,11 +319,11 @@
             </summary>
             <param name="usuarioService">IUsuarioService</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarUsuario(LevelLearn.ViewModel.Usuarios.RegistrarUsuarioVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarProfessor(LevelLearn.ViewModel.Usuarios.RegistrarProfessorVM)">
             <summary>
-            Registro de usuário
+            Registro de usuário professor
             </summary>
-            <param name="usuarioVM">Dados de cadastro do usuário</param>
+            <param name="usuarioVM">Dados de cadastro do usuário professor</param>
             <returns>Sem conteúdo</returns>
             <response code="204">Sem conteúdo</response>
             <response code="400">Dados inválidos</response>

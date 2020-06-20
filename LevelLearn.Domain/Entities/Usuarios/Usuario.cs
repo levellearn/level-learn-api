@@ -17,7 +17,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
 
         protected Usuario() { }
 
-        public Usuario(string nome, string nickName, string email, string celular, Guid pessoaId)
+        public Usuario(string nome, string nickName, string email, string celular, string senha, string confirmacaoSenha)
         {
             Nome = nome.RemoveExtraSpaces();
             Email = email;
@@ -27,7 +27,8 @@ namespace LevelLearn.Domain.Entities.Usuarios
             ImagemUrl = IMAGEM_URL_PADRAO;
             NickName = nickName?.Trim() ?? string.Empty;
             PhoneNumber = celular;
-            PessoaId = pessoaId;
+            this.Senha = senha ?? string.Empty;
+            this.ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
 
             ResultadoValidacao = new ValidationResult();
         }
@@ -64,10 +65,9 @@ namespace LevelLearn.Domain.Entities.Usuarios
             return ResultadoValidacao.GetErrorsResult();
         }
 
-        public void AtribuirSenha(string senha, string confirmacaoSenha)
+        public void AtribuirPessoaId(Guid pessoaId)
         {
-            this.Senha = senha ?? string.Empty;
-            this.ConfirmacaoSenha = confirmacaoSenha ?? string.Empty;
+            PessoaId = pessoaId;
         }
 
         public void ConfirmarEmail()

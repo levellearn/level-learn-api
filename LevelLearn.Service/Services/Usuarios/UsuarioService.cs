@@ -21,6 +21,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,25 +73,18 @@ namespace LevelLearn.Service.Services.Usuarios
 
         #endregion
 
-        public async Task<ResultadoService<UsuarioVM>> RegistrarUsuario(RegistrarUsuarioVM usuarioVM)
+        public async Task<ResultadoService<UsuarioVM>> RegistrarProfessor(Professor professor, Usuario usuario)
         {
-            var email = new Email(usuarioVM.Email);
-            var celular = new Celular(usuarioVM.Celular);
-            var cpf = new CPF(usuarioVM.Cpf);
-
             // Validações BD
-            ResultadoService<UsuarioVM> respostaValidacao = await ValidarCriarUsuarioBD(email.Endereco, cpf.Numero);
+            ResultadoService<UsuarioVM> respostaValidacao = await ValidarCriarUsuarioBD(professor.Email.Endereco, professor.Cpf.Numero);
             if (respostaValidacao.Falhou) return respostaValidacao;
 
-            // Criação e Validação PROFESSOR
-            var professor = new Professor(usuarioVM.Nome, email, cpf, celular, usuarioVM.Genero, usuarioVM.DataNascimento);
-
+            // Validação PROFESSOR
             if (!professor.EstaValido())
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
-            // Criação e Validação USER
-            var usuario = new Usuario(professor.Nome, usuarioVM.NickName, email.Endereco, celular.Numero, professor.Id);
-            usuario.AtribuirSenha(usuarioVM.Senha, usuarioVM.ConfirmacaoSenha);
+            // Validação Usuário
+            usuario.AtribuirPessoaId(professor.Id);
 
             if (!usuario.EstaValido())
                 return ResultadoServiceFactory<UsuarioVM>.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
@@ -100,7 +94,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Criando USUÁRIO Identity
-            var role = ApplicationRoles.PROFESSOR;
+            string role = ApplicationRoles.PROFESSOR;
             ResultadoService<UsuarioVM> resultadoIdentity = await CriarUsuarioIdentity(usuario, role, professor);
             if (resultadoIdentity.Falhou) return resultadoIdentity;
 
@@ -135,7 +129,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Gerar VM e JWToken  
             _usuarioLogado ??= await _userManager.FindByNameAsync(email.Endereco);
-            var roles = await _userManager.GetRolesAsync(_usuarioLogado);
+            IList<string> roles = await _userManager.GetRolesAsync(_usuarioLogado);
 
             var responseVM = new UsuarioTokenVM()
             {
@@ -190,7 +184,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResultadoService<UsuarioVM>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
-            const int TAMANHO_MAXIMO_BYTES = 5_000_000;
+            const int TAMANHO_MAXIMO_BYTES = 5_000_000; // 5mb
             DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
             var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
 
@@ -334,8 +328,10 @@ namespace LevelLearn.Service.Services.Usuarios
 
                 return ResultadoServiceFactory<UsuarioVM>.NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _log.LogError(exception: ex, "Criar Usuario Identity Erro");
+
                 await RemoverUsuario(user, role);
                 await RemoverPessoa(pessoa);
                 return ResultadoServiceFactory<UsuarioVM>.InternalServerError(_sharedResource.ErroInternoServidor);
@@ -368,7 +364,6 @@ namespace LevelLearn.Service.Services.Usuarios
 
             try
             {
-
                 using (var image = Image.Load(inputStream))
                 {
                     image.Mutate(x => x.Resize(
@@ -388,7 +383,7 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
-                _log.LogError(exception: ex, "RedimensionarImagem Error");
+                _log.LogError(exception: ex, "Erro Redimensionar Imagem");
                 return inputStream; // Retorna a imagem original
             }
         }

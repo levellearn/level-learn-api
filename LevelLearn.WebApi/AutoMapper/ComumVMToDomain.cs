@@ -14,18 +14,8 @@ namespace LevelLearn.WebApi.AutoMapper
         /// </summary>
         public ComumVMToDomain()
         {
-            ComumMap();
-        }
-
-        private void ComumMap()
-        {
             CreateMap<FiltroPaginacaoVM, FiltroPaginacao>();
-
-            //CreateMap<FiltroPaginacaoVM, FiltroPaginacao>()
-            //    .ConstructUsing(p =>
-            //        new FiltroPaginacao(p.FiltroPesquisa, p.NumeroPagina, p.TamanhoPorPagina, p.OrdenarPor, p.OrdenacaoAscendente, p.Ativo)
-            //    );
-        }
+        }       
 
     }
 

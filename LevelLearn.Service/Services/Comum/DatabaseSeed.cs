@@ -83,8 +83,8 @@ namespace LevelLearn.Service.Services.Comum
             var pessoa = new Professor("Felipe Ayres", new Email("felipe.ayres93@gmail.com"), new CPF("226.547.010-42"),
                new Celular("55(12)98845-7832"), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
-            var usuario = new Usuario(pessoa.Nome, "felipe.ayres", "felipe.ayres93@gmail.com", "55(12)98845-7832", pessoa.Id);
-            usuario.AtribuirSenha("Gamificando@123", "Gamificando@123");
+            var usuario = new Usuario(pessoa.Nome, "felipe.ayres", "felipe.ayres93@gmail.com", "55(12)98845-7832", "Gamificando@123", "Gamificando@123");
+            usuario.AtribuirPessoaId(pessoa.Id);
             usuario.ConfirmarEmail();
             usuario.ConfirmarCelular();
 
@@ -104,8 +104,8 @@ namespace LevelLearn.Service.Services.Comum
 
             var aluno = new Aluno("Gabriel Guimarães", new Email(email), new CPF("200.481.690-21"), new Celular(celular), "f1310435", GeneroPessoa.Masculino, DateTime.Parse("1993-10-23"));
 
-            var usuario = new Usuario(aluno.Nome, "gabrielguima93", email, celular, aluno.Id);
-            usuario.AtribuirSenha("Gamificando@123", "Gamificando@123");
+            var usuario = new Usuario(aluno.Nome, "gabrielguima93", email, celular, "Gamificando@123", "Gamificando@123");
+            usuario.AtribuirPessoaId(aluno.Id);
             usuario.ConfirmarEmail();
             usuario.ConfirmarCelular();
 

@@ -15,7 +15,7 @@ namespace LevelLearn.WebApi.Controllers
     [ApiController]
     [Route("api/")]
     [Produces(MediaTypeNames.Application.Json)]
-    //[Consumes(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public abstract class MyBaseController : ControllerBase
     {
         private readonly IMapper _mapper;
