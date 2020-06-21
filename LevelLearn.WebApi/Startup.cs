@@ -236,6 +236,7 @@ namespace LevelLearn.WebApi
             services.AddScoped<ICursoRepository, CursoRepository>();
             services.AddScoped<ITurmaRepository, TurmaRepository>();
             services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<IAlunoRepository, AlunoRepository>();
         }
 
         private void ConfigureBusinessServices(IServiceCollection services)

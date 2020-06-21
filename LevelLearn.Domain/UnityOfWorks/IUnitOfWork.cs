@@ -11,6 +11,7 @@ namespace LevelLearn.Domain.UnityOfWorks
         ICursoRepository Cursos { get; }
         ITurmaRepository Turmas { get; }
         IPessoaRepository Pessoas { get; }
+        IAlunoRepository Alunos { get; }
 
         bool Complete();
         Task<bool> CompleteAsync();

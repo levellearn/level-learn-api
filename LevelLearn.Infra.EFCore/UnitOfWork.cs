@@ -15,7 +15,8 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             IInstituicaoRepository instituicaoRepository,
             ICursoRepository cursoRepository,
             IPessoaRepository pessoaRepository,
-            ITurmaRepository turmaRepository
+            ITurmaRepository turmaRepository,
+            IAlunoRepository alunoRepository
             )
         {
             _context = context;
@@ -23,6 +24,7 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
             Cursos = cursoRepository;
             Pessoas = pessoaRepository;
             Turmas = turmaRepository;
+            Alunos = alunoRepository;
         }
 
         //public IInstituicaoRepository Instituicoes => new InstituicaoRepository(_context);
@@ -30,6 +32,7 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
         public IPessoaRepository Pessoas { get; }
         public ICursoRepository Cursos { get; }
         public ITurmaRepository Turmas { get; }
+        public IAlunoRepository Alunos { get; }
 
         public bool Complete()
         {
