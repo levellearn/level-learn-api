@@ -31,7 +31,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         [Test]
         public void Cadastrar_AlunoValido_ReturnTrue()
         {
-            var aluno = CriarAluno();
+            Aluno aluno = CriarAluno();
 
             bool valido = aluno.EstaValido();
 
@@ -52,7 +52,6 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             Assert.IsFalse(valido, "Aluno deveria ser inválido");
         }
-
 
         [Test]
         [TestCase("William Henry Gates III")]

@@ -10,6 +10,7 @@ using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
@@ -93,7 +94,6 @@ namespace LevelLearn.Service.Services.Institucional
                 return ResultadoServiceFactory<Curso>.BadRequest(curso.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Validação BD
-            // TODO: Refatorar para pegar do objeto
             bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
@@ -117,8 +117,7 @@ namespace LevelLearn.Service.Services.Institucional
             if (curso == null)
                 return ResultadoServiceFactory<Curso>.NotFound(_cursoResource.CursoNaoEncontrado);
 
-            // TODO: Refatorar para pegar do objeto
-            bool professorDoCurso = await _uow.Cursos.ProfessorDoCurso(cursoId, pessoaId);
+            bool professorDoCurso = curso.Pessoas.Any(p => p.PessoaId == pessoaId && p.CursoId == cursoId);
             if (!professorDoCurso)
                 return ResultadoServiceFactory<Curso>.Forbidden(_cursoResource.CursoNaoPermitido);
 
