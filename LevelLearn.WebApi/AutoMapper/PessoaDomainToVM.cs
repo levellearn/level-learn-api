@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.ViewModel.Pessoas;
+using LevelLearn.ViewModel.Usuarios;
 
 namespace LevelLearn.WebApi.AutoMapper
 {
@@ -18,6 +20,8 @@ namespace LevelLearn.WebApi.AutoMapper
             PessoaMap();
             CreateMap<Professor, ProfessorVM>();
             CreateMap<Aluno, AlunoVM>();
+            CreateMap<Usuario, UsuarioVM>();
+
 
             CreateMap<PessoaInstituicao, PessoaInstituicaoVM>();
             CreateMap<PessoaCurso, PessoaCursoVM>();
@@ -45,5 +49,6 @@ namespace LevelLearn.WebApi.AutoMapper
                     opt => opt.MapFrom(src => src.TipoPessoa.GetDescriptionLocalized())
                 );
         }
+
     }
 }

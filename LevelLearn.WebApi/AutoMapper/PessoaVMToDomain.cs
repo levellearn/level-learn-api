@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.ValueObjects;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.ViewModel.Usuarios;
 
 namespace LevelLearn.WebApi.AutoMapper
@@ -15,14 +15,31 @@ namespace LevelLearn.WebApi.AutoMapper
         /// </summary>
         public PessoaVMToDomain()
         {
-            CreateMap<RegistrarProfessorVM, Professor>()
-               .ConstructUsing(p =>
-                   new Professor(p.Nome, new Email(p.Email), new CPF(p.Cpf), new Celular(p.Celular), p.Genero, p.DataNascimento)
-               );
+            PessoaMap();
+            UsuarioMap();
+        }
 
-            CreateMap<RegistrarAlunoVM, Aluno>()
+        private void PessoaMap()
+        {
+            CreateMap<RegistrarPessoaVM, Pessoa>()
+               .Include<RegistrarProfessorVM, Professor>()
+               .Include<RegistrarAlunoVM, Aluno>();
+
+            CreateMap<RegistrarProfessorVM, Professor>();
+
+            CreateMap<RegistrarAlunoVM, Aluno>();
+        }
+
+        private void UsuarioMap()
+        {
+            CreateMap<RegistrarProfessorVM, Usuario>()
+                .ConstructUsing(p =>
+                    new Usuario(p.Nome, p.NickName, p.Email, p.Celular, p.Senha, p.ConfirmacaoSenha)
+                );
+
+            CreateMap<RegistrarAlunoVM, Usuario>()
                .ConstructUsing(p =>
-                   new Aluno(p.Nome, new Email(p.Email), new CPF(p.Cpf), new Celular(p.Celular), p.RA, p.Genero, p.DataNascimento)
+                   new Usuario(p.Nome, p.NickName, p.Email, p.Celular, p.Senha, p.ConfirmacaoSenha)
                );
         }
 

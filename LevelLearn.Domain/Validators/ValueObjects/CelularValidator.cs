@@ -20,7 +20,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
                 .OverridePropertyName("Celular");
         }
 
-        private bool ValidarNumero(string numero)
+        public bool ValidarNumero(string numero)
         {
             if (string.IsNullOrEmpty(numero)) return false;
 
@@ -28,8 +28,8 @@ namespace LevelLearn.Domain.Validators.ValueObjects
 
             if (Regex.IsMatch(numero, pattern))
                 return true;
-            else
-                return false;
+
+            return false;
         }
 
 

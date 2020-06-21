@@ -4,6 +4,6 @@
     {
         Nenhum = 0,
         Senha = 1,
-        Refresh_Token = 2
+        RefreshToken = 2
     }
 }

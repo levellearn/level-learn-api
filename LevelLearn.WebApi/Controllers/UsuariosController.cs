@@ -37,31 +37,55 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Registro de usuário professor
         /// </summary>
-        /// <param name="usuarioVM">Dados de cadastro do usuário professor</param>
+        /// <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
         /// <returns>Sem conteúdo</returns>
         /// <response code="204">Sem conteúdo</response>
         /// <response code="400">Dados inválidos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/registrar-professor")]
+        [HttpPost("v1/[controller]/registrar/professor")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RegistrarProfessor(RegistrarProfessorVM usuarioVM)
+        public async Task<ActionResult> RegistrarProfessor(RegistrarProfessorVM registrarProfessorVM)
         {
-            var professor = _mapper.Map<Professor>(usuarioVM);
-            var usuario = _mapper.Map<Usuario>(usuarioVM);
+            var professor = _mapper.Map<Professor>(registrarProfessorVM);
+            var usuario = _mapper.Map<Usuario>(registrarProfessorVM);
 
-            ResultadoService<UsuarioVM> resultado = await _usuarioService.RegistrarProfessor(professor, usuario);
+            ResultadoService<Usuario> resultado = await _usuarioService.RegistrarProfessor(professor, usuario);
 
             if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
-            return NoContent();
+            return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
+        }
+
+        /// <summary>
+        /// Registro de usuário aluno
+        /// </summary>
+        /// <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
+        /// <returns>Sem conteúdo</returns>
+        /// <response code="204">Sem conteúdo</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpPost("v1/[controller]/registrar/aluno")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> RegistrarAluno(RegistrarAlunoVM registrarAlunoVM)
+        {
+            var aluno = _mapper.Map<Aluno>(registrarAlunoVM);
+            var usuario = _mapper.Map<Usuario>(registrarAlunoVM);
+
+            ResultadoService<Usuario> resultado = await _usuarioService.RegistrarAluno(aluno, usuario);
+
+            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
+
+            return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
         }
 
         /// <summary>
         /// Login de usuário
         /// </summary>
-        /// <param name="usuarioVM">Dados de login do usuário</param>
+        /// <param name="loginUsuarioVM">Dados de login do usuário</param>
         /// <returns>Retorna usuário logado</returns>
         /// <response code="200">Retorna usuário logado</response>
         /// <response code="400">Dados inválidos</response>
@@ -70,9 +94,21 @@ namespace LevelLearn.WebApi.Controllers
         [AllowAnonymous]
         [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Login(LoginUsuarioVM usuarioVM)
+        public async Task<ActionResult> Login(LoginUsuarioVM loginUsuarioVM)
         {
-            ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.LogarUsuario(usuarioVM);
+            ResultadoService<UsuarioTokenVM> resultado;
+
+            switch (loginUsuarioVM.TipoAutenticacao)
+            {
+                case TipoAutenticacao.Senha:
+                    resultado = await _usuarioService.LoginEmailSenha(loginUsuarioVM.Email, loginUsuarioVM.Senha);
+                    break;
+                case TipoAutenticacao.RefreshToken:
+                    resultado = await _usuarioService.LoginRefreshToken(loginUsuarioVM.Email, loginUsuarioVM.RefreshToken);
+                    break;
+                default:
+                    return BadRequest("Tipo de autenticação inválida");
+            }
 
             if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
@@ -130,20 +166,19 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="400">Dados inválidos</response>
         /// <response code="404">usuário não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/alterar-foto-perfil")] // TODO: Patch
+        [HttpPatch("v1/[controller]/alterar-foto-perfil")]
         [Authorize]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AlterarFotoPerfil([FromForm] IFormFile arquivo)
         {
-            ResultadoService<UsuarioVM> resultado = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
+            ResultadoService<Usuario> resultado = await _usuarioService.AlterarFotoPerfil(User.GetUserId(), arquivo);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return Ok(resultado.Dados);
+            return Ok(_mapper.Map<UsuarioVM>(resultado.Dados));
         }
-
 
 
     }

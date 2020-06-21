@@ -9,15 +9,25 @@ namespace LevelLearn.Domain.Entities.Pessoas
 {
     public class Aluno : Pessoa
     {
-        // Ctors
+        #region Ctors
+
         protected Aluno() { }
+
+        public Aluno(string nome, string email, string cpf, string celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
+            : base(nome, new Email(email), new CPF(cpf), new Celular(celular), genero, dataNascimento)
+        {
+            RA = ra.RemoveExtraSpaces();
+            TipoPessoa = TipoPessoa.Aluno;
+        }
 
         public Aluno(string nome, Email email, CPF cpf, Celular celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
             : base(nome, email, cpf, celular, genero, dataNascimento)
         {
             RA = ra.RemoveExtraSpaces();
             TipoPessoa = TipoPessoa.Aluno;
-        }
+        } 
+
+        #endregion
 
         // Props
         public string RA { get; private set; }

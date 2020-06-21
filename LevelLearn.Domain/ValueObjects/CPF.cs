@@ -13,7 +13,9 @@ namespace LevelLearn.Domain.ValueObjects
             this.Numero = numero.GetNumbers();
         }
 
+
         public string Numero { get; private set; }
+
 
         public override bool EstaValido()
         {
@@ -25,7 +27,10 @@ namespace LevelLearn.Domain.ValueObjects
 
         public override string ToString()
         {
-            return Convert.ToInt64(Numero).ToString("###\\.###\\.###-##").PadLeft(14, '0');
+            if (!int.TryParse(Numero, out int numeroConvertido) || !ResultadoValidacao.IsValid)
+                return this.Numero;
+
+            return numeroConvertido.ToString("###\\.###\\.###-##").PadLeft(14, '0');
         }
 
     }
