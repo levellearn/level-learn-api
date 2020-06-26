@@ -158,6 +158,29 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
+        /// Esqueci a senha
+        /// </summary>
+        /// <param name="esqueciSenhaVM">Email para redefinir senha</param>
+        /// <returns>Sem conteúdo</returns>
+        /// <response code="204">Sem conteúdo</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="404">usuário não encontrado</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpGet("v1/[controller]/esqueci-senha")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM)
+        {
+            var resultado = await _usuarioService.EsqueciSenha(esqueciSenhaVM);
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Alteração da foto perfil do usuário
         /// </summary>
         /// <param name="arquivo">Arquivo com a imagem do usuário</param>

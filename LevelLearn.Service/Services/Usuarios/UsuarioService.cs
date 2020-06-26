@@ -98,7 +98,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (resultadoIdentity.Falhou) return resultadoIdentity;
 
             // Email de confirmação
-            _ = EnviarEmailCadastro(professor, usuario, role);
+            _ = EnviarEmailCadastro(professor, usuario);
 
             return ResultadoServiceFactory<Usuario>.Created(usuario, _sharedResource.CadastradoSucesso);
         }
@@ -129,7 +129,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (resultadoIdentity.Falhou) return resultadoIdentity;
 
             // Email de confirmação
-            _ = EnviarEmailCadastro(aluno, usuario, role);
+            _ = EnviarEmailCadastro(aluno, usuario);
 
             return ResultadoServiceFactory<Usuario>.Created(usuario, _sharedResource.CadastradoSucesso);
         }
@@ -196,7 +196,7 @@ namespace LevelLearn.Service.Services.Usuarios
             await _tokenService.InvalidarRefreshTokenCache(refreshToken);
 
             // Gerar VM e JWToken  
-            Usuario usuario = await _userManager.FindByNameAsync(emailVO.Endereco);
+            Usuario usuario = await _userManager.FindByEmailAsync(emailVO.Endereco);
 
             if (usuario == null) return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioLoginFalha);
 
@@ -251,6 +251,31 @@ namespace LevelLearn.Service.Services.Usuarios
             };
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);
+        }
+
+        public async Task<ResultadoService<Usuario>> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM)
+        {
+            // Validações
+            var email = new Email(esqueciSenhaVM.Email);
+            if (!email.EstaValido())
+                return ResultadoServiceFactory<Usuario>.BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
+
+            Usuario usuario = await _userManager.FindByNameAsync(email.Endereco);
+
+            if (usuario == null) return ResultadoServiceFactory<Usuario>.NotFound(_sharedResource.NaoEncontrado);
+
+            if (!usuario.EmailConfirmed)
+                return ResultadoServiceFactory<Usuario>.BadRequest(_usuarioResource.UsuarioEmailNaoConfirmado);
+
+            // Gera token para redefinir senha 
+            string resetToken = await _userManager.GeneratePasswordResetTokenAsync(usuario);
+            string tokenEncoded = resetToken.EncodeTextToBase64();
+
+            _log.LogWarning("Usuário esqueceu a senha {@Usuário} {@ResetToken}", usuario.Id, resetToken);
+
+            _ = _emailService.EnviarEmailRedefinirSenha(usuario.Email, usuario.Nome, usuario.Id, tokenEncoded);
+
+            return ResultadoServiceFactory<Usuario>.NoContent();           
         }
 
         public async Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo)
@@ -334,7 +359,7 @@ namespace LevelLearn.Service.Services.Usuarios
             }
         }
 
-        private async Task<ResultadoService<Usuario>> EnviarEmailCadastro(Pessoa pessoa, Usuario usuario, string role)
+        private async Task<ResultadoService<Usuario>> EnviarEmailCadastro(Pessoa pessoa, Usuario usuario)
         {
             string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(usuario);
             string tokenEncoded = confirmationToken.EncodeTextToBase64();
@@ -342,17 +367,13 @@ namespace LevelLearn.Service.Services.Usuarios
             try
             {
                 await _emailService.EnviarEmailCadastro(usuario.Email, pessoa.Nome, usuario.Id, tokenEncoded, pessoa.TipoPessoa);
+                return ResultadoServiceFactory<Usuario>.NoContent();
             }
             catch (Exception ex)
             {
                 _log.LogError(exception: ex, "Erro Enviar Email");
-
-                await RemoverUsuario(usuario, role);
-                await RemoverPessoa(pessoa);
                 return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
-
-            return ResultadoServiceFactory<Usuario>.NoContent();
         }
 
         private ResultadoService<UsuarioTokenVM> ValidarEmailSenha(Email email, string senha)

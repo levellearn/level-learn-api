@@ -16,6 +16,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         Task<ResultadoService<UsuarioTokenVM>> LoginRefreshToken(string email, string refreshToken);
         Task<ResultadoService<Usuario>> Logout(string jwtId);
         Task<ResultadoService<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken);
+        Task<ResultadoService<Usuario>> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM);
         Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo);
 
     }

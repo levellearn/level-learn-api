@@ -2,7 +2,9 @@
 using LevelLearn.Domain.Utils.AppSettings;
 using LevelLearn.Service.Interfaces.Usuarios;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
@@ -15,35 +17,19 @@ namespace LevelLearn.Service.Services.Usuarios
     {
         private readonly AppSettings _appSettings;
         private readonly IWebHostEnvironment _env;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<AppSettings> appSettings, IWebHostEnvironment env)
+        public EmailService(IOptions<AppSettings> appSettings, IWebHostEnvironment env, ILogger<EmailService> logger)
         {
             _appSettings = appSettings.Value;
             _env = env;
-        }
-
-        public async Task EnviarEmailCadastro(string email, string nome, string userId, string tokenEncoded, TipoPessoa tipoPessoa)
-        {
-            string rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
-            string linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
-
-            string assunto = $"Cadastro de {tipoPessoa} no sistema {_appSettings.EmailSettings.DisplayName}";
-            string mensagem = "";
-
-            string filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
-
-            using (var reader = new StreamReader(filePath))
-                mensagem = await reader.ReadToEndAsync();
-
-            mensagem = mensagem.Replace("{nome}", nome);
-            mensagem = mensagem.Replace("{linkConfirmacao}", linkConfirmacao);
-
-            await EnviarEmailAsync(email, assunto, mensagem);
+            _logger = logger;
         }
 
         public async Task EnviarEmailAsync(string email, string assunto, string mensagem)
         {
-            if (!_appSettings.EmailSettings.EnvioHabilitado) return;
+            // TODO: Tirar comentario
+            //if (!_appSettings.EmailSettings.EnvioHabilitado) return;
 
             var mail = new MailMessage()
             {
@@ -66,7 +52,54 @@ namespace LevelLearn.Service.Services.Usuarios
             }
         }
 
+        public async Task EnviarEmailCadastro(string email, string nome, string userId, string tokenEncoded, TipoPessoa tipoPessoa)
+        {
+            string rotaAPI = $"/usuarios/confirmar-email?userId={userId}&confirmationToken={tokenEncoded}";
+            string linkConfirmacao = _appSettings.ApiSettings.BaseUrl + rotaAPI;
+
+            string assunto = $"Cadastro de {tipoPessoa} no sistema {_appSettings.EmailSettings.DisplayName}";
+            string mensagem = "";
+
+            string filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/CadastroPessoa.html");
+
+            using (var reader = new StreamReader(filePath))
+                mensagem = await reader.ReadToEndAsync();
+
+            mensagem = mensagem.Replace("{nome}", nome);
+            mensagem = mensagem.Replace("{linkConfirmacao}", linkConfirmacao);
+
+            await EnviarEmailAsync(email, assunto, mensagem);
+        }
+
+        public async Task EnviarEmailRedefinirSenha(string email, string nome, string userId, string resetToken)
+        {
+            try
+            {
+                string rotaAPI = $"/usuarios/redefinir-senha?userId={userId}&resetToken={resetToken}";
+                string linkRedefinirSenha = _appSettings.ApiSettings.BaseUrl + rotaAPI;
+
+                string assunto = $"Redefinição de senha no sistema {_appSettings.EmailSettings.DisplayName}";
+                string mensagem = "";
+
+                string filePath = Path.Combine(_env.WebRootPath, "EmailTemplates/RedefinirSenha.html");
+
+                using (var reader = new StreamReader(filePath))
+                    mensagem = await reader.ReadToEndAsync();
+
+                mensagem = mensagem.Replace("{nome}", nome);
+                mensagem = mensagem.Replace("{email}", email);
+                mensagem = mensagem.Replace("{linkRedefinirSenha}", linkRedefinirSenha);
+
+                await EnviarEmailAsync(email, assunto, mensagem);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro Enviar Email Redefinir Senha");
+                throw;
+            }
+            
+        }
+
+
     }
-
-
 }
