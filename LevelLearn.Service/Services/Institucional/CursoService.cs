@@ -74,7 +74,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             await _uow.Cursos.AddAsync(curso);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaCadastrar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             return ResultadoServiceFactory<Curso>.Created(curso, _sharedResource.CadastradoSucesso);
         }
@@ -104,7 +104,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Cursos.Update(curso);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaAtualizar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaAtualizar);
 
             return ResultadoServiceFactory<Curso>.NoContent(_sharedResource.AtualizadoSucesso);
         }
@@ -127,7 +127,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Cursos.Update(curso);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Curso>.InternalServerError(_sharedResource.FalhaDeletar);
 
             return ResultadoServiceFactory<Curso>.NoContent(_sharedResource.DeletadoSucesso);
         }

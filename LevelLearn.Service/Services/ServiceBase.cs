@@ -22,13 +22,13 @@ namespace LevelLearn.Service.Services
         public async Task AddAsync(TEntity entity)
         {
             await _repository.AddAsync(entity);
-            await _repository.CompleteAsync();
+            await _repository.CommitAsync();
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
             await _repository.AddRangeAsync(entities);
-            await _repository.CompleteAsync();
+            await _repository.CommitAsync();
         }
 
         public async Task<int> CountAsync()
@@ -69,19 +69,19 @@ namespace LevelLearn.Service.Services
         public void Remove(TEntity entity)
         {
             _repository.Remove(entity);
-            _repository.Complete();
+            _repository.Commit();
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _repository.RemoveRange(entities);
-            _repository.Complete();
+            _repository.Commit();
         }
 
         public void Update(TEntity entity)
         {
             _repository.Update(entity);
-            _repository.Complete();
+            _repository.Commit();
         }
 
     }

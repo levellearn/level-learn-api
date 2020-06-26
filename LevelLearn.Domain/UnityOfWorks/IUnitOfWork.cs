@@ -13,7 +13,7 @@ namespace LevelLearn.Domain.UnityOfWorks
         IPessoaRepository Pessoas { get; }
         IAlunoRepository Alunos { get; }
 
-        bool Complete();
-        Task<bool> CompleteAsync();
+        bool Commit();
+        Task<bool> CommitAsync();
     }
 }

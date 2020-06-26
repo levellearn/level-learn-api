@@ -78,7 +78,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             await _uow.Turmas.AddAsync(turma);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaCadastrar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             return ResultadoServiceFactory<Turma>.Created(turma, _sharedResource.CadastradoSucesso);
         }
@@ -108,7 +108,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Turmas.Update(turma);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaAtualizar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaAtualizar);
 
             return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.AtualizadoSucesso);
         }
@@ -131,7 +131,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Turmas.Update(turma);
 
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaDeletar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaDeletar);
 
             return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.DeletadoSucesso);
         }

@@ -11,7 +11,6 @@ namespace LevelLearn.NUnitTest.Usuarios
     [TestFixture]
     class UsuarioTest
     {
-        // Fields
         private string _nome, _email, _nickName, _celular, _senha, _confirmacaoSenha;
 
         [SetUp]

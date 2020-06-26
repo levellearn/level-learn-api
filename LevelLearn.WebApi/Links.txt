@@ -4,6 +4,7 @@ Log
 Swagger 
 	https://localhost:44328/swagger/index.html
 	https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+
 Configurar HTTPS
 
 Migrations
@@ -22,8 +23,14 @@ Reponse Cache
 Revisar Rotas
 	https://medium.com/@wssilva.willian/design-de-api-rest-9807a5b16c9f
 
+Enum
+	https://stackoverflow.com/questions/17380900/enum-localization
 
-https://stackoverflow.com/questions/17380900/enum-localization
+Unit test
+	https://docs.microsoft.com/pt-br/dotnet/core/testing/unit-testing-with-nunit
+
+Unit of Work
+	https://www.devmedia.com.br/unit-of-work-o-padrao-de-unidade-de-trabalho-net/25811
 
 Intituições
 	Etec Prof. Alfredo de Barros Santos	

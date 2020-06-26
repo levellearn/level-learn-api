@@ -9,7 +9,6 @@ namespace LevelLearn.NUnitTest.Pessoas
     [TestFixture]
     class ProfessorTest
     {
-        // Fields
         private string _nome, _email, _cpf, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;

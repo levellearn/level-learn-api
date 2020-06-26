@@ -53,7 +53,7 @@ namespace LevelLearn.Domain.Repositories
 
         //List<TEntity> SelectIncludes(Func<TEntity, bool> where = null, params Expression<Func<TEntity, object>>[] includes);
 
-        bool Complete();
-        Task<bool> CompleteAsync();
+        bool Commit();
+        Task<bool> CommitAsync();
     }
 }

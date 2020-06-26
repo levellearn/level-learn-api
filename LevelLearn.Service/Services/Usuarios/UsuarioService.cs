@@ -90,7 +90,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criando professor BD
             await _uow.Pessoas.AddAsync(professor);
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.FalhaCadastrar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Criando usuário Identity
             string role = ApplicationRoles.PROFESSOR;
@@ -121,7 +121,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             // Criando aluno BD
             await _uow.Pessoas.AddAsync(aluno);
-            if (!await _uow.CompleteAsync()) return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.FalhaCadastrar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Criando usuário Identity
             string role = ApplicationRoles.ALUNO;
@@ -431,7 +431,7 @@ namespace LevelLearn.Service.Services.Usuarios
         private async Task RemoverPessoa(Pessoa pessoa)
         {
             _uow.Pessoas.Remove(pessoa);
-            await _uow.CompleteAsync();
+            await _uow.CommitAsync();
         }
 
 

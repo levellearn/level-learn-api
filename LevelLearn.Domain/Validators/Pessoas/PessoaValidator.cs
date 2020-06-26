@@ -26,7 +26,6 @@ namespace LevelLearn.Domain.Validators.Usuarios
 
         private void ValidarId()
         {
-            // TODO: Testar para GUID empty
             RuleFor(p => p.Id)
                 .NotEmpty()
                     .WithMessage(_resource.IdObrigatorio());

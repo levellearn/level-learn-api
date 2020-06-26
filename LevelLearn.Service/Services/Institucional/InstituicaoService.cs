@@ -66,7 +66,7 @@ namespace LevelLearn.Service.Services.Institucional
             instituicao.AtribuirPessoa(pessoaInstituicao);
 
             await _uow.Instituicoes.AddAsync(instituicao);
-            if (!await _uow.CompleteAsync())
+            if (!await _uow.CommitAsync())
                 return ResultadoServiceFactory<Instituicao>.InternalServerError(_sharedResource.FalhaCadastrar);
 
             // Resposta Service
@@ -99,7 +99,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Instituicoes.Update(instituicaoExistente);
 
-            if (!await _uow.CompleteAsync())
+            if (!await _uow.CommitAsync())
                 return ResultadoServiceFactory<Instituicao>.InternalServerError(_sharedResource.FalhaAtualizar);
 
             return ResultadoServiceFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
@@ -121,7 +121,7 @@ namespace LevelLearn.Service.Services.Institucional
             // Salva no BD
             _uow.Instituicoes.Update(instituicao);
 
-            if (!await _uow.CompleteAsync())
+            if (!await _uow.CommitAsync())
                 return ResultadoServiceFactory<Instituicao>.InternalServerError(_sharedResource.FalhaAtualizar);
 
             return ResultadoServiceFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);

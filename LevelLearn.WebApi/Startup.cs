@@ -92,7 +92,7 @@ namespace LevelLearn.WebApi
             services.AddAutoMapper(typeof(Startup));
 
             // Repositories
-            ConfigureRepositories(services);
+            //ConfigureRepositories(services);
 
             // Unit of Work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
