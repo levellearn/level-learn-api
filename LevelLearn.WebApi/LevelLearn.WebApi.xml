@@ -54,6 +54,29 @@
             Ctor
             </summary>
         </member>
+        <member name="T:LevelLearn.WebApi.Controllers.AlunosController">
+            <summary>
+            AlunosController
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Usuarios.IAlunoService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper"></param>
+            <param name="usuarioService"></param>
+            <param name="alunoService"></param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.RegistrarAluno(LevelLearn.ViewModel.Usuarios.RegistrarAlunoVM)">
+            <summary>
+            Registro de usuário aluno
+            </summary>
+            <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
         <member name="T:LevelLearn.WebApi.Controllers.CursosController">
             <summary>
             Cursos Controller
@@ -315,16 +338,6 @@
             Registro de usuário professor
             </summary>
             <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
-            <returns>Sem conteúdo</returns>
-            <response code="204">Sem conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
-        </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarAluno(LevelLearn.ViewModel.Usuarios.RegistrarAlunoVM)">
-            <summary>
-            Registro de usuário aluno
-            </summary>
-            <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
             <returns>Sem conteúdo</returns>
             <response code="204">Sem conteúdo</response>
             <response code="400">Dados inválidos</response>

@@ -58,29 +58,7 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
         }
 
-        /// <summary>
-        /// Registro de usuário aluno
-        /// </summary>
-        /// <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
-        /// <returns>Sem conteúdo</returns>
-        /// <response code="204">Sem conteúdo</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/registrar/aluno")]
-        [AllowAnonymous]
-        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RegistrarAluno(RegistrarAlunoVM registrarAlunoVM)
-        {
-            var aluno = _mapper.Map<Aluno>(registrarAlunoVM);
-            var usuario = _mapper.Map<Usuario>(registrarAlunoVM);
 
-            ResultadoService<Usuario> resultado = await _usuarioService.RegistrarAluno(aluno, usuario);
-
-            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
-
-            return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
-        }
 
         /// <summary>
         /// Login de usuário

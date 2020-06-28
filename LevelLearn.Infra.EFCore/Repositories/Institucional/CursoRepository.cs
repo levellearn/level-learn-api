@@ -75,16 +75,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
 
             return await query.ToListAsync();
-
-            /*return await _context.Set<PessoaInstituicao>()
-                .AsNoTracking()
-                .Where(p => p.PessoaId == pessoaId && (p.Perfil == PerfisInstituicao.ProfessorAdmin || p.Perfil == PerfisInstituicao.Professor))
-                .Select(p => p.Instituicao)
-                    .SelectMany(p => p.Cursos)
-                        .Include(p => p.Pessoas)
-                        .Include(p => p.Instituicao)
-                        .OrderBy(p => p.Nome)
-                .ToListAsync();*/
         }
 
         public async Task<int> TotalCursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, string filtroPesquisa, bool ativo = true)
