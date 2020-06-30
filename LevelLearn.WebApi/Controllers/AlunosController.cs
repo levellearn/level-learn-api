@@ -9,10 +9,12 @@ using LevelLearn.ViewModel.Pessoas;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 namespace LevelLearn.WebApi.Controllers
 {
@@ -79,7 +81,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]/curso/{cursoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
         [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
-        public async Task<ActionResult> ObterAlunosPorCurso([FromRoute]Guid cursoId, [FromBody]FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterAlunosPorCurso([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
@@ -102,7 +104,7 @@ namespace LevelLearn.WebApi.Controllers
         [HttpGet("v1/[controller]/instituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
         [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
-        public async Task<ActionResult> ObterAlunosPorInstituicao([FromRoute]Guid instituicaoId, [FromBody]FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterAlunosPorInstituicao([FromRoute] Guid instituicaoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
@@ -112,6 +114,31 @@ namespace LevelLearn.WebApi.Controllers
             var listaVM = _mapper.Map<IEnumerable<AlunoVM>>(resultado.Dados);
 
             return Ok(CriarListaPaginada(listaVM, resultado.Total, filtroVM));
+        }
+
+        /// <summary>
+        /// Atualiza propriedade do aluno
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchAluno"></param>
+        /// <returns></returns>
+        [HttpPatch("v1/[controller]/{id:guid}")]
+        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.ALUNO)]
+        [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
+        {
+            Aluno alunoDb = await _alunoService.GetAsync(id);
+            var alunoVM = _mapper.Map<AlunoVM>(alunoDb);
+            patchAluno.ApplyTo(alunoVM);
+            alunoDb = _mapper.Map<Aluno>(alunoVM);
+
+            ResultadoService<Aluno> resultado = await _alunoService.Atualuzar(alunoDb);
+
+            if (!resultado.Sucesso) 
+                return StatusCode(resultado.StatusCode, resultado);
+
+            return StatusCode(resultado.StatusCode, _mapper.Map<AlunoVM>(resultado.Dados));
         }
 
     }

@@ -1,6 +1,4 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.Repositories;
-using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Resource;
@@ -42,7 +40,17 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(await taskAlunos, await taskTotal);
         }
 
+        public async Task<ResultadoService<Aluno>> Atualuzar(Aluno aluno)
+        {
+            if (!aluno.EstaValido())
+                return ResultadoServiceFactory<Aluno>.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
+            _uow.Alunos.Update(aluno);
+            if (!await _uow.CommitAsync()) 
+                return ResultadoServiceFactory<Aluno>.InternalServerError(_sharedResource.FalhaCadastrar);
+
+            return ResultadoServiceFactory<Aluno>.Created(aluno, _sharedResource.CadastradoSucesso);
+        }
 
     }
 }

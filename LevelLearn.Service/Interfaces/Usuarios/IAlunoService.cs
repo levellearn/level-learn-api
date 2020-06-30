@@ -24,6 +24,13 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         /// <param name="filtroPaginacao"></param>
         /// <returns></returns>
         Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtroPaginacao);
+
+        /// <summary>
+        /// Atualizar propriedades de um aluno
+        /// </summary>
+        /// <param name="aluno"></param>
+        /// <returns></returns>
+        Task<ResultadoService<Aluno>> Atualuzar(Aluno aluno);
     }
 
 }
