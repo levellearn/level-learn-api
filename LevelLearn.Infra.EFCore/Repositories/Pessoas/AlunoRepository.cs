@@ -1,6 +1,8 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories.Pessoas;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -17,22 +19,66 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
         {
         }
 
-        public async Task<IEnumerable<Aluno>> ObterAlunosPorCurso(Guid cursoId)
+        public async Task<IEnumerable<Aluno>> ObterAlunosPorCurso(Guid cursoId, FiltroPaginacao filtro)
         {
-            return await _context.Set<PessoaCurso>()
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
+            IQueryable<Aluno> query = _context.Set<PessoaCurso>()
                 .AsNoTracking()
-                .Where(p => p.Perfil == TipoPessoa.Aluno && p.CursoId == cursoId)
+                .Where(p => p.Perfil == TipoPessoa.Aluno
+                            && p.CursoId == cursoId)
                 .Select(p => p.Pessoa as Aluno)
-                .ToListAsync();
+                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == filtro.Ativo)
+                .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                .Take(filtro.TamanhoPorPagina);
+
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
+            return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Aluno>> ObterAlunosPorInstituicao(Guid instituicaoId)
+        public async Task<int> TotalAlunosPorCurso(Guid cursoId, FiltroPaginacao filtro)
         {
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
+            return await _context.Set<PessoaCurso>()
+                .AsNoTracking()
+                .Where(p => p.Perfil == TipoPessoa.Aluno
+                            && p.CursoId == cursoId)
+                .Select(p => p.Pessoa as Aluno)
+                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == filtro.Ativo).CountAsync();
+        }
+
+
+        public async Task<IEnumerable<Aluno>> ObterAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtro)
+        {
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
+            IQueryable<Aluno> query = _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
+                .Select(p => p.Pessoa as Aluno)
+                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == filtro.Ativo)
+                .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                .Take(filtro.TamanhoPorPagina);
+
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
+            return await query.ToListAsync();
+        }
+
+        public async Task<int> TotalAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtro)
+        {
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
                 .Select(p => p.Pessoa as Aluno)
-                .ToListAsync();
+                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                            p.Ativo == filtro.Ativo)
+                .CountAsync();
         }
 
     }

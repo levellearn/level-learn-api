@@ -249,6 +249,7 @@ namespace LevelLearn.WebApi
         private void ConfigureBusinessServices(IServiceCollection services)
         {
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<IAlunoService, AlunoService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IArquivoService, ArquivoFirebaseService>();
