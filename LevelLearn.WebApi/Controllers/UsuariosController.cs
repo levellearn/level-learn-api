@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
+using LevelLearn.ViewModel.Usuarios.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -164,16 +168,42 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Sem conteúdo</returns>
         /// <response code="204">Sem conteúdo</response>
         /// <response code="400">Dados inválidos</response>
-        /// <response code="404">usuário não encontrado</response>
+        /// <response code="404">Usuário não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpGet("v1/[controller]/esqueci-senha")]
+        [HttpPost("v1/[controller]/esqueci-senha")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM)
         {
-            var resultado = await _usuarioService.EsqueciSenha(esqueciSenhaVM);
+            var resultado = await _usuarioService.EsqueciSenha(esqueciSenhaVM.Email);
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Redefinir senha
+        /// </summary>
+        /// <param name="redefinirSenhaVM">Dados para redefinir senha</param>
+        /// <returns>Sem conteúdo</returns>
+        /// <response code="204">Sem conteúdo</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="404">Usuário não encontrado</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpPost("v1/[controller]/redefinir-senha")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM)
+        {
+            if (!redefinirSenhaVM.EstaValido()) 
+                return BadRequest(redefinirSenhaVM.DadosInvalidos());
+
+            var resultado = await _usuarioService.RedefinirSenha(redefinirSenhaVM);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
@@ -202,7 +232,6 @@ namespace LevelLearn.WebApi.Controllers
 
             return Ok(_mapper.Map<UsuarioVM>(resultado.Dados));
         }
-
 
     }
 }

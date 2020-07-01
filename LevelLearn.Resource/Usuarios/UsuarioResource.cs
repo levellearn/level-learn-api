@@ -21,13 +21,15 @@
         }
 
         public string UsuarioLoginSucesso => ObterResource(nameof(UsuarioLoginSucesso));
+        public string UsuarioLoginFalha => ObterResource(nameof(UsuarioLoginFalha));
         public string UsuarioLogoutSucesso => ObterResource(nameof(UsuarioLogoutSucesso));
         public string UsuarioEmailJaExiste => ObterResource(nameof(UsuarioEmailJaExiste));
         public string UsuarioContaBloqueada => ObterResource(nameof(UsuarioContaBloqueada));
         public string UsuarioEmailNaoConfirmado => ObterResource(nameof(UsuarioEmailNaoConfirmado));
         public string UsuarioEmailConfirmarFalha => ObterResource(nameof(UsuarioEmailConfirmarFalha));
         public string UsuarioEmailConfirmarSucesso => ObterResource(nameof(UsuarioEmailConfirmarSucesso));
-        public string UsuarioLoginFalha => ObterResource(nameof(UsuarioLoginFalha));
+        public string UsuarioRedefinirSenhaFalha => ObterResource(nameof(UsuarioRedefinirSenhaFalha));
+        public string UsuarioRedefinirSenhaSucesso => ObterResource(nameof(UsuarioRedefinirSenhaSucesso));
 
         public string UsuarioSenhaObrigatoria => ObterResource(nameof(UsuarioSenhaObrigatoria));
         public string UsuarioSenhaTamanho(params object[] arguments) => ObterResource(nameof(UsuarioSenhaTamanho), arguments);

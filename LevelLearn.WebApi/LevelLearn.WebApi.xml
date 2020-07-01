@@ -368,7 +368,18 @@
             <returns>Sem conteúdo</returns>
             <response code="204">Sem conteúdo</response>
             <response code="400">Dados inválidos</response>
-            <response code="404">usuário não encontrado</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RedefinirSenha(LevelLearn.ViewModel.Usuarios.RedefinirSenhaVM)">
+            <summary>
+            Redefinir senha
+            </summary>
+            <param name="redefinirSenhaVM">Dados para redefinir senha</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">Usuário não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.AlterarFotoPerfil(Microsoft.AspNetCore.Http.IFormFile)">

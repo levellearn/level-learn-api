@@ -15,6 +15,7 @@ using LevelLearn.Service.Services.Comum;
 using LevelLearn.ViewModel.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
@@ -44,7 +45,7 @@ namespace LevelLearn.Service.Services.Usuarios
         private readonly UsuarioResource _usuarioResource;
         private readonly PessoaResource _pessoaResource;
 
-        private readonly ILogger<UsuarioService> _log;
+        private readonly ILogger<UsuarioService> _logger;
 
         public UsuarioService(
             IUnitOfWork uow,
@@ -67,7 +68,7 @@ namespace LevelLearn.Service.Services.Usuarios
             _usuarioResource = UsuarioResource.ObterInstancia();
             _pessoaResource = PessoaResource.ObterInstancia();
 
-            _log = logger;
+            _logger = logger;
         }
 
         #endregion
@@ -193,7 +194,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest("Refresh Token inválido");
 
             // Remove o REFRESH TOKEN já que um novo será gerado
-            await _tokenService.InvalidarRefreshTokenCache(refreshToken);
+            _ = _tokenService.InvalidarRefreshTokenCache(refreshToken);
 
             // Gerar VM e JWToken  
             Usuario usuario = await _userManager.FindByEmailAsync(emailVO.Endereco);
@@ -216,8 +217,8 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResultadoService<Usuario>> Logout(string jwtId)
         {
-            await _signInManager.SignOutAsync();
-            await _tokenService.InvalidarTokenERefreshTokenCache(jwtId);
+            _ = _signInManager.SignOutAsync();
+            _ = _tokenService.InvalidarTokenERefreshTokenCache(jwtId);
 
             return ResultadoServiceFactory<Usuario>.NoContent(_usuarioResource.UsuarioLogoutSucesso);
         }
@@ -239,8 +240,8 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!identityResult.Succeeded)
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailConfirmarFalha);
 
+            // TODO: gerar token ao confirmar email?
             IList<string> roles = await _userManager.GetRolesAsync(usuario);
-
             var responseVM = new UsuarioTokenVM()
             {
                 Id = usuario.Id,
@@ -253,14 +254,14 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);
         }
 
-        public async Task<ResultadoService<Usuario>> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM)
+        public async Task<ResultadoService<Usuario>> EsqueciSenha(string email)
         {
             // Validações
-            var email = new Email(esqueciSenhaVM.Email);
-            if (!email.EstaValido())
-                return ResultadoServiceFactory<Usuario>.BadRequest(email.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
+            var emailVo = new Email(email);
+            if (!emailVo.EstaValido())
+                return ResultadoServiceFactory<Usuario>.BadRequest(emailVo.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
 
-            Usuario usuario = await _userManager.FindByNameAsync(email.Endereco);
+            Usuario usuario = await _userManager.FindByEmailAsync(emailVo.Endereco);
 
             if (usuario == null) return ResultadoServiceFactory<Usuario>.NotFound(_sharedResource.NaoEncontrado);
 
@@ -271,11 +272,34 @@ namespace LevelLearn.Service.Services.Usuarios
             string resetToken = await _userManager.GeneratePasswordResetTokenAsync(usuario);
             string tokenEncoded = resetToken.EncodeTextToBase64();
 
-            _log.LogWarning("Usuário esqueceu a senha {@Usuário} {@ResetToken}", usuario.Id, resetToken);
+            _logger.LogInformation("Usuário esqueceu a senha {@UsuarioId}", usuario.Id);
 
             _ = _emailService.EnviarEmailRedefinirSenha(usuario.Email, usuario.Nome, usuario.Id, tokenEncoded);
 
-            return ResultadoServiceFactory<Usuario>.NoContent();           
+            return ResultadoServiceFactory<Usuario>.NoContent();
+        }
+
+        public async Task<ResultadoService<Usuario>> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM)
+        {
+            // Validações
+            Usuario usuario = await _userManager.FindByIdAsync(redefinirSenhaVM.Id);
+
+            if (usuario == null) return ResultadoServiceFactory<Usuario>.NotFound(_sharedResource.NaoEncontrado);
+
+            if (!usuario.EmailConfirmed)
+                return ResultadoServiceFactory<Usuario>.BadRequest(_usuarioResource.UsuarioEmailNaoConfirmado);
+
+            // Verificando resetar senha Identity
+            string tokenDecoded = redefinirSenhaVM.Token.DecodeBase64ToText();
+
+            IdentityResult identityResult = await _userManager.ResetPasswordAsync(usuario, tokenDecoded, redefinirSenhaVM.NovaSenha);
+
+            if (!identityResult.Succeeded)
+                return ResultadoServiceFactory<Usuario>.BadRequest(_usuarioResource.UsuarioRedefinirSenhaFalha);
+
+            _logger.LogInformation("Usuário redefiniu a senha {@UsuarioId}", usuario.Id);
+
+            return ResultadoServiceFactory<Usuario>.NoContent(_usuarioResource.UsuarioRedefinirSenhaSucesso);
         }
 
         public async Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo)
@@ -285,20 +309,14 @@ namespace LevelLearn.Service.Services.Usuarios
             // Validações BD
             if (usuario == null) return ResultadoServiceFactory<Usuario>.NotFound(_sharedResource.NaoEncontrado);
 
-            // Validações Arquivo
-            const int TAMANHO_MAXIMO_BYTES = 5_000_000; // 5mb
-            DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
-            var mimeTypesAceitos = new string[] { "image/jpeg", "image/png", "image/gif" };
+            // Validações Imagem
+            ResultadoService<Usuario> resultadoValidacao = ValidarImagemPerfil(arquivo);
+            if (resultadoValidacao.Falhou) return resultadoValidacao;
 
-            if (arquivo == null || arquivo.Length <= 0 || arquivo.Length > TAMANHO_MAXIMO_BYTES)
-                return ResultadoServiceFactory<Usuario>.BadRequest(_sharedResource.DadosInvalidos);
-
-            if (!mimeTypesAceitos.Any(m => m == arquivo.ContentType))
-                return ResultadoServiceFactory<Usuario>.BadRequest(_sharedResource.DadosInvalidos);
-
-            Stream imagemRedimensionada = RedimensionarImagem(arquivo);
+            Stream imagemRedimensionada = _arquivoService.RedimensionarImagem(arquivo);
 
             // Upload Firebase Storage
+            DiretoriosFirebase diretorio = DiretoriosFirebase.ImagensPerfilUsuario;
             string nomeArquivo = usuario.GerarNomeFotoPerfil();
 
             string imagemUrl = await _arquivoService.SalvarArquivo(imagemRedimensionada, diretorio, nomeArquivo);
@@ -351,7 +369,7 @@ namespace LevelLearn.Service.Services.Usuarios
             }
             catch (Exception ex)
             {
-                _log.LogError(exception: ex, "Erro Criar Usuário Identity");
+                _logger.LogError(exception: ex, "Erro Criar Usuário Identity");
 
                 await RemoverUsuario(usuario, role);
                 await RemoverPessoa(pessoa);
@@ -369,9 +387,9 @@ namespace LevelLearn.Service.Services.Usuarios
                 await _emailService.EnviarEmailCadastro(usuario.Email, pessoa.Nome, usuario.Id, tokenEncoded, pessoa.TipoPessoa);
                 return ResultadoServiceFactory<Usuario>.NoContent();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                _log.LogError(exception: ex, "Erro Enviar Email");
+                _logger.LogError(exception, "Erro Enviar Email");
                 return ResultadoServiceFactory<Usuario>.InternalServerError(_sharedResource.ErroInternoServidor);
             }
         }
@@ -412,37 +430,6 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory<UsuarioTokenVM>.NoContent();
         }
 
-        private Stream RedimensionarImagem(IFormFile arquivoImagem, int altura = 256, int largura = 256)
-        {
-            using Stream inputStream = arquivoImagem.OpenReadStream();
-            Stream outputStream = new MemoryStream();
-
-            try
-            {
-                using (var image = Image.Load(inputStream))
-                {
-                    image.Mutate(x => x.Resize(
-                        new ResizeOptions
-                        {
-                            Size = new Size(largura, altura),
-                            Mode = ResizeMode.Max,
-                        })
-                    );
-
-                    image.SaveAsJpeg(outputStream, new JpegEncoder() { Quality = 95 });
-                }
-
-                outputStream.Seek(0, SeekOrigin.Begin);
-
-                return outputStream;
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(exception: ex, "Erro Redimensionar Imagem");
-                return inputStream; // Retorna a imagem original
-            }
-        }
-
         private async Task RemoverUsuario(Usuario usuario, string role)
         {
             await _userManager.RemoveFromRoleAsync(usuario, role);
@@ -453,6 +440,22 @@ namespace LevelLearn.Service.Services.Usuarios
         {
             _uow.Pessoas.Remove(pessoa);
             await _uow.CommitAsync();
+        }
+
+        private ResultadoService<Usuario> ValidarImagemPerfil(IFormFile arquivo)
+        {
+            const int TAMANHO_MAXIMO_BYTES = 5_000_000; // 5mb
+            var mimeTypesAceitos = new string[3] {
+                "image/jpeg", "image/png", "image/gif"
+            };
+
+            if (arquivo == null || arquivo.Length <= 0 || arquivo.Length > TAMANHO_MAXIMO_BYTES)
+                return ResultadoServiceFactory<Usuario>.BadRequest(_sharedResource.DadosInvalidos);
+
+            if (!mimeTypesAceitos.Any(m => m == arquivo.ContentType))
+                return ResultadoServiceFactory<Usuario>.BadRequest(_sharedResource.DadosInvalidos);
+
+            return ResultadoServiceFactory<Usuario>.NoContent();
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Repositories.Institucional;
 using LevelLearn.Domain.Repositories.Pessoas;
@@ -64,14 +65,20 @@ namespace LevelLearn.WebApi
             services.AddLocalization();
             services.AddSingleton<ISharedResource, SharedResource>();
 
-            services.AddControllers(c =>
-            {
-                c.Filters.Add(typeof(CustomExceptionFilter));
-                c.Filters.Add(typeof(CustomActionFilter));
-            }).AddJsonOptions(o =>
-            {
-                o.JsonSerializerOptions.IgnoreNullValues = true;
-            });
+            services
+                .AddControllers(c =>
+                {
+                    c.Filters.Add(typeof(CustomExceptionFilter));
+                    c.Filters.Add(typeof(CustomActionFilter));
+                })
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.IgnoreNullValues = true;
+                })
+                .AddFluentValidation(f =>
+                {
+                    //f.RegisterValidatorsFromAssemblyContaining<RedefinirSenhaVMValidator>();
+                });
 
             // App Settings
             services.Configure<AppSettings>(Configuration);
@@ -189,7 +196,7 @@ namespace LevelLearn.WebApi
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();
-
+            //TODO: aumentar tempo email
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings

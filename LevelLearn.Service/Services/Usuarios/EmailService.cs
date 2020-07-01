@@ -28,8 +28,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task EnviarEmailAsync(string email, string assunto, string mensagem)
         {
-            // TODO: Tirar comentario
-            //if (!_appSettings.EmailSettings.EnvioHabilitado) return;
+            if (!_appSettings.EmailSettings.EnvioHabilitado) return;
 
             var mail = new MailMessage()
             {

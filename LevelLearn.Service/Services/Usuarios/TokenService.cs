@@ -140,9 +140,9 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task InvalidarTokenERefreshTokenCache(string jti)
         {
-            var refreshToken = await _redisCache.GetStringAsync(jti);
-            await _redisCache.RemoveAsync(jti);
-            await InvalidarRefreshTokenCache(refreshToken);
+            string refreshToken = await _redisCache.GetStringAsync(jti);
+            _ = _redisCache.RemoveAsync(jti);
+            _ = InvalidarRefreshTokenCache(refreshToken);
         }
 
         public async Task InvalidarRefreshTokenCache(string refreshToken)

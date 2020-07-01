@@ -130,7 +130,7 @@
     <value>Sua conta está bloqueada</value>
   </data>
   <data name="UsuarioEmailConfirmarFalha" xml:space="preserve">
-    <value>E-mail não pode ser confirmado</value>
+    <value>Falha ao confirmar e-mail</value>
   </data>
   <data name="UsuarioEmailConfirmarSucesso" xml:space="preserve">
     <value>E-mail confirmado com sucesso</value>
@@ -170,6 +170,12 @@
   </data>
   <data name="UsuarioNickNameTamanhoMaximo" xml:space="preserve">
     <value>NickName pode ter no máximo {0} caracteres</value>
+  </data>
+  <data name="UsuarioRedefinirSenhaFalha" xml:space="preserve">
+    <value>Falha ao redefinir senha</value>
+  </data>
+  <data name="UsuarioRedefinirSenhaSucesso" xml:space="preserve">
+    <value>Senha redefinida com sucesso</value>
   </data>
   <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
     <value>Senha precisa estar preenchida</value>

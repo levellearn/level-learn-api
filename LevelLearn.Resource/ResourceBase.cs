@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Resources;
 
 namespace LevelLearn.Resource
@@ -14,6 +13,7 @@ namespace LevelLearn.Resource
         }
 
         public string IdObrigatorio() => ObterResource(nameof(IdObrigatorio));
+        public string TokenObrigatorio() => ObterResource(nameof(TokenObrigatorio));
         public string NomePesquisaObrigatorio() => ObterResource(nameof(NomePesquisaObrigatorio));
 
         /// <summary>
@@ -27,9 +27,8 @@ namespace LevelLearn.Resource
             {
                 return string.Format(_resourceManager.GetString(resourceName), replacements);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.Write(ex.Message);
                 return resourceName;
             }
         }
