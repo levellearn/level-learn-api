@@ -13,7 +13,6 @@ namespace LevelLearn.Resource
         }
 
         public string IdObrigatorio() => ObterResource(nameof(IdObrigatorio));
-        public string TokenObrigatorio() => ObterResource(nameof(TokenObrigatorio));
         public string NomePesquisaObrigatorio() => ObterResource(nameof(NomePesquisaObrigatorio));
 
         /// <summary>

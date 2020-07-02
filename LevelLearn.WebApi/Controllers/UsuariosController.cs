@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
-using FluentValidation;
-using FluentValidation.Results;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;
-using LevelLearn.ViewModel.Usuarios.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
@@ -62,12 +58,10 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
         }
 
-
-
         /// <summary>
-        /// Login de usuário
+        /// Login de usuário - Email e Senha
         /// </summary>
-        /// <param name="loginUsuarioVM">Dados de login do usuário</param>
+        /// <param name="loginVM">Dados de login do usuário</param>
         /// <returns>Retorna usuário logado</returns>
         /// <response code="200">Retorna usuário logado</response>
         /// <response code="400">Dados inválidos</response>
@@ -76,23 +70,32 @@ namespace LevelLearn.WebApi.Controllers
         [AllowAnonymous]
         [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Login(LoginUsuarioVM loginUsuarioVM)
+        public async Task<ActionResult> Login(LoginEmailSenhaVM loginVM)
         {
-            ResultadoService<UsuarioTokenVM> resultado;
+            ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.LoginEmailSenha(loginVM.Email, loginVM.Senha);
 
-            switch (loginUsuarioVM.TipoAutenticacao)
-            {
-                case TipoAutenticacao.Senha:
-                    resultado = await _usuarioService.LoginEmailSenha(loginUsuarioVM.Email, loginUsuarioVM.Senha);
-                    break;
-                case TipoAutenticacao.RefreshToken:
-                    resultado = await _usuarioService.LoginRefreshToken(loginUsuarioVM.Email, loginUsuarioVM.RefreshToken);
-                    break;
-                default:
-                    return BadRequest("Tipo de autenticação inválida");
-            }
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
+            return Ok(resultado.Dados);
+        }
+
+        /// <summary>
+        /// Login de usuário - RefreshToken
+        /// </summary>
+        /// <param name="loginVM">Dados de login do usuário</param>
+        /// <returns>Retorna usuário logado</returns>
+        /// <response code="200">Retorna usuário logado</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpPost("v1/[controller]/entrar/refresh-token")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(UsuarioTokenVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Login(LoginRefreshTokenVM loginVM)
+        {
+            ResultadoService<UsuarioTokenVM> resultado = await _usuarioService.LoginRefreshToken(loginVM.Email, loginVM.RefreshToken);
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return Ok(resultado.Dados);
         }
@@ -108,7 +111,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
-            var resultado = await _usuarioService.Logout(User.GetJWTokenId());
+            ResultadoService resultado = await _usuarioService.Logout(User.GetJWTokenId());
 
             if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
 
@@ -142,7 +145,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Esqueci a senha
         /// </summary>
-        /// <param name="esqueciSenhaVM">Email para redefinir senha</param>
+        /// <param name="email">Email para redefinir senha</param>
         /// <returns>Sem conteúdo</returns>
         /// <response code="204">Sem conteúdo</response>
         /// <response code="400">Dados inválidos</response>
@@ -153,9 +156,9 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> EsqueciSenha(EsqueciSenhaVM esqueciSenhaVM)
+        public async Task<ActionResult> EsqueciSenha([FromQuery] string email)
         {
-            var resultado = await _usuarioService.EsqueciSenha(esqueciSenhaVM.Email);
+            var resultado = await _usuarioService.EsqueciSenha(email);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
@@ -178,9 +181,6 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM)
         {
-            if (!redefinirSenhaVM.EstaValido()) 
-                return BadRequest(redefinirSenhaVM.DadosInvalidos());
-
             var resultado = await _usuarioService.RedefinirSenha(redefinirSenhaVM);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);

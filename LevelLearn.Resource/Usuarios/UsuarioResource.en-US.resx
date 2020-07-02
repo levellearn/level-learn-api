@@ -123,9 +123,6 @@
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
     <value>Password and password confirmation do not match</value>
   </data>
-  <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
-    <value>Password confirmation must be completed</value>
-  </data>
   <data name="UsuarioContaBloqueada" xml:space="preserve">
     <value>Your account is blocked</value>
   </data>

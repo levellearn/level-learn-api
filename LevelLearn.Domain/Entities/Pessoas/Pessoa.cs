@@ -19,10 +19,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Turmas = new List<Turma>();
         }
 
-        public Pessoa(string nome, Email email, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
+        public Pessoa(string nome, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
-            Email = email;
             Cpf = cpf;
             Celular = celular;
             Genero = genero;
@@ -32,14 +31,13 @@ namespace LevelLearn.Domain.Entities.Pessoas
             Cursos = new List<PessoaCurso>();
             Turmas = new List<Turma>();
 
-            AtribuirNomePesquisa(); 
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors
 
         #region Props
         public string Nome { get; protected set; }
-        public Email Email { get; protected set; }
         public CPF Cpf { get; protected set; }
         public Celular Celular { get; protected set; }
         public GeneroPessoa Genero { get; protected set; }
@@ -62,7 +60,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
             // VOs
             ValidarCPF();
-            ValidarEmail();
             ValidarCelular();
 
             return this.ResultadoValidacao.IsValid;
@@ -72,13 +69,7 @@ namespace LevelLearn.Domain.Entities.Pessoas
         {
             if (Cpf.EstaValido()) return;
             this.ResultadoValidacao.AddErrors(Cpf.ResultadoValidacao);
-        }
-
-        protected void ValidarEmail()
-        {
-            if (Email.EstaValido()) return;
-            this.ResultadoValidacao.AddErrors(Email.ResultadoValidacao);
-        }
+        }       
 
         protected void ValidarCelular()
         {
@@ -132,17 +123,14 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public override string ToString()
         {
-            var dataNascimento = DataNascimento.GetValueOrDefault(new DateTime());
-
             return $"ID: {Id}" +
-                $" CPF: {Cpf.ToString()}" +
+                $" CPF: {Cpf}" +
                 $" Nome: {Nome}" +
-                $" E-mail: {Email.ToString()}" +
-                $" Celular: {Celular.ToString()} " +
-                $" Gênero: {Genero.ToString()} " +
-                $" Tipo Pessoa: {TipoPessoa.ToString()} " +
-                $" Data Nascimento: {dataNascimento.ToString("dd/MM/yyyy")}" +
-                $" Data Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}" +
+                $" Celular: {Celular} " +
+                $" Gênero: {Genero} " +
+                $" Tipo Pessoa: {TipoPessoa} " +
+                $" Data Nascimento: {DataNascimento}" +
+                $" Data Cadastro: {DataCadastro}" +
                 $" Ativo: { (Ativo ? "Sim" : "Não") }";
         }
 

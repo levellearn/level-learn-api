@@ -35,10 +35,10 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Curso>>> CursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var tasktotal = _uow.Cursos.TotalCursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
-            var taskcursos = _uow.Cursos.CursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao);
+            var taskTotal = _uow.Cursos.TotalCursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            var taskCursos = _uow.Cursos.CursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao);
 
-            return ResultadoServiceFactory<IEnumerable<Curso>>.Ok(await taskcursos, await tasktotal);
+            return ResultadoServiceFactory<IEnumerable<Curso>>.Ok(await taskCursos, await taskTotal);
         }
 
         public async Task<ResultadoService<Curso>> ObterCurso(Guid cursoId, Guid pessoaId)
@@ -131,6 +131,12 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Curso>.NoContent(_sharedResource.DeletadoSucesso);
         }
 
+        public void Dispose()
+        {
+            _uow.Dispose();
+        }
+
+
         /// <summary>
         /// Verifica se está tentando atualizar para um curso que já existe
         /// </summary>
@@ -144,11 +150,6 @@ namespace LevelLearn.Service.Services.Institucional
                 c.InstituicaoId == curso.InstituicaoId);
 
             return cursoExiste;
-        }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
         }
 
     }

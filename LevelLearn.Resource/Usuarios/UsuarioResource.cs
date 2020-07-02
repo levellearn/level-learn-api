@@ -33,7 +33,6 @@
 
         public string UsuarioSenhaObrigatoria => ObterResource(nameof(UsuarioSenhaObrigatoria));
         public string UsuarioSenhaTamanho(params object[] arguments) => ObterResource(nameof(UsuarioSenhaTamanho), arguments);
-        public string UsuarioConfirmacaoSenhaObrigatoria => ObterResource(nameof(UsuarioConfirmacaoSenhaObrigatoria));
         public string UsuarioConfirmacaoSenhaNaoConfere => ObterResource(nameof(UsuarioConfirmacaoSenhaNaoConfere));
         public string UsuarioSenhaRequerMaiusculo => ObterResource(nameof(UsuarioSenhaRequerMaiusculo));
         public string UsuarioSenhaRequerMinusculo => ObterResource(nameof(UsuarioSenhaRequerMinusculo));

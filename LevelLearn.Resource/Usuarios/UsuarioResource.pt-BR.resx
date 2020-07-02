@@ -123,9 +123,6 @@
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
     <value>Senha e confirmação de senha não coincidem</value>
   </data>
-  <data name="UsuarioConfirmacaoSenhaObrigatoria" xml:space="preserve">
-    <value>Confirmação de senha precisa estar preenchida</value>
-  </data>
   <data name="UsuarioContaBloqueada" xml:space="preserve">
     <value>Sua conta está bloqueada</value>
   </data>

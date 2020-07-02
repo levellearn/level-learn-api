@@ -3,6 +3,7 @@ using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators;
 using LevelLearn.Domain.Validators.Usuarios;
+using LevelLearn.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,27 @@ namespace LevelLearn.Domain.Entities.Usuarios
             var validator = new UsuarioValidator();
             this.ResultadoValidacao = validator.Validate(this);
 
+            // VOs
+            ValidarEmail();
+            ValidarSenha();
+
             return this.ResultadoValidacao.IsValid;
+        }
+
+        private void ValidarEmail()
+        {
+            var emailVO = new Email(this.Email);
+
+            if (emailVO.EstaValido()) return;
+            this.ResultadoValidacao.AddErrors(emailVO.ResultadoValidacao);
+        }
+
+        private void ValidarSenha()
+        {
+            var senhaVO = new Senha(this.Senha);
+
+            if (senhaVO.EstaValido()) return;
+            this.ResultadoValidacao.AddErrors(senhaVO.ResultadoValidacao);
         }
 
         public ICollection<DadoInvalido> DadosInvalidos()

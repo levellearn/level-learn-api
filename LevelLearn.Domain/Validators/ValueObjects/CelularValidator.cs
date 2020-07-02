@@ -24,6 +24,7 @@ namespace LevelLearn.Domain.Validators.ValueObjects
         {
             if (string.IsNullOrEmpty(numero)) return false;
 
+            // Ex.: 55(12)98845-8974
             string pattern = @"^(\d{2})([1-9][0-9])(\d{5})(\d{4})$";
 
             if (Regex.IsMatch(numero, pattern))

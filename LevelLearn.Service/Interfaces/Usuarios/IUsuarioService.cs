@@ -14,10 +14,10 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         Task<ResultadoService<Usuario>> RegistrarAluno(Aluno aluno, Usuario usuario);
         Task<ResultadoService<UsuarioTokenVM>> LoginEmailSenha(string email, string senha);
         Task<ResultadoService<UsuarioTokenVM>> LoginRefreshToken(string email, string refreshToken);
-        Task<ResultadoService<Usuario>> Logout(string jwtId);
+        Task<ResultadoService> Logout(string jwtId);
         Task<ResultadoService<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken);
-        Task<ResultadoService<Usuario>> EsqueciSenha(string email);
-        Task<ResultadoService<Usuario>> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM);
+        Task<ResultadoService> EsqueciSenha(string email);
+        Task<ResultadoService> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM);
         Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo);
 
     }

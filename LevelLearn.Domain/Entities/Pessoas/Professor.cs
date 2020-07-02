@@ -12,17 +12,17 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         protected Professor() { }
 
-        public Professor(string nome, string email, string cpf, string celular, GeneroPessoa genero, DateTime? dataNascimento)
-            : base(nome, new Email(email), new CPF(cpf), new Celular(celular), genero, dataNascimento)
+        public Professor(string nome, string cpf, string celular, GeneroPessoa genero, DateTime? dataNascimento)
+            : base(nome, new CPF(cpf), new Celular(celular), genero, dataNascimento)
         {
             TipoPessoa = TipoPessoa.Professor;
         }
 
-        public Professor(string nome, Email email, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
-            : base(nome, email, cpf, celular, genero, dataNascimento)
+        public Professor(string nome, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
+            : base(nome, cpf, celular, genero, dataNascimento)
         {
             TipoPessoa = TipoPessoa.Professor;
-        } 
+        }
 
         #endregion
 

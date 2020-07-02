@@ -42,20 +42,20 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Turma>>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var turmas = await _uow.Turmas.TurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao);
+            var taskTurmas = _uow.Turmas.TurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao);
 
-            var total = await _uow.Turmas.TotalTurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            var taskTotal = _uow.Turmas.TotalTurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
-            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(turmas, total);
+            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(await taskTurmas, await taskTotal);
         }
 
         public async Task<ResultadoService<IEnumerable<Turma>>> TurmasAluno(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var turmas = await _uow.Turmas.TurmasAluno(pessoaId, filtroPaginacao);
+            var taskTurmas = _uow.Turmas.TurmasAluno(pessoaId, filtroPaginacao);
 
-            var total = await _uow.Turmas.TotalTurmasAluno(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            var taskTotal = _uow.Turmas.TotalTurmasAluno(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
-            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(turmas, total);
+            return ResultadoServiceFactory<IEnumerable<Turma>>.Ok(await taskTurmas, await taskTotal);
         }
 
         public async Task<ResultadoService<Turma>> CadastrarTurma(Turma turma, Guid pessoaId)
@@ -140,6 +140,7 @@ namespace LevelLearn.Service.Services.Institucional
         {
             _uow.Dispose();
         }
+
 
         /// <summary>
         /// Verifica se está tentando atualizar para uma turma que já existe

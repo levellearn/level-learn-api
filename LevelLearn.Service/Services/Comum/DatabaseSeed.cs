@@ -34,9 +34,9 @@ namespace LevelLearn.Service.Services.Comum
 
         public void Initialize()
         {
-            CriarRole(ApplicationRoles.ADMIN);
-            CriarRole(ApplicationRoles.PROFESSOR);
-            CriarRole(ApplicationRoles.ALUNO);
+            CriarRole(UserRoles.ADMIN);
+            CriarRole(UserRoles.PROFESSOR);
+            CriarRole(UserRoles.ALUNO);
 
             var professor = CriarProfessor();
             var aluno = CriarAluno();
@@ -57,7 +57,7 @@ namespace LevelLearn.Service.Services.Comum
 
             _context.SaveChanges();
         }
-      
+
 
         private void CriarRole(string role)
         {
@@ -80,7 +80,7 @@ namespace LevelLearn.Service.Services.Comum
         {
             if (!_env.IsDevelopment()) return null;
 
-            var pessoa = new Professor("Felipe Ayres", new Email("felipe.ayres93@gmail.com"), new CPF("226.547.010-42"),
+            var pessoa = new Professor("Felipe Ayres", new CPF("226.547.010-42"),
                new Celular("55(12)98845-7832"), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
             var usuario = new Usuario(pessoa.Nome, "felipe.ayres", "felipe.ayres93@gmail.com", "55(12)98845-7832", "Gamificando@123", "Gamificando@123");
@@ -88,7 +88,7 @@ namespace LevelLearn.Service.Services.Comum
             usuario.ConfirmarEmail();
             usuario.ConfirmarCelular();
 
-            var roles = new List<string>() { ApplicationRoles.PROFESSOR };
+            var roles = new List<string>() { UserRoles.PROFESSOR };
 
             CriarUsuario(usuario, pessoa, roles);
 
@@ -102,14 +102,14 @@ namespace LevelLearn.Service.Services.Comum
             var email = "gabrielguima93@gmail.com";
             var celular = "55(12)98845-7832";
 
-            var aluno = new Aluno("Gabriel Guimarães", new Email(email), new CPF("200.481.690-21"), new Celular(celular), "f1310435", GeneroPessoa.Masculino, DateTime.Parse("1993-10-23"));
+            var aluno = new Aluno("Gabriel Guimarães", new CPF("200.481.690-21"), new Celular(celular), "f1310435", GeneroPessoa.Masculino, DateTime.Parse("1993-10-23"));
 
             var usuario = new Usuario(aluno.Nome, "gabrielguima93", email, celular, "Gamificando@123", "Gamificando@123");
             usuario.AtribuirPessoaId(aluno.Id);
             usuario.ConfirmarEmail();
             usuario.ConfirmarCelular();
 
-            var roles = new List<string>() { ApplicationRoles.ALUNO };
+            var roles = new List<string>() { UserRoles.ALUNO };
             CriarUsuario(usuario, aluno, roles);
 
             return aluno;
@@ -134,7 +134,7 @@ namespace LevelLearn.Service.Services.Comum
 
         private Instituicao CriarInstituicao()
         {
-            if (!_env.IsDevelopment()) return null;                      
+            if (!_env.IsDevelopment()) return null;
 
             var descricao = "Criada em 1994, a FATEC Guaratinguetá tem como objetivo promover a educação profissional pública oferecendo cursos de graduação em Tecnologia, formando Tecnólogos dentro de referenciais de excelência, visando ao atendimento das demandas sociais e do mundo do trabalho.";
 
@@ -158,7 +158,7 @@ namespace LevelLearn.Service.Services.Comum
             var curso = new Curso("Análise e Desenvolvimento de Sistemas", "ADS", descricao, instituicao.Id);
 
             if (_context.Cursos.Any(i => i.NomePesquisa == curso.NomePesquisa))
-                return null;           
+                return null;
 
             _context.Add(curso);
             //_context.SaveChanges();

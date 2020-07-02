@@ -4,40 +4,53 @@ using System.Text.Json.Serialization;
 
 namespace LevelLearn.Service.Response
 {
-    public class ResultadoService<T> where T : class
+    public class ResultadoService
     {
-        public ResultadoService(string mensagem, int statusCode, bool sucesso = false, T dados = null,
-            ICollection<DadoInvalido> erros = null, int? total = null)
+        #region Ctor
+        public ResultadoService(string mensagem, int statusCode, bool sucesso = false,
+            ICollection<DadoInvalido> erros = null)
         {
             Mensagem = mensagem;
             StatusCode = statusCode;
             Sucesso = sucesso;
             Falhou = !sucesso;
-            Dados = dados;
             Erros = erros;
-            Total = total;
-        }
+        } 
+        #endregion
 
+        #region Props
         [JsonPropertyName("message")]
-        public string Mensagem { get; private set; }
+        public string Mensagem { get; protected set; }
 
         [JsonPropertyName("statusCode")]
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; protected set; }
 
         [JsonPropertyName("success")]
-        public bool Sucesso { get; private set; }
+        public bool Sucesso { get; protected set; }
 
         [JsonPropertyName("failure")]
-        public bool Falhou { get; private set; }
+        public bool Falhou { get; protected set; }
+
+        [JsonPropertyName("errors")]
+        public ICollection<DadoInvalido> Erros { get; protected set; } 
+        #endregion
+    }
+
+    public class ResultadoService<T> : ResultadoService where T : class
+    {
+        public ResultadoService(string mensagem, int statusCode, bool sucesso = false,
+                                T dados = null, ICollection<DadoInvalido> erros = null, int? total = null)
+            : base(mensagem, statusCode, sucesso, erros)
+        {           
+            Dados = dados;
+            Total = total;
+        }
 
         [JsonPropertyName("data")]
         public T Dados { get; private set; }
 
         [JsonPropertyName("total")]
         public int? Total { get; private set; }
-
-        [JsonPropertyName("errors")]
-        public ICollection<DadoInvalido> Erros { get; private set; }    
 
     }
 

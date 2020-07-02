@@ -13,19 +13,19 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         protected Aluno() { }
 
-        public Aluno(string nome, string email, string cpf, string celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
-            : base(nome, new Email(email), new CPF(cpf), new Celular(celular), genero, dataNascimento)
+        public Aluno(string nome, string cpf, string celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
+            : base(nome, new CPF(cpf), new Celular(celular), genero, dataNascimento)
         {
             RA = ra.RemoveExtraSpaces();
             TipoPessoa = TipoPessoa.Aluno;
         }
 
-        public Aluno(string nome, Email email, CPF cpf, Celular celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
-            : base(nome, email, cpf, celular, genero, dataNascimento)
+        public Aluno(string nome, CPF cpf, Celular celular, string ra, GeneroPessoa genero, DateTime? dataNascimento)
+            : base(nome, cpf, celular, genero, dataNascimento)
         {
             RA = ra.RemoveExtraSpaces();
             TipoPessoa = TipoPessoa.Aluno;
-        } 
+        }
 
         #endregion
 

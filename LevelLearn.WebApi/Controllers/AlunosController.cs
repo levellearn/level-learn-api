@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
 namespace LevelLearn.WebApi.Controllers
 {
     /// <summary>
@@ -29,7 +28,6 @@ namespace LevelLearn.WebApi.Controllers
         private readonly IMapper _mapper;
         private readonly IUsuarioService _usuarioService;
         private readonly IAlunoService _alunoService;
-
 
         /// <summary>
         /// Ctor
@@ -53,8 +51,8 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="204">Sem conteúdo</response>
         /// <response code="400">Dados inválidos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]")]
         [AllowAnonymous]
+        [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarAluno(RegistrarAlunoVM registrarAlunoVM)
@@ -69,7 +67,6 @@ namespace LevelLearn.WebApi.Controllers
             return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
         }
 
-
         /// <summary>
         ///  Retorna todos os alunos de um curso - paginado com filtro
         /// </summary>
@@ -78,9 +75,9 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Lista de alunos</returns>        
         /// <response code="200">Lista de alunos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/curso/{cursoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         public async Task<ActionResult> ObterAlunosPorCurso([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
@@ -101,9 +98,9 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Lista de alunos</returns>        
         /// <response code="200">Lista de alunos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/instituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
         public async Task<ActionResult> ObterAlunosPorInstituicao([FromRoute] Guid instituicaoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
@@ -122,8 +119,8 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="patchAluno"></param>
         /// <returns></returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_ALUNO)]
         [HttpPatch("v1/[controller]/{id:guid}")]
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.ALUNO)]
         [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
@@ -135,7 +132,7 @@ namespace LevelLearn.WebApi.Controllers
 
             ResultadoService<Aluno> resultado = await _alunoService.Atualuzar(alunoDb);
 
-            if (!resultado.Sucesso) 
+            if (!resultado.Sucesso)
                 return StatusCode(resultado.StatusCode, resultado);
 
             return StatusCode(resultado.StatusCode, _mapper.Map<AlunoVM>(resultado.Dados));

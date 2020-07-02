@@ -11,7 +11,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     [TestFixture]
     class AlunoTest
     {
-        private string _nome, _email, _cpf, _ra, _celular;
+        private string _nome, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;
 
@@ -19,7 +19,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Felipe Ayres";
-            _email = "felipe.ayres@mail.com";
             _cpf = "881.192.990-35";
             _genero = GeneroPessoa.Masculino;
             _celular = "55(12)98845-7832";
@@ -101,21 +100,20 @@ namespace LevelLearn.NUnitTest.Pessoas
 
         private Aluno CriarAluno()
         {
-            return new Aluno(_nome, new Email(_email), new CPF(_cpf), new Celular(_celular), _ra,
+            return new Aluno(_nome, new CPF(_cpf), new Celular(_celular), _ra,
                 _genero, _dataNascimento);
         }
 
         public static Aluno CriarAlunoPadrao()
         {
             var nome = "Felipe Ayres";
-            var email = "felipe.ayres@mail.com";
             var cpf = "881.192.990-35";
             var genero = GeneroPessoa.Masculino;
             var celular = "(12)98845-7832";
             var ra = "f1310435";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
-            return new Aluno(nome, new Email(email), new CPF(cpf), new Celular(celular), ra,
+            return new Aluno(nome, new CPF(cpf), new Celular(celular), ra,
                 genero, dataNascimento);
         }
 

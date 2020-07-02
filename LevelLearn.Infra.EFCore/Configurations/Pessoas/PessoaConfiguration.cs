@@ -26,13 +26,7 @@ namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
                 .HasColumnType($"varchar({RegraPessoa.CPF_TAMANHO})")
-                .IsRequired(false);
-
-            builder.OwnsOne(c => c.Email)
-                .Property(e => e.Endereco)
-                .HasColumnName("Email")
-                .HasColumnType($"varchar({RegraUsuario.EMAIL_TAMANHO_MAX})")
-                .IsRequired(false);
+                .IsRequired(false);            
 
             builder.OwnsOne(c => c.Celular)
                 .Property(c => c.Numero)

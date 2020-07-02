@@ -44,7 +44,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <returns>Lista turmas</returns>
         /// <response code="200">Lista de turmas</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/curso/{cursoId:guid}/professor")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ObterTurmasProfessorPorCurso([FromRoute] Guid cursoId, [FromBody] FiltroPaginacaoVM filtroVM)
@@ -89,7 +89,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="200">Retorna um turma</response>
         /// <response code="404">Turma não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(TurmaDetalheVM), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,7 +110,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="201">Retorna turma cadastrada</response>
         /// <response code="400">Dados inválidos</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(TurmaVM), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -143,7 +143,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin da turma</response>
         /// <response code="404">Turma não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -167,7 +167,7 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="403">Não é admin da turma</response>
         /// <response code="404">Turma não encontrada</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [Authorize(Roles = ApplicationRoles.ADMIN + "," + ApplicationRoles.PROFESSOR)]
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

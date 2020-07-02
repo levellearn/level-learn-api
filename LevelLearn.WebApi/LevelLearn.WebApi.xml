@@ -371,11 +371,21 @@
             <response code="400">Dados inválidos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginUsuarioVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginEmailSenhaVM)">
             <summary>
-            Login de usuário
+            Login de usuário - Email e Senha
             </summary>
-            <param name="loginUsuarioVM">Dados de login do usuário</param>
+            <param name="loginVM">Dados de login do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginRefreshTokenVM)">
+            <summary>
+            Login de usuário - RefreshToken
+            </summary>
+            <param name="loginVM">Dados de login do usuário</param>
             <returns>Retorna usuário logado</returns>
             <response code="200">Retorna usuário logado</response>
             <response code="400">Dados inválidos</response>
@@ -401,11 +411,11 @@
             <response code="404">usuário não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.EsqueciSenha(LevelLearn.ViewModel.Usuarios.EsqueciSenhaVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.EsqueciSenha(System.String)">
             <summary>
             Esqueci a senha
             </summary>
-            <param name="esqueciSenhaVM">Email para redefinir senha</param>
+            <param name="email">Email para redefinir senha</param>
             <returns>Sem conteúdo</returns>
             <response code="204">Sem conteúdo</response>
             <response code="400">Dados inválidos</response>

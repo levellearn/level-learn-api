@@ -9,7 +9,7 @@ namespace LevelLearn.NUnitTest.Pessoas
     [TestFixture]
     class ProfessorTest
     {
-        private string _nome, _email, _cpf, _celular;
+        private string _nome, _cpf, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;
 
@@ -17,7 +17,6 @@ namespace LevelLearn.NUnitTest.Pessoas
         public void Setup()
         {
             _nome = "Leandro Guarino";
-            _email = "le.guarino@mail.com";
             _cpf = "881.192.990-35";
             _genero = GeneroPessoa.Masculino;
             _celular = "55(12)98845-8974";
@@ -25,7 +24,7 @@ namespace LevelLearn.NUnitTest.Pessoas
         }
 
         [Test]
-        public void Cadastrar_ProfessorValido_ReturnTrue()
+        public void Cadastrar_Professor_ReturnTrue()
         {
             var professor = CriarProfessor();
 
@@ -35,11 +34,10 @@ namespace LevelLearn.NUnitTest.Pessoas
         }
 
         [Test]
-        [TestCase("le.guarino@mail", "(12)98845-8974")] // email inválido
-        [TestCase("le.guarino@mail.com", "123456")] // celular inválido
-        public void Cadastrar_ProfessorValido_ReturnFalse(string email, string celular)
+        [TestCase("123456")]
+        [TestCase("(12)98845-8974")]
+        public void Cadastrar_Professor_ReturnFalse(string celular)
         {
-            _email = email;
             _celular = celular;
 
             var professor = CriarProfessor();
@@ -66,20 +64,19 @@ namespace LevelLearn.NUnitTest.Pessoas
 
         private Professor CriarProfessor()
         {
-            return new Professor(_nome, new Email(_email), new CPF(_cpf), new Celular(_celular),
+            return new Professor(_nome, new CPF(_cpf), new Celular(_celular),
                 _genero, _dataNascimento);
         }
 
         public static Professor CriarProfessorPadrao()
         {
             var nome = "Leandro Guarino";
-            var email = "le.guarino@mail.com";
             var cpf = "881.192.990-35";
             var genero = GeneroPessoa.Masculino;
-            var celular = "(12)98845-8974";
+            var celular = "55(12)98845-8974";
             var dataNascimento = DateTime.Parse("30/12/1988");
 
-            return new Professor(nome, new Email(email), new CPF(cpf), new Celular(celular),
+            return new Professor(nome, new CPF(cpf), new Celular(celular),
                 genero, dataNascimento);
         }
 

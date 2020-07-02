@@ -28,7 +28,7 @@ namespace LevelLearn.NUnitTest.Usuarios
         [TestCase("billGates3")]
         [TestCase("shaq_O-Neal")]
         [TestCase("steven.jobs")]
-        public void Usuario_NicknameValido_ReturnTrue(string userName)
+        public void Usuario_Nickname_ReturnTrue(string userName)
         {
             _nickName = userName;
             var usuario = CriarUsuario();
@@ -45,7 +45,7 @@ namespace LevelLearn.NUnitTest.Usuarios
         [TestCase("bill@Gates3")]
         [TestCase("shaq$Neal")]
         [TestCase("#stevenjobs")]
-        public void Usuario_NicknameValido_ReturnFalse(string userName)
+        public void Usuario_Nickname_ReturnFalse(string userName)
         {
             _nickName = userName;
             var usuario = CriarUsuario();
@@ -59,7 +59,7 @@ namespace LevelLearn.NUnitTest.Usuarios
 
         private Usuario CriarUsuario()
         {
-            var pessoa = new Professor(_nome, new Email(_email), new CPF("226.547.010-42"),
+            var pessoa = new Professor(_nome, new CPF("226.547.010-42"),
                new Celular(_celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
             var user = new Usuario(_nome, _nickName, _email, _celular, _senha, _confirmacaoSenha);
@@ -79,7 +79,7 @@ namespace LevelLearn.NUnitTest.Usuarios
             var senha = "Gamificando@123";
             var confirmacaoSenha = "Gamificando@123";
 
-            var pessoa = new Professor(nome, new Email(email), new CPF("226.547.010-42"),
+            var pessoa = new Professor(nome, new CPF("226.547.010-42"),
                new Celular(celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
 
             var user = new Usuario(nome, nickName, email, celular, senha, confirmacaoSenha);

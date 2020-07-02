@@ -44,11 +44,11 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var instituicoes = await _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
+            var taskInstituicoes = _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
 
-            int total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            var taskTotal = _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
-            return ResultadoServiceFactory<IEnumerable<Instituicao>>.Ok(instituicoes, total);
+            return ResultadoServiceFactory<IEnumerable<Instituicao>>.Ok(await taskInstituicoes, await taskTotal);
         }
 
         public async Task<ResultadoService<Instituicao>> CadastrarInstituicao(Instituicao instituicao, Guid pessoaId)
@@ -127,6 +127,12 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
+        public void Dispose()
+        {
+            _uow.Dispose();
+        }
+
+
         private async Task<bool> InstituicaoExistente(Instituicao instituicao)
         {
             // Verifica se está tentando atualizar para uma instituição que já existe
@@ -135,11 +141,6 @@ namespace LevelLearn.Service.Services.Institucional
                 i.Id != instituicao.Id);
 
             return instituicaoExiste;
-        }
-
-        public void Dispose()
-        {
-            _uow.Dispose();
         }
 
     }
