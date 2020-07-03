@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
@@ -42,12 +41,10 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>        
         /// <param name="filtroVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
-        /// <response code="200">Lista de instituições</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN)]
         [HttpGet("v1/[controller]/admin")]
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody]FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody] FiltroPaginacaoVM filtroVM)
         {
             var instituicoes = await _instituicaoService.GetWithPagination(filtroVM.FiltroPesquisa, filtroVM.NumeroPagina, filtroVM.TamanhoPorPagina);
             int count = await _instituicaoService.CountWithPagination(filtroVM.FiltroPesquisa);
@@ -62,12 +59,10 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>        
         /// <param name="filtroPaginacaoVM">Armazena os filtros de consulta</param>
         /// <returns>Lista instituições</returns>
-        /// <response code="200">Lista de instituições</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
         [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterInstituicoes([FromBody]FiltroPaginacaoVM filtroPaginacaoVM)
+        public async Task<ActionResult> ObterInstituicoes([FromBody] FiltroPaginacaoVM filtroPaginacaoVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroPaginacaoVM);
 
@@ -84,13 +79,10 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id Instituição</param>
         /// <returns>Instituição</returns>
-        /// <response code="200">Retorna uma instituição</response>
-        /// <response code="404">Instituição não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(InstituicaoDetalheVM), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterInstituicao(Guid id)
         {
             ResultadoService<Instituicao> resultado = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
@@ -105,18 +97,16 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="instituicaoVM">Dados de cadastro da instituição</param>
         /// <returns>Retorna a instituição cadastrada</returns>
-        /// <response code="201">Retorna instituição cadastrada</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CriarInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
             var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
 
-            ResultadoService<Instituicao> resultado = await _instituicaoService.CadastrarInstituicao(instituicao, User.GetPessoaId());
+            ResultadoService<Instituicao> resultado =
+                await _instituicaoService.CadastrarInstituicao(instituicao, User.GetPessoaId());
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
@@ -130,18 +120,13 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id instituição</param>
         /// <param name="instituicaoVM">Dados de edição da instituição</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="403">Não é admin da instituição</response>
-        /// <response code="404">Instituição não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>     
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditarInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
             var resultado = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
@@ -155,16 +140,12 @@ namespace LevelLearn.WebApi.Controllers
         /// Alternar ativação da instituição
         /// </summary>
         /// <param name="id">Id instituição</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="403">Não é admin da instituição</response>
-        /// <response code="404">Instituição não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>      
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> AlternarAtivacaoInstituicao(Guid id)
         {
             var resultado = await _instituicaoService.AlternarAtivacao(id, User.GetPessoaId());

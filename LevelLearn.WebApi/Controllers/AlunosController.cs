@@ -19,10 +19,7 @@ namespace LevelLearn.WebApi.Controllers
 {
     /// <summary>
     /// AlunosController
-    /// </summary>
-    [ApiController]
-    [Route("api/")]
-    [Produces("application/json")]
+    /// </summary>    
     public class AlunosController : MyBaseController
     {
         private readonly IMapper _mapper;
@@ -45,16 +42,13 @@ namespace LevelLearn.WebApi.Controllers
 
         /// <summary>
         /// Registro de usuário aluno
-        /// </summary>
+        /// </summary>        
         /// <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
-        /// <returns>Sem conteúdo</returns>
-        /// <response code="204">Sem conteúdo</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns>Usuario VM</returns>
         [AllowAnonymous]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> RegistrarAluno(RegistrarAlunoVM registrarAlunoVM)
         {
             var aluno = _mapper.Map<Aluno>(registrarAlunoVM);
@@ -62,7 +56,7 @@ namespace LevelLearn.WebApi.Controllers
 
             ResultadoService<Usuario> resultado = await _usuarioService.RegistrarAluno(aluno, usuario);
 
-            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
         }
@@ -73,8 +67,6 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="cursoId"></param>
         /// <param name="filtroVM"></param>
         /// <returns>Lista de alunos</returns>        
-        /// <response code="200">Lista de alunos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/curso/{cursoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
@@ -96,8 +88,6 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="instituicaoId"></param>
         /// <param name="filtroVM"></param>
         /// <returns>Lista de alunos</returns>        
-        /// <response code="200">Lista de alunos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/instituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<AlunoVM>), StatusCodes.Status200OK)]
@@ -122,18 +112,17 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize(Roles = ApplicationRoles.ADMIN_E_ALUNO)]
         [HttpPatch("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
         {
             Aluno alunoDb = await _alunoService.GetAsync(id);
             var alunoVM = _mapper.Map<AlunoVM>(alunoDb);
             patchAluno.ApplyTo(alunoVM);
             alunoDb = _mapper.Map<Aluno>(alunoVM);
 
-            ResultadoService<Aluno> resultado = await _alunoService.Atualuzar(alunoDb);
+            ResultadoService<Aluno> resultado = await _alunoService.Atualizar(alunoDb);
 
-            if (!resultado.Sucesso)
-                return StatusCode(resultado.StatusCode, resultado);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return StatusCode(resultado.StatusCode, _mapper.Map<AlunoVM>(resultado.Dados));
         }

@@ -27,21 +27,7 @@ namespace LevelLearn.WebApi.Controllers
         public MyBaseController(IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Verificar API
-        /// </summary>
-        /// <returns>It Works</returns>
-        /// <response code="200">Ok</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpGet("up")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Up()
-        {
-            return Ok("API funcionando");
-        }
+        }       
 
         /// <summary>
         /// Cria a lista paginada

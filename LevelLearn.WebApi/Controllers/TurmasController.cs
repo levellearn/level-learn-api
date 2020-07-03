@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
@@ -41,9 +40,7 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>        
         /// <param name="cursoId">Id curso</param>
         /// <param name="filtroVM">Armazena os filtros de consulta</param>
-        /// <returns>Lista turmas</returns>
-        /// <response code="200">Lista de turmas</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns>Lista turmas</returns>     
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/curso/{cursoId:guid}/professor")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaVM>), StatusCodes.Status200OK)]
@@ -63,9 +60,7 @@ namespace LevelLearn.WebApi.Controllers
         /// Retorna todas as turmas de um aluno paginadas com filtro
         /// </summary>        
         /// <param name="filtroVM">Armazena os filtros de consulta</param>
-        /// <returns>Lista turmas</returns>
-        /// <response code="200">Lista de turmas</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns>Lista turmas</returns>      
         [Authorize(Roles = ApplicationRoles.ALUNO)]
         [HttpGet("v1/[controller]/aluno")]
         [ProducesResponseType(typeof(ListaPaginadaVM<TurmaDetalheVM>), StatusCodes.Status200OK)]
@@ -85,14 +80,11 @@ namespace LevelLearn.WebApi.Controllers
         /// Retorna um turma
         /// </summary>
         /// <param name="id">Id Turma</param>
-        /// <returns>Turma</returns>
-        /// <response code="200">Retorna um turma</response>
-        /// <response code="404">Turma não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns>Turma</returns>     
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(TurmaDetalheVM), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterTurma(Guid id)
         {
             ResultadoService<Turma> resultado = await _turmaService.ObterTurma(id, User.GetPessoaId());
@@ -107,13 +99,10 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="turmaVM">Dados de cadastro da turma</param>
         /// <returns>Retorna a turma cadastrada</returns>
-        /// <response code="201">Retorna turma cadastrada</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(TurmaVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CriarTurma([FromBody] CadastrarTurmaVM turmaVM)
         {
             Guid pessoaId = User.GetPessoaId();
@@ -137,18 +126,13 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id turma</param>
         /// <param name="turmaVM">Dados de edição da turma</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="403">Não é admin da turma</response>
-        /// <response code="404">Turma não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>     
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditarTurma(Guid id, [FromBody] EditarTurmaVM turmaVM)
         {
             var resultado = await _turmaService.EditarTurma(id, turmaVM, User.GetPessoaId());
@@ -162,16 +146,12 @@ namespace LevelLearn.WebApi.Controllers
         /// Alternar ativação da turma
         /// </summary>
         /// <param name="id">Id turma</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="403">Não é admin da turma</response>
-        /// <response code="404">Turma não encontrada</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>      
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> AlternarAtivacaoTurma(Guid id)
         {
             var resultado = await _turmaService.AlternarAtivacaoTurma(id, User.GetPessoaId());

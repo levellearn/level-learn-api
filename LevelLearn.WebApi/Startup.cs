@@ -74,11 +74,8 @@ namespace LevelLearn.WebApi
                 .AddJsonOptions(o =>
                 {
                     o.JsonSerializerOptions.IgnoreNullValues = true;
-                })
-                .AddFluentValidation(f =>
-                {
-                    //f.RegisterValidatorsFromAssemblyContaining<RedefinirSenhaVMValidator>();
                 });
+                //.AddFluentValidation();
 
             // App Settings
             services.Configure<AppSettings>(Configuration);

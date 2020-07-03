@@ -30,7 +30,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         /// </summary>
         /// <param name="aluno"></param>
         /// <returns></returns>
-        Task<ResultadoService<Aluno>> Atualuzar(Aluno aluno);
+        Task<ResultadoService<Aluno>> Atualizar(Aluno aluno);
     }
 
 }

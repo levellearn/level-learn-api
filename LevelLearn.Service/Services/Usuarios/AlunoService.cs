@@ -40,7 +40,7 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(await taskAlunos, await taskTotal);
         }
 
-        public async Task<ResultadoService<Aluno>> Atualuzar(Aluno aluno)
+        public async Task<ResultadoService<Aluno>> Atualizar(Aluno aluno)
         {
             if (!aluno.EstaValido())
                 return ResultadoServiceFactory<Aluno>.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);

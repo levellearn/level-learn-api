@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
@@ -42,12 +41,10 @@ namespace LevelLearn.WebApi.Controllers
         /// <param name="instituicaoId">Id instituição</param>
         /// <param name="filtroVM">Armazena os filtros de consulta</param>
         /// <returns>Lista cursos</returns>
-        /// <response code="200">Lista de cursos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/intituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<CursoVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterCursosProfessorPorInstituicao([FromRoute]Guid instituicaoId, [FromBody]FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterCursosProfessorPorInstituicao([FromRoute] Guid instituicaoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 
@@ -64,13 +61,10 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id Curso</param>
         /// <returns>Curso</returns>
-        /// <response code="200">Retorna um curso</response>
-        /// <response code="404">Curso não encontrado</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/{id:guid}")]
         [ProducesResponseType(typeof(CursoDetalheVM), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterCurso(Guid id)
         {
             ResultadoService<Curso> resultado = await _cursoService.ObterCurso(id, User.GetPessoaId());
@@ -84,14 +78,11 @@ namespace LevelLearn.WebApi.Controllers
         /// Cadastro de curso
         /// </summary>
         /// <param name="cursoVM">Dados de cadastro do curso</param>
-        /// <returns>Retorna o curso cadastrado</returns>
-        /// <response code="201">Retorna curso cadastrado</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns>Retorna o curso cadastrado</returns>     
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(CursoVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CriarCurso([FromBody] CadastrarCursoVM cursoVM)
         {
             var curso = _mapper.Map<Curso>(cursoVM);
@@ -110,18 +101,13 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <param name="id">Id curso</param>
         /// <param name="cursoVM">Dados de edição do curso</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="400">Dados inválidos</response>
-        /// <response code="403">Não é admin do curso</response>
-        /// <response code="404">Curso não encontrado</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>      
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> EditarCurso(Guid id, [FromBody] EditarCursoVM cursoVM)
         {
             var resultado = await _cursoService.EditarCurso(id, cursoVM, User.GetPessoaId());
@@ -135,16 +121,12 @@ namespace LevelLearn.WebApi.Controllers
         /// Alternar ativação do curso
         /// </summary>
         /// <param name="id">Id curso</param>
-        /// <returns></returns>
-        /// <response code="204">Sem Conteúdo</response>
-        /// <response code="403">Não é admin do curso</response>
-        /// <response code="404">Curso não encontrado</response>
-        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        /// <returns></returns>    
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> AlternarAtivacaoCurso(Guid id)
         {
             var resultado = await _cursoService.AlternarAtivacaoCurso(id, User.GetPessoaId());

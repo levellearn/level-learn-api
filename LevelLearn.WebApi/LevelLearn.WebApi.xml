@@ -68,14 +68,28 @@
             <param name="alunoService"></param>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.RegistrarAluno(LevelLearn.ViewModel.Usuarios.RegistrarAlunoVM)">
-            <summary>
-            Registro de usuário aluno
-            </summary>
-            <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
-            <returns>Sem conteúdo</returns>
-            <response code="204">Sem conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+             <summary>
+             Registro de usuário aluno
+             </summary>
+             <remarks>
+             Exemplo:
+            
+                 POST /Alunos
+                 {
+            	        "Email": "felipe.ayres@mail.com",
+            	        "Senha": "Gamificando@123",
+            	        "ConfirmacaoSenha": "Gamificando@123",
+            	        "Nome": "Felipe Ayres",
+            	        "NickName": "felipe.ayres",
+            	        "Celular": "+55(12)98845-7845",
+            	        "Genero": 1,
+            	        "RA": "f4567895",
+            	        "DataNascimento": "1993-10-26"
+                 }
+            
+             </remarks>
+             <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
+             <returns>Usuario VM</returns>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
@@ -97,7 +111,7 @@
             <response code="200">Lista de alunos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Patch(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
             <summary>
             Atualiza propriedade do aluno
             </summary>
