@@ -131,7 +131,7 @@ namespace LevelLearn.WebApi.Controllers
 
             alunoDb = _mapper.Map<Aluno>(alunoVM);
 
-            ResultadoService<Aluno> resultado = await _alunoService.Atualizar(alunoDb);
+            ResultadoService resultado = await _alunoService.Atualizar(alunoDb);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
