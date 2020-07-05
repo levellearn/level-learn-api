@@ -44,11 +44,11 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Instituicao>>> ObterInstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var taskInstituicoes = _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
+            var instituicoes = await _uow.Instituicoes.InstituicoesProfessor(pessoaId, filtroPaginacao);
 
-            var taskTotal = _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
+            var total = await _uow.Instituicoes.TotalInstituicoesProfessor(pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
-            return ResultadoServiceFactory<IEnumerable<Instituicao>>.Ok(await taskInstituicoes, await taskTotal);
+            return ResultadoServiceFactory<IEnumerable<Instituicao>>.Ok(instituicoes, total);
         }
 
         public async Task<ResultadoService<Instituicao>> CadastrarInstituicao(Instituicao instituicao, Guid pessoaId)

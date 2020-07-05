@@ -35,10 +35,10 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Curso>>> CursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            var taskTotal = _uow.Cursos.TotalCursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
-            var taskCursos = _uow.Cursos.CursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao);
+            var cursos = await _uow.Cursos.CursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao);
+            var total = await _uow.Cursos.TotalCursosProfessorPorInstituicao(instituicaoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
 
-            return ResultadoServiceFactory<IEnumerable<Curso>>.Ok(await taskCursos, await taskTotal);
+            return ResultadoServiceFactory<IEnumerable<Curso>>.Ok(cursos, total);
         }
 
         public async Task<ResultadoService<Curso>> ObterCurso(Guid cursoId, Guid pessoaId)
