@@ -90,9 +90,9 @@
             <param name="filtroVM"></param>
             <returns>Lista de alunos</returns>        
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
             <summary>
-             Retorna todos os alunos de um curso - paginado com filtro
+            Atualiza propriedade do aluno
             </summary>
             <remarks>
             Exemplo

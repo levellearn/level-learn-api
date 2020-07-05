@@ -116,7 +116,7 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize(Roles = ApplicationRoles.ADMIN_E_ALUNO)]
         [HttpPatch("v1/[controller]/{id:guid}")]
         [Consumes("application/json-patch+json")]
-        [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
@@ -135,7 +135,7 @@ namespace LevelLearn.WebApi.Controllers
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return StatusCode(resultado.StatusCode, _mapper.Map<AlunoVM>(resultado.Dados));
+            return StatusCode(resultado.StatusCode, resultado.Mensagem);
         }
       
 

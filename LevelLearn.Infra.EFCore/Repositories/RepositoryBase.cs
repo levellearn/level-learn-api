@@ -55,6 +55,7 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         public void Update(TEntity entity)
         {
+            _context.Attach(entity);
             _context.Set<TEntity>().Update(entity);
         }
 
