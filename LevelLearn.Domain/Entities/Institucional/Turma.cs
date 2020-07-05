@@ -36,12 +36,12 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }
-        public virtual Curso Curso { get; private set; }
+        public Curso Curso { get; private set; }
 
         public Guid ProfessorId { get; private set; }
-        public virtual Professor Professor { get; private set; }
+        public Professor Professor { get; private set; }
 
-        public virtual ICollection<AlunoTurma> Alunos { get; private set; }
+        public ICollection<AlunoTurma> Alunos { get; private set; }
 
         #endregion Props
 

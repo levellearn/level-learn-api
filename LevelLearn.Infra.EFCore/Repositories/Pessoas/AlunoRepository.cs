@@ -27,11 +27,12 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
                 .AsNoTracking()
                 .Where(p => p.Perfil == TipoPessoa.Aluno
                             && p.CursoId == cursoId)
-                .Select(p => p.Pessoa as Aluno)
-                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
-                            p.Ativo == filtro.Ativo)
-                .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
-                .Take(filtro.TamanhoPorPagina);
+                .Select(p => p.Pessoa)
+                    .OfType<Aluno>()
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == filtro.Ativo)
+                    .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                    .Take(filtro.TamanhoPorPagina);
 
             query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
             return await query.ToListAsync();
@@ -45,9 +46,11 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
                 .AsNoTracking()
                 .Where(p => p.Perfil == TipoPessoa.Aluno
                             && p.CursoId == cursoId)
-                .Select(p => p.Pessoa as Aluno)
-                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
-                            p.Ativo == filtro.Ativo).CountAsync();
+                .Select(p => p.Pessoa)
+                    .OfType<Aluno>()
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == filtro.Ativo)
+                    .CountAsync();
         }
 
 
@@ -58,11 +61,12 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
             IQueryable<Aluno> query = _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
-                .Select(p => p.Pessoa as Aluno)
-                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
-                            p.Ativo == filtro.Ativo)
-                .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
-                .Take(filtro.TamanhoPorPagina);
+                .Select(p => p.Pessoa)
+                    .OfType<Aluno>()
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == filtro.Ativo)
+                    .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                    .Take(filtro.TamanhoPorPagina);
 
             query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
             return await query.ToListAsync();
@@ -75,10 +79,11 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
             return await _context.Set<PessoaInstituicao>()
                 .AsNoTracking()
                 .Where(p => p.Perfil == PerfilInstituicao.Aluno && p.InstituicaoId == instituicaoId)
-                .Select(p => p.Pessoa as Aluno)
-                .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
-                            p.Ativo == filtro.Ativo)
-                .CountAsync();
+                .Select(p => p.Pessoa)
+                    .OfType<Aluno>()
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == filtro.Ativo)
+                    .CountAsync();
         }
 
     }

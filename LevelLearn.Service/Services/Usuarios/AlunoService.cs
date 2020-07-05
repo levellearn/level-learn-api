@@ -26,30 +26,36 @@ namespace LevelLearn.Service.Services.Usuarios
 
         public async Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorCurso(Guid cursoId, FiltroPaginacao filtroPaginacao)
         {
-            Task<IEnumerable<Aluno>> taskAlunos = _uow.Alunos.ObterAlunosPorCurso(cursoId, filtroPaginacao);
-            Task<int> taskTotal = _uow.Alunos.TotalAlunosPorCurso(cursoId, filtroPaginacao);
+            IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorCurso(cursoId, filtroPaginacao);
+            int total = await _uow.Alunos.TotalAlunosPorCurso(cursoId, filtroPaginacao);
 
-            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(await taskAlunos, await taskTotal);
+            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);            
         }
 
         public async Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtroPaginacao)
         {
-            Task<IEnumerable<Aluno>> taskAlunos = _uow.Alunos.ObterAlunosPorInstituicao(instituicaoId, filtroPaginacao);
-            Task<int> taskTotal = _uow.Alunos.TotalAlunosPorCurso(instituicaoId, filtroPaginacao);
+            IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorInstituicao(instituicaoId, filtroPaginacao);
+            int total = await _uow.Alunos.TotalAlunosPorCurso(instituicaoId, filtroPaginacao);
 
-            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(await taskAlunos, await taskTotal);
+            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);
         }
 
-        public async Task<ResultadoService<Aluno>> Atualizar(Aluno aluno)
+        // TODO: Add JsonPatch
+        public async Task<ResultadoService> Atualizar(Aluno aluno)
         {
             if (!aluno.EstaValido())
-                return ResultadoServiceFactory<Aluno>.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
+                return ResultadoServiceFactory.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             _uow.Alunos.Update(aluno);
             if (!await _uow.CommitAsync()) 
-                return ResultadoServiceFactory<Aluno>.InternalServerError(_sharedResource.FalhaCadastrar);
+                return ResultadoServiceFactory.InternalServerError(_sharedResource.FalhaAtualizar);
 
-            return ResultadoServiceFactory<Aluno>.Created(aluno, _sharedResource.CadastradoSucesso);
+            return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
+        }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
         }
 
     }

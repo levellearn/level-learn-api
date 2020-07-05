@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.ViewModel.Pessoas;
 using LevelLearn.ViewModel.Usuarios;
 
 namespace LevelLearn.WebApi.AutoMapper
@@ -28,6 +29,7 @@ namespace LevelLearn.WebApi.AutoMapper
             CreateMap<RegistrarProfessorVM, Professor>();
 
             CreateMap<RegistrarAlunoVM, Aluno>();
+            CreateMap<AlunoVM, Aluno>();
         }
 
         private void UsuarioMap()

@@ -106,18 +106,29 @@ namespace LevelLearn.WebApi.Controllers
         /// <summary>
         /// Atualiza propriedade do aluno
         /// </summary>
+        /// <remarks>
+        /// Exemplo
+        ///     [{ "op": "replace", "path": "/ra", "value": "123456" }]
+        /// </remarks>
         /// <param name="id"></param>
         /// <param name="patchAluno"></param>
         /// <returns></returns>
         [Authorize(Roles = ApplicationRoles.ADMIN_E_ALUNO)]
         [HttpPatch("v1/[controller]/{id:guid}")]
+        [Consumes("application/json-patch+json")]
         [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
         {
+            if (patchAluno == null) return BadRequest(ModelState);
+
             Aluno alunoDb = await _alunoService.GetAsync(id);
+            if (alunoDb == null) return NotFound();
+
             var alunoVM = _mapper.Map<AlunoVM>(alunoDb);
             patchAluno.ApplyTo(alunoVM);
+
             alunoDb = _mapper.Map<Aluno>(alunoVM);
 
             ResultadoService<Aluno> resultado = await _alunoService.Atualizar(alunoDb);
@@ -126,6 +137,7 @@ namespace LevelLearn.WebApi.Controllers
 
             return StatusCode(resultado.StatusCode, _mapper.Map<AlunoVM>(resultado.Dados));
         }
+      
 
     }
 }

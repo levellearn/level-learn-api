@@ -57,7 +57,7 @@
         <member name="T:LevelLearn.WebApi.Controllers.AlunosController">
             <summary>
             AlunosController
-            </summary>
+            </summary>    
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Usuarios.IAlunoService)">
             <summary>
@@ -68,28 +68,11 @@
             <param name="alunoService"></param>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.RegistrarAluno(LevelLearn.ViewModel.Usuarios.RegistrarAlunoVM)">
-             <summary>
-             Registro de usuário aluno
-             </summary>
-             <remarks>
-             Exemplo:
-            
-                 POST /Alunos
-                 {
-            	        "Email": "felipe.ayres@mail.com",
-            	        "Senha": "Gamificando@123",
-            	        "ConfirmacaoSenha": "Gamificando@123",
-            	        "Nome": "Felipe Ayres",
-            	        "NickName": "felipe.ayres",
-            	        "Celular": "+55(12)98845-7845",
-            	        "Genero": 1,
-            	        "RA": "f4567895",
-            	        "DataNascimento": "1993-10-26"
-                 }
-            
-             </remarks>
-             <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
-             <returns>Usuario VM</returns>
+            <summary>
+            Registro de usuário aluno
+            </summary>        
+            <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
+            <returns>Usuario VM</returns>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
@@ -98,8 +81,6 @@
             <param name="cursoId"></param>
             <param name="filtroVM"></param>
             <returns>Lista de alunos</returns>        
-            <response code="200">Lista de alunos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
@@ -108,13 +89,15 @@
             <param name="instituicaoId"></param>
             <param name="filtroVM"></param>
             <returns>Lista de alunos</returns>        
-            <response code="200">Lista de alunos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
             <summary>
             Atualiza propriedade do aluno
             </summary>
+            <remarks>
+            Exemplo
+                [{ "op": "replace", "path": "/ra", "value": "123456" }]
+            </remarks>
             <param name="id"></param>
             <param name="patchAluno"></param>
             <returns></returns>
@@ -138,8 +121,6 @@
             <param name="instituicaoId">Id instituição</param>
             <param name="filtroVM">Armazena os filtros de consulta</param>
             <returns>Lista cursos</returns>
-            <response code="200">Lista de cursos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCurso(System.Guid)">
             <summary>
@@ -147,19 +128,13 @@
             </summary>
             <param name="id">Id Curso</param>
             <returns>Curso</returns>
-            <response code="200">Retorna um curso</response>
-            <response code="404">Curso não encontrado</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.CriarCurso(LevelLearn.ViewModel.Institucional.Curso.CadastrarCursoVM)">
             <summary>
             Cadastro de curso
             </summary>
             <param name="cursoVM">Dados de cadastro do curso</param>
-            <returns>Retorna o curso cadastrado</returns>
-            <response code="201">Retorna curso cadastrado</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns>Retorna o curso cadastrado</returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.EditarCurso(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarCursoVM)">
             <summary>
@@ -167,23 +142,14 @@
             </summary>
             <param name="id">Id curso</param>
             <param name="cursoVM">Dados de edição do curso</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="403">Não é admin do curso</response>
-            <response code="404">Curso não encontrado</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>      
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.CursosController.AlternarAtivacaoCurso(System.Guid)">
             <summary>
             Alternar ativação do curso
             </summary>
             <param name="id">Id curso</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="403">Não é admin do curso</response>
-            <response code="404">Curso não encontrado</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>    
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">
             <summary>
@@ -203,8 +169,6 @@
             </summary>        
             <param name="filtroVM">Armazena os filtros de consulta</param>
             <returns>Lista instituições</returns>
-            <response code="200">Lista de instituições</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoes(LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
@@ -212,8 +176,6 @@
             </summary>        
             <param name="filtroPaginacaoVM">Armazena os filtros de consulta</param>
             <returns>Lista instituições</returns>
-            <response code="200">Lista de instituições</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicao(System.Guid)">
             <summary>
@@ -221,9 +183,6 @@
             </summary>
             <param name="id">Id Instituição</param>
             <returns>Instituição</returns>
-            <response code="200">Retorna uma instituição</response>
-            <response code="404">Instituição não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.CriarInstituicao(LevelLearn.ViewModel.Institucional.Instituicao.CadastrarInstituicaoVM)">
             <summary>
@@ -231,9 +190,6 @@
             </summary>
             <param name="instituicaoVM">Dados de cadastro da instituição</param>
             <returns>Retorna a instituição cadastrada</returns>
-            <response code="201">Retorna instituição cadastrada</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.EditarInstituicao(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarInstituicaoVM)">
             <summary>
@@ -241,23 +197,14 @@
             </summary>
             <param name="id">Id instituição</param>
             <param name="instituicaoVM">Dados de edição da instituição</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="403">Não é admin da instituição</response>
-            <response code="404">Instituição não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.AlternarAtivacaoInstituicao(System.Guid)">
             <summary>
             Alternar ativação da instituição
             </summary>
             <param name="id">Id instituição</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="403">Não é admin da instituição</response>
-            <response code="404">Instituição não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>      
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.MyBaseController">
             <summary>
@@ -270,14 +217,6 @@
             </summary>
             <param name="mapper">IMapper</param>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.Up">
-            <summary>
-            Verificar API
-            </summary>
-            <returns>It Works</returns>
-            <response code="200">Ok</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
-        </member>
         <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.CriarListaPaginada``1(System.Collections.Generic.IEnumerable{``0},System.Nullable{System.Int32},LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Cria a lista paginada
@@ -287,6 +226,26 @@
             <param name="total">Total da entidade no banco</param>
             <param name="filterVM">Filtro de pesquisa</param>
             <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.ProfessoresController">
+            <summary>
+            Professores Controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Usuarios.IAlunoService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper"></param>
+            <param name="usuarioService"></param>
+            <param name="alunoService"></param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.RegistrarProfessor(LevelLearn.ViewModel.Usuarios.RegistrarProfessorVM)">
+            <summary>
+            Registro de usuário professor
+            </summary>
+            <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
+            <returns>Sem conteúdo</returns>     
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.TurmasController">
             <summary>
@@ -306,28 +265,21 @@
             </summary>        
             <param name="cursoId">Id curso</param>
             <param name="filtroVM">Armazena os filtros de consulta</param>
-            <returns>Lista turmas</returns>
-            <response code="200">Lista de turmas</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns>Lista turmas</returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmasAluno(LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
             Retorna todas as turmas de um aluno paginadas com filtro
             </summary>        
             <param name="filtroVM">Armazena os filtros de consulta</param>
-            <returns>Lista turmas</returns>
-            <response code="200">Lista de turmas</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns>Lista turmas</returns>      
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurma(System.Guid)">
             <summary>
             Retorna um turma
             </summary>
             <param name="id">Id Turma</param>
-            <returns>Turma</returns>
-            <response code="200">Retorna um turma</response>
-            <response code="404">Turma não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns>Turma</returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.TurmasController.CriarTurma(LevelLearn.ViewModel.Institucional.Curso.CadastrarTurmaVM)">
             <summary>
@@ -335,9 +287,6 @@
             </summary>
             <param name="turmaVM">Dados de cadastro da turma</param>
             <returns>Retorna a turma cadastrada</returns>
-            <response code="201">Retorna turma cadastrada</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.TurmasController.EditarTurma(System.Guid,LevelLearn.ViewModel.Institucional.Turma.EditarTurmaVM)">
             <summary>
@@ -345,23 +294,14 @@
             </summary>
             <param name="id">Id turma</param>
             <param name="turmaVM">Dados de edição da turma</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="403">Não é admin da turma</response>
-            <response code="404">Turma não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.TurmasController.AlternarAtivacaoTurma(System.Guid)">
             <summary>
             Alternar ativação da turma
             </summary>
             <param name="id">Id turma</param>
-            <returns></returns>
-            <response code="204">Sem Conteúdo</response>
-            <response code="403">Não é admin da turma</response>
-            <response code="404">Turma não encontrada</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns></returns>      
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.UsuariosController">
             <summary>
@@ -380,10 +320,7 @@
             Registro de usuário professor
             </summary>
             <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
-            <returns>Sem conteúdo</returns>
-            <response code="204">Sem conteúdo</response>
-            <response code="400">Dados inválidos</response>
-            <response code="500">Ops, ocorreu um erro no sistema!</response>
+            <returns>Sem conteúdo</returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginEmailSenhaVM)">
             <summary>

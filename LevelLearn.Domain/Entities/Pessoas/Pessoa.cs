@@ -44,9 +44,9 @@ namespace LevelLearn.Domain.Entities.Pessoas
         public TipoPessoa TipoPessoa { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
 
-        public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
-        public virtual ICollection<PessoaCurso> Cursos { get; protected set; }
-        public virtual ICollection<Turma> Turmas { get; protected set; }
+        public ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
+        public ICollection<PessoaCurso> Cursos { get; protected set; }
+        public ICollection<Turma> Turmas { get; protected set; }
 
         #endregion Props
 

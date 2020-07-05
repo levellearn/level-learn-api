@@ -82,7 +82,7 @@ namespace LevelLearn.Service.Services
         {
             _repository.Update(entity);
             _repository.Commit();
-        }
+        }      
 
     }
 }

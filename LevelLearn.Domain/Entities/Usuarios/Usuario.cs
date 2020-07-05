@@ -43,7 +43,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
         public string ImagemUrl { get; set; }
         public string ImagemNome { get; set; }
         public Guid PessoaId { get; set; }
-        public virtual Pessoa Pessoa { get; set; }
+        public Pessoa Pessoa { get; set; }
 
         // Não Mapeado
         public string Senha { get; set; }

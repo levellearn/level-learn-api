@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation.AspNetCore;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Repositories.Institucional;
 using LevelLearn.Domain.Repositories.Pessoas;
@@ -24,6 +23,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -31,6 +32,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -38,6 +40,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -66,16 +69,16 @@ namespace LevelLearn.WebApi
             services.AddSingleton<ISharedResource, SharedResource>();
 
             services
-                .AddControllers(c =>
+                .AddControllers(opt =>
                 {
-                    c.Filters.Add(typeof(CustomExceptionFilter));
-                    c.Filters.Add(typeof(CustomActionFilter));
+                    opt.Filters.Add(typeof(CustomExceptionFilter));
+                    opt.Filters.Add(typeof(CustomActionFilter));
+                    opt.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
                 })
                 .AddJsonOptions(o =>
                 {
                     o.JsonSerializerOptions.IgnoreNullValues = true;
                 });
-                //.AddFluentValidation();
 
             // App Settings
             services.Configure<AppSettings>(Configuration);
@@ -231,7 +234,7 @@ namespace LevelLearn.WebApi
             services.AddDbContext<LevelLearnContext>(opt =>
             {
                 opt.UseSqlServer(appSettings.ConnectionStrings.LevelLearnSQLServer);
-            });
+            }, ServiceLifetime.Scoped);
         }
 
         private void ConfigureRepositories(IServiceCollection services)
@@ -245,8 +248,6 @@ namespace LevelLearn.WebApi
 
         private void ConfigureBusinessServices(IServiceCollection services)
         {
-            services.AddTransient<IUsuarioService, UsuarioService>();
-            services.AddTransient<IAlunoService, AlunoService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IArquivoService, ArquivoFirebaseService>();
@@ -254,6 +255,8 @@ namespace LevelLearn.WebApi
             services.AddTransient<IInstituicaoService, InstituicaoService>();
             services.AddTransient<ICursoService, CursoService>();
             services.AddTransient<ITurmaService, TurmaService>();
+            services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<IAlunoService, AlunoService>();
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)
@@ -263,16 +266,16 @@ namespace LevelLearn.WebApi
 
             var appSettings = Configuration.Get<AppSettings>();
 
-            var key = Encoding.ASCII.GetBytes(appSettings.JWTSettings.ChavePrivada);
+            byte[] key = Encoding.ASCII.GetBytes(appSettings.JWTSettings.ChavePrivada);
 
-            services.AddAuthentication(x =>
+            services.AddAuthentication(opt =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
+            .AddJwtBearer(opt =>
             {
-                x.Events = new JwtBearerEvents
+                opt.Events = new JwtBearerEvents
                 {
                     OnTokenValidated = context =>
                     {
@@ -284,9 +287,9 @@ namespace LevelLearn.WebApi
                         return Task.CompletedTask;
                     }
                 };
-                x.RequireHttpsMetadata = true;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                opt.RequireHttpsMetadata = true;
+                opt.SaveToken = true;
+                opt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -318,14 +321,11 @@ namespace LevelLearn.WebApi
         /// <returns></returns>
         private Task ValidateToken(TokenValidatedContext context, IDistributedCache redisCache)
         {
-            var jwtId = context.SecurityToken.Id;
-            var value = redisCache.GetString(jwtId);
+            string jwtId = context.SecurityToken.Id;
+            string value = redisCache.GetString(jwtId);
 
             if (string.IsNullOrEmpty(value))
-            {
-                Debug.WriteLine("Token inválido");
-                context.Fail($"Token inválido");
-            }
+                context.Fail($"Token expirado");
 
             Debug.WriteLine("Token válido: " + context.SecurityToken);
             return Task.CompletedTask;
@@ -387,6 +387,21 @@ namespace LevelLearn.WebApi
             });
         }
 
+        private static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()
+        {
+            var builder = new ServiceCollection()
+                .AddLogging()
+                .AddMvc()
+                .AddNewtonsoftJson()
+                .Services.BuildServiceProvider();
+
+            return builder
+                .GetRequiredService<IOptions<MvcOptions>>()
+                .Value
+                .InputFormatters
+                .OfType<NewtonsoftJsonPatchInputFormatter>()
+                .First();
+        }
 
     }
 }

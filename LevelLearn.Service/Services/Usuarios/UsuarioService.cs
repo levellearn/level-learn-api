@@ -228,7 +228,6 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!identityResult.Succeeded)
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailConfirmarFalha);
 
-            // TODO: gerar token ao confirmar email?
             UsuarioTokenVM responseVM = await GerarUsuarioToken(usuario);
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);

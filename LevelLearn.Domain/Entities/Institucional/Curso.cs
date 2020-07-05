@@ -38,10 +38,10 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Descricao { get; private set; }
 
         public Guid InstituicaoId { get; private set; }
-        public virtual Instituicao Instituicao { get; private set; }
+        public Instituicao Instituicao { get; private set; }
 
-        public virtual ICollection<PessoaCurso> Pessoas { get; private set; }
-        public virtual ICollection<Turma> Turmas { get; private set; }
+        public ICollection<PessoaCurso> Pessoas { get; private set; }
+        public ICollection<Turma> Turmas { get; private set; }
 
 
         #endregion Props

@@ -56,8 +56,8 @@ namespace LevelLearn.Domain.Entities.Institucional
         public string Municipio { get; private set; }
         public string UF { get; private set; }
 
-        public virtual ICollection<Curso> Cursos { get; private set; }
-        public virtual ICollection<PessoaInstituicao> Pessoas { get; private set; }
+        public ICollection<Curso> Cursos { get; private set; }
+        public ICollection<PessoaInstituicao> Pessoas { get; private set; }
 
         #endregion Props
 
