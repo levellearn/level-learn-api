@@ -111,13 +111,25 @@
             <response code="200">Lista de alunos</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
             <summary>
-            Atualiza propriedade do aluno
+             Retorna todos os alunos de um curso - paginado com filtro
             </summary>
-            <param name="id"></param>
-            <param name="patchAluno"></param>
-            <returns></returns>
+            <param name="cursoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+            <response code="200">Lista de alunos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+             Retorna todos os alunos de uma instituicao - paginado com filtro
+            </summary>
+            <param name="instituicaoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+            <response code="200">Lista de alunos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.CursosController">
             <summary>
