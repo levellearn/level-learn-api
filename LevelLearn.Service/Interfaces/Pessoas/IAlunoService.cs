@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LevelLearn.Service.Interfaces.Usuarios
+namespace LevelLearn.Service.Interfaces.Pessoas
 {
     public interface IAlunoService: IServiceBase<Aluno, Guid>, IDisposable
     {

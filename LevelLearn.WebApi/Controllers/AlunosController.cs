@@ -2,6 +2,7 @@
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Utils.Comum;
+using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel;
@@ -116,26 +117,27 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize(Roles = ApplicationRoles.ADMIN_E_ALUNO)]
         [HttpPatch("v1/[controller]/{id:guid}")]
         [Consumes("application/json-patch+json")]
-        [ProducesResponseType(typeof(AlunoVM), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(AlunoAtualizaVM), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoVM> patchAluno)
+        public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoAtualizaVM> patchAluno)
         {
-            if (patchAluno == null) return BadRequest(ModelState);
-
             Aluno alunoDb = await _alunoService.GetAsync(id);
-            if (alunoDb == null) return NotFound();
+            if (alunoDb == null) 
+                return NotFound();
 
-            var alunoVM = _mapper.Map<AlunoVM>(alunoDb);
+            var alunoVM = _mapper.Map<AlunoAtualizaVM>(alunoDb);
             patchAluno.ApplyTo(alunoVM);
 
             alunoDb = _mapper.Map<Aluno>(alunoVM);
 
             ResultadoService resultado = await _alunoService.Atualizar(alunoDb);
 
-            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+            if (resultado.Falhou) 
+                return StatusCode(resultado.StatusCode, resultado);
 
-            return StatusCode(resultado.StatusCode, resultado.Mensagem);
+            return 
+                StatusCode(resultado.StatusCode, resultado.Mensagem);
         }
       
 

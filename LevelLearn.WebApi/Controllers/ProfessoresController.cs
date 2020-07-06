@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Usuarios;

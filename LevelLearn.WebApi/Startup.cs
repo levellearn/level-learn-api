@@ -15,6 +15,7 @@ using LevelLearn.Service.Interfaces.Institucional;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Services.Comum;
 using LevelLearn.Service.Services.Institucional;
+using LevelLearn.Service.Services.Pessoas;
 using LevelLearn.Service.Services.Usuarios;
 using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

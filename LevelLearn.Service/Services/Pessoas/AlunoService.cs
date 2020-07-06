@@ -2,13 +2,13 @@
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Resource;
-using LevelLearn.Service.Interfaces.Usuarios;
+using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Response;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LevelLearn.Service.Services.Usuarios
+namespace LevelLearn.Service.Services.Pessoas
 {
     public class AlunoService : ServiceBase<Aluno, Guid>, IAlunoService
     {

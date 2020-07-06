@@ -30,6 +30,7 @@ namespace LevelLearn.WebApi.AutoMapper
 
             CreateMap<RegistrarAlunoVM, Aluno>();
             CreateMap<AlunoVM, Aluno>();
+            CreateMap<AlunoAtualizaVM, Aluno>();
         }
 
         private void UsuarioMap()

@@ -20,6 +20,7 @@ namespace LevelLearn.WebApi.AutoMapper
             PessoaMap();
             CreateMap<Professor, ProfessorVM>();
             CreateMap<Aluno, AlunoVM>();
+            CreateMap<Aluno, AlunoAtualizaVM>();
             CreateMap<Usuario, UsuarioVM>();
 
 
