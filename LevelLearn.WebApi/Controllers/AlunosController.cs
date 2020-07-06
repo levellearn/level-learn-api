@@ -123,23 +123,22 @@ namespace LevelLearn.WebApi.Controllers
         public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoAtualizaVM> patchAluno)
         {
             Aluno alunoDb = await _alunoService.GetAsync(id);
-            if (alunoDb == null) 
+            if (alunoDb == null)
                 return NotFound();
 
-            var alunoVM = _mapper.Map<AlunoAtualizaVM>(alunoDb);
-            patchAluno.ApplyTo(alunoVM);
+            var alunoVMToPatch = _mapper.Map<AlunoAtualizaVM>(alunoDb);
+            patchAluno.ApplyTo(alunoVMToPatch);
 
-            alunoDb = _mapper.Map<Aluno>(alunoVM);
+            alunoDb = _mapper.Map<Aluno>(alunoVMToPatch);
 
             ResultadoService resultado = await _alunoService.Atualizar(alunoDb);
 
-            if (resultado.Falhou) 
+            if (resultado.Falhou)
                 return StatusCode(resultado.StatusCode, resultado);
 
-            return 
-                StatusCode(resultado.StatusCode, resultado.Mensagem);
+            return StatusCode(resultado.StatusCode, resultado.Mensagem);
         }
-      
+
 
     }
 }
