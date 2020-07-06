@@ -12,6 +12,7 @@ using LevelLearn.Infra.EFCore.UnityOfWorks;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Comum;
 using LevelLearn.Service.Interfaces.Institucional;
+using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Interfaces.Usuarios;
 using LevelLearn.Service.Services.Comum;
 using LevelLearn.Service.Services.Institucional;

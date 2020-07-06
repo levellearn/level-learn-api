@@ -59,7 +59,7 @@
             AlunosController
             </summary>    
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Usuarios.IAlunoService)">
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IAlunoService)">
             <summary>
             Ctor
             </summary>
@@ -90,7 +90,7 @@
             <param name="filtroVM"></param>
             <returns>Lista de alunos</returns>        
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoVM})">
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoAtualizaVM})">
             <summary>
             Atualiza propriedade do aluno
             </summary>
@@ -232,7 +232,7 @@
             Professores Controller
             </summary>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Usuarios.IAlunoService)">
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IAlunoService)">
             <summary>
             Ctor
             </summary>
