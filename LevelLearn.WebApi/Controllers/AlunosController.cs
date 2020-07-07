@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Interfaces.Usuarios;
@@ -119,15 +120,23 @@ namespace LevelLearn.WebApi.Controllers
         [Consumes("application/json-patch+json")]
         [ProducesResponseType(typeof(AlunoAtualizaVM), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Atualizar([FromRoute] Guid id, [FromBody] JsonPatchDocument<AlunoAtualizaVM> patchAluno)
         {
+            if (id == Guid.Empty || id != User.GetPessoaId()) return Forbid();
+
+            if (patchAluno == null) return BadRequest(ModelState);
+
             Aluno alunoDb = await _alunoService.GetAsync(id);
             if (alunoDb == null) return NotFound();
 
             var alunoVMToPatch = _mapper.Map<AlunoAtualizaVM>(alunoDb);
-            patchAluno.ApplyTo(alunoVMToPatch);
+            patchAluno.ApplyTo(alunoVMToPatch, ModelState);
 
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            alunoVMToPatch.Id = id;
             alunoDb = _mapper.Map<Aluno>(alunoVMToPatch);
 
             ResultadoService resultado = await _alunoService.Atualizar(alunoDb);

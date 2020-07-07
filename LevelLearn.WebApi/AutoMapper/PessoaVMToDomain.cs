@@ -22,23 +22,20 @@ namespace LevelLearn.WebApi.AutoMapper
 
         private void PessoaMap()
         {
+            CreateMap<AlunoVM, Aluno>();
+            CreateMap<ProfessorVM, Professor>();
+
             // Herança
             CreateMap<RegistrarPessoaVM, Pessoa>()
                .Include<RegistrarProfessorVM, Professor>()
                .Include<RegistrarAlunoVM, Aluno>();
 
             CreateMap<RegistrarProfessorVM, Professor>();
-            CreateMap<RegistrarAlunoVM, Aluno>();
-
-            // Herança
-            //CreateMap<PessoaAtualizaVM, Pessoa>()
-               //.Include<ProfessorAtualizaVM, Professor>()
-               //.Include<AlunoAtualizaVM, Aluno>();
+            CreateMap<RegistrarAlunoVM, Aluno>();            
 
             CreateMap<AlunoAtualizaVM, Aluno>();
-            //CreateMap<ProfessorAtualizaVM, Professor>();
+            CreateMap<ProfessorAtualizaVM, Professor>();
 
-            CreateMap<AlunoVM, Aluno>();
         }
 
         private void UsuarioMap()

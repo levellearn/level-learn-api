@@ -232,13 +232,13 @@
             Professores Controller
             </summary>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IAlunoService)">
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IProfessorService)">
             <summary>
             Ctor
             </summary>
             <param name="mapper"></param>
             <param name="usuarioService"></param>
-            <param name="alunoService"></param>
+            <param name="professorService"></param>
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.RegistrarProfessor(LevelLearn.ViewModel.Usuarios.RegistrarProfessorVM)">
             <summary>
@@ -246,6 +246,26 @@
             </summary>
             <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
             <returns>Sem conteúdo</returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.ObterAlunosPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+             Retorna todos os professores de uma instituicao - paginado com filtro
+            </summary>
+            <param name="instituicaoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.ProfessorAtualizaVM})">
+            <summary>
+            Atualiza propriedades do profesor
+            </summary>
+            <remarks>
+            Exemplo
+                [{ "op": "replace", "path": "/ra", "value": "123456" }]
+            </remarks>
+            <param name="id">Id professor</param>
+            <param name="patchProfessor"></param>
+            <returns></returns>
         </member>
         <member name="T:LevelLearn.WebApi.Controllers.TurmasController">
             <summary>
@@ -314,13 +334,6 @@
             </summary>
             <param name="usuarioService">IUsuarioService</param>
             <param name="mapper">IMapper</param>
-        </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RegistrarProfessor(LevelLearn.ViewModel.Usuarios.RegistrarProfessorVM)">
-            <summary>
-            Registro de usuário professor
-            </summary>
-            <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
-            <returns>Sem conteúdo</returns>     
         </member>
         <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginEmailSenhaVM)">
             <summary>

@@ -258,6 +258,7 @@ namespace LevelLearn.WebApi
             services.AddTransient<ICursoService, CursoService>();
             services.AddTransient<ITurmaService, TurmaService>();
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<IProfessorService, ProfessorService>();
             services.AddTransient<IAlunoService, AlunoService>();
         }
 

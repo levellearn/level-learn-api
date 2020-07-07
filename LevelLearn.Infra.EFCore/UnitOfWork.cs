@@ -16,6 +16,7 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
         private ITurmaRepository _turmas;
         private IPessoaRepository _pessoas;
         private IAlunoRepository _alunos;
+        private IProfessorRepository _professores;
 
         public UnitOfWork(LevelLearnContext context)
         {
@@ -45,6 +46,11 @@ namespace LevelLearn.Infra.EFCore.UnityOfWorks
         public IAlunoRepository Alunos
         {
             get { return _alunos ??= new AlunoRepository(_context); }
+        } 
+        
+        public IProfessorRepository Professores
+        {
+            get { return _professores ??= new ProfessorRepository(_context); }
         }
 
         public bool Commit() => _context.SaveChanges() > 0;

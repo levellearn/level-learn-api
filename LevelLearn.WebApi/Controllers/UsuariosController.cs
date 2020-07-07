@@ -32,28 +32,7 @@ namespace LevelLearn.WebApi.Controllers
         {
             _usuarioService = usuarioService;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Registro de usuário professor
-        /// </summary>
-        /// <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
-        /// <returns>Sem conteúdo</returns>     
-        [HttpPost("v1/[controller]/registrar/professor")]
-        [AllowAnonymous]
-        [ProducesResponseType(typeof(UsuarioVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RegistrarProfessor(RegistrarProfessorVM registrarProfessorVM)
-        {
-            var professor = _mapper.Map<Professor>(registrarProfessorVM);
-            var usuario = _mapper.Map<Usuario>(registrarProfessorVM);
-
-            ResultadoService<Usuario> resultado = await _usuarioService.RegistrarProfessor(professor, usuario);
-
-            if (!resultado.Sucesso) return StatusCode(resultado.StatusCode, resultado);
-
-            return StatusCode(resultado.StatusCode, _mapper.Map<UsuarioVM>(resultado.Dados));
-        }
+        }        
 
         /// <summary>
         /// Login de usuário - Email e Senha

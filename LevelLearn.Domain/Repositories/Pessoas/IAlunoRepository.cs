@@ -9,6 +9,13 @@ namespace LevelLearn.Domain.Repositories.Pessoas
     public interface IAlunoRepository: IRepositoryBase<Aluno, Guid>
     {
         /// <summary>
+        /// Retorna o aluno com todos os dados relacionados
+        /// </summary>
+        /// <param name="id">Id aluno</param>
+        /// <returns></returns>
+        Task<Aluno> ObterAlunoCompleto(Guid id);
+
+        /// <summary>
         /// Retorna todos os alunos que estão no mesmo curso
         /// </summary>
         /// <param name="cursoId"></param>

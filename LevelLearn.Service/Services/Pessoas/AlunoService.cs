@@ -24,21 +24,21 @@ namespace LevelLearn.Service.Services.Pessoas
             _pessoaResource = PessoaResource.ObterInstancia();
         }
 
+        public async Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtroPaginacao)
+        {
+            IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorInstituicao(instituicaoId, filtroPaginacao);
+            int total = await _uow.Alunos.TotalAlunosPorInstituicao(instituicaoId, filtroPaginacao);
+
+            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);
+        }
+
         public async Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorCurso(Guid cursoId, FiltroPaginacao filtroPaginacao)
         {
             IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorCurso(cursoId, filtroPaginacao);
             int total = await _uow.Alunos.TotalAlunosPorCurso(cursoId, filtroPaginacao);
 
             return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);            
-        }
-
-        public async Task<ResultadoService<IEnumerable<Aluno>>> ObterAlunosPorInstituicao(Guid instituicaoId, FiltroPaginacao filtroPaginacao)
-        {
-            IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorInstituicao(instituicaoId, filtroPaginacao);
-            int total = await _uow.Alunos.TotalAlunosPorCurso(instituicaoId, filtroPaginacao);
-
-            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);
-        }
+        }       
 
         // TODO: Add JsonPatch
         public async Task<ResultadoService> Atualizar(Aluno aluno)
