@@ -77,6 +77,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .CountAsync();
         }
 
+
         public async Task<IEnumerable<Turma>> TurmasAluno(Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
@@ -108,6 +109,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                                 t.Ativo == ativo)
                 .CountAsync();
         }
+
 
         public async Task<bool> ProfessorPertenceTurma(Guid turmaId, Guid pessoaId)
         {

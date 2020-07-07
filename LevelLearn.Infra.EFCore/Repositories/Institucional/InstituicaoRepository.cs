@@ -24,11 +24,13 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             // TODO: Revisar
             return await _context.Set<Instituicao>()
                 .Include(i => i.Cursos)
+                    .ThenInclude(c => c.Turmas)
                 //.Include(i => i.Pessoas)
                 //    .ThenInclude(p => p.Pessoa)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
+
 
         public async Task<IEnumerable<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId)
         {
@@ -60,6 +62,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
             return await query.ToListAsync();
         }
 
+
         public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string filtroPesquisa, bool ativo = true)
         {
             string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
@@ -83,6 +86,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .OrderBy(p => p.Nome)
                 .ToListAsync();
         }
+
 
         public Task<bool> ProfessorAdmin(Guid instituicaoId, Guid pessoaId)
         {

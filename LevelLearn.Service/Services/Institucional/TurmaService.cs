@@ -42,10 +42,6 @@ namespace LevelLearn.Service.Services.Institucional
 
         public async Task<ResultadoService<IEnumerable<Turma>>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao)
         {
-            //var taskTurmas = _uow.Turmas.TurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao);
-
-            //var taskTotal = _uow.Turmas.TotalTurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);
-
             var turmas = await _uow.Turmas.TurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao);
 
             var total = await _uow.Turmas.TotalTurmasProfessorPorCurso(cursoId, pessoaId, filtroPaginacao.FiltroPesquisa, filtroPaginacao.Ativo);

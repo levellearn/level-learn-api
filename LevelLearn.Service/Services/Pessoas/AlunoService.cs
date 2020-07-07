@@ -44,7 +44,7 @@ namespace LevelLearn.Service.Services.Pessoas
         public async Task<ResultadoService> Atualizar(Aluno aluno)
         {
             if (!aluno.EstaValido())
-                return ResultadoServiceFactory.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
+                return ResultadoServiceFactory.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);           
 
             _uow.Alunos.Update(aluno);
             if (!await _uow.CommitAsync()) 

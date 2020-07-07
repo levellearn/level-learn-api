@@ -105,10 +105,11 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Instituicao>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
+        // TODO: testar ativação cascata
         public async Task<ResultadoService<Instituicao>> AlternarAtivacao(Guid instituicaoId, Guid pessoaId)
         {
             // Validação BD
-            Instituicao instituicao = await _uow.Instituicoes.GetAsync(instituicaoId);
+            Instituicao instituicao = await _uow.Instituicoes.InstituicaoCompleta(instituicaoId);
 
             if (instituicao == null) return ResultadoServiceFactory<Instituicao>.NotFound(_resource.InstituicaoNaoEncontrada);
 

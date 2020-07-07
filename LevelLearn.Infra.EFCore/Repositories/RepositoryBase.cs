@@ -53,14 +53,19 @@ namespace LevelLearn.Infra.EFCore.Repository
             _context.Set<TEntity>().AddRange(entities);
         }
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Attach(entity);
+
             _context.Set<TEntity>().Update(entity);
         }
 
         public void Remove(TEntity entity)
         {
-            _context.Set<TEntity>().Attach(entity);
+            if(_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Attach(entity);
+            
             _context.Set<TEntity>().Remove(entity);
         }
 

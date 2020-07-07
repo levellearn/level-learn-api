@@ -31,6 +31,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+
         public async Task<IEnumerable<Curso>> CursosProfessor(Guid pessoaId, string searchFilter, int pageNumber, int pageSize)
         {
             searchFilter = searchFilter.GenerateSlug();
@@ -57,6 +58,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                     .Where(p => p.NomePesquisa.Contains(filtroPesquisa) && p.Ativo)
                 .CountAsync();
         }
+
 
         public async Task<IEnumerable<Curso>> CursosProfessorPorInstituicao(Guid instituicaoId, Guid pessoaId, FiltroPaginacao filtro)
         {
@@ -90,6 +92,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                         c.Ativo == ativo)
                 .CountAsync();
         }
+
 
         public async Task<bool> ProfessorDoCurso(Guid cursoId, Guid pessoaId)
         {

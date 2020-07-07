@@ -19,16 +19,21 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
         {
         }
 
-        public override Aluno Get(Guid id)
-        {
-            return _context.Set<Aluno>().AsNoTracking().FirstOrDefault(p => p.Id == id);
-        }
-
         public override async Task<Aluno> GetAsync(Guid id)
         {
             return await _context.Set<Aluno>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task<Aluno> ObterAlunoCompleto(Guid id)
+        {
+            return await _context.Set<Aluno>()
+                .AsNoTracking()
+                .Include(a => a.Cursos)
+                    .ThenInclude(c => c.Curso)
+                .Include(a => a.Turmas)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+       
         public async Task<IEnumerable<Aluno>> ObterAlunosPorCurso(Guid cursoId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();

@@ -17,12 +17,9 @@ namespace LevelLearn.WebApi.AutoMapper
         /// </summary>
         public PessoaDomainToVM()
         {
-            PessoaMap();
-            CreateMap<Professor, ProfessorVM>();
-            CreateMap<Aluno, AlunoVM>();
-            CreateMap<Aluno, AlunoAtualizaVM>();
-            CreateMap<Usuario, UsuarioVM>();
+            PessoaMap();          
 
+            CreateMap<Usuario, UsuarioVM>();
 
             CreateMap<PessoaInstituicao, PessoaInstituicaoVM>();
             CreateMap<PessoaCurso, PessoaCursoVM>();
@@ -30,6 +27,10 @@ namespace LevelLearn.WebApi.AutoMapper
 
         private void PessoaMap()
         {
+            CreateMap<Professor, ProfessorVM>();
+            CreateMap<Aluno, AlunoVM>();
+            CreateMap<Aluno, AlunoAtualizaVM>();
+
             CreateMap<Pessoa, PessoaVM>()
                 .ForMember(
                     dest => dest.Genero,

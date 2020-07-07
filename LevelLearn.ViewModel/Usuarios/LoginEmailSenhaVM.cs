@@ -1,6 +1,4 @@
-﻿using LevelLearn.ViewModel.Comum;
-
-namespace LevelLearn.ViewModel.Usuarios
+﻿namespace LevelLearn.ViewModel.Usuarios
 {
     public class LoginEmailSenhaVM
     {
