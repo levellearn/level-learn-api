@@ -32,7 +32,7 @@ namespace LevelLearn.Service.Services.Pessoas
             return ResultadoServiceFactory<IEnumerable<Professor>>.Ok(professores, total);
         }
 
-        // TODO: Add JsonPatch
+        // TODO: se altera nome, refletir no usuário tbm
         public async Task<ResultadoService> Atualizar(Professor professor)
         {
             if (!professor.EstaValido())

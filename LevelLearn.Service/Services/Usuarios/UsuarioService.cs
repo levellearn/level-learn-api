@@ -295,6 +295,32 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory.NoContent(_usuarioResource.UsuarioRedefinirSenhaSucesso);
         }
 
+        public async Task<ResultadoService> AlterarSenha(string userId, AlterarSenhaVM vm)
+        {
+            // Validações VM
+            var senhaVO = new Senha(vm.NovaSenha);
+            if (!senhaVO.EstaValido())
+                return ResultadoServiceFactory.BadRequest(senhaVO.ResultadoValidacao.GetErrorsResult(), _sharedResource.DadosInvalidos);
+
+            if (string.IsNullOrWhiteSpace(vm.SenhaAtual))
+                return ResultadoServiceFactory.BadRequest(_sharedResource.DadosInvalidos);
+
+            // Validações BD
+            Usuario usuario = await _userManager.FindByIdAsync(userId);
+
+            if (usuario == null) return ResultadoServiceFactory.NotFound(_sharedResource.NaoEncontrado);
+           
+            // Identity verificando alterar senha
+            IdentityResult identityResult = await _userManager.ChangePasswordAsync(usuario, vm.SenhaAtual, vm.NovaSenha);
+
+            if (!identityResult.Succeeded)
+                return ResultadoServiceFactory.BadRequest(_usuarioResource.UsuarioAlterarSenhaFalha);
+
+            _logger.LogInformation("Usuário alterou a senha {@UsuarioId}", usuario.Id);
+
+            return ResultadoServiceFactory.NoContent(_usuarioResource.UsuarioAlterarSenhaSucesso);
+        }
+
         public async Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo)
         {
             Usuario usuario = await _userManager.FindByIdAsync(userId);

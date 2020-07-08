@@ -136,8 +136,7 @@ namespace LevelLearn.WebApi.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            alunoVMToPatch.Id = id;
-            alunoDb = _mapper.Map<Aluno>(alunoVMToPatch);
+            _mapper.Map(alunoVMToPatch, alunoDb);
 
             ResultadoService resultado = await _alunoService.Atualizar(alunoDb);
 

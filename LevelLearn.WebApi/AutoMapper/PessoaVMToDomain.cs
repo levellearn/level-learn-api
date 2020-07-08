@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.ValueObjects;
 using LevelLearn.ViewModel.Pessoas;
 using LevelLearn.ViewModel.Usuarios;
 
@@ -27,11 +28,24 @@ namespace LevelLearn.WebApi.AutoMapper
 
             // Herança
             CreateMap<RegistrarPessoaVM, Pessoa>()
-               .Include<RegistrarProfessorVM, Professor>()
-               .Include<RegistrarAlunoVM, Aluno>();
+                .Include<RegistrarProfessorVM, Professor>()
+                .Include<RegistrarAlunoVM, Aluno>();
 
             CreateMap<RegistrarProfessorVM, Professor>();
-            CreateMap<RegistrarAlunoVM, Aluno>();            
+            CreateMap<RegistrarAlunoVM, Aluno>();
+
+            // Herança
+            CreateMap<PessoaAtualizaVM, Pessoa>()
+                .ForMember(
+                    dest => dest.Cpf,
+                    opt => opt.MapFrom(src => new CPF(src.Cpf))
+                )
+                .ForMember(
+                    dest => dest.Celular,
+                    opt => opt.MapFrom(src => new Celular(src.Celular))
+                )
+               .Include<ProfessorAtualizaVM, Professor>()
+               .Include<AlunoAtualizaVM, Aluno>();
 
             CreateMap<AlunoAtualizaVM, Aluno>();
             CreateMap<ProfessorAtualizaVM, Professor>();

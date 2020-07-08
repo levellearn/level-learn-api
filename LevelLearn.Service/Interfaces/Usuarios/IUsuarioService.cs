@@ -18,6 +18,7 @@ namespace LevelLearn.Service.Interfaces.Usuarios
         Task<ResultadoService<UsuarioTokenVM>> ConfirmarEmail(string userId, string confirmationToken);
         Task<ResultadoService> EsqueciSenha(string email);
         Task<ResultadoService> RedefinirSenha(RedefinirSenhaVM redefinirSenhaVM);
+        Task<ResultadoService> AlterarSenha(string userId, AlterarSenhaVM alterarSenhaVM);
         Task<ResultadoService<Usuario>> AlterarFotoPerfil(string userId, IFormFile arquivo);
 
     }

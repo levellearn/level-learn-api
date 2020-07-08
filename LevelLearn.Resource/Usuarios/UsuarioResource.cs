@@ -30,6 +30,8 @@
         public string UsuarioEmailConfirmarSucesso => ObterResource(nameof(UsuarioEmailConfirmarSucesso));
         public string UsuarioRedefinirSenhaFalha => ObterResource(nameof(UsuarioRedefinirSenhaFalha));
         public string UsuarioRedefinirSenhaSucesso => ObterResource(nameof(UsuarioRedefinirSenhaSucesso));
+        public string UsuarioAlterarSenhaFalha => ObterResource(nameof(UsuarioAlterarSenhaFalha));
+        public string UsuarioAlterarSenhaSucesso => ObterResource(nameof(UsuarioAlterarSenhaSucesso));
 
         public string UsuarioSenhaObrigatoria => ObterResource(nameof(UsuarioSenhaObrigatoria));
         public string UsuarioSenhaTamanho(params object[] arguments) => ObterResource(nameof(UsuarioSenhaTamanho), arguments);

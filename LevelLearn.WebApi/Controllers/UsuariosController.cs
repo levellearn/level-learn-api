@@ -165,6 +165,29 @@ namespace LevelLearn.WebApi.Controllers
         }
 
         /// <summary>
+        /// Alterar senha
+        /// </summary>
+        /// <param name="alterarSenhaVM">Dados para alterar senha</param>
+        /// <returns>Sem conteúdo</returns>
+        /// <response code="204">Sem conteúdo</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="404">Usuário não encontrado</response>
+        /// <response code="500">Ops, ocorreu um erro no sistema!</response>
+        [HttpPost("v1/[controller]/redefinir-senha")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> RedefinirSenha(AlterarSenhaVM alterarSenhaVM)
+        {
+            var resultado = await _usuarioService.AlterarSenha(User.GetUserId(), alterarSenhaVM);
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Alteração da foto perfil do usuário
         /// </summary>
         /// <param name="arquivo">Arquivo com a imagem do usuário</param>

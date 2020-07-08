@@ -50,7 +50,7 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public void Atualizar(string nome, string sigla, string descricao)
         {
-            Nome = nome.RemoveExtraSpaces().ToUpper();
+            Nome = nome.RemoveExtraSpaces();
             Sigla = sigla.RemoveExtraSpaces().ToUpper();
             Descricao = descricao?.Trim();
 

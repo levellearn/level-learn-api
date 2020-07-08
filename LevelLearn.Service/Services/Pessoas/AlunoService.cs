@@ -1,9 +1,12 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Response;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,12 +18,14 @@ namespace LevelLearn.Service.Services.Pessoas
         private readonly IUnitOfWork _uow;
         private readonly ISharedResource _sharedResource;
         private readonly PessoaResource _pessoaResource;
+        private readonly UserManager<Usuario> _userManager;
 
-        public AlunoService(IUnitOfWork uow, ISharedResource sharedResource)
+        public AlunoService(IUnitOfWork uow, ISharedResource sharedResource, UserManager<Usuario> userManager)
             : base(uow.Alunos)
         {
             _uow = uow;
             _sharedResource = sharedResource;
+            _userManager = userManager;
             _pessoaResource = PessoaResource.ObterInstancia();
         }
 
@@ -40,11 +45,24 @@ namespace LevelLearn.Service.Services.Pessoas
             return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);            
         }       
 
-        // TODO: Add JsonPatch
-        public async Task<ResultadoService> Atualizar(Aluno aluno)
+        // TODO: se altera nome, refletir no usuário tbm
+        public async Task<ResultadoService> Atualizar(string usuarioId, Aluno aluno)
         {
             if (!aluno.EstaValido())
-                return ResultadoServiceFactory.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);           
+                return ResultadoServiceFactory.BadRequest(aluno.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
+
+            if (usuario.UserName != aluno.Nome)
+            {
+                usuario.UserName = aluno.Nome;
+
+                // Atualizando USUÁRIO BD
+                IdentityResult identityResult = await _userManager.UpdateAsync(usuario);
+
+                if (!identityResult.Succeeded)
+                    return ResultadoServiceFactory<Usuario>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
+            }
 
             _uow.Alunos.Update(aluno);
             if (!await _uow.CommitAsync()) 

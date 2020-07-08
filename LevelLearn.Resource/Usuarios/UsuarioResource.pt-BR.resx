@@ -120,6 +120,12 @@
   <data name="IdObrigatorio" xml:space="preserve">
     <value>ID precisa estar preenchido</value>
   </data>
+  <data name="UsuarioAlterarSenhaFalha" xml:space="preserve">
+    <value>Falha ao alterar senha</value>
+  </data>
+  <data name="UsuarioAlterarSenhaSucesso" xml:space="preserve">
+    <value>Sucesso ao alterar senha</value>
+  </data>
   <data name="UsuarioConfirmacaoSenhaNaoConfere" xml:space="preserve">
     <value>Senha e confirmação de senha não coincidem</value>
   </data>

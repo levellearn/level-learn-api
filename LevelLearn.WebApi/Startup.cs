@@ -198,24 +198,29 @@ namespace LevelLearn.WebApi
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();
-            //TODO: aumentar tempo email
-            services.Configure<IdentityOptions>(options =>
+            
+            services.Configure<IdentityOptions>(opt =>
             {
                 // Password settings
-                options.Password.RequireDigit = RegraUsuario.SENHA_REQUER_DIGITO;
-                options.Password.RequiredLength = RegraUsuario.SENHA_TAMANHO_MIN;
-                options.Password.RequireNonAlphanumeric = RegraUsuario.SENHA_REQUER_ESPECIAL;
-                options.Password.RequireUppercase = RegraUsuario.SENHA_REQUER_MAIUSCULO;
-                options.Password.RequireLowercase = RegraUsuario.SENHA_REQUER_MINUSCULO;
+                opt.Password.RequireDigit = RegraUsuario.SENHA_REQUER_DIGITO;
+                opt.Password.RequiredLength = RegraUsuario.SENHA_TAMANHO_MIN;
+                opt.Password.RequireNonAlphanumeric = RegraUsuario.SENHA_REQUER_ESPECIAL;
+                opt.Password.RequireUppercase = RegraUsuario.SENHA_REQUER_MAIUSCULO;
+                opt.Password.RequireLowercase = RegraUsuario.SENHA_REQUER_MINUSCULO;
 
                 // Lockout settings
-                options.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(appSettings.IdentitySettings.TempoBloqueioMinutos);
+                opt.Lockout.MaxFailedAccessAttempts = appSettings.IdentitySettings.TentativaMaximaAcesso;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(appSettings.IdentitySettings.TempoBloqueioMinutos);
 
                 // User settings
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
+                opt.User.RequireUniqueEmail = true;
+                opt.SignIn.RequireConfirmedEmail = true;
             });
+
+            services.Configure<DataProtectionTokenProviderOptions>(opt => 
+                opt.TokenLifespan = TimeSpan.FromDays(1)
+            );
+
         }
 
         private void ConfigureRedis(IServiceCollection services)
