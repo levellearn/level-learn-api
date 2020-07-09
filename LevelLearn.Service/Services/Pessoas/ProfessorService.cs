@@ -3,9 +3,11 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.Comum;
+using LevelLearn.Domain.ValueObjects;
 using LevelLearn.Resource;
 using LevelLearn.Service.Interfaces.Pessoas;
 using LevelLearn.Service.Response;
+using LevelLearn.ViewModel.Pessoas;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -59,8 +61,8 @@ namespace LevelLearn.Service.Services.Pessoas
             }
 
             // Verifica se CPF já existe 
-            // TODO: Mudar CPF validar
-            //if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == professor.Cpf.Numero))
+            // TODO: Mudar CPF validar e mudar nome pesquisa
+            //if (await _uow.Pessoas.EntityExists(p => p.Cpf.Numero == professor.Cpf.Numero && p.Id != professor.Id))
             //    return ResultadoServiceFactory.BadRequest(_pessoaResource.PessoaCPFJaExiste);
 
             _uow.Professores.Update(professor);
@@ -70,10 +72,63 @@ namespace LevelLearn.Service.Services.Pessoas
             return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
+        //public async Task<ResultadoService> Atualizar(Guid pessoaId, string usuarioId, ProfessorAtualizaVM vm)
+        //{
+        //    // Validações BD
+        //    Professor professor = await _uow.Professores.GetAsync(pessoaId);
+
+        //    if (professor == null) return ResultadoServiceFactory.NotFound(_sharedResource.NaoEncontrado);
+
+        //    // Verifica se CPF já existe 
+        //    if (professor.Cpf.Numero != vm.Cpf)
+        //        if (await _uow.Pessoas.EntityExists(p => p.Cpf.Numero == professor.Cpf.Numero && p.Id != professor.Id))
+        //            return ResultadoServiceFactory.BadRequest(_pessoaResource.PessoaCPFJaExiste);
+
+        //    // Validação professor
+        //    professor.Atualizar(vm.Nome, new CPF(vm.Cpf), new Celular(vm.Celular), vm.Genero, vm.DataNascimento);
+
+        //    if (!professor.EstaValido())
+        //        return ResultadoServiceFactory.BadRequest(professor.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+        //    Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
+
+        //    if (usuario.Nome != professor.Nome)
+        //    {
+        //        // Atualizando USUÁRIO BD
+        //        var resultadoIdentity = await AtualizarUsuario(usuario, professor);
+        //        if (resultadoIdentity.Falhou) return resultadoIdentity;
+        //    }
+
+        //    // Atualizando Pessoa BD
+        //    _uow.Professores.Update(professor);
+        //    if (!await _uow.CommitAsync())
+        //        return ResultadoServiceFactory.InternalServerError(_sharedResource.FalhaAtualizar);
+
+        //    return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
+        //}
+
+
         public void Dispose()
         {
             _uow.Dispose();
         }
+
+        private async Task<ResultadoService> AtualizarUsuario(Usuario usuario, Pessoa pessoa)
+        {
+            usuario.Nome = pessoa.Nome;
+
+            if (!usuario.EstaValido())
+                return ResultadoServiceFactory.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            // Atualizando USUÁRIO BD
+            IdentityResult identityResult = await _userManager.UpdateAsync(usuario);
+
+            if (!identityResult.Succeeded)
+                return ResultadoServiceFactory<Usuario>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
+
+            return ResultadoServiceFactory.NoContent();
+        }
+
 
     }
 }

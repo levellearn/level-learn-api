@@ -25,6 +25,8 @@ namespace LevelLearn.Domain.ValueObjects
             return ResultadoValidacao.IsValid;
         }
 
+        #region Overrides
+
         public override string ToString()
         {
             if (!int.TryParse(Numero, out int numeroConvertido) || !ResultadoValidacao.IsValid)
@@ -32,6 +34,40 @@ namespace LevelLearn.Domain.ValueObjects
 
             return numeroConvertido.ToString("###\\.###\\.###-##").PadLeft(14, '0');
         }
+
+        public override bool Equals(object obj)
+        {
+            var compareTo = obj as CPF;
+
+            if (ReferenceEquals(this, compareTo)) return true;
+            if (compareTo is null) return false;
+
+            return this.Numero.Equals(compareTo.Numero);
+        }
+
+        public static bool operator ==(CPF a, CPF b)
+        {
+            if (a is null && b is null)
+                return true;
+
+            if (a is null || b is null)
+                return false;
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(CPF a, CPF b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return (GetType().GetHashCode() * 907) + Numero.GetHashCode();
+        } 
+
+        #endregion
+
 
     }
 }

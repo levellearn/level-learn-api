@@ -67,7 +67,7 @@ namespace LevelLearn.Service.Services.Pessoas
             }
 
             // Validações BD
-            // TODO: Mudar CPF validar
+            // TODO: Mudar CPF validar e mudar nome pesquisa
             //if (!string.IsNullOrWhiteSpace(aluno.Cpf.Numero))
             //{
             //    if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == aluno.Cpf.Numero))
