@@ -39,7 +39,7 @@ namespace LevelLearn.Domain.Entities.Usuarios
         #region Props
 
         public string Nome { get; set; } // Redundância pessoa
-        public string NickName { get; set; }
+        public string NickName { get; set; } // Rota alterar NickName
         public string ImagemUrl { get; set; }
         public string ImagemNome { get; set; }
         public Guid PessoaId { get; set; }

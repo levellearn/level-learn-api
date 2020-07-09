@@ -180,6 +180,9 @@
   <data name="UsuarioRedefinirSenhaSucesso" xml:space="preserve">
     <value>Senha redefinida com sucesso</value>
   </data>
+  <data name="UsuarioSenhaAtualIncorreta" xml:space="preserve">
+    <value>Senha atual incorreta</value>
+  </data>
   <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
     <value>Senha precisa estar preenchida</value>
   </data>

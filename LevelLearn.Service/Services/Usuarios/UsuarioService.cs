@@ -309,12 +309,12 @@ namespace LevelLearn.Service.Services.Usuarios
             Usuario usuario = await _userManager.FindByIdAsync(userId);
 
             if (usuario == null) return ResultadoServiceFactory.NotFound(_sharedResource.NaoEncontrado);
-           
+
             // Identity verificando alterar senha
             IdentityResult identityResult = await _userManager.ChangePasswordAsync(usuario, vm.SenhaAtual, vm.NovaSenha);
 
             if (!identityResult.Succeeded)
-                return ResultadoServiceFactory.BadRequest(_usuarioResource.UsuarioAlterarSenhaFalha);
+                return ResultadoServiceFactory.BadRequest(_usuarioResource.UsuarioSenhaAtualIncorreta);
 
             _logger.LogInformation("Usuário alterou a senha {@UsuarioId}", usuario.Id);
 
@@ -359,9 +359,11 @@ namespace LevelLearn.Service.Services.Usuarios
 
         private async Task<ResultadoService> ValidarCriarUsuarioBD(Usuario usuario, Pessoa pessoa)
         {
-            if (pessoa.TipoPessoa == TipoPessoa.Professor)
+            string cpf = pessoa.Cpf.Numero;
+
+            if (!string.IsNullOrWhiteSpace(cpf))
             {
-                if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == pessoa.Cpf.Numero))
+                if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == cpf))
                     return ResultadoServiceFactory.BadRequest(_pessoaResource.PessoaCPFJaExiste);
             }
 

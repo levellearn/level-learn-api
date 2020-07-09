@@ -177,6 +177,9 @@
   <data name="UsuarioRedefinirSenhaSucesso" xml:space="preserve">
     <value>Password changed successfully</value>
   </data>
+  <data name="UsuarioSenhaAtualIncorreta" xml:space="preserve">
+    <value>Incorrect current password</value>
+  </data>
   <data name="UsuarioSenhaObrigatoria" xml:space="preserve">
     <value>Password must be filled</value>
   </data>

@@ -261,7 +261,7 @@
             </summary>
             <remarks>
             Exemplo
-                [{ "op": "replace", "path": "/ra", "value": "123456" }]
+                [{ "op": "replace", "path": "/celular", "value": "+5512988547823" }]
             </remarks>
             <param name="id">Id professor</param>
             <param name="patchProfessor"></param>
@@ -397,7 +397,7 @@
             <response code="404">Usuário não encontrado</response>
             <response code="500">Ops, ocorreu um erro no sistema!</response>
         </member>
-        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RedefinirSenha(LevelLearn.ViewModel.Usuarios.AlterarSenhaVM)">
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.AlterarSenha(LevelLearn.ViewModel.Usuarios.AlterarSenhaVM)">
             <summary>
             Alterar senha
             </summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Extensions;
@@ -17,6 +13,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
 {
@@ -90,7 +89,7 @@ namespace LevelLearn.WebApi.Controllers
         /// </summary>
         /// <remarks>
         /// Exemplo
-        ///     [{ "op": "replace", "path": "/ra", "value": "123456" }]
+        ///     [{ "op": "replace", "path": "/celular", "value": "+5512988547823" }]
         /// </remarks>
         /// <param name="id">Id professor</param>
         /// <param name="patchProfessor"></param>
@@ -116,9 +115,9 @@ namespace LevelLearn.WebApi.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            profesorDb = _mapper.Map<Professor>(professorVMToPatch);
+            _mapper.Map(professorVMToPatch, profesorDb);
 
-            ResultadoService resultado = await _professorService.Atualizar(profesorDb);
+            ResultadoService resultado = await _professorService.Atualizar(User.GetUserId(), profesorDb);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 

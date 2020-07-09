@@ -21,9 +21,10 @@ namespace LevelLearn.Service.Interfaces.Pessoas
         /// <summary>
         /// Atualizar propriedades de um professor
         /// </summary>
+        /// <param name="usuarioId"></param>
         /// <param name="aluno"></param>
         /// <returns></returns>
-        Task<ResultadoService> Atualizar(Professor professor);
+        Task<ResultadoService> Atualizar(string usuarioId, Professor professor);
     }
 
 }

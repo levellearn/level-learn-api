@@ -40,6 +40,7 @@
         public string UsuarioSenhaRequerMinusculo => ObterResource(nameof(UsuarioSenhaRequerMinusculo));
         public string UsuarioSenhaRequerDigito => ObterResource(nameof(UsuarioSenhaRequerDigito));
         public string UsuarioSenhaRequerEspecial => ObterResource(nameof(UsuarioSenhaRequerEspecial));
+        public string UsuarioSenhaAtualIncorreta => ObterResource(nameof(UsuarioSenhaAtualIncorreta));
 
         public string UsuarioEmailObrigatorio => ObterResource(nameof(UsuarioEmailObrigatorio));
         public string UsuarioEmailTamanhoMaximo(int argument) => ObterResource(nameof(UsuarioEmailTamanhoMaximo), argument);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Interfaces.Pessoas
 {
-    public interface IAlunoService: IServiceBase<Aluno, Guid>, IDisposable
+    public interface IAlunoService : IServiceBase<Aluno, Guid>, IDisposable
     {
         /// <summary>
         /// Retorna todos os alunos por curso
@@ -28,9 +28,10 @@ namespace LevelLearn.Service.Interfaces.Pessoas
         /// <summary>
         /// Atualizar propriedades de um aluno
         /// </summary>
+        /// <param name="usuarioId"></param>
         /// <param name="aluno"></param>
         /// <returns></returns>
-        Task<ResultadoService> Atualizar(Aluno aluno);
+        Task<ResultadoService> Atualizar(string usuarioId, Aluno aluno);
     }
 
 }

@@ -42,10 +42,9 @@ namespace LevelLearn.Service.Services.Pessoas
             IEnumerable<Aluno> alunos = await _uow.Alunos.ObterAlunosPorCurso(cursoId, filtroPaginacao);
             int total = await _uow.Alunos.TotalAlunosPorCurso(cursoId, filtroPaginacao);
 
-            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);            
-        }       
+            return ResultadoServiceFactory<IEnumerable<Aluno>>.Ok(alunos, total);
+        }
 
-        // TODO: se altera nome, refletir no usuário tbm
         public async Task<ResultadoService> Atualizar(string usuarioId, Aluno aluno)
         {
             if (!aluno.EstaValido())
@@ -53,9 +52,12 @@ namespace LevelLearn.Service.Services.Pessoas
 
             Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
 
-            if (usuario.UserName != aluno.Nome)
+            if (usuario.Nome != aluno.Nome)
             {
-                usuario.UserName = aluno.Nome;
+                usuario.Nome = aluno.Nome;
+
+                if (!usuario.EstaValido())
+                    return ResultadoServiceFactory.BadRequest(usuario.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
                 // Atualizando USUÁRIO BD
                 IdentityResult identityResult = await _userManager.UpdateAsync(usuario);
@@ -64,8 +66,16 @@ namespace LevelLearn.Service.Services.Pessoas
                     return ResultadoServiceFactory<Usuario>.BadRequest(identityResult.GetErrorsResult(), _sharedResource.DadosInvalidos);
             }
 
+            // Validações BD
+            // TODO: Mudar CPF validar
+            //if (!string.IsNullOrWhiteSpace(aluno.Cpf.Numero))
+            //{
+            //    if (await _uow.Pessoas.EntityExists(i => i.Cpf.Numero == aluno.Cpf.Numero))
+            //        return ResultadoServiceFactory.BadRequest(_pessoaResource.PessoaCPFJaExiste);
+            //}
+
             _uow.Alunos.Update(aluno);
-            if (!await _uow.CommitAsync()) 
+            if (!await _uow.CommitAsync())
                 return ResultadoServiceFactory.InternalServerError(_sharedResource.FalhaAtualizar);
 
             return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
@@ -74,7 +84,8 @@ namespace LevelLearn.Service.Services.Pessoas
         public void Dispose()
         {
             _uow.Dispose();
-        }
+        }        
+
 
     }
 }

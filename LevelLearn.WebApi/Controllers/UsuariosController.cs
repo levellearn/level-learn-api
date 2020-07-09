@@ -173,12 +173,12 @@ namespace LevelLearn.WebApi.Controllers
         /// <response code="400">Dados inválidos</response>
         /// <response code="404">Usuário não encontrado</response>
         /// <response code="500">Ops, ocorreu um erro no sistema!</response>
-        [HttpPost("v1/[controller]/redefinir-senha")]
-        [AllowAnonymous]
+        [HttpPost("v1/[controller]/alterar-senha")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> RedefinirSenha(AlterarSenhaVM alterarSenhaVM)
+        public async Task<ActionResult> AlterarSenha(AlterarSenhaVM alterarSenhaVM)
         {
             var resultado = await _usuarioService.AlterarSenha(User.GetUserId(), alterarSenhaVM);
 
