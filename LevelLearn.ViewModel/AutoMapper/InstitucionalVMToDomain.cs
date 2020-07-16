@@ -3,7 +3,7 @@ using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.ViewModel.Institucional.Curso;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 
-namespace LevelLearn.WebApi.AutoMapper
+namespace LevelLearn.ViewModel.AutoMapper
 {
     /// <summary>
     /// Institucional VM To Domain

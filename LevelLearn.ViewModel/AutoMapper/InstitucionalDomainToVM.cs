@@ -7,7 +7,7 @@ using LevelLearn.ViewModel.Institucional.Instituicao;
 using LevelLearn.ViewModel.Institucional.Turma;
 using LevelLearn.ViewModel.Pessoas;
 
-namespace LevelLearn.WebApi.AutoMapper
+namespace LevelLearn.ViewModel.AutoMapper
 {
     /// <summary>
     /// Institucional Domain To VM

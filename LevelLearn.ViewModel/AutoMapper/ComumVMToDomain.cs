@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Utils.Comum;
-using LevelLearn.ViewModel;
 
-namespace LevelLearn.WebApi.AutoMapper
+namespace LevelLearn.ViewModel.AutoMapper
 {
     /// <summary>
     /// Comum VM To Domain

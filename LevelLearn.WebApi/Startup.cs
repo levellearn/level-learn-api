@@ -18,6 +18,7 @@ using LevelLearn.Service.Services.Comum;
 using LevelLearn.Service.Services.Institucional;
 using LevelLearn.Service.Services.Pessoas;
 using LevelLearn.Service.Services.Usuarios;
+using LevelLearn.ViewModel.AutoMapper;
 using LevelLearn.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -98,7 +99,13 @@ namespace LevelLearn.WebApi
             ConfigureJWTAuthentication(services);
 
             // Auto Mapper
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(
+                typeof(PessoaDomainToVM),
+                typeof(PessoaVMToDomain), 
+                typeof(InstitucionalDomainToVM), 
+                typeof(InstitucionalVMToDomain),
+                typeof(ComumVMToDomain)
+            );
 
             // Repositories
             //ConfigureRepositories(services);
@@ -198,7 +205,7 @@ namespace LevelLearn.WebApi
                         .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<LevelLearnContext>()
                         .AddDefaultTokenProviders();
-            
+
             services.Configure<IdentityOptions>(opt =>
             {
                 // Password settings
@@ -217,7 +224,7 @@ namespace LevelLearn.WebApi
                 opt.SignIn.RequireConfirmedEmail = true;
             });
 
-            services.Configure<DataProtectionTokenProviderOptions>(opt => 
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
                 opt.TokenLifespan = TimeSpan.FromDays(1)
             );
 

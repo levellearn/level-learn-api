@@ -128,23 +128,12 @@ namespace LevelLearn.WebApi.Controllers
 
             if (patchAluno == null || !ModelState.IsValid) return BadRequest(ModelState);
 
-            Aluno alunoDb = await _alunoService.GetAsync(id);
-            if (alunoDb == null) return NotFound();
-
-            var alunoVMToPatch = _mapper.Map<AlunoAtualizaVM>(alunoDb);
-            patchAluno.ApplyTo(alunoVMToPatch, ModelState);
-
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            _mapper.Map(alunoVMToPatch, alunoDb);
-
-            ResultadoService resultado = await _alunoService.Atualizar(User.GetUserId(), alunoDb);
+            ResultadoService resultado = await _alunoService.AtualizarPatch(id, User.GetUserId(), patchAluno);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }
-
 
     }
 }

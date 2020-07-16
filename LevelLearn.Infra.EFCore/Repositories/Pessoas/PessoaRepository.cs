@@ -2,10 +2,7 @@
 using LevelLearn.Domain.Repositories.Pessoas;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
 {
@@ -15,14 +12,6 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
             : base(context)
         { }
 
-        //public List<Pessoa> SelectProfessoresInstituicao(int instituicaoId)
-        //{
-        //    return _context.Set<PessoaInstituicao>()
-        //                    .Where(p => p.Perfil == PerfilInstituicaoEnum.Professor || p.Perfil == PerfilInstituicaoEnum.Admin)
-        //                    .Where(p => p.InstituicaoId == instituicaoId)
-        //                    .Select(p => p.Pessoa)
-        //                    .ToList();
-        //}
 
     }
 }

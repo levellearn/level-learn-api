@@ -5,7 +5,7 @@ using LevelLearn.Domain.ValueObjects;
 using LevelLearn.ViewModel.Pessoas;
 using LevelLearn.ViewModel.Usuarios;
 
-namespace LevelLearn.WebApi.AutoMapper
+namespace LevelLearn.ViewModel.AutoMapper
 {
     /// <summary>
     /// Pessoa VM To Domain

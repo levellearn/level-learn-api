@@ -105,19 +105,9 @@ namespace LevelLearn.WebApi.Controllers
         {
             if (id == Guid.Empty || id != User.GetPessoaId()) return Forbid();
 
-            if (patchProfessor == null) return BadRequest(ModelState);
+            if (patchProfessor == null || !ModelState.IsValid) return BadRequest(ModelState);
 
-            Professor professorDb = await _professorService.GetAsync(id);
-            if (professorDb == null) return NotFound();
-
-            var professorVMToPatch = _mapper.Map<ProfessorAtualizaVM>(professorDb);
-            patchProfessor.ApplyTo(professorVMToPatch, ModelState);
-
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            _mapper.Map(professorVMToPatch, professorDb);
-
-            ResultadoService resultado = await _professorService.Atualizar(User.GetUserId(), professorDb);
+            ResultadoService resultado = await _professorService.AtualizarPatch(id, User.GetUserId(), patchProfessor);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 

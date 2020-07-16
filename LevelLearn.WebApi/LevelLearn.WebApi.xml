@@ -4,56 +4,6 @@
         <name>LevelLearn.WebApi</name>
     </assembly>
     <members>
-        <member name="T:LevelLearn.WebApi.AutoMapper.ComumVMToDomain">
-            <summary>
-            Comum VM To Domain
-            </summary>
-        </member>
-        <member name="M:LevelLearn.WebApi.AutoMapper.ComumVMToDomain.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="T:LevelLearn.WebApi.AutoMapper.InstitucionalDomainToVM">
-            <summary>
-            Institucional Domain To VM
-            </summary>
-        </member>
-        <member name="M:LevelLearn.WebApi.AutoMapper.InstitucionalDomainToVM.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="T:LevelLearn.WebApi.AutoMapper.InstitucionalVMToDomain">
-            <summary>
-            Institucional VM To Domain
-            </summary>
-        </member>
-        <member name="M:LevelLearn.WebApi.AutoMapper.InstitucionalVMToDomain.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="T:LevelLearn.WebApi.AutoMapper.PessoaDomainToVM">
-            <summary>
-            Pessoa Domain To VM
-            </summary>
-        </member>
-        <member name="M:LevelLearn.WebApi.AutoMapper.PessoaDomainToVM.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
-        <member name="T:LevelLearn.WebApi.AutoMapper.PessoaVMToDomain">
-            <summary>
-            Pessoa VM To Domain
-            </summary>
-        </member>
-        <member name="M:LevelLearn.WebApi.AutoMapper.PessoaVMToDomain.#ctor">
-            <summary>
-            Ctor
-            </summary>
-        </member>
         <member name="T:LevelLearn.WebApi.Controllers.AlunosController">
             <summary>
             AlunosController
