@@ -35,12 +35,8 @@ namespace LevelLearn.Domain.Entities.Pessoas
         /// <param name="celular"></param>
         /// <param name="genero"></param>
         /// <param name="dataNascimento"></param>
-        /// <returns>Retorna true se ocorreu mudança ou falso se não ocorreu mudança</returns>
-        public bool Atualizar(string nome, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
-        {
-            bool modificado = Nome.Equals(nome) || Cpf.Equals(cpf) || Celular.Equals(celular) 
-                || Genero.Equals(genero) || DataNascimento.Equals(dataNascimento);
-
+        public void Atualizar(string nome, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
+        {           
             Nome = nome.RemoveExtraSpaces();
             Cpf = cpf;
             Celular = celular;
@@ -48,8 +44,6 @@ namespace LevelLearn.Domain.Entities.Pessoas
             DataNascimento = dataNascimento;
 
             AtribuirNomePesquisa();
-
-            return modificado;
         }
 
         public override bool EstaValido()

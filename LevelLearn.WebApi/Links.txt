@@ -18,7 +18,8 @@ Globalization
 Identity
 	https://code-maze.com/email-confirmation-aspnet-core-identity/
 
-Reponse Cache 
+Reponse Cache
+	https://docs.microsoft.com/pt-br/aspnet/core/performance/caching/response?view=aspnetcore-3.1
 
 Revisar Rotas
 	https://medium.com/@wssilva.willian/design-de-api-rest-9807a5b16c9f

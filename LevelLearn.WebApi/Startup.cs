@@ -99,13 +99,7 @@ namespace LevelLearn.WebApi
             ConfigureJWTAuthentication(services);
 
             // Auto Mapper
-            services.AddAutoMapper(
-                typeof(PessoaDomainToVM),
-                typeof(PessoaVMToDomain), 
-                typeof(InstitucionalDomainToVM), 
-                typeof(InstitucionalVMToDomain),
-                typeof(ComumVMToDomain)
-            );
+            ConfigureAutoMapper(services);
 
             // Repositories
             //ConfigureRepositories(services);
@@ -121,7 +115,7 @@ namespace LevelLearn.WebApi
 
             // Log Seq
             ConfigureLogSeq(services);
-        }
+        }        
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             LevelLearnContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
@@ -164,6 +158,8 @@ namespace LevelLearn.WebApi
 
             app.UseRouting();
 
+            app.UseResponseCompression();
+
             app.UseCors(option => option.AllowAnyOrigin());
 
             app.UseAuthentication();
@@ -185,15 +181,15 @@ namespace LevelLearn.WebApi
 
         private static void ConfigureGZipCompression(IServiceCollection services)
         {
-            // TODO: Revisar
-            services.Configure<GzipCompressionProviderOptions>(options =>
+            // TODO: Revisar GZipCompression
+            services.Configure<GzipCompressionProviderOptions>(opt =>
             {
-                options.Level = CompressionLevel.Fastest;
+                opt.Level = CompressionLevel.Fastest;
             })
-            .AddResponseCompression(options =>
+            .AddResponseCompression(opt =>
             {
-                options.Providers.Add<GzipCompressionProvider>();
-                options.EnableForHttps = true;
+                opt.Providers.Add<GzipCompressionProvider>();
+                opt.EnableForHttps = true;
             });
         }
 
@@ -224,6 +220,7 @@ namespace LevelLearn.WebApi
                 opt.SignIn.RequireConfirmedEmail = true;
             });
 
+            // Token email settings
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                 opt.TokenLifespan = TimeSpan.FromDays(1)
             );
@@ -272,6 +269,17 @@ namespace LevelLearn.WebApi
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<IProfessorService, ProfessorService>();
             services.AddTransient<IAlunoService, AlunoService>();
+        }
+
+        private void ConfigureAutoMapper(IServiceCollection services)
+        {
+            services.AddAutoMapper(
+                typeof(PessoaDomainToVM),
+                typeof(PessoaVMToDomain),
+                typeof(InstitucionalDomainToVM),
+                typeof(InstitucionalVMToDomain),
+                typeof(ComumVMToDomain)
+            );
         }
 
         private void ConfigureJWTAuthentication(IServiceCollection services)

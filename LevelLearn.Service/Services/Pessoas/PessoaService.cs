@@ -54,8 +54,7 @@ namespace LevelLearn.Service.Services.Pessoas
                             return ResultadoServiceFactory.BadRequest(_pessoaResource.PessoaCPFJaExiste);
                         break;
                     case "nome":
-                        Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
-                        var resultadoIdentity = await AtualizarUsuario(usuario, pessoa);
+                        var resultadoIdentity = await AtualizarUsuario(usuarioId, pessoa);
                         if (resultadoIdentity.Falhou)
                             return resultadoIdentity;
                         break;
@@ -72,8 +71,10 @@ namespace LevelLearn.Service.Services.Pessoas
             return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
-        private async Task<ResultadoService> AtualizarUsuario(Usuario usuario, Pessoa pessoa)
+        private async Task<ResultadoService> AtualizarUsuario(string usuarioId, Pessoa pessoa)
         {
+            Usuario usuario = await _userManager.FindByIdAsync(usuarioId);
+
             usuario.Nome = pessoa.Nome;
 
             if (!usuario.EstaValido())

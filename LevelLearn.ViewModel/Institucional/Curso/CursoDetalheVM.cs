@@ -1,4 +1,5 @@
 ﻿using LevelLearn.ViewModel.Institucional.Instituicao;
+using LevelLearn.ViewModel.Institucional.Turma;
 using LevelLearn.ViewModel.Pessoas;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace LevelLearn.ViewModel.Institucional.Curso
         public InstituicaoVM Instituicao { get; set; }
 
         public ICollection<PessoaCursoVM> Pessoas { get; set; }
+        public ICollection<TurmaVM> Turmas { get; set; }
     }
 }
