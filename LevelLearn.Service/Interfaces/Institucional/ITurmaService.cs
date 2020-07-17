@@ -16,5 +16,6 @@ namespace LevelLearn.Service.Interfaces.Institucional
         Task<ResultadoService<Turma>> CadastrarTurma(Turma turma, Guid pessoaId);
         Task<ResultadoService<Turma>> EditarTurma(Guid turmaId, EditarTurmaVM turmaVM, Guid pessoaId);
         Task<ResultadoService<Turma>> AlternarAtivacaoTurma(Guid turmaId, Guid pessoaId);
+        Task<ResultadoService<Turma>> IncluirAlunosNaTurma(Guid turmaId, Guid professorId, ICollection<Guid> idsAluno);
     }
 }

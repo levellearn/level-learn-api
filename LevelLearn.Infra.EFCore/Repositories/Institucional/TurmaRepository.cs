@@ -18,6 +18,20 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
         public TurmaRepository(LevelLearnContext context)
             : base(context) { }
 
+        public async Task<Turma> TurmaCompleta(Guid id, bool asNoTracking = true)
+        {
+            IQueryable<Turma> query = _context.Set<Turma>()
+                .Include(c => c.Professor)
+                .Include(c => c.Curso)
+                .Include(c => c.Alunos)
+                    .ThenInclude(a => a.Aluno);
+
+            if (asNoTracking)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(c => c.Id == id);            
+        }
+
         public async Task<IEnumerable<Turma>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtro)
         {
             string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
@@ -41,7 +55,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 
             return await _context.Set<Turma>()
                 .AsNoTracking()
-                .Where(p => p.ProfessorId == pessoaId && 
+                .Where(p => p.ProfessorId == pessoaId &&
                             p.CursoId == cursoId &&
                             p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
                             p.Ativo == ativo)

@@ -161,6 +161,24 @@ namespace LevelLearn.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Incluir alunos na turma
+        /// </summary>
+        /// <param name="id">Id turma</param>
+        /// <param name="idsAluno">Ids dos alunos</param>
+        /// <returns></returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpPost("v1/[controller]/{id:guid}/incluir-alunos")]
+        [ProducesResponseType(typeof(TurmaVM), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> IncluirAlunosNaTurma(Guid id, [FromBody] ICollection<Guid> idsAluno)
+        {
+            ResultadoService resultado = await _turmaService.IncluirAlunosNaTurma(id, User.GetPessoaId(), idsAluno);
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+
+            return NoContent();
+        }
 
     }
 }

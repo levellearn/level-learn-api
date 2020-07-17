@@ -1,4 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.UnityOfWorks;
 using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Resource;
@@ -8,6 +9,7 @@ using LevelLearn.Service.Response;
 using LevelLearn.ViewModel.Institucional.Turma;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services.Institucional
@@ -134,6 +136,33 @@ namespace LevelLearn.Service.Services.Institucional
             if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaDeletar);
 
             return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.DeletadoSucesso);
+        }
+
+        public async Task<ResultadoService<Turma>> IncluirAlunosNaTurma(Guid turmaId, Guid professorId, ICollection<Guid> idsAluno)
+        {
+            // Validação BD
+            Turma turma = await _uow.Turmas.TurmaCompleta(turmaId, asNoTracking: false);
+
+            if (turma == null) return ResultadoServiceFactory<Turma>.NotFound(_turmaResource.TurmaNaoEncontrada);
+
+            bool professorDaTurma = turma.ProfessorId == professorId;
+            if (!professorDaTurma) return ResultadoServiceFactory<Turma>.Forbidden(_turmaResource.TurmaNaoPermitida);
+
+            // Modifica objeto
+            List<AlunoTurma> alunosTurma = idsAluno.Select(idAluno => new AlunoTurma(idAluno, turmaId)).ToList();
+            // TODO: Verificar aluno existe
+            //var idsAlunosNaoIncluidos = idsAluno.Except(turma.Alunos.Select(a => a.AlunoId));
+            turma.AtribuirAlunos(alunosTurma);
+
+            // Validação objeto
+            if (!turma.EstaValido())
+                return ResultadoServiceFactory<Turma>.BadRequest(turma.DadosInvalidos(), _sharedResource.DadosInvalidos);
+
+            // Salva no BD
+            _uow.Turmas.Update(turma);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaAtualizar);
+
+            return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.AtualizadoSucesso);
         }
 
         public void Dispose()

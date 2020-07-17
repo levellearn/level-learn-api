@@ -72,7 +72,7 @@ namespace LevelLearn.WebApi.Controllers
         [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
         [HttpGet("v1/[controller]/instituicao/{instituicaoId:guid}")]
         [ProducesResponseType(typeof(ListaPaginadaVM<ProfessorVM>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> ObterAlunosPorInstituicao([FromRoute] Guid instituicaoId, [FromBody] FiltroPaginacaoVM filtroVM)
+        public async Task<ActionResult> ObterProfessorsPorInstituicao([FromRoute] Guid instituicaoId, [FromBody] FiltroPaginacaoVM filtroVM)
         {
             var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroVM);
 

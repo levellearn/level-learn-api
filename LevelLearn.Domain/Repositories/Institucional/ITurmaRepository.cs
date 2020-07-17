@@ -9,6 +9,14 @@ namespace LevelLearn.Domain.Repositories.Institucional
     public interface ITurmaRepository : IRepositoryBase<Turma, Guid>
     {
         /// <summary>
+        /// Retorna a turma com todos os dados relacionados
+        /// </summary>
+        /// <param name="id">Id turma</param>
+        /// <param name="asNoTracking">Não rastrear entidades retornadas</param> 
+        /// <returns>Turma</returns>
+        Task<Turma> TurmaCompleta(Guid id, bool asNoTracking = true);
+
+        /// <summary>
         /// Retorna as turmas de um curso de um professor paginadas com filtro
         /// </summary>
         /// <param name="cursoId">Id curso</param>

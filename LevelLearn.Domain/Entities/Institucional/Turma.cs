@@ -3,13 +3,15 @@ using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
     public class Turma : EntityBase
     {
         #region Ctors
-        protected Turma() {
+        protected Turma()
+        {
             Alunos = new List<AlunoTurma>();
         }
 
@@ -49,14 +51,16 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public void AtribuirAluno(AlunoTurma aluno)
         {
-            Alunos.Add(aluno);
+            if (!Alunos.Any(at => at.AlunoId == aluno.AlunoId))
+                Alunos.Add(aluno);
         }
 
         public void AtribuirAlunos(ICollection<AlunoTurma> alunos)
         {
             foreach (AlunoTurma aluno in alunos)
             {
-                Alunos.Add(aluno);
+                if (!Alunos.Any(at => at.AlunoId == aluno.AlunoId))
+                    Alunos.Add(aluno);
             }
         }
 
@@ -85,7 +89,7 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
-            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();            
+            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
 
             AtribuirNomePesquisa();
         }

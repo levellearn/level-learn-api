@@ -161,7 +161,7 @@ namespace LevelLearn.Service.Services.Usuarios
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioLoginFalha);
 
 
-            UsuarioTokenVM responseVM = await GerarUsuarioToken(usuario);
+            UsuarioTokenVM responseVM = await GerarUsuarioTokenVM(usuario);
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioLoginSucesso);
         }
@@ -196,7 +196,7 @@ namespace LevelLearn.Service.Services.Usuarios
 
             if (usuario == null) return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioLoginFalha);
 
-            UsuarioTokenVM responseVM = await GerarUsuarioToken(usuario);
+            UsuarioTokenVM responseVM = await GerarUsuarioTokenVM(usuario);
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioLoginSucesso);
         }
@@ -228,7 +228,7 @@ namespace LevelLearn.Service.Services.Usuarios
             if (!identityResult.Succeeded)
                 return ResultadoServiceFactory<UsuarioTokenVM>.BadRequest(_usuarioResource.UsuarioEmailConfirmarFalha);
 
-            UsuarioTokenVM responseVM = await GerarUsuarioToken(usuario);
+            UsuarioTokenVM responseVM = await GerarUsuarioTokenVM(usuario);
 
             return ResultadoServiceFactory<UsuarioTokenVM>.Ok(responseVM, _usuarioResource.UsuarioEmailConfirmarSucesso);
         }
@@ -444,7 +444,7 @@ namespace LevelLearn.Service.Services.Usuarios
             return ResultadoServiceFactory.NoContent();
         }
 
-        private async Task<UsuarioTokenVM> GerarUsuarioToken(Usuario usuario)
+        private async Task<UsuarioTokenVM> GerarUsuarioTokenVM(Usuario usuario)
         {
             IList<string> roles = await _userManager.GetRolesAsync(usuario);
 
