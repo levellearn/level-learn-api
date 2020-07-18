@@ -17,12 +17,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
     {
         public AlunoRepository(LevelLearnContext context) : base(context)
         {
-        }
-
-        public override async Task<Aluno> GetAsync(Guid id)
-        {
-            return await _context.Set<Aluno>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-        }
+        }      
 
         public async Task<Aluno> ObterAlunoCompleto(Guid id)
         {

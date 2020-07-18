@@ -10,8 +10,8 @@ namespace LevelLearn.Domain.Repositories
         where TEntity : EntityBase<TKey>
         where TKey : IEquatable<TKey>
     {
-        TEntity Get(TKey id);
-        Task<TEntity> GetAsync(TKey id);
+        TEntity Get(TKey id, bool asNoTracking = true);
+        Task<TEntity> GetAsync(TKey id, bool asNoTracking = true);
 
         IEnumerable<TEntity> GetAll(int skip = 0, int limit = int.MaxValue);
         Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue);

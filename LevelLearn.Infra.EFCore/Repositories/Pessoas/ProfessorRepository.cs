@@ -18,12 +18,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Pessoas
         public ProfessorRepository(LevelLearnContext context) : base(context)
         {
         }
-
-        public override async Task<Professor> GetAsync(Guid id)
-        {
-            return await _context.Set<Professor>().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-        }
-
+        
         public async Task<Professor> ObterProfessorCompleto(Guid id)
         {
             return await _context.Set<Professor>()

@@ -23,9 +23,13 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Sync
 
-        public virtual TEntity Get(TKey id)
+        public TEntity Get(TKey id, bool asNoTracking)
         {
-            return _context.Set<TEntity>().Find(id);
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+
+            if (asNoTracking) query = query.AsNoTracking();
+
+            return query.SingleOrDefault(e => e.Id.Equals(id));
         }
 
         public IEnumerable<TEntity> GetAll(int skip = 0, int limit = int.MaxValue)
@@ -63,9 +67,9 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         public void Remove(TEntity entity)
         {
-            if(_context.Entry(entity).State == EntityState.Detached)
+            if (_context.Entry(entity).State == EntityState.Detached)
                 _context.Set<TEntity>().Attach(entity);
-            
+
             _context.Set<TEntity>().Remove(entity);
         }
 
@@ -83,9 +87,13 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Async
 
-        public virtual async Task<TEntity> GetAsync(TKey id)
+        public async Task<TEntity> GetAsync(TKey id, bool asNoTracking)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+
+            if (asNoTracking) query = query.AsNoTracking();
+
+            return await query.SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue)
