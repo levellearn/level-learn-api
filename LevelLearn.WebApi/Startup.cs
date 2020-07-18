@@ -311,7 +311,7 @@ namespace LevelLearn.WebApi
                     }
                 };
                 opt.RequireHttpsMetadata = true;
-                opt.SaveToken = true;
+                opt.SaveToken = true; // TODO: SaveToken?
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -337,7 +337,7 @@ namespace LevelLearn.WebApi
         }
 
         /// <summary>
-        /// Verifica se o token está armazando no BD de cache ou se já expirou
+        /// Verifica se o token está armazando no BD de cache ou se já expirou ou se foi removido
         /// </summary>
         /// <param name="context"></param>
         /// <param name="redisCache"></param>

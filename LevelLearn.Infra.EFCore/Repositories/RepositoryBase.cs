@@ -162,13 +162,13 @@ namespace LevelLearn.Infra.EFCore.Repository
         public bool Commit()
         {
             var numberEntriesSaved = _context.SaveChanges();
-            return numberEntriesSaved > 0 ? true : false;
+            return numberEntriesSaved > 0;
         }
 
         public async Task<bool> CommitAsync()
         {
             var numberEntriesSaved = await _context.SaveChangesAsync();
-            return numberEntriesSaved > 0 ? true : false;
+            return numberEntriesSaved > 0;
         }
 
 

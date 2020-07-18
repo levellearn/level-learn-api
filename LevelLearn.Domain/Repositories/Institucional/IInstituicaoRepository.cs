@@ -31,7 +31,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns></returns>
         Task<bool> PertenceInstituicao(Guid instituicaoId, Guid pessoaId);
-
+        
         /// <summary>
         /// Retorna todas as instituições de um professor admin
         /// </summary>

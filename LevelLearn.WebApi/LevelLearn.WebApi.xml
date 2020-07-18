@@ -428,7 +428,7 @@
         </member>
         <member name="M:LevelLearn.WebApi.Startup.ValidateToken(Microsoft.AspNetCore.Authentication.JwtBearer.TokenValidatedContext,Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
             <summary>
-            Verifica se o token está armazando no BD de cache ou se já expirou
+            Verifica se o token está armazando no BD de cache ou se já expirou ou se foi removido
             </summary>
             <param name="context"></param>
             <param name="redisCache"></param>

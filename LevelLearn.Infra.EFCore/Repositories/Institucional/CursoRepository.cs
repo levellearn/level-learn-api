@@ -103,14 +103,9 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                             p.PessoaId == pessoaId)
                 .AnyAsync();
 
-            /* return await _context.Set<Curso>()
-                .AsNoTracking()
-                .Where(p => p.Id == cursoId)
-                .SelectMany(p => p.Pessoas)
-                    .Where(p => p.Perfil == TiposPessoa.Professor && p.PessoaId == pessoaId)
-                .AnyAsync();
+            /* return await _context.Set<Curso>().AsNoTracking().Where(p => p.Id == cursoId).SelectMany(p => p.Pessoas).Where(p => p.Perfil == TiposPessoa.Professor && p.PessoaId == pessoaId).AnyAsync();
             */
-        }
+        }        
 
     }
 }

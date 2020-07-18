@@ -58,7 +58,7 @@ namespace LevelLearn.Domain.Repositories.Institucional
         /// <param name="cursoId">Id curso</param>
         /// <param name="pessoaId">Id pessoa</param>
         /// <returns></returns>
-        Task<bool> ProfessorDoCurso(Guid cursoId, Guid pessoaId);
+        Task<bool> ProfessorDoCurso(Guid cursoId, Guid pessoaId);       
 
     }
 }

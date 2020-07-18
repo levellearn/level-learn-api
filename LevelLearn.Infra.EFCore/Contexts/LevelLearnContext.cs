@@ -5,12 +5,23 @@ using LevelLearn.Infra.EFCore.Configurations.Institucional;
 using LevelLearn.Infra.EFCore.Configurations.Pessoas;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 
 namespace LevelLearn.Infra.EFCore.Contexts
 {
     public class LevelLearnContext : IdentityDbContext<Usuario>
-    {        
+    {
+        #region Log EF
+
+        public static readonly ILoggerFactory LoggerFactoryEF = LoggerFactory.Create(builder =>
+        {
+            builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+                .AddConsole();
+        }); 
+
+        #endregion
+
         public LevelLearnContext(DbContextOptions<LevelLearnContext> options)
            : base(options)
         { }
@@ -26,6 +37,12 @@ namespace LevelLearn.Infra.EFCore.Contexts
         public DbSet<Turma> Turmas { get; set; }
         public DbSet<AlunoTurma> AlunosTurmas { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(LoggerFactoryEF);
+
+            base.OnConfiguring(optionsBuilder);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

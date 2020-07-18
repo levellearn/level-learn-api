@@ -138,38 +138,40 @@ namespace LevelLearn.Service.Services.Institucional
             return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.DeletadoSucesso);
         }
 
-        public async Task<ResultadoService<Turma>> IncluirAlunosNaTurma(Guid turmaId, Guid professorId, ICollection<Guid> idsAluno)
+        public async Task<ResultadoService> IncluirAlunosNaTurma(Guid turmaId, Guid professorId, ICollection<Guid> idsAluno)
         {
+            if (!idsAluno.Any())
+                return ResultadoServiceFactory.BadRequest(_sharedResource.DadosInvalidos);
+
             // Validação BD
             Turma turma = await _uow.Turmas.TurmaCompleta(turmaId, asNoTracking: false);
 
-            if (turma == null) return ResultadoServiceFactory<Turma>.NotFound(_turmaResource.TurmaNaoEncontrada);
+            if (turma == null) return ResultadoServiceFactory.NotFound(_turmaResource.TurmaNaoEncontrada);
 
-            bool professorDaTurma = turma.ProfessorId == professorId;
-            if (!professorDaTurma) return ResultadoServiceFactory<Turma>.Forbidden(_turmaResource.TurmaNaoPermitida);
+            if (!turma.ProfessorDaTurma(professorId)) 
+                return ResultadoServiceFactory.Forbidden(_turmaResource.TurmaNaoPermitida);           
 
-            // Modifica objeto
+            // Modificação objeto
             List<AlunoTurma> alunosTurma = idsAluno.Select(idAluno => new AlunoTurma(idAluno, turmaId)).ToList();
-            // TODO: Verificar aluno existe
-            //var idsAlunosNaoIncluidos = idsAluno.Except(turma.Alunos.Select(a => a.AlunoId));
             turma.AtribuirAlunos(alunosTurma);
 
             // Validação objeto
             if (!turma.EstaValido())
-                return ResultadoServiceFactory<Turma>.BadRequest(turma.DadosInvalidos(), _sharedResource.DadosInvalidos);
+                return ResultadoServiceFactory.BadRequest(turma.DadosInvalidos(), _sharedResource.DadosInvalidos);
 
             // Salva no BD
             _uow.Turmas.Update(turma);
-            if (!await _uow.CommitAsync()) return ResultadoServiceFactory<Turma>.InternalServerError(_sharedResource.FalhaAtualizar);
+            if (!await _uow.CommitAsync()) return ResultadoServiceFactory.InternalServerError(_sharedResource.FalhaAtualizar);
 
-            return ResultadoServiceFactory<Turma>.NoContent(_sharedResource.AtualizadoSucesso);
-        }
+            return ResultadoServiceFactory.NoContent(_sharedResource.AtualizadoSucesso);
+        }     
 
         public void Dispose()
         {
             _uow.Dispose();
         }
 
+        #region Private Methods      
 
         /// <summary>
         /// Verifica se está tentando atualizar para uma turma que já existe
@@ -184,7 +186,9 @@ namespace LevelLearn.Service.Services.Institucional
                 t.CursoId == turma.CursoId);
 
             return turmaExiste;
-        }
+        } 
+
+        #endregion
 
     }
 }

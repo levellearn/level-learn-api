@@ -94,6 +94,11 @@ namespace LevelLearn.Domain.Entities.Institucional
             AtribuirNomePesquisa();
         }
 
+        public bool ProfessorDaTurma(Guid professorId)
+        {
+            return this.ProfessorId == professorId;
+        }
+
         #endregion Methods
 
 

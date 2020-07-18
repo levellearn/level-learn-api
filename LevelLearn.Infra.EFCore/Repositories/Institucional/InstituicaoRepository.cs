@@ -105,7 +105,7 @@ namespace LevelLearn.Infra.EFCore.Repositories.Institucional
                 .Where(p => p.PessoaId == pessoaId &&
                             p.InstituicaoId == instituicaoId)
                 .AnyAsync();
-        }
+        }    
 
     }
 }
