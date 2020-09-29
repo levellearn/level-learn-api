@@ -78,7 +78,7 @@ namespace LevelLearn.WebApi.Filters
         /// <returns></returns>
         public bool IsSuccessStatusCode(int statusCode)
         {
-            return ((int)statusCode >= 200) && ((int)statusCode <= 299);
+            return (statusCode >= 200) && (statusCode <= 299);
         }
 
 
