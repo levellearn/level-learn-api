@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,15 @@ namespace LevelLearn.Domain.Extensions
         /// Generates a slug for passed string
         /// </summary>
         /// <param name="text"></param>
-        /// <returns>clean slug string (ex. "some-cool-topic")</returns>
+        /// <returns>clean slug string (ex. TeSte@  Teste => testeteste)</returns>
         public static string GenerateSlug(this string text)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
 
-            string result = text.RemoveAccent().ToLower(); // remove invalid chars and lowercase          
+            string result = text.RemoveAccent().ToLower(); // remove accent and lowercase          
             result = Regex.Replace(result, @"[^a-z0-9\s]", string.Empty); // remove special chars  
-            result = Regex.Replace(result, @"\s+", string.Empty).Trim();  // convert multiple spaces into empty 
-            result = Regex.Replace(result, @"\s", "-");  
-            
+            result = Regex.Replace(result, @"\s+", string.Empty).Trim();  // convert multiple spaces into empty and trim
+            //result = Regex.Replace(result, @"\s", "-");  // convert space to hyphen 
             return result;
         }
 
@@ -60,6 +60,11 @@ namespace LevelLearn.Domain.Extensions
             return letters;
         }
 
+        /// <summary>
+        /// Convert multiple spaces into one space
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string RemoveExtraSpaces(this string text)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
@@ -69,7 +74,25 @@ namespace LevelLearn.Domain.Extensions
             return text;
         }
 
+        public static string EncodeTextToBase64(this string text)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
 
+            byte[] textBytes = Encoding.UTF8.GetBytes(text);
+            string textEncoded = WebEncoders.Base64UrlEncode(textBytes);
+
+            return textEncoded;
+        }
+
+        public static string DecodeBase64ToText(this string textEncoded)
+        {
+            if (string.IsNullOrEmpty(textEncoded)) return string.Empty;
+
+            byte[] textDecodedBytes = WebEncoders.Base64UrlDecode(textEncoded);
+            string decodedText = Encoding.UTF8.GetString(textDecodedBytes);
+
+            return decodedText;
+        }
 
     }
 }

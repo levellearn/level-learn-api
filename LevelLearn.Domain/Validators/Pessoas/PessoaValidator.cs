@@ -1,34 +1,53 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Validators.RegrasAtributos;
+using LevelLearn.Resource;
 using System;
 using System.Text.RegularExpressions;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
     public class PessoaValidator : AbstractValidator<Pessoa>
     {
+        private readonly PessoaResource _resource;
+
         public PessoaValidator()
         {
+            _resource = PessoaResource.ObterInstancia();
+
+            ValidarId();
             ValidarNome();
-            ValidarUserName();
             ValidarDataNascimento();
             ValidarGenero();
             ValidarTipoPessoa();
-            ValidarImagem();
+            ValidarNomePesquisa();
+        }
+
+        private void ValidarId()
+        {
+            RuleFor(p => p.Id)
+                .NotEmpty()
+                    .WithMessage(_resource.IdObrigatorio());
         }
 
         private void ValidarNome()
         {
+            var tamanhoMin = RegraPessoa.NOME_TAMANHO_MIN;
+            var tamanhoMax = RegraPessoa.NOME_TAMANHO_MAX;
+
             RuleFor(p => p.Nome)
-                .NotEmpty().WithMessage("Nome precisa estar preenchido")
-                .Length(PropertiesConfig.Pessoa.NOME_TAMANHO_MIN, PropertiesConfig.Pessoa.NOME_TAMANHO_MAX)
-                .WithMessage($"Nome precisa estar entre {PropertiesConfig.Pessoa.NOME_TAMANHO_MIN} e {PropertiesConfig.Pessoa.NOME_TAMANHO_MAX} caracteres")
-                .Must(n => IsFullName(n)).WithMessage("Nome precisa de um sobrenome");
+                .NotEmpty()
+                    .WithMessage(_resource.PessoaNomeObrigatorio)
+                .Length(tamanhoMin, tamanhoMax)
+                    .WithMessage(_resource.PessoaNomeTamanho(tamanhoMin, tamanhoMax))
+                .Must(n => TemPrimeiroNomeSobrenome(n))
+                    .WithMessage(_resource.PessoaNomePrecisaSobrenome);
         }
-        private bool IsFullName(string name)
+        private bool TemPrimeiroNomeSobrenome(string name)
         {
-            var pattern = @"^[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ'-]{3,}\s[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ\s\.'-]{2,}$";
+            var tamanhoMin = RegraPessoa.NOME_TAMANHO_MIN;
+            var pattern = @"^[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ'-]{" + tamanhoMin + @",}\s[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðçÑ\s\.'-]{" + tamanhoMin + @",}$";
 
             if (Regex.IsMatch(name, pattern, RegexOptions.IgnoreCase))
                 return true;
@@ -36,48 +55,35 @@ namespace LevelLearn.Domain.Validators.Pessoas
                 return false;
         }
 
-        private void ValidarUserName()
-        {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
-
-            RuleFor(p => p.UserName)
-                .NotEmpty().WithMessage("Username precisa estar preenchido")
-                .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("Username somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
-        }
-
-        private void ValidarImagem()
-        {
-            RuleFor(p => p.ImagemUrl)
-                .NotEmpty().WithMessage("Imagem precisa estar preenchida");
-        }       
-
         private void ValidarDataNascimento()
         {
-            var dataAtual = DateTime.Now.Date;
+            DateTime dataAtual = DateTime.Now.Date;
 
             RuleFor(c => c.DataNascimento)
-                //.NotEmpty().WithMessage("Data Nascimento precisa estar preenchida")
-                .LessThan(dataAtual).WithMessage("Data Nascimento precisa ser menor que hoje")
+                .LessThan(dataAtual)
+                    .WithMessage(_resource.PessoaDataNascimentoInvalida)
                 .When(p => p.DataNascimento.HasValue);
         }
 
         private void ValidarGenero()
         {
             RuleFor(p => p.Genero)
-                .NotEmpty().WithMessage("Gênero precisa estar preenchido")
-                .Must(c => c.Equals(Generos.Masculino) || c.Equals(Generos.Feminino))
-                .WithMessage($"Gênero precisa ser Masculino ou Feminino");
+                .Must(c => c != GeneroPessoa.Vazio)
+                    .WithMessage(_resource.PessoaGeneroObrigatorio);
         }
 
         private void ValidarTipoPessoa()
         {
             RuleFor(p => p.TipoPessoa)
-                .NotEmpty().WithMessage("Tipo de pessoa precisa estar preenchido")
-                .Must(c => c != TiposPessoa.Nenhum)
-                .WithMessage($"Tipo de pessoa precisa ser Admin, Professor ou Aluno");
+                .Must(c => c != TipoPessoa.Vazio)
+                    .WithMessage(_resource.PessoaTipoPessoaInvalido);
+        }
+
+        private void ValidarNomePesquisa()
+        {
+            RuleFor(p => p.NomePesquisa)
+                .NotEmpty()
+                    .WithMessage(_resource.NomePesquisaObrigatorio());
         }
 
 

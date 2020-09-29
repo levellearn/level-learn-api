@@ -1,16 +1,15 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 
 namespace LevelLearn.Domain.ValueObjects
 {
-    public abstract class ValueObject<T> : AbstractValidator<T> where T : ValueObject<T>
+    public abstract class ValueObject
     {
         protected ValueObject()
         {
-            ValidationResult = new ValidationResult();
+            ResultadoValidacao = new ValidationResult();
         }
 
-        public ValidationResult ValidationResult { get; protected set; }
+        public ValidationResult ResultadoValidacao { get; set; }
 
         public abstract bool EstaValido();
     }

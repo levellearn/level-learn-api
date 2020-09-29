@@ -1,7 +1,6 @@
 ﻿using LevelLearn.Domain.Entities;
 using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories;
-using LevelLearn.Infra.EFCore.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,20 +10,26 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repository
 {
-    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
+    public abstract class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
-        protected readonly LevelLearnContext _context;
+        protected readonly DbContext _context;
 
-        public RepositoryBase(LevelLearnContext context)
+        public RepositoryBase(DbContext context)
         {
             _context = context;
         }
 
         #region Sync
 
-        public virtual TEntity Get(Guid id)
+        public TEntity Get(TKey id, bool asNoTracking)
         {
-            return _context.Set<TEntity>().Find(id);
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+
+            if (asNoTracking) query = query.AsNoTracking();
+
+            return query.SingleOrDefault(e => e.Id.Equals(id));
         }
 
         public IEnumerable<TEntity> GetAll(int skip = 0, int limit = int.MaxValue)
@@ -52,13 +57,19 @@ namespace LevelLearn.Infra.EFCore.Repository
             _context.Set<TEntity>().AddRange(entities);
         }
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Attach(entity);
+
             _context.Set<TEntity>().Update(entity);
         }
 
         public void Remove(TEntity entity)
         {
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Attach(entity);
+
             _context.Set<TEntity>().Remove(entity);
         }
 
@@ -76,9 +87,13 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #region Async
 
-        public virtual async Task<TEntity> GetAsync(Guid id)
+        public async Task<TEntity> GetAsync(TKey id, bool asNoTracking)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+
+            if (asNoTracking) query = query.AsNoTracking();
+
+            return await query.SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(int skip = 0, int limit = int.MaxValue)
@@ -87,6 +102,7 @@ namespace LevelLearn.Infra.EFCore.Repository
                 .AsNoTracking()
                 .Skip(skip)
                 .Take(limit)
+                .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
 
@@ -95,6 +111,7 @@ namespace LevelLearn.Infra.EFCore.Repository
             return await _context.Set<TEntity>()
                 .AsNoTracking()
                 .Where(filter)
+                .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
 
@@ -113,28 +130,29 @@ namespace LevelLearn.Infra.EFCore.Repository
             return await _context.Set<TEntity>().AsNoTracking().CountAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
+        public virtual async Task<IEnumerable<TEntity>> GetWithPagination(string searchFilter, int pageNumber, int pageSize)
         {
-            //pageIndex = (pageIndex <= 0) ? 1 : pageIndex;
-            //pageSize = (pageSize <= 0) ? 200 : pageSize;
-            query = query.GenerateSlug();
+            pageNumber = (pageNumber <= 0) ? 1 : pageNumber;
+            pageSize = (pageSize <= 0) ? 1 : pageSize;
+            searchFilter = searchFilter.GenerateSlug();
 
             return await _context.Set<TEntity>()
+                //.IgnoreQueryFilters()
                 .AsNoTracking()
-                .Where(p => p.NomePesquisa.Contains(query))
-                .Skip((pageIndex - 1) * pageSize)
+                .Where(p => p.NomePesquisa.Contains(searchFilter))
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .OrderBy(c => c.NomePesquisa)
                 .ToListAsync();
         }
-        
-        public async Task<int> CountWithPagination(string query)
+
+        public async Task<int> CountWithPagination(string searchFilter)
         {
-            query = query.GenerateSlug();
+            searchFilter = searchFilter.GenerateSlug();
 
             return await _context.Set<TEntity>()
                 .AsNoTracking()
-                .Where(p => p.NomePesquisa.Contains(query))
+                .Where(p => p.NomePesquisa.Contains(searchFilter))
                 .CountAsync();
         }
 
@@ -149,17 +167,18 @@ namespace LevelLearn.Infra.EFCore.Repository
 
         #endregion
 
-        public bool Complete()
+        public bool Commit()
         {
             var numberEntriesSaved = _context.SaveChanges();
-            return numberEntriesSaved > 0 ? true : false;
+            return numberEntriesSaved > 0;
         }
 
-        public async Task<bool> CompleteAsync()
+        public async Task<bool> CommitAsync()
         {
             var numberEntriesSaved = await _context.SaveChangesAsync();
-            return numberEntriesSaved > 0 ? true : false;
+            return numberEntriesSaved > 0;
         }
+
 
     }
 }

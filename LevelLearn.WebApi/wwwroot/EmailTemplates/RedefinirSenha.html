@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+            box-sizing: content-box;
+            height: 0;
+            overflow: visible;
+        }
+
+        .container {
+            width: 92%;
+            margin-right: auto;
+            margin-left: auto;
+            border: 1px solid #b5b5b5;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+        .background-logo {
+            background-color: #0078c0;
+            padding: 30px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .text-left {
+            text-align: left !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .rounded {
+            border-radius: .25rem !important;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .small,
+        small {
+            font-size: 80%;
+            font-weight: 400;
+        }
+
+        .mr-auto,
+        .mx-auto {
+            margin-right: auto !important;
+        }
+
+        .btn-block {
+            display: block;
+            width: 60%;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            color: #212529;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .btn,
+        .btn-lg {
+            padding: .5rem 1rem;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            border-radius: .3rem;
+        }
+
+        .btn-primary {
+            color: #fff !important;
+            background-color: #0078c0;
+            border-color: #0078c0;
+        }
+
+        a {
+            color: #0078c0;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .social-links {
+            margin: 1rem 1rem 0 0;
+        }
+
+            .social-links a {
+                padding: .3rem .1rem;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="text-center rounded background-logo">
+            <img class="img-fluid"
+                 src="https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens%2Fbrand-logo-550x79.png?alt=media&token=8f4eea54-1ec3-4dc6-976e-7b15b9e20c78"
+                 alt="logo_level_learn" />
+        </div>
+
+        <hr />
+
+        <h1 class="text-center">
+            <small class="text-muted">
+                Olá <span class="font-weight-bold">{nome}</span>,
+                recebemos uma solicitação de alteração de senha para <span class="font-weight-bold">{email}</span>.
+            </small>
+        </h1>
+
+        <br /> <br />
+
+        <h3 class="text-center">
+            <small class="text-muted">Clique no botão abaixo para poder redefinir sua senha.</small>
+        </h3>
+
+        <div class="text-center">
+            <a href="{linkRedefinirSenha}" target="_blank" class="btn btn-primary btn-lg btn-block ">
+                Redefinir senha
+            </a>
+        </div>
+
+        <br /> <br /> <hr />
+
+        <footer class="text-muted text-center">
+
+            <small>
+                Este e-mail foi enviado para redefinir sua senha, com isso você poderá prosseguir
+                com a utilização do sistema.
+            </small>
+
+            <div class="social-links text-right">
+
+                <a target="_blank" href="https://www.facebook.com/levellearn">
+                    <img class="img-fluid"
+                         src="https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens%2Ffacebook-icon.png?alt=media&token=5edcf369-9e06-4718-ae25-37d3664f7d0d"
+                         alt="facebook" />
+                </a>
+
+                <a target="_blank" href="https://www.youtube.com/channel/UC_0XLSwcKXzNH95o4afsdzQ">
+                    <img class="img-fluid"
+                         src="https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens%2Fyoutube-icon.png?alt=media&token=a1e414d3-107f-4036-b1fb-73e71120ca4b"
+                         alt="youtube" />
+                </a>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+</body>
+
+</html>

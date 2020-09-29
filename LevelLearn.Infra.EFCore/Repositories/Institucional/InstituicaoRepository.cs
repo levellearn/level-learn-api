@@ -1,7 +1,9 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
+using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Repositories.Institucional;
+using LevelLearn.Domain.Utils.Comum;
 using LevelLearn.Infra.EFCore.Contexts;
 using LevelLearn.Infra.EFCore.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -12,69 +14,98 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Infra.EFCore.Repositories.Institucional
 {
-    public class InstituicaoRepository : RepositoryBase<Instituicao>, IInstituicaoRepository
+    public class InstituicaoRepository : RepositoryBase<Instituicao, Guid>, IInstituicaoRepository
     {
         public InstituicaoRepository(LevelLearnContext context)
             : base(context) { }
 
-        public async Task<List<Instituicao>> InstituicoesAdmin(Guid pessoaId)
+        public async Task<Instituicao> InstituicaoCompleta(Guid id)
         {
-            return await _context.Set<PessoaInstituicao>()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Admin)
-                .Select(p => p.Instituicao)
-                .OrderBy(p => p.Nome)
-                .ToListAsync();
-        }
-
-        public async Task<List<Instituicao>> InstituicoesAluno(Guid pessoaId)
-        {
-            return await _context.Set<PessoaInstituicao>()
-                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Aluno)
-                .Select(p => p.Instituicao)
-                .OrderBy(p => p.Nome)
-                .ToListAsync();
-        }
-
-        public async Task<List<Instituicao>> InstituicoesProfessor(Guid pessoaId)
-        {
-            return await _context.Set<PessoaInstituicao>()
-                .Where(p => p.PessoaId == pessoaId)
-                .Where(p => p.Perfil == PerfisInstituicao.Professor || p.Perfil == PerfisInstituicao.Admin)
-                .Select(p => p.Instituicao)
-                .OrderBy(p => p.Nome)
-                .ToListAsync();
-        }
-
-        public bool IsAdmin(Guid instituicaoId, Guid pessoaId)
-        {
-            return _context.Set<Instituicao>()
-                .Where(p => p.Id == instituicaoId)
-                .Include(p => p.Pessoas)
-                .AsNoTracking()
-                .FirstOrDefault()
-                .Pessoas
-                .Where(p => p.Perfil == PerfisInstituicao.Admin && p.PessoaId == pessoaId)
-                .Count() > 0;
-
-            //return _context.Instituicoes
-            //    .AsNoTracking()
-            //    .Include(p => p.Pessoas)
-            //    .SingleOrDefault(p => p.Id == instituicaoId)
-            //    .Pessoas
-            //    .Any(p => p.PessoaId == pessoaId && p.Perfil == PerfisInstituicao.Admin);
-        }        
-
-        public override async Task<Instituicao> GetAsync(Guid id)
-        {
-            return await _context.Instituicoes
+            // TODO: Revisar
+            return await _context.Set<Instituicao>()
                 .Include(i => i.Cursos)
-                .Include(i => i.Pessoas)
-                    .ThenInclude(p => p.Pessoa)
+                    .ThenInclude(c => c.Turmas)
+                //.Include(i => i.Pessoas)
+                //    .ThenInclude(p => p.Pessoa)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
 
 
+        public async Task<IEnumerable<Instituicao>> InstituicoesProfessorAdmin(Guid pessoaId)
+        {
+            return await _context.Set<PessoaInstituicao>()
+                .Where(p => p.PessoaId == pessoaId &&
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
+                .Select(p => p.Instituicao)
+                .OrderBy(p => p.Nome)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Instituicao>> InstituicoesProfessor(Guid pessoaId, FiltroPaginacao filtro)
+        {
+            string termoPesquisaSanitizado = filtro.FiltroPesquisa.GenerateSlug();
+
+            IQueryable<Instituicao> query = _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId)
+                .Where(p => p.Perfil == PerfilInstituicao.Professor ||
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
+                .Select(p => p.Instituicao)
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == filtro.Ativo)
+                    .Skip((filtro.NumeroPagina - 1) * filtro.TamanhoPorPagina)
+                    .Take(filtro.TamanhoPorPagina);
+
+            query = QueryableExtension.OrderBy(query, filtro.OrdenarPor, filtro.OrdenacaoAscendente);
+
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<int> TotalInstituicoesProfessor(Guid pessoaId, string filtroPesquisa, bool ativo = true)
+        {
+            string termoPesquisaSanitizado = filtroPesquisa.GenerateSlug();
+
+            return await _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId)
+                .Where(p => p.Perfil == PerfilInstituicao.Professor ||
+                       p.Perfil == PerfilInstituicao.ProfessorAdmin)
+                .Select(p => p.Instituicao)
+                    .Where(p => p.NomePesquisa.Contains(termoPesquisaSanitizado) &&
+                                p.Ativo == ativo)
+                .CountAsync();
+        }
+
+        public async Task<IEnumerable<Instituicao>> InstituicoesAluno(Guid pessoaId)
+        {
+            return await _context.Set<PessoaInstituicao>()
+                .Where(p => p.PessoaId == pessoaId && p.Perfil == PerfilInstituicao.Aluno)
+                .Select(p => p.Instituicao)
+                .OrderBy(p => p.Nome)
+                .ToListAsync();
+        }
+
+
+        public Task<bool> ProfessorAdmin(Guid instituicaoId, Guid pessoaId)
+        {
+            return _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId &&
+                            p.InstituicaoId == instituicaoId &&
+                            p.Perfil == PerfilInstituicao.ProfessorAdmin)
+                .AnyAsync();
+        }
+
+        public Task<bool> PertenceInstituicao(Guid instituicaoId, Guid pessoaId)
+        {
+            return _context.Set<PessoaInstituicao>()
+                .AsNoTracking()
+                .Where(p => p.PessoaId == pessoaId &&
+                            p.InstituicaoId == instituicaoId)
+                .AnyAsync();
+        }    
 
     }
 }

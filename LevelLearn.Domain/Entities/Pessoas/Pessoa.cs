@@ -1,6 +1,7 @@
-﻿using LevelLearn.Domain.Enums;
+﻿using LevelLearn.Domain.Entities.Institucional;
+using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.Extensions;
-using LevelLearn.Domain.Validators.Pessoas;
+using LevelLearn.Domain.Validators.Usuarios;
 using LevelLearn.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -9,47 +10,45 @@ namespace LevelLearn.Domain.Entities.Pessoas
 {
     public abstract class Pessoa : EntityBase
     {
-        private const string IMAGEM_URL_PADRAO = "https://firebasestorage.googleapis.com/v0/b/level-learn.appspot.com/o/Imagens/foto-default";
-
         #region Ctors
+
         protected Pessoa()
         {
             Instituicoes = new List<PessoaInstituicao>();
+            Cursos = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
         }
 
-        public Pessoa(string nome, string userName, Email email, CPF cpf, Celular celular, Generos genero,
-            string imagemUrl, DateTime? dataNascimento)
+        public Pessoa(string nome, CPF cpf, Celular celular, GeneroPessoa genero, DateTime? dataNascimento)
         {
             Nome = nome.RemoveExtraSpaces();
-            UserName = userName.RemoveExtraSpaces(); // TODO: username único?
-            Email = email;
             Cpf = cpf;
             Celular = celular;
             Genero = genero;
-            ImagemUrl = string.IsNullOrWhiteSpace(imagemUrl) ? IMAGEM_URL_PADRAO : imagemUrl; // TODO: Obrigatório?
             DataNascimento = dataNascimento;
-            Instituicoes = new List<PessoaInstituicao>();
 
-            NomePesquisa = Nome.GenerateSlug();
+            Instituicoes = new List<PessoaInstituicao>();
+            Cursos = new List<PessoaCurso>();
+            Turmas = new List<Turma>();
+
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors
 
         #region Props
         public string Nome { get; protected set; }
-        public string UserName { get; protected set; }
-        public Email Email { get; protected set; }
         public CPF Cpf { get; protected set; }
         public Celular Celular { get; protected set; }
-        public Generos Genero { get; protected set; }
-        public TiposPessoa TipoPessoa { get; protected set; }
-        public string ImagemUrl { get; protected set; }
+        public GeneroPessoa Genero { get; protected set; }
+        public TipoPessoa TipoPessoa { get; protected set; }
         public DateTime? DataNascimento { get; protected set; }
 
-        public virtual ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
+        public ICollection<PessoaInstituicao> Instituicoes { get; protected set; }
+        public ICollection<PessoaCurso> Cursos { get; protected set; }
+        public ICollection<Turma> Turmas { get; protected set; }
 
         #endregion Props
-
 
         #region Methods
 
@@ -57,65 +56,81 @@ namespace LevelLearn.Domain.Entities.Pessoas
         {
             var validator = new PessoaValidator();
 
-            this.ValidationResult = validator.Validate(this);
+            this.ResultadoValidacao = validator.Validate(this);
 
             // VOs
             ValidarCPF();
-            ValidarEmail();
             ValidarCelular();
 
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
         }
 
         protected void ValidarCPF()
         {
             if (Cpf.EstaValido()) return;
-            this.ValidationResult.AddErrors(Cpf.ValidationResult);
-        }
-
-        protected void ValidarEmail()
-        {
-            if (Email.EstaValido()) return;
-            this.ValidationResult.AddErrors(Email.ValidationResult);
-        }
+            this.ResultadoValidacao.AddErrors(Cpf.ResultadoValidacao);
+        }       
 
         protected void ValidarCelular()
         {
             if (Celular.EstaValido()) return;
-            this.ValidationResult.AddErrors(Celular.ValidationResult);
+            this.ResultadoValidacao.AddErrors(Celular.ResultadoValidacao);
         }
 
-        public void AtribuirPessoa(PessoaInstituicao instituicao)
+        public void AtribuirInstituicao(PessoaInstituicao instituicao)
         {
-            //if (!instituicao.EstaValido()) return;
-
             Instituicoes.Add(instituicao);
         }
 
-        public void AtribuirPessoas(ICollection<PessoaInstituicao> instituicoes)
+        public void AtribuirInstituicoes(ICollection<PessoaInstituicao> instituicoes)
         {
             foreach (PessoaInstituicao instituicao in instituicoes)
             {
-                //if (instituicao.EstaValido())
                 Instituicoes.Add(instituicao);
             }
         }
 
+        public void AtribuirCurso(PessoaCurso curso)
+        {
+            Cursos.Add(curso);
+        }
+
+        public void AtribuirCursos(ICollection<PessoaCurso> cursos)
+        {
+            foreach (PessoaCurso curso in cursos)
+            {
+                Cursos.Add(curso);
+            }
+        }
+
+        public void AtribuirTurma(Turma turma)
+        {
+            Turmas.Add(turma);
+        }
+
+        public void AtribuirTurmas(ICollection<Turma> turmas)
+        {
+            foreach (Turma turma in turmas)
+            {
+                Turmas.Add(turma);
+            }
+        }
+
+        public override void AtribuirNomePesquisa()
+        {
+            NomePesquisa = Nome.GenerateSlug();
+        }
+
         public override string ToString()
         {
-            var dataNascimento = DataNascimento.GetValueOrDefault(new DateTime());
-
             return $"ID: {Id}" +
-                $" CPF: {Cpf.ToString()}" +
+                $" CPF: {Cpf}" +
                 $" Nome: {Nome}" +
-                $" UserName: {UserName}" +
-                $" E-mail: {Email.ToString()}" +
-                $" Celular: {Celular.ToString()} " +
-                $" Gênero: {Genero.ToString()} " +
-                $" Tipo Pessoa: {TipoPessoa.ToString()} " +
-                $" Imagem: {ImagemUrl} " +
-                $" Data Nascimento: {dataNascimento.ToString("dd/MM/yyyy")}" +
-                $" Data Cadastro: {DataCadastro.ToString("dd/MM/yyyy")}" +
+                $" Celular: {Celular} " +
+                $" Gênero: {Genero} " +
+                $" Tipo Pessoa: {TipoPessoa} " +
+                $" Data Nascimento: {DataNascimento}" +
+                $" Data Cadastro: {DataCadastro}" +
                 $" Ativo: { (Ativo ? "Sim" : "Não") }";
         }
 

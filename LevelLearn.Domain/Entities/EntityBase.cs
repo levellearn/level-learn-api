@@ -6,23 +6,38 @@ using System.Collections.Generic;
 
 namespace LevelLearn.Domain.Entities
 {
-    public abstract class EntityBase
+
+    /// <summary>
+    /// Entidade padrão tendo o ID como um Guid
+    /// </summary>
+    public abstract class EntityBase : EntityBase<Guid>
     {
         protected EntityBase()
         {
             Id = Guid.NewGuid();
+        }
+    }
+
+    /// <summary>
+    /// Entidade base para todas as entidades do domínio
+    /// </summary>
+    /// <typeparam name="TKey">O tipo usado como ID</typeparam>
+    public abstract class EntityBase<TKey> where TKey : IEquatable<TKey>
+    {
+        protected EntityBase()
+        {
             Ativo = true;
-            DataCadastro = DateTime.Now;
-            ValidationResult = new ValidationResult();
+            DataCadastro = DateTime.UtcNow;
+            ResultadoValidacao = new ValidationResult();
         }
 
         #region Props
 
-        public Guid Id { get; private set; }
+        public TKey Id { get; protected set; }
         public bool Ativo { get; protected set; }
         public string NomePesquisa { get; protected set; }
         public DateTime DataCadastro { get; private set; }
-        public ValidationResult ValidationResult { get; protected set; }
+        public ValidationResult ResultadoValidacao { get; protected set; }
 
         #endregion
 
@@ -40,7 +55,7 @@ namespace LevelLearn.Domain.Entities
         /// <returns>Retorna uma lista de dados inválidos da entidade</returns>
         public ICollection<DadoInvalido> DadosInvalidos()
         {
-            return ValidationResult.GetErrorsResult();
+            return ResultadoValidacao.GetErrorsResult();
         }
 
         /// <summary>
@@ -59,9 +74,15 @@ namespace LevelLearn.Domain.Entities
             Ativo = false;
         }
 
+        /// <summary>
+        /// Método que deve ser implementado para atribuir o nome de pesquisa para a entidade
+        /// </summary>
+        public abstract void AtribuirNomePesquisa();
+
+
         public override bool Equals(object obj)
         {
-            var compareTo = obj as EntityBase;
+            var compareTo = obj as EntityBase<TKey>;
 
             if (ReferenceEquals(this, compareTo)) return true;
             if (compareTo is null) return false;
@@ -69,7 +90,7 @@ namespace LevelLearn.Domain.Entities
             return this.Id.Equals(compareTo.Id);
         }
 
-        public static bool operator ==(EntityBase a, EntityBase b)
+        public static bool operator ==(EntityBase<TKey> a, EntityBase<TKey> b)
         {
             if (a is null && b is null)
                 return true;
@@ -80,7 +101,7 @@ namespace LevelLearn.Domain.Entities
             return a.Equals(b);
         }
 
-        public static bool operator !=(EntityBase a, EntityBase b)
+        public static bool operator !=(EntityBase<TKey> a, EntityBase<TKey> b)
         {
             return !(a == b);
         }

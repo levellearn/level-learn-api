@@ -1,37 +1,66 @@
-﻿using FluentValidation;
-using LevelLearn.Domain.Validators;
+﻿
+using LevelLearn.Domain.Validators.ValueObjects;
 
 namespace LevelLearn.Domain.ValueObjects
 {
-    public class Email : ValueObject<Email>
+    public class Email : ValueObject
     {
         protected Email() { }
 
         public Email(string endereco)
         {
-            this.Endereco = endereco?.Trim()?.ToLower();
+            this.Endereco = endereco?.Trim()?.ToLower() ?? string.Empty;
         }
 
         public string Endereco { get; private set; }
 
         public override bool EstaValido()
         {
-            RuleFor(e => e.Endereco)
-                .NotNull().WithMessage("E-mail precisa estar preenchido")
-                .MaximumLength(PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX)
-                    .WithMessage($"E-mail pode ter no máximo {PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX} caracteres")
-                .EmailAddress().WithMessage("E-mail não é válido")
-                .OverridePropertyName("Email");
+            var validator = new EmailValidator();
+            this.ResultadoValidacao = validator.Validate(this);
 
-            ValidationResult = Validate(this);
-
-            return ValidationResult.IsValid;
+            return ResultadoValidacao.IsValid;
         }
+
+        #region Overrides
 
         public override string ToString()
         {
-            return Endereco;
+            return this.Endereco;
         }
+
+        public override bool Equals(object obj)
+        {
+            var compareTo = obj as Email;
+
+            if (ReferenceEquals(this, compareTo)) return true;
+            if (compareTo is null) return false;
+
+            return this.Endereco.Equals(compareTo.Endereco);
+        }
+
+        public static bool operator ==(Email a, Email b)
+        {
+            if (a is null && b is null)
+                return true;
+
+            if (a is null || b is null)
+                return false;
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Email a, Email b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return (GetType().GetHashCode() * 907) + Endereco.GetHashCode();
+        }
+
+        #endregion
 
     }
 }

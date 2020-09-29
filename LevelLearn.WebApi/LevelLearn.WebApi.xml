@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LevelLearn.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:LevelLearn.WebApi.Controllers.AlunosController">
+            <summary>
+            AlunosController
+            </summary>    
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IAlunoService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper"></param>
+            <param name="usuarioService"></param>
+            <param name="alunoService"></param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.RegistrarAluno(LevelLearn.ViewModel.Usuarios.RegistrarAlunoVM)">
+            <summary>
+            Registro de usuário aluno
+            </summary>        
+            <param name="registrarAlunoVM">Dados de cadastro do usuário aluno</param>
+            <returns>Usuario VM</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+             Retorna todos os alunos de um curso - paginado com filtro
+            </summary>
+            <param name="cursoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.ObterAlunosPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+             Retorna todos os alunos de uma instituicao - paginado com filtro
+            </summary>
+            <param name="instituicaoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.AlunosController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.AlunoAtualizaVM})">
+            <summary>
+            Atualiza propriedade do aluno
+            </summary>
+            <remarks>
+            Exemplo
+                [{ "op": "replace", "path": "/ra", "value": "123456" }]
+            </remarks>
+            <param name="id"></param>
+            <param name="patchAluno"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.CursosController">
+            <summary>
+            Cursos Controller
+            </summary>    
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.#ctor(LevelLearn.Service.Interfaces.Institucional.ICursoService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="cursoService">ICursoService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCursosProfessorPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todos os cursos de uma instituição de um professor paginadas com filtro
+            </summary>        
+            <param name="instituicaoId">Id instituição</param>
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista cursos</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.ObterCurso(System.Guid)">
+            <summary>
+            Retorna um curso
+            </summary>
+            <param name="id">Id Curso</param>
+            <returns>Curso</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.CriarCurso(LevelLearn.ViewModel.Institucional.Curso.CadastrarCursoVM)">
+            <summary>
+            Cadastro de curso
+            </summary>
+            <param name="cursoVM">Dados de cadastro do curso</param>
+            <returns>Retorna o curso cadastrado</returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.EditarCurso(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarCursoVM)">
+            <summary>
+            Edição de curso
+            </summary>
+            <param name="id">Id curso</param>
+            <param name="cursoVM">Dados de edição do curso</param>
+            <returns></returns>      
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.CursosController.AlternarAtivacaoCurso(System.Guid)">
+            <summary>
+            Alternar ativação do curso
+            </summary>
+            <param name="id">Id curso</param>
+            <returns></returns>    
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.InstituicoesController">
+            <summary>
+            Instituicoes Controller
+            </summary>   
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.#ctor(LevelLearn.Service.Interfaces.Institucional.IInstituicaoService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="instituicaoService">IInstituicaoService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoesAdmin(LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as instituições paginadas com filtro nome
+            </summary>        
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista instituições</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicoes(LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as instituições de um professor paginadas e filtro
+            </summary>        
+            <param name="filtroPaginacaoVM">Armazena os filtros de consulta</param>
+            <returns>Lista instituições</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.ObterInstituicao(System.Guid)">
+            <summary>
+            Retorna uma instituição
+            </summary>
+            <param name="id">Id Instituição</param>
+            <returns>Instituição</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.CriarInstituicao(LevelLearn.ViewModel.Institucional.Instituicao.CadastrarInstituicaoVM)">
+            <summary>
+            Cadastro de instituição
+            </summary>
+            <param name="instituicaoVM">Dados de cadastro da instituição</param>
+            <returns>Retorna a instituição cadastrada</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.EditarInstituicao(System.Guid,LevelLearn.ViewModel.Institucional.Instituicao.EditarInstituicaoVM)">
+            <summary>
+            Edição de instituição
+            </summary>
+            <param name="id">Id instituição</param>
+            <param name="instituicaoVM">Dados de edição da instituição</param>
+            <returns></returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.InstituicoesController.AlternarAtivacaoInstituicao(System.Guid)">
+            <summary>
+            Alternar ativação da instituição
+            </summary>
+            <param name="id">Id instituição</param>
+            <returns></returns>      
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.MyBaseController">
+            <summary>
+            Base Controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.#ctor(AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.MyBaseController.CriarListaPaginada``1(System.Collections.Generic.IEnumerable{``0},System.Nullable{System.Int32},LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Cria a lista paginada
+            </summary>
+            <typeparam name="T">Tipo da lista</typeparam>
+            <param name="listaVM">Lista View Model</param>
+            <param name="total">Total da entidade no banco</param>
+            <param name="filterVM">Filtro de pesquisa</param>
+            <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.ProfessoresController">
+            <summary>
+            Professores Controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.#ctor(AutoMapper.IMapper,LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,LevelLearn.Service.Interfaces.Pessoas.IProfessorService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="mapper"></param>
+            <param name="usuarioService"></param>
+            <param name="professorService"></param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.RegistrarProfessor(LevelLearn.ViewModel.Usuarios.RegistrarProfessorVM)">
+            <summary>
+            Registro de usuário professor
+            </summary>
+            <param name="registrarProfessorVM">Dados de cadastro do usuário professor</param>
+            <returns>Sem conteúdo</returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.ObterProfessorsPorInstituicao(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+             Retorna todos os professores de uma instituicao - paginado com filtro
+            </summary>
+            <param name="instituicaoId"></param>
+            <param name="filtroVM"></param>
+            <returns>Lista de alunos</returns>        
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.ProfessoresController.Atualizar(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{LevelLearn.ViewModel.Pessoas.ProfessorAtualizaVM})">
+            <summary>
+            Atualiza propriedades do profesor
+            </summary>
+            <remarks>
+            Exemplo
+                [{ "op": "replace", "path": "/celular", "value": "+5512988547823" }]
+            </remarks>
+            <param name="id">Id professor</param>
+            <param name="patchProfessor"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.TurmasController">
+            <summary>
+            Turmas Controller
+            </summary>    
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.#ctor(LevelLearn.Service.Interfaces.Institucional.ITurmaService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="turmaService">ITurmaService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmasProfessorPorCurso(System.Guid,LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as turmas de um curso de um professor paginadas com filtro
+            </summary>        
+            <param name="cursoId">Id curso</param>
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista turmas</returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurmasAluno(LevelLearn.ViewModel.FiltroPaginacaoVM)">
+            <summary>
+            Retorna todas as turmas de um aluno paginadas com filtro
+            </summary>        
+            <param name="filtroVM">Armazena os filtros de consulta</param>
+            <returns>Lista turmas</returns>      
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.ObterTurma(System.Guid)">
+            <summary>
+            Retorna um turma
+            </summary>
+            <param name="id">Id Turma</param>
+            <returns>Turma</returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.CriarTurma(LevelLearn.ViewModel.Institucional.Curso.CadastrarTurmaVM)">
+            <summary>
+            Cadastro de turma
+            </summary>
+            <param name="turmaVM">Dados de cadastro da turma</param>
+            <returns>Retorna a turma cadastrada</returns>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.EditarTurma(System.Guid,LevelLearn.ViewModel.Institucional.Turma.EditarTurmaVM)">
+            <summary>
+            Edição de turma
+            </summary>
+            <param name="id">Id turma</param>
+            <param name="turmaVM">Dados de edição da turma</param>
+            <returns></returns>     
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.AlternarAtivacaoTurma(System.Guid)">
+            <summary>
+            Alternar ativação da turma
+            </summary>
+            <param name="id">Id turma</param>
+            <returns></returns>      
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.TurmasController.IncluirAlunosNaTurma(System.Guid,System.Collections.Generic.ICollection{System.Guid})">
+            <summary>
+            Incluir alunos na turma
+            </summary>
+            <param name="id">Id turma</param>
+            <param name="idsAluno">Ids dos alunos</param>
+            <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Controllers.UsuariosController">
+            <summary>
+            UsuariosController
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.#ctor(LevelLearn.Service.Interfaces.Usuarios.IUsuarioService,AutoMapper.IMapper)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="usuarioService">IUsuarioService</param>
+            <param name="mapper">IMapper</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginEmailSenhaVM)">
+            <summary>
+            Login de usuário - Email e Senha
+            </summary>
+            <param name="loginVM">Dados de login do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Login(LevelLearn.ViewModel.Usuarios.LoginRefreshTokenVM)">
+            <summary>
+            Login de usuário - RefreshToken
+            </summary>
+            <param name="loginVM">Dados de login do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.Logout">
+            <summary>
+            Logout de usuário
+            </summary>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.ConfirmarEmail(System.String,System.String)">
+            <summary>
+            Verifica a confirmação do email
+            </summary>
+            <param name="userId">Id usuário</param>
+            <param name="confirmationToken">Token de confirmação do email</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.EsqueciSenha(System.String)">
+            <summary>
+            Esqueci a senha
+            </summary>
+            <param name="email">Email para redefinir senha</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.RedefinirSenha(LevelLearn.ViewModel.Usuarios.RedefinirSenhaVM)">
+            <summary>
+            Redefinir senha
+            </summary>
+            <param name="redefinirSenhaVM">Dados para redefinir senha</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.AlterarSenha(LevelLearn.ViewModel.Usuarios.AlterarSenhaVM)">
+            <summary>
+            Alterar senha
+            </summary>
+            <param name="alterarSenhaVM">Dados para alterar senha</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Sem conteúdo</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="M:LevelLearn.WebApi.Controllers.UsuariosController.AlterarFotoPerfil(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Alteração da foto perfil do usuário
+            </summary>
+            <param name="arquivo">Arquivo com a imagem do usuário</param>
+            <returns>Retorna usuário logado</returns>
+            <response code="200">Retorna usuário logado</response>
+            <response code="400">Dados inválidos</response>
+            <response code="404">usuário não encontrado</response>
+            <response code="500">Ops, ocorreu um erro no sistema!</response>
+        </member>
+        <member name="T:LevelLearn.WebApi.Filters.CustomActionFilter">
+            <summary>
+            Filtro Customizado de ações do controller
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Filters.CustomActionFilter})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="env">IWebHostEnvironment</param>
+            <param name="logger">ILogger</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Executado antes de uma action ser executada
+            </summary>
+            <param name="context">ActionExecutingContext</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Executado depois de uma action ser executada
+            </summary>
+            <param name="context">ActionExecutedContext</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomActionFilter.IsSuccessStatusCode(System.Int32)">
+            <summary>
+            Verifica se é um status code de sucesso
+            </summary>
+            <param name="statusCode">Código do status code</param>
+            <returns></returns>
+        </member>
+        <member name="T:LevelLearn.WebApi.Filters.CustomExceptionFilter">
+            <summary>
+            Filtro Customizado de exceções
+            </summary>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{LevelLearn.WebApi.Filters.CustomExceptionFilter})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="env">IWebHostEnvironment</param>
+            <param name="logger">ILogger</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Filters.CustomExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            Executado depois de uma action lançar uma exceção
+            </summary>
+            <param name="context">ExceptionContext</param>
+        </member>
+        <member name="M:LevelLearn.WebApi.Startup.ValidateToken(Microsoft.AspNetCore.Authentication.JwtBearer.TokenValidatedContext,Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
+            <summary>
+            Verifica se o token está armazando no BD de cache ou se já expirou ou se foi removido
+            </summary>
+            <param name="context"></param>
+            <param name="redisCache"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

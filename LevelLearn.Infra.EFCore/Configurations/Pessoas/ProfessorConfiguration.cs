@@ -1,16 +1,20 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
-using Microsoft.EntityFrameworkCore;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
-    public class ProfessorConfigurationtion : IEntityTypeConfiguration<Professor>
+    public class ProfessorConfigurationtion : EntityBaseConfiguration<Professor, Guid>
     {
-        public void Configure(EntityTypeBuilder<Professor> builder)
-        {
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Professor> builder) { }
 
+        public override void ConfigurarChavePrimaria(EntityTypeBuilder<Professor> builder) { }
 
-        }
+        public override void ConfigurarCampos(EntityTypeBuilder<Professor> builder) { }
+
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Professor> builder) { }
+
 
     }
 

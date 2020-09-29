@@ -3,13 +3,15 @@ using LevelLearn.Domain.Extensions;
 using LevelLearn.Domain.Validators.Institucional;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LevelLearn.Domain.Entities.Institucional
 {
     public class Turma : EntityBase
     {
         #region Ctors
-        protected Turma() {
+        protected Turma()
+        {
             Alunos = new List<AlunoTurma>();
         }
 
@@ -17,13 +19,13 @@ namespace LevelLearn.Domain.Entities.Institucional
         {
             Nome = nome.RemoveExtraSpaces();
             Descricao = descricao?.Trim();
-            Meta = decimal.Zero;
+            Meta = 0d;
             NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
             CursoId = cursoId;
             ProfessorId = professorId;
             Alunos = new List<AlunoTurma>();
 
-            NomePesquisa = Nome.GenerateSlug();
+            AtribuirNomePesquisa();
         }
 
         #endregion Ctors
@@ -32,16 +34,16 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public decimal Meta { get; private set; }
+        public double Meta { get; private set; }
         public string NomeDisciplina { get; private set; }
 
         public Guid CursoId { get; private set; }
-        public virtual Curso Curso { get; private set; }
+        public Curso Curso { get; private set; }
 
         public Guid ProfessorId { get; private set; }
-        public virtual Professor Professor { get; private set; }
+        public Professor Professor { get; private set; }
 
-        public virtual ICollection<AlunoTurma> Alunos { get; private set; }
+        public ICollection<AlunoTurma> Alunos { get; private set; }
 
         #endregion Props
 
@@ -49,14 +51,16 @@ namespace LevelLearn.Domain.Entities.Institucional
 
         public void AtribuirAluno(AlunoTurma aluno)
         {
-            Alunos.Add(aluno);
+            if (!Alunos.Any(at => at.AlunoId == aluno.AlunoId))
+                Alunos.Add(aluno);
         }
 
         public void AtribuirAlunos(ICollection<AlunoTurma> alunos)
         {
             foreach (AlunoTurma aluno in alunos)
             {
-                Alunos.Add(aluno);
+                if (!Alunos.Any(at => at.AlunoId == aluno.AlunoId))
+                    Alunos.Add(aluno);
             }
         }
 
@@ -68,9 +72,31 @@ namespace LevelLearn.Domain.Entities.Institucional
         public override bool EstaValido()
         {
             var validator = new TurmaValidator();
-            this.ValidationResult = validator.Validate(this);
+            this.ResultadoValidacao = validator.Validate(this);
 
-            return this.ValidationResult.IsValid;
+            return this.ResultadoValidacao.IsValid;
+        }
+
+        /// <summary>
+        /// Gerado a partir do nome e nome da disciplina
+        /// </summary>
+        public override void AtribuirNomePesquisa()
+        {
+            NomePesquisa = string.Concat(Nome, NomeDisciplina).GenerateSlug();
+        }
+
+        public void Atualizar(string nome, string descricao, string nomeDisciplina)
+        {
+            Nome = nome.RemoveExtraSpaces();
+            Descricao = descricao?.Trim();
+            NomeDisciplina = nomeDisciplina.RemoveExtraSpaces();
+
+            AtribuirNomePesquisa();
+        }
+
+        public bool ProfessorDaTurma(Guid professorId)
+        {
+            return this.ProfessorId == professorId;
         }
 
         #endregion Methods

@@ -1,6 +1,6 @@
 ﻿using LevelLearn.Domain.Entities;
 using LevelLearn.Domain.Repositories;
-using LevelLearn.Domain.Services;
+using LevelLearn.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace LevelLearn.Service.Services
 {
-    public abstract class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : EntityBase
+    public abstract class ServiceBase<TEntity, TKey> : IServiceBase<TEntity, TKey>
+        where TEntity : EntityBase<TKey>
+        where TKey : IEquatable<TKey>
     {
-        protected readonly IRepositoryBase<TEntity> _repository;
+        protected readonly IRepositoryBase<TEntity, TKey> _repository;
 
-        public ServiceBase(IRepositoryBase<TEntity> repository)
+        public ServiceBase(IRepositoryBase<TEntity, TKey> repository)
         {
             _repository = repository;
         }
@@ -20,13 +22,13 @@ namespace LevelLearn.Service.Services
         public async Task AddAsync(TEntity entity)
         {
             await _repository.AddAsync(entity);
-            await _repository.CompleteAsync();
+            await _repository.CommitAsync();
         }
 
         public async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
             await _repository.AddRangeAsync(entities);
-            await _repository.CompleteAsync();
+            await _repository.CommitAsync();
         }
 
         public async Task<int> CountAsync()
@@ -54,33 +56,33 @@ namespace LevelLearn.Service.Services
             return await _repository.GetAllAsync(skip, limit);
         }
 
-        public async Task<TEntity> GetAsync(Guid id)
+        public async Task<TEntity> GetAsync(TKey id)
         {
             return await _repository.GetAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageIndex, int pageSize)
+        public async Task<IEnumerable<TEntity>> GetWithPagination(string query, int pageNumber, int pageSize)
         {
-            return await _repository.GetWithPagination(query, pageIndex, pageSize);
+            return await _repository.GetWithPagination(query, pageNumber, pageSize);
         }
 
         public void Remove(TEntity entity)
         {
             _repository.Remove(entity);
-            _repository.Complete();
+            _repository.Commit();
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _repository.RemoveRange(entities);
-            _repository.Complete();
+            _repository.Commit();
         }
 
         public void Update(TEntity entity)
         {
             _repository.Update(entity);
-            _repository.Complete();
-        }
+            _repository.Commit();
+        }      
 
     }
 }

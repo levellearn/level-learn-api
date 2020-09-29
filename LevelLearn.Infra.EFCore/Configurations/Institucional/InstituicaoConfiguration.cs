@@ -1,34 +1,40 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Institucional
 {
-    public class InstituicaoConfiguration : IEntityTypeConfiguration<Instituicao>
+    public class InstituicaoConfiguration : EntityBaseConfiguration<Instituicao, Guid>
     {
-        public void Configure(EntityTypeBuilder<Instituicao> builder)
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Instituicao> builder)
         {
             builder.ToTable("Instituicoes");
+        }
 
-            builder.HasKey(p => p.Id);
-
-            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
-            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
-
+        public override void ConfigurarCampos(EntityTypeBuilder<Instituicao> builder)
+        {
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})");
+                .HasMaxLength(RegraInsituicao.NOME_TAMANHO_MAX)
+                .HasColumnType($"varchar({RegraInsituicao.NOME_TAMANHO_MAX})");
 
             builder.Property(p => p.Descricao)
-               .IsRequired()
-               .HasMaxLength(PropertiesConfig.Instituicao.DESCRICAO_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Instituicao.DESCRICAO_TAMANHO_MAX})");
+               .IsRequired(false)
+               .HasMaxLength(RegraInsituicao.DESCRICAO_TAMANHO_MAX)
+               .HasColumnType($"varchar({RegraInsituicao.DESCRICAO_TAMANHO_MAX})");
 
+            //builder.HasQueryFilter(p => p.Ativo);            
+        }
 
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Instituicao> builder)
+        {
             builder.HasMany(p => p.Pessoas);
             builder.HasMany(p => p.Cursos);
         }
+
+
     }
 }

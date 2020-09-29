@@ -1,7 +1,5 @@
 ﻿using LevelLearn.Domain.Entities.Institucional;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LevelLearn.Domain.Entities.Pessoas
 {
@@ -11,18 +9,18 @@ namespace LevelLearn.Domain.Entities.Pessoas
 
         public AlunoTurma(Guid alunoId, Guid turmaId)
         {
-            Id = Guid.NewGuid();
             AlunoId = alunoId;
             TurmaId = turmaId;
+            DataCadastro = DateTime.UtcNow;
         }
 
-        public Guid Id { get; private set; }
-
         public Guid AlunoId { get; private set; }
-        public virtual Pessoa Aluno { get; private set; }
+        public Pessoa Aluno { get; set; }
 
         public Guid TurmaId { get; private set; }
-        public virtual Turma Turma { get; private set; }
+        public Turma Turma { get; set; }
+
+        public DateTime DataCadastro { get; private set; }
 
     }
 }

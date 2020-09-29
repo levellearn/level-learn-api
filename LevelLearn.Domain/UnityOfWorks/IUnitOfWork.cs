@@ -8,9 +8,13 @@ namespace LevelLearn.Domain.UnityOfWorks
     public interface IUnitOfWork : IDisposable
     {
         IInstituicaoRepository Instituicoes { get; }
+        ICursoRepository Cursos { get; }
+        ITurmaRepository Turmas { get; }
         IPessoaRepository Pessoas { get; }
+        IAlunoRepository Alunos { get; }
+        IProfessorRepository Professores { get; }
 
-        bool Complete();
-        Task<bool> CompleteAsync();
+        bool Commit();
+        Task<bool> CommitAsync();
     }
 }

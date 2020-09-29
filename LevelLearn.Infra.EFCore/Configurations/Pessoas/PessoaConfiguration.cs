@@ -1,73 +1,56 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
-using LevelLearn.Domain.Validators;
+using LevelLearn.Domain.Validators.RegrasAtributos;
+using LevelLearn.Infra.EFCore.Configurations.TemplateConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LevelLearn.Infra.EFCore.Configurations.Pessoas
 {
-    public class PessoaConfiguration : IEntityTypeConfiguration<Pessoa>
+    public class PessoaConfiguration : EntityBaseConfiguration<Pessoa, Guid>
     {
-        public void Configure(EntityTypeBuilder<Pessoa> builder)
+
+        public override void ConfigurarNomeTabela(EntityTypeBuilder<Pessoa> builder)
         {
             builder.ToTable("Pessoas");
+        }
 
-            builder.HasKey(c => c.Id);
-
-            builder.HasIndex(c => c.NomePesquisa).IsUnique(false);
-            builder.Property(c => c.NomePesquisa).HasColumnType("varchar(250)").IsRequired();
-
-            //builder.Property("Discriminator").HasMaxLength(200);
+        public override void ConfigurarCampos(EntityTypeBuilder<Pessoa> builder)
+        {
+            builder.Property(p => p.Nome)
+              .IsRequired()
+              .HasMaxLength(RegraPessoa.NOME_TAMANHO_MAX)
+              .HasColumnType($"varchar({RegraPessoa.NOME_TAMANHO_MAX})");
 
             builder.OwnsOne(c => c.Cpf)
-                .Ignore(e => e.CascadeMode)
                 .Property(e => e.Numero)
                 .HasColumnName("CPF")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.CPF_TAMANHO})")
-                .IsRequired();
-
-            builder.OwnsOne(c => c.Email)
-                .Ignore(e => e.CascadeMode)
-                .Property(e => e.Endereco)
-                .HasColumnName("Email")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX})")
-                .IsRequired();
+                .HasColumnType($"varchar({RegraPessoa.CPF_TAMANHO})")
+                .IsRequired(false);            
 
             builder.OwnsOne(c => c.Celular)
-                .Ignore(e => e.CascadeMode)
                 .Property(c => c.Numero)
                 .HasColumnName("Celular")
-                .HasColumnType($"varchar({PropertiesConfig.Pessoa.CELULAR_TAMANHO})")
-                .IsRequired();
-
-            builder.Property(p => p.Nome)
-                .IsRequired()
-                .HasMaxLength(PropertiesConfig.Instituicao.NOME_TAMANHO_MAX)
-                .HasColumnType($"varchar({PropertiesConfig.Instituicao.NOME_TAMANHO_MAX})");
-
-            builder.Property(p => p.UserName)
-               .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX})");
-
-            builder.Property(p => p.UserName)
-               .IsRequired()
-               .HasMaxLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-               .HasColumnType($"varchar({PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX})");
+                .HasColumnType($"varchar({RegraPessoa.CELULAR_TAMANHO})")
+                .IsRequired(false);
 
             builder.Property(p => p.DataNascimento)
                .IsRequired(false);
-
-            builder.Property(p => p.ImagemUrl)
-              .IsRequired();
 
             builder.Property(p => p.TipoPessoa)
               .IsRequired();
 
             builder.Property(p => p.Genero)
               .IsRequired();
-
-
-            builder.HasMany(p => p.Instituicoes);
         }
+
+        public override void ConfigurarRelacionamentos(EntityTypeBuilder<Pessoa> builder)
+        {
+            builder.HasMany(p => p.Instituicoes);
+            builder.HasMany(p => p.Cursos);
+            builder.HasMany(p => p.Turmas);
+        }
+
+
     }
 }

@@ -1,19 +1,25 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Resource;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
     public class AlunoValidator : AbstractValidator<Aluno>
     {
+        private readonly PessoaResource _resource;
+
         public AlunoValidator()
-        {            
+        {
+            _resource = PessoaResource.ObterInstancia();
+
             ValidarRA();
         }
 
         private void ValidarRA()
         {
             RuleFor(p => p.RA)
-                .NotEmpty().WithMessage("RA precisa estar preenchido");
+                .NotEmpty()
+                    .WithMessage(_resource.AlunoRAObrigatorio);
         }
 
 

@@ -1,107 +1,156 @@
 ﻿using AutoMapper;
 using LevelLearn.Domain.Entities.Institucional;
-using LevelLearn.Domain.Services;
-using LevelLearn.Domain.Services.Institucional;
+using LevelLearn.Domain.Extensions;
+using LevelLearn.Domain.Utils.Comum;
+using LevelLearn.Service.Interfaces.Institucional;
+using LevelLearn.Service.Response;
+using LevelLearn.ViewModel;
 using LevelLearn.ViewModel.Institucional.Instituicao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace LevelLearn.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/")]
-    [Produces("application/json")]
-    [Authorize]
-    //[Authorize(Roles = "professor")]
-    public class InstituicoesController : ControllerBase
+
+    /// <summary>
+    /// Instituicoes Controller
+    /// </summary>   
+    public class InstituicoesController : MyBaseController
     {
         private readonly IInstituicaoService _instituicaoService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="instituicaoService">IInstituicaoService</param>
+        /// <param name="mapper">IMapper</param>
         public InstituicoesController(IInstituicaoService instituicaoService, IMapper mapper)
+            : base(mapper)
         {
             _instituicaoService = instituicaoService;
             _mapper = mapper;
         }
 
-        [Route("v1/[controller]")]
-        [HttpGet]
-        [ProducesResponseType(typeof(InstituicaoListVM), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetInstituicoes(
-            [FromQuery]string query,
-            [FromQuery][Range(1, int.MaxValue)]int pageIndex,
-            [FromQuery][Range(1, 200)]int pageSize)
+        /// <summary>
+        /// Retorna todas as instituições paginadas com filtro nome
+        /// </summary>        
+        /// <param name="filtroVM">Armazena os filtros de consulta</param>
+        /// <returns>Lista instituições</returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN)]
+        [HttpGet("v1/[controller]/admin")]
+        [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterInstituicoesAdmin([FromBody] FiltroPaginacaoVM filtroVM)
         {
-            var instituicoes = await _instituicaoService.GetWithPagination(query, pageIndex, pageSize);
-            var count = await _instituicaoService.CountWithPagination(query);
+            var instituicoes = await _instituicaoService.GetWithPagination(filtroVM.FiltroPesquisa, filtroVM.NumeroPagina, filtroVM.TamanhoPorPagina);
+            int count = await _instituicaoService.CountWithPagination(filtroVM.FiltroPesquisa);
 
-            var listVM = new InstituicaoListVM
-            {
-                Data = _mapper.Map<IEnumerable<Instituicao>, IEnumerable<InstituicaoVM>>(instituicoes),
-                Total = count,
-                PageIndex = pageIndex,
-                PageSize = pageSize
-            };
+            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(instituicoes);
 
-            return Ok(listVM);
+            return Ok(CriarListaPaginada(listaVM, count, filtroVM));
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpGet]
-        [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetInstituicao(Guid id)
+        /// <summary>
+        /// Retorna todas as instituições de um professor paginadas e filtro
+        /// </summary>        
+        /// <param name="filtroPaginacaoVM">Armazena os filtros de consulta</param>
+        /// <returns>Lista instituições</returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpGet("v1/[controller]", Name = "ObterInstituicoes")]
+        [ProducesResponseType(typeof(ListaPaginadaVM<InstituicaoVM>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> ObterInstituicoes([FromBody] FiltroPaginacaoVM filtroPaginacaoVM)
         {
-            var instituicao = await _instituicaoService.GetAsync(id);
+            var filtroPaginacao = _mapper.Map<FiltroPaginacao>(filtroPaginacaoVM);
 
-            if (instituicao == null) return NotFound(new { message = "Instituição não encontrada" });
+            ResultadoService<IEnumerable<Instituicao>> resultado =
+                await _instituicaoService.ObterInstituicoesProfessor(User.GetPessoaId(), filtroPaginacao);
 
-            return Ok(_mapper.Map<InstituicaoVM>(instituicao));
+            var listaVM = _mapper.Map<IEnumerable<InstituicaoVM>>(resultado.Dados);
+
+            return Ok(CriarListaPaginada(listaVM, resultado.Total, filtroPaginacaoVM));
         }
 
-        [Route("v1/[controller]")]
-        [HttpPost]
+        /// <summary>
+        /// Retorna uma instituição
+        /// </summary>
+        /// <param name="id">Id Instituição</param>
+        /// <returns>Instituição</returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpGet("v1/[controller]/{id:guid}")]
+        [ProducesResponseType(typeof(InstituicaoDetalheVM), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ObterInstituicao(Guid id)
+        {
+            ResultadoService<Instituicao> resultado = await _instituicaoService.ObterInstituicao(id, User.GetPessoaId());
+
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
+
+            return Ok(_mapper.Map<InstituicaoDetalheVM>(resultado.Dados));
+        }
+
+        /// <summary>
+        /// Cadastro de instituição
+        /// </summary>
+        /// <param name="instituicaoVM">Dados de cadastro da instituição</param>
+        /// <returns>Retorna a instituição cadastrada</returns>
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpPost("v1/[controller]")]
         [ProducesResponseType(typeof(InstituicaoVM), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CriarInstituicao([FromBody] CadastrarInstituicaoVM instituicaoVM)
         {
-            ResponseAPI response = await _instituicaoService.CadastrarInstituicao(instituicaoVM);
+            var instituicao = _mapper.Map<Instituicao>(instituicaoVM);
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            ResultadoService<Instituicao> resultado =
+                await _instituicaoService.CadastrarInstituicao(instituicao, User.GetPessoaId());
 
-            var responseVM = _mapper.Map<InstituicaoVM>((Instituicao)response.Data);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
-            return CreatedAtAction(nameof(GetInstituicao), new { id = responseVM.Id }, responseVM);
+            var respostaVM = _mapper.Map<InstituicaoVM>(resultado.Dados);
+
+            return CreatedAtAction(nameof(ObterInstituicao), new { id = respostaVM.Id }, respostaVM);
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpPut]
+        /// <summary>
+        /// Edição de instituição
+        /// </summary>
+        /// <param name="id">Id instituição</param>
+        /// <param name="instituicaoVM">Dados de edição da instituição</param>
+        /// <returns></returns>     
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpPut("v1/[controller]/{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> EditInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> EditarInstituicao(Guid id, [FromBody] EditarInstituicaoVM instituicaoVM)
         {
-            ResponseAPI response = await _instituicaoService.EditarInstituicao(id, instituicaoVM);
+            var resultado = await _instituicaoService.EditarInstituicao(id, instituicaoVM, User.GetPessoaId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }
 
-        [Route("v1/[controller]/{id:guid}")]
-        [HttpDelete]
+        /// <summary>
+        /// Alternar ativação da instituição
+        /// </summary>
+        /// <param name="id">Id instituição</param>
+        /// <returns></returns>      
+        [Authorize(Roles = ApplicationRoles.ADMIN_E_PROFESSOR)]
+        [HttpPatch("v1/[controller]/{id:guid}/alternar-ativacao")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteInstituicao(Guid id)
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> AlternarAtivacaoInstituicao(Guid id)
         {
-            ResponseAPI response = await _instituicaoService.RemoverInstituicao(id);
+            var resultado = await _instituicaoService.AlternarAtivacao(id, User.GetPessoaId());
 
-            if (!response.Success) return StatusCode(response.StatusCode, response);
+            if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 
             return NoContent();
         }

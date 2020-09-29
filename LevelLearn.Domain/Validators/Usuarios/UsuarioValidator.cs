@@ -1,59 +1,60 @@
 ﻿using FluentValidation;
 using LevelLearn.Domain.Entities.Usuarios;
+using LevelLearn.Domain.Validators.RegrasAtributos;
+using LevelLearn.Resource.Usuarios;
 using System.Text.RegularExpressions;
 
-namespace LevelLearn.Domain.Validators.Pessoas
+namespace LevelLearn.Domain.Validators.Usuarios
 {
-    public class UsuarioValidator : AbstractValidator<ApplicationUser>
+    public class UsuarioValidator : AbstractValidator<Usuario>
     {
+        private readonly UsuarioResource _resource;
+
         public UsuarioValidator()
         {
-            //CascadeMode = CascadeMode.StopOnFirstFailure;
+            _resource = UsuarioResource.ObterInstancia();
 
-            ValidarEmail();
-            ValidarUserName();
-            ValidarCelular();
-            ValidarSenha();
+            ValidarNickName();
+            ValidarConfirmacaoSenha();
+            ValidarImagem();
+            ValidarPessoaId();
         }
 
-        private void ValidarUserName()
+        private void ValidarNickName()
         {
-            var pattern = @"^[A-Za-z0-9_\-\.]{1," + PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX + "}$";
+            //  Ex.: bill@GatesIII
 
-            RuleFor(p => p.UserName)
-                .NotEmpty().WithMessage("Username precisa estar preenchido")
+            var tamanhoMax = RegraUsuario.NICKNAME_TAMANHO_MAX;
+            var pattern = @"^[A-Za-z0-9_\-\.]{1," + tamanhoMax + "}$"; //^[a-zA-Z][A-Za-z0-9_\-\.]*$
+
+            RuleFor(p => p.NickName)
+                .NotEmpty()
+                    .WithMessage(_resource.UsuarioNickNameObrigatorio)
                 .Must(p => Regex.IsMatch(p, pattern))
-                .WithMessage("Username somente deve conter letras, números, (_), (-) ou (.)")
-                .MaximumLength(PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX)
-                .WithMessage($"Username pode ter no máximo {PropertiesConfig.Pessoa.USERNAME_TAMANHO_MAX} caracteres");
+                    .WithMessage(_resource.UsuarioNickNameInvalido)
+                .MaximumLength(tamanhoMax)
+                    .WithMessage(_resource.UsuarioNickNameTamanhoMaximo(tamanhoMax));
         }
 
-        private void ValidarEmail()
+        private void ValidarConfirmacaoSenha()
         {
-            RuleFor(p => p.Email)
-                .NotNull().WithMessage("E-mail precisa estar preenchido")
-                .MaximumLength(PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX)
-                    .WithMessage($"E-mail pode ter no máximo {PropertiesConfig.Pessoa.EMAIL_TAMANHO_MAX} caracteres")
-                .EmailAddress().WithMessage("E-mail não é válido");
+            RuleFor(p => p.ConfirmacaoSenha)
+                .Equal(p => p.Senha).WithMessage(_resource.UsuarioConfirmacaoSenhaNaoConfere);
         }
 
-        private void ValidarCelular()
+        private void ValidarImagem()
         {
-            RuleFor(c => c.PhoneNumber)
-                .NotNull()
-                    .WithMessage("Celular precisa estar preenchido")
-                .Matches(@"^(55)([1-9][0-9])(\d{5})(\d{4})$")
-                    .WithMessage("Celular não é válido");
+            RuleFor(p => p.ImagemUrl)
+                .NotEmpty().WithMessage(_resource.UsuarioImagemObrigatoria);
         }
 
-        private void ValidarSenha()
+        private void ValidarPessoaId()
         {
-            RuleFor(p => p.Senha)
-                .NotNull()
-                    .WithMessage("Senha precisa estar preenchida")
-                .Equal(p => p.ConfirmacaoSenha)
-                    .WithMessage("As senhas não conferem");
+            RuleFor(p => p.PessoaId)
+                .NotEmpty().WithMessage(_resource.IdObrigatorio());
         }
+
+
 
     }
 }
