@@ -1,22 +1,19 @@
 ﻿using LevelLearn.Domain.Entities.Pessoas;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.ValueObjects;
-using NUnit.Framework;
 using System;
 using System.Linq;
-//https://docs.microsoft.com/pt-br/dotnet/core/testing/unit-testing-with-nunit
+using Xunit;
 
-namespace LevelLearn.NUnitTest.Pessoas
+namespace LevelLearn.XUnitTest.DomainTest.Pessoas
 {
-    [TestFixture]
-    class AlunoTest
+    public class AlunoTest
     {
         private string _nome, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;
 
-        [SetUp]
-        public void Setup()
+        public AlunoTest()
         {
             _nome = "Felipe Ayres";
             _cpf = "881.192.990-35";
@@ -26,19 +23,19 @@ namespace LevelLearn.NUnitTest.Pessoas
             _dataNascimento = DateTime.Parse("26/10/1993");
         }
 
-        [Test]
+        [Fact]
         public void Cadastrar_AlunoValido_ReturnTrue()
         {
-            Aluno aluno = CriarAluno();
+            Aluno aluno = FakerTest.CriarAlunoFakeValido();
 
             bool valido = aluno.EstaValido();
 
-            Assert.IsTrue(valido, "Aluno deveria ser válido");
+            Assert.True(valido, "Aluno deveria ser válido");
         }
 
-        [Test]
-        [TestCase("123.456.789-10", "29/10/1990")] // CPF inválido
-        [TestCase("881.192.990-35", "29/10/5000")] // Data inválida
+        [Theory]
+        [InlineData("123.456.789-10", "29/10/1990")] // CPF inválido
+        [InlineData("881.192.990-35", "29/10/5000")] // Data inválida
         public void Cadastrar_AlunoValido_ReturnFalse(string cpf, string dataNascimento)
         {
             _cpf = cpf;
@@ -48,16 +45,16 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             bool valido = aluno.EstaValido();
 
-            Assert.IsFalse(valido, "Aluno deveria ser inválido");
+            Assert.False(valido, "Aluno deveria ser inválido");
         }
 
-        [Test]
-        [TestCase("William Henry Gates III")]
-        [TestCase("Shaquille O'Neal")]
-        [TestCase("Steven P. Jobs")]
-        [TestCase("Joseph Louis Gay-Lussac")]
-        [TestCase("Francisco O' Lourenço")]
-        [TestCase("Ma Long Np")]
+        [Theory]
+        [InlineData("William Henry Gates III")]
+        [InlineData("Shaquille O'Neal")]
+        [InlineData("Steven P. Jobs")]
+        [InlineData("Joseph Louis Gay-Lussac")]
+        [InlineData("Francisco O' Lourenço")]
+        [InlineData("Ma Long Np")]
         public void Aluno_NomeCompleto_ReturnTrue(string nome)
         {
             _nome = nome;
@@ -67,14 +64,14 @@ namespace LevelLearn.NUnitTest.Pessoas
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
-            Assert.IsTrue(condition, "Aluno deveria ter nome completo");
+            Assert.True(condition, "Aluno deveria ter nome completo");
         }
 
-        [Test]
-        [TestCase("F lipe")]
-        [TestCase("Felipe A")]
-        [TestCase("F Ayres")]
-        [TestCase("Felipe")]
+        [Theory]
+        [InlineData("F lipe")]
+        [InlineData("Felipe A")]
+        [InlineData("F Ayres")]
+        [InlineData("Felipe")]
         public void Aluno_NomeCompleto_ReturnFalse(string nome)
         {
             _nome = nome;
@@ -84,10 +81,10 @@ namespace LevelLearn.NUnitTest.Pessoas
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
 
-            Assert.IsFalse(condition, "Aluno deveria ter nome incompleto");
+            Assert.False(condition, "Aluno deveria ter nome incompleto");
         }
 
-        [Test]
+        [Fact]
         public void Cadastrar_AlunoSemCPF_ReturnTrue()
         {
             _cpf = null;
@@ -95,7 +92,7 @@ namespace LevelLearn.NUnitTest.Pessoas
 
             bool valido = aluno.EstaValido();
 
-            Assert.IsTrue(valido, "Aluno deveria ser válido");
+            Assert.True(valido, "Aluno deveria ser válido");
         }
 
         private Aluno CriarAluno()
@@ -103,8 +100,6 @@ namespace LevelLearn.NUnitTest.Pessoas
             return new Aluno(_nome, new CPF(_cpf), new Celular(_celular), _ra,
                 _genero, _dataNascimento);
         }
-
       
-
     }
 }
