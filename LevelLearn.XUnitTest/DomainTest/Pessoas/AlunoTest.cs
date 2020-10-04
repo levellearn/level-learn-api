@@ -9,6 +9,12 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
 {
     public class AlunoTest
     {
+        //AAA Arrange, Act, Assert
+
+        //Nomenclatura 
+        //MetodoTestado_EstadoEmTeste_ComportamentoEsperado
+        //ObjetoEmTeste_MetodoComportamentoEmTeste_ComportamentoEsperado
+
         private string _nome, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;
@@ -24,6 +30,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         }
 
         [Fact]
+        [Trait("Categoria", "Alunos")]
         public void Cadastrar_AlunoValido_ReturnTrue()
         {
             Aluno aluno = FakerTest.CriarAlunoFakeValido();
@@ -34,6 +41,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         }
 
         [Theory]
+        [Trait("Categoria", "Alunos")]
         [InlineData("123.456.789-10", "29/10/1990")] // CPF inválido
         [InlineData("881.192.990-35", "29/10/5000")] // Data inválida
         public void Cadastrar_AlunoValido_ReturnFalse(string cpf, string dataNascimento)
@@ -49,6 +57,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         }
 
         [Theory]
+        [Trait("Categoria", "Alunos")]
         [InlineData("William Henry Gates III")]
         [InlineData("Shaquille O'Neal")]
         [InlineData("Steven P. Jobs")]
@@ -68,6 +77,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         }
 
         [Theory]
+        [Trait("Categoria", "Alunos")]
         [InlineData("F lipe")]
         [InlineData("Felipe A")]
         [InlineData("F Ayres")]
@@ -85,6 +95,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         }
 
         [Fact]
+        [Trait("Categoria", "Alunos")]
         public void Cadastrar_AlunoSemCPF_ReturnTrue()
         {
             _cpf = null;

@@ -31,7 +31,7 @@ namespace LevelLearn.XUnitTest.DomainTest
             var nome = "Felipe Ayres";
             var cpf = "881.192.990-35";
             var genero = GeneroPessoa.Masculino;
-            var celular = "(12)98845-7832";
+            var celular = "55(12)98845-7832";
             var ra = "f1310435";
             var dataNascimento = DateTime.Parse("26/10/1993");
 
@@ -40,6 +40,35 @@ namespace LevelLearn.XUnitTest.DomainTest
         }
         #endregion
 
+        #region Professor
+
+        public static Professor CriarProfessorFakeValido()
+        {
+            var genero = new Faker().PickRandom<GeneroPessoa>();
+            var professor = new Faker<Professor>(locale: "pt_BR")
+                .CustomInstantiator(f => new Professor(
+                    f.Name.FullName(),
+                    f.Person.Cpf(),
+                    f.Phone.PhoneNumber("+## ## #####-####"),
+                    genero,
+                    f.Date.Past(80, DateTime.Now.AddYears(-21))
+                    ));
+
+            return professor;
+        }
+
+        public static Professor CriarProfessorPadrao()
+        {
+            var nome = "Leandro Guarino";
+            var cpf = "881.192.990-35";
+            var genero = GeneroPessoa.Masculino;
+            var celular = "55(12)98845-8974";
+            var dataNascimento = DateTime.Parse("30/12/1988");
+
+            return new Professor(nome, new CPF(cpf), new Celular(celular),
+                genero, dataNascimento);
+        }
+        #endregion
 
 
 
