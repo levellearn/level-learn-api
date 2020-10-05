@@ -5,6 +5,7 @@ using LevelLearn.Domain.ValueObjects;
 using System;
 using Bogus.Extensions.Brazil;
 using LevelLearn.Domain.Entities.Institucional;
+using System.Linq;
 
 namespace LevelLearn.XUnitTest.DomainTest
 {
@@ -106,6 +107,60 @@ namespace LevelLearn.XUnitTest.DomainTest
             instituicao.AtribuirPessoa(alunoInstituicao);
 
             return instituicao;
+        }
+        #endregion
+
+        #region Turma
+        public static Turma CriarTurmaPadrao()
+        {
+            var curso =  CriarCursoPadrao();
+
+            var nome = "6ª Turma ADS - 1º Semestre - ALGORITMOS";
+            var descricao = "Analisar problemas e projetar, validar soluções computacionais para os mesmos, através do uso de metodologias, técnicas e ferramentas de programação envolvendo elementos básicos da construção de algoritmos e programas de computador.";
+            var nomeDisciplina = "ALGORITMOS";
+
+            Pessoa professor = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Professor).Pessoa;
+            Pessoa aluno = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Aluno).Pessoa;
+
+            var turma = new Turma(nome, descricao, nomeDisciplina, curso.Id, professor.Id);
+            var alunoTurma = new AlunoTurma(aluno.Id, turma.Id) { Aluno = aluno, Turma = turma };
+            turma.AtribuirAluno(alunoTurma);
+
+            return turma;
+        }
+        #endregion
+
+        #region Curso
+        public static Curso CriarCursoPadrao()
+        {
+            var instituicao = CriarInstituicaoPadrao();
+
+            var nome = "Análise e Desenvolvimento de Sistemas";
+            var sigla = "ADS";
+            var descricao = "O curso forma o tecnólogo que analisa, projeta, documenta, especifica, testa, implanta e mantém sistemas computacionais de informação. Esse profissional trabalha, também, com ferramentas computacionais, equipamentos de informática e metodologia de projetos na produção de sistemas. Raciocínio lógico, emprego de linguagens de programação e de metodologias de construção de projetos, preocupação com a qualidade, usabilidade, integridade e segurança de programas computacionais são fundamentais à atuação desse profissional.";
+
+            var curso = new Curso(nome, sigla, descricao, instituicao.Id);
+
+            var professor = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.ProfessorAdmin).Pessoa;
+            var aluno = instituicao.Pessoas.First(p => p.Perfil == PerfilInstituicao.Aluno).Pessoa;
+
+            var professorCurso = new PessoaCurso(TipoPessoa.Professor, professor.Id, curso.Id)
+            {
+                Pessoa = professor,
+                Curso = curso
+            };
+            var alunoCurso = new PessoaCurso(TipoPessoa.Aluno, aluno.Id, curso.Id)
+            {
+                Pessoa = professor,
+                Curso = curso
+            };
+
+            curso.AtribuirPessoa(professorCurso);
+            curso.AtribuirPessoa(alunoCurso);
+
+            instituicao.AtribuirCurso(curso);
+
+            return curso;
         }
         #endregion
 
