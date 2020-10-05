@@ -6,6 +6,7 @@ using System;
 using Bogus.Extensions.Brazil;
 using LevelLearn.Domain.Entities.Institucional;
 using System.Linq;
+using LevelLearn.Domain.Entities.Usuarios;
 
 namespace LevelLearn.XUnitTest.DomainTest
 {
@@ -161,6 +162,28 @@ namespace LevelLearn.XUnitTest.DomainTest
             instituicao.AtribuirCurso(curso);
 
             return curso;
+        }
+        #endregion
+
+        #region Usuario
+        public static Usuario CriarUsuarioPadrao()
+        {
+            var nome = "Felipe Ayres";
+            var email = "felipe.ayres93@gmail.com";
+            var celular = "55(12)98845-7832";
+            var nickName = "felipe.ayres";
+            var senha = "Gamificando@123";
+            var confirmacaoSenha = "Gamificando@123";
+
+            var pessoa = new Professor(nome, new CPF("226.547.010-42"),
+               new Celular(celular), GeneroPessoa.Masculino, DateTime.Parse("1993-10-26"));
+
+            var user = new Usuario(nome, nickName, email, celular, senha, confirmacaoSenha);
+            user.AtribuirPessoaId(pessoa.Id);
+            user.ConfirmarEmail();
+            user.ConfirmarCelular();
+
+            return user;
         }
         #endregion
 
