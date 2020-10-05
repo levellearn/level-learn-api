@@ -4,6 +4,7 @@ using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.ValueObjects;
 using System;
 using Bogus.Extensions.Brazil;
+using LevelLearn.Domain.Entities.Institucional;
 
 namespace LevelLearn.XUnitTest.DomainTest
 {
@@ -67,6 +68,44 @@ namespace LevelLearn.XUnitTest.DomainTest
 
             return new Professor(nome, new CPF(cpf), new Celular(celular),
                 genero, dataNascimento);
+        }
+        #endregion
+
+        #region Instituicao
+        public static Instituicao CriarInstituicaoPadrao()
+        {
+            var nome = "FATEC Guaratinguetá";
+            var descricao = "Autarquia do Governo do Estado de São Paulo vinculada à Secretaria de Desenvolvimento Econômico, Ciência e Tecnologia, o Centro Paula Souza administra 220 Escolas Técnicas (Etecs) e 66 Faculdades de Tecnologia (Fatecs) estaduais em 162 municípios paulistas.";
+            var sigla = "FATEC GT";
+            var cnpj = "62823257000109";
+            var cep = "12517010";
+            var municipio = "GUARATINGUETA";
+            var uf = "SP";
+            var organizacaoAcademica = OrganizacaoAcademica.Faculdade;
+            var rede = Rede.Publica;
+            var categoriaAdministrativa = CategoriaAdministrativa.Estadual;
+            var nivelEnsino = NivelEnsino.Superior;
+
+            var instituicao = new Instituicao(nome, sigla, descricao, cnpj, organizacaoAcademica, rede, categoriaAdministrativa, nivelEnsino, cep, municipio, uf);
+
+            var aluno = CriarAlunoFakeValido();
+            var professor = CriarProfessorFakeValido();
+
+            var professorAdminInstituicao = new PessoaInstituicao(PerfilInstituicao.ProfessorAdmin, professor.Id, instituicao.Id)
+            {
+                Pessoa = professor,
+                Instituicao = instituicao
+            };
+            var alunoInstituicao = new PessoaInstituicao(PerfilInstituicao.Aluno, aluno.Id, instituicao.Id)
+            {
+                Pessoa = aluno,
+                Instituicao = instituicao
+            };
+
+            instituicao.AtribuirPessoa(professorAdminInstituicao);
+            instituicao.AtribuirPessoa(alunoInstituicao);
+
+            return instituicao;
         }
         #endregion
 
