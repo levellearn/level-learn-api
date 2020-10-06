@@ -47,7 +47,7 @@ namespace LevelLearn.XUnitTest.DomainTest
 
         public static Professor CriarProfessorFakeValido()
         {
-            var genero = new Faker().PickRandom<GeneroPessoa>();
+            var genero = new Faker().PickRandom(GeneroPessoa.Feminino, GeneroPessoa.Masculino, GeneroPessoa.Outros);
             var professor = new Faker<Professor>(locale: "pt_BR")
                 .CustomInstantiator(f => new Professor(
                     f.Name.FullName(),
