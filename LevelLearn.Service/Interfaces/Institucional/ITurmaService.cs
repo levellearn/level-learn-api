@@ -12,7 +12,7 @@ namespace LevelLearn.Service.Interfaces.Institucional
     {
         Task<ResultadoService<IEnumerable<Turma>>> TurmasProfessorPorCurso(Guid cursoId, Guid pessoaId, FiltroPaginacao filtroPaginacao);
         Task<ResultadoService<IEnumerable<Turma>>> TurmasAluno(Guid pessoaId, FiltroPaginacao filtroPaginacao);
-        Task<ResultadoService<Turma>> ObterTurma(Guid turmaId, Guid pessoaId);
+        Task<ResultadoService<Turma>> ObterTurma(Guid turmaId);
         Task<ResultadoService<Turma>> CadastrarTurma(Turma turma, Guid pessoaId);
         Task<ResultadoService<Turma>> EditarTurma(Guid turmaId, EditarTurmaVM turmaVM, Guid pessoaId);
         Task<ResultadoService<Turma>> AlternarAtivacaoTurma(Guid turmaId, Guid pessoaId);

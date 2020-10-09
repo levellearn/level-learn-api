@@ -87,7 +87,7 @@ namespace LevelLearn.WebApi.Controllers
         [ProducesResponseType(typeof(ResultadoService), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ObterTurma(Guid id)
         {
-            ResultadoService<Turma> resultado = await _turmaService.ObterTurma(id, User.GetPessoaId());
+            ResultadoService<Turma> resultado = await _turmaService.ObterTurma(id);
 
             if (resultado.Falhou) return StatusCode(resultado.StatusCode, resultado);
 

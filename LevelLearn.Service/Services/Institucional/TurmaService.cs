@@ -32,7 +32,7 @@ namespace LevelLearn.Service.Services.Institucional
 
         #endregion
 
-        public async Task<ResultadoService<Turma>> ObterTurma(Guid turmaId, Guid pessoaId)
+        public async Task<ResultadoService<Turma>> ObterTurma(Guid turmaId)
         {
             Turma turma = await _uow.Turmas.GetAsync(turmaId);
 
