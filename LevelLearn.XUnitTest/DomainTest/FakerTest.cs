@@ -1,12 +1,12 @@
 ﻿using Bogus;
+using Bogus.Extensions.Brazil;
+using LevelLearn.Domain.Entities.Institucional;
 using LevelLearn.Domain.Entities.Pessoas;
+using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.ValueObjects;
 using System;
-using Bogus.Extensions.Brazil;
-using LevelLearn.Domain.Entities.Institucional;
 using System.Linq;
-using LevelLearn.Domain.Entities.Usuarios;
 
 namespace LevelLearn.XUnitTest.DomainTest
 {
@@ -15,7 +15,7 @@ namespace LevelLearn.XUnitTest.DomainTest
         #region Alunos
         public static Aluno CriarAlunoFakeValido()
         {
-            var genero = new Faker().PickRandom<GeneroPessoa>();
+            var genero = new Faker().PickRandom(GeneroPessoa.Feminino, GeneroPessoa.Masculino, GeneroPessoa.Outros);
             var aluno = new Faker<Aluno>(locale: "pt_BR")
                 .CustomInstantiator(f => new Aluno(
                     f.Name.FullName(),
