@@ -6,6 +6,7 @@ using LevelLearn.Domain.Entities.Usuarios;
 using LevelLearn.Domain.Enums;
 using LevelLearn.Domain.ValueObjects;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LevelLearn.XUnitTest.DomainTest
@@ -128,6 +129,16 @@ namespace LevelLearn.XUnitTest.DomainTest
             turma.AtribuirAluno(alunoTurma);
 
             return turma;
+        }
+
+        public static IEnumerable<Turma> CriarListaTurmaFake(int quantidade)
+        {
+            var curso =  CriarCursoPadrao();
+            Pessoa professor = curso.Pessoas.First(p => p.Perfil == TipoPessoa.Professor).Pessoa;
+            var turmas = new Faker<Turma>(locale: "pt_BR")
+                .CustomInstantiator(f => new Turma(f.Company.CompanyName(), f.Lorem.Sentence(10), f.Lorem.Sentence(2), curso.Id, professor.Id));
+
+            return turmas.Generate(quantidade);
         }
         #endregion
 

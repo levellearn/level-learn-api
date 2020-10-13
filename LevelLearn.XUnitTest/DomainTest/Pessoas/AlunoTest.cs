@@ -4,6 +4,7 @@ using LevelLearn.Domain.ValueObjects;
 using System;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace LevelLearn.XUnitTest.DomainTest.Pessoas
 {
@@ -18,8 +19,9 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
         private string _nome, _cpf, _ra, _celular;
         private DateTime _dataNascimento;
         private GeneroPessoa _genero;
+        readonly ITestOutputHelper _testOutputHelper;
 
-        public AlunoTest()
+        public AlunoTest(ITestOutputHelper testOutputHelper)
         {
             _nome = "Felipe Ayres";
             _cpf = "881.192.990-35";
@@ -27,6 +29,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
             _celular = "55(12)98845-7832";
             _ra = "f1310435";
             _dataNascimento = DateTime.Parse("26/10/1993");
+            _testOutputHelper = testOutputHelper;
         }
 
         [Fact]
@@ -37,6 +40,7 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
 
             bool valido = aluno.EstaValido();
 
+            _testOutputHelper.WriteLine($"Erros encontrados: {string.Join(", ", aluno.ResultadoValidacao.Errors)}");
             Assert.True(valido, "Aluno deveria ser válido");
         }
 
@@ -72,7 +76,6 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
             aluno.EstaValido();
             var erros = aluno.DadosInvalidos().ToList();
             var condition = !erros.Exists(e => e.Propriedade == nameof(Pessoa.Nome));
-
             Assert.True(condition, "Aluno deveria ter nome completo");
         }
 
@@ -111,6 +114,6 @@ namespace LevelLearn.XUnitTest.DomainTest.Pessoas
             return new Aluno(_nome, new CPF(_cpf), new Celular(_celular), _ra,
                 _genero, _dataNascimento);
         }
-      
+
     }
 }
